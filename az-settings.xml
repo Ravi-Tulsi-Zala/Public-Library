@@ -4,15 +4,15 @@
     <profile>
         <id>azure</id>
         <properties>
-            <azureFtpUrl>ftp://waws-prod-dm1-025.ftp.azurewebsites.windows.net/site/wwwroot</azureFtpUrl>
+            <azureFtpUrl>ftp://waws-prod-dm1-135.ftp.azurewebsites.windows.net/site/wwwroot</azureFtpUrl>
         </properties>
     </profile>
 </profiles>
 <servers>
     <server>
         <id>azure-hello-world</id>
-        <username>DevanshuSrivastava\$DevanshuSrivastava</username>
-        <password>wfFnw4kFhcGdsre9rfhgwxucrhPejrgEMitLtydvFd1Zu48cbJtkK2xBrqjN</password>
+        <username>csci5308group2develop\$csci5308group2develop</username>
+        <password>Ac9rkTmisw8fN2ru3lPfwF0EFzsYpduJ8wTxj6iD2r6brGPuvNPjKaSmb2lX</password>
     </server>
 </servers>
 <activeProfiles>
