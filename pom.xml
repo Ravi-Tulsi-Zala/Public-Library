@@ -36,7 +36,7 @@
                 <path>/</path>
             </configuration>
         </plugin>
-        <<plugin>
+        <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>vfs-maven-plugin</artifactId>
             <version>1.0.1</version>
