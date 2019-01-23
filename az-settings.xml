@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0                                          http://maven.apache.org/xsd/settings-1.0.0.xsd">
+<profiles>
+    <profile>
+        <id>azure</id>
+        <properties>
+            <azureFtpUrl>ftp://waws-prod-dm1-025.ftp.azurewebsites.windows.net/site/wwwroot</azureFtpUrl>
+        </properties>
+    </profile>
+</profiles>
+<servers>
+    <server>
+        <id>azure-hello-world</id>
+        <username>DevanshuSrivastava\$DevanshuSrivastava</username>
+        <password>wfFnw4kFhcGdsre9rfhgwxucrhPejrgEMitLtydvFd1Zu48cbJtkK2xBrqjN</password>
+    </server>
+</servers>
+<activeProfiles>
+    <activeProfile>azure</activeProfile>
+</activeProfiles>
+</settings>
