@@ -19,8 +19,8 @@
 		%>
 	</h2>
 	<h3>
-		<% out.println(ia.toString()); %>
+		<% out.println(ia.toString());%>
 	</h3>
-	<p>hello CLASS!</p>
+	<p>hello DevanshuSrivastava!</p>
 </body>
 </html>
