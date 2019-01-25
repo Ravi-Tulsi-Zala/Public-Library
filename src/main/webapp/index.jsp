@@ -21,6 +21,6 @@
 	<h3>
 		<% out.println(ia.toString());%>
 	</h3>
-	<p>hello DevanshuSrivastava --- Eugene --- zala!</p>
+	<p>hello DevanshuSrivastava --- Eugene --- zala! First milestone achieved.</p>
 </body>
 </html>
