@@ -1,2 +1,6 @@
 # Group2
-Eugene Shishlannikoff
+
+Eugene Shishlannikov
+Devanshu Srivastava
+Ravi Zala
+Nirav Solanki
