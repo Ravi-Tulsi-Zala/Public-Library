@@ -9,4 +9,8 @@ public class libraryItems_demo {
 	String entry() {
 		return "Home.jsp";
 	}
+	@RequestMapping("/signUp")
+	String signUp() {
+		return "signUp.jsp";
+	}
 }
