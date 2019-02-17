@@ -1,6 +1,6 @@
 # Group2
+
 Eugene Shishlannikov
 Devanshu Srivastava
-Ravi Zala.
-
-Milestone1.
+Ravi Zala
+Nirav Solanki
