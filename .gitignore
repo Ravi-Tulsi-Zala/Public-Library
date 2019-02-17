@@ -1,60 +1,25 @@
-*.class
+/target/
+!.mvn/wrapper/maven-wrapper.jar
 
-#External libs
-extlib/
-
-# Auth files
-*.auth
-*.azureauth
-
-# Local checkstyle
-*.checkstyle
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
-*.jar
-*.war
-*.ear
-
-# Azure Tooling #
-node_modules
-packages
-
-# jenkins
-jenkins/
-
-# Eclipse #
-*.pydevproject
-.project
-.metadata
-bin/**
-tmp/**
-tmp/**/*
-*.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
+### STS ###
+.apt_generated
 .classpath
-.settings/
-.loadpath
-
-# Other Tooling #
-.classpath
+.factorypath
 .project
-target
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
 .idea
+*.iws
 *.iml
-out
+*.ipr
 
-# Mac OS #
-.DS_Store
-.DS_Store?
-
-# Windows #
-Thumbs.db
-
-# reduced pom files should not be included
-dependency-reduced-pom.xml
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+/build/
