@@ -1,4 +1,4 @@
-package com.library.buisness;
+package com.library.signUp;
 
 public class User {
 	private String fullName;
