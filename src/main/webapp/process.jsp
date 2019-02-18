@@ -1,8 +1,8 @@
-<%@page import="com.library.buisness.User"
-import ="com.library.buisness.SignUpController"
+<%@page import="com.library.signUp.User"
+import ="com.library.signUp.SignUpController"
 %>  
 
-<jsp:useBean id="obj" class="com.library.buisness.User"/>  
+<jsp:useBean id="obj" class="com.library.signUp.User"/>  
 
 <jsp:setProperty property="*" name="obj"/>  
   
