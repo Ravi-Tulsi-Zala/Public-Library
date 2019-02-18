@@ -8,6 +8,9 @@ import ="com.library.buisness.SignUpController"
   
 	<%
 	User user = new User();
+	if(request.getParameter("uname") == ""){
+		out.print("FAIL");
+	}
 	user.setFullName(request.getParameter("uname"));
 	user.setPassword(request.getParameter("upass"));
 	user.setCpassword(request.getParameter("ucpass"));
