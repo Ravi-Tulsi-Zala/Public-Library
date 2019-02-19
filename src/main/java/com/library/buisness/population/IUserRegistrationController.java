@@ -1,6 +1,6 @@
-package com.library.buisness;
+package com.library.buisness.population;
 
 public interface IUserRegistrationController {
 	
-	public IUserPersistence.UserInfoStatus registerNewUser(IUserInfo userInfo);
+	public IUsersDB.UserInfoStatus registerNewUser(IUserInfo userInfo);
 }

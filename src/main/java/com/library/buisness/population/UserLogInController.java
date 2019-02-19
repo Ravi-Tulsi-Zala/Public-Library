@@ -1,40 +1,40 @@
-package com.library.buisness;
+package com.library.buisness.population;
 
 public class UserLogInController implements IUserLogInController {
 	
-	private IUserPersistence userPersistence;
+	private IUsersDB usersDB;
 	private IPasswordEncoder passwordEncoder;
 	private IOnlineUsers onlineUsers;
 
-	public UserLogInController(IUserPersistence userPersistence, 
+	public UserLogInController(IUsersDB userPersistence, 
 			IPasswordEncoder passwordEncoder,
 			IOnlineUsers onlineUsers) {
 		super();
-		this.userPersistence = userPersistence;
+		this.usersDB = userPersistence;
 		this.passwordEncoder = passwordEncoder;
 		this.onlineUsers = onlineUsers;
 	}
 
 	@Override
-	public IUserPersistence.UserInfoStatus logInUser(IUserBasicInfo basicInfo) {
+	public IUsersDB.UserInfoStatus logInUser(IUserBasicInfo logInBasicInfo) {
 		
-		if(null != onlineUsers.getUser(basicInfo.getUserEmail())) {
-			return IUserPersistence.UserInfoStatus.USER_IS_ALREADY_LOGGED_IN;
+		if(null != onlineUsers.getUser(logInBasicInfo.getUserEmail())) {
+			return IUsersDB.UserInfoStatus.USER_IS_ALREADY_LOGGED_IN;
 		}
 		
-		IMyUser user =  userPersistence.loadUser(basicInfo);
+		IMyUser user =  usersDB.loadUser(logInBasicInfo);
 		
 		if(null == user) {
-			return IUserPersistence.UserInfoStatus.WRONG_USER_NAME;
+			return IUsersDB.UserInfoStatus.WRONG_USER_NAME;
 		}
 		
 		String encodedUserPassword = user.getUserBasicInfo().getUserPassword();
-		if(encodedUserPassword.equals(passwordEncoder.encode(basicInfo.getUserPassword()))) {
+		if(encodedUserPassword.equals(passwordEncoder.encode(logInBasicInfo.getUserPassword()))) {
 			onlineUsers.addUser(user);
-			return IUserPersistence.UserInfoStatus.SUCCESS;
+			return IUsersDB.UserInfoStatus.SUCCESS;
 		}
 		
-		return IUserPersistence.UserInfoStatus.WRONG_PASSWORD;
+		return IUsersDB.UserInfoStatus.WRONG_PASSWORD;
 		
 	}
 }

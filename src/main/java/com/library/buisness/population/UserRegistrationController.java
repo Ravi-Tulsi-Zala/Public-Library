@@ -1,25 +1,24 @@
-package com.library.buisness;
+package com.library.buisness.population;
 
 public class UserRegistrationController implements IUserRegistrationController {
 	
-	private IUserPersistence userPersistence;
+	private IUsersDB usersDB;
 	
-	public UserRegistrationController(IUserPersistence userPersistence) {
-		super();
-		this.userPersistence = userPersistence;
+	public UserRegistrationController(IUsersDB usersDB) {
+		this.usersDB = usersDB;
 	}
 
 	@Override
-	public IUserPersistence.UserInfoStatus registerNewUser(IUserInfo userInfo) {
-		IMyUser user =  userPersistence.loadUser(userInfo.getUserBasicInfo());
+	public IUsersDB.UserInfoStatus registerNewUser(IUserInfo userInfo) {
+		IMyUser user =  usersDB.loadUser(userInfo.getUserBasicInfo());
 		
 		if(null != user) {
-			return IUserPersistence.UserInfoStatus.USERNAME_ALREADY_EXISTS;
+			return IUsersDB.UserInfoStatus.USERNAME_ALREADY_EXISTS;
 		}
 		
-		if(userPersistence.registerNewUser(userInfo.getUserExtendedInfo())) {
-			return IUserPersistence.UserInfoStatus.SUCCESS;
+		if(usersDB.registerNewUser(userInfo)) {
+			return IUsersDB.UserInfoStatus.SUCCESS;
 		}
-		return IUserPersistence.UserInfoStatus.DB_FAILURE;
+		return IUsersDB.UserInfoStatus.DB_FAILURE;
 	}
 }

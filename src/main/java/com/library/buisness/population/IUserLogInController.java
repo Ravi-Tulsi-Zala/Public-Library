@@ -1,6 +1,6 @@
-package com.library.buisness;
+package com.library.buisness.population;
 
 public interface IUserLogInController {
 	
-	public IUserPersistence.UserInfoStatus logInUser(IUserBasicInfo basicInfo);
+	public IUsersDB.UserInfoStatus logInUser(IUserBasicInfo basicInfo);
 }

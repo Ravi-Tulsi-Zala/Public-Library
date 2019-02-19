@@ -1,4 +1,4 @@
-package com.library.buisness;
+package com.library.buisness.population;
 
 public class UserExtendedInfo implements IUserExtendedInfo {
 	
@@ -17,18 +17,7 @@ public class UserExtendedInfo implements IUserExtendedInfo {
 	}
 
 	@Override
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	@Override
 	public String getFullName() {
 		return fullName;
 	}
-
-	@Override
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
-
 }

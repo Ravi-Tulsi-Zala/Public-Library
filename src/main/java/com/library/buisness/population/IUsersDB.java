@@ -1,6 +1,6 @@
-package com.library.buisness;
+package com.library.buisness.population;
 
-public interface IUserPersistence {
+public interface IUsersDB {
 	
 	public enum UserInfoStatus {
 		//should move to the DB
@@ -12,6 +12,6 @@ public interface IUserPersistence {
 		DB_FAILURE
 	}
 	
-	public boolean registerNewUser(IUserExtendedInfo userExtendedInfo);
+	public boolean registerNewUser(IUserInfo userInfo);
 	public IMyUser loadUser(IUserBasicInfo basicInfo);
 }

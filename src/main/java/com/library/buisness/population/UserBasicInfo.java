@@ -1,4 +1,4 @@
-package com.library.buisness;
+package com.library.buisness.population;
 
 public class UserBasicInfo implements IUserBasicInfo {
 	
@@ -17,18 +17,7 @@ public class UserBasicInfo implements IUserBasicInfo {
 	}
 
 	@Override
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
-
-	@Override
 	public String getUserPassword() {
 		return userPassword;
 	}
-
-	@Override
-	public void setUserPassword(String userPassword) {
-		this.userPassword = userPassword;
-	}
-
 }

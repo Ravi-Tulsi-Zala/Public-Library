@@ -1,10 +1,8 @@
-package com.library.buisness;
+package com.library.buisness.population;
 
 public interface IUserExtendedInfo {
 	
 	public String getPhoneNumber();
-	public void setPhoneNumber(String phoneNumber);
 	public String getFullName();
-	public void setFullName(String fullName);
 
 }
