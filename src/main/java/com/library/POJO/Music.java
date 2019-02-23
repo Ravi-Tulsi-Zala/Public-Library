@@ -5,6 +5,14 @@ public class Music {
 	String title;
 	String artist;
 	String recordLabel;
+	int itemID;
+	
+	public int getItemID() {
+		return itemID;
+	}
+	public void setItemID(int itemID) {
+		this.itemID = itemID;
+	}
 	public String getCategory() {
 		return category;
 	}

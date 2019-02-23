@@ -5,6 +5,14 @@ public class Movie {
 	String title;
 	String director;
 	String description;
+	int itemID;
+	
+	public int getItemID() {
+		return itemID;
+	}
+	public void setItemID(int itemID) {
+		this.itemID = itemID;
+	}
 	public String getCategory() {
 		return category;
 	}
