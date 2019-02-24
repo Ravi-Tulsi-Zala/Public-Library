@@ -7,13 +7,13 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import com.library.mockDB.MockDatabase;
+import com.library.mockDB.SignUpMocked;
 
 public class SignUpController {
 	IUserBasicInfo basic;
 	IUserExtendedInfo extended;
 	User user;
-	MockDatabase mockDataBase;
+	SignUpMocked mockDataBase;
 
 	public  SignUpController() {
 		
