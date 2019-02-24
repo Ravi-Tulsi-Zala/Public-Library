@@ -55,6 +55,7 @@ public class SignUpTests {
 				
 				assertTrue(userBasic.getPwd()==userExtend.getCPassword());
 				assertTrue(userExtend.getPhone().length()==10);
+				assertTrue(userBasic.getEmail().contains("@"));
 			}
 		}
 	}	
@@ -77,6 +78,7 @@ public class SignUpTests {
 				
 				assertTrue(userBasic.getPwd()==userExtend.getCPassword());
 				assertTrue(userExtend.getPhone().length()==10);
+				assertTrue(userBasic.getEmail().contains("@"));
 			}
 		}
 	}
