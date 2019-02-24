@@ -67,4 +67,10 @@ public class BookDAOImpl implements IBookDAO {
 		
 	}
 
+	@Override
+	public ArrayList<Book> getBooks(ArrayList<Integer> itemIDS) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

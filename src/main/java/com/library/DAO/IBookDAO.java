@@ -7,6 +7,7 @@ import com.library.POJO.Book;
 public interface IBookDAO {
 	public Book getBookByID(int itemID);
 	public Book getBookByISBN(int bookISBN);
+	public ArrayList<Book> getBooks(ArrayList<Integer> itemIDS);
 	public ArrayList<Book> getBookByTitle(String bookTitle);
 	public ArrayList<Book> getBooksByAuthor(String bookAuthor);
 	public ArrayList<Book> getBookByPublisher(String bookPublisher);

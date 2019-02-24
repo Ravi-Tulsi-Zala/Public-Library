@@ -14,8 +14,13 @@ public class DatabaseConnectionTest {
 		
 		DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
 		assertNotNull(databaseConnection);
-		
-		
+		try {
+			assertEquals(false,databaseConnection.getConnection().isClosed());
+		}
+		catch(Exception e)
+		{
+			System.out.print("Connection not established");
+		}
 	}
 
 }
