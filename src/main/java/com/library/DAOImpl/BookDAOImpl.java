@@ -1,15 +1,60 @@
 package com.library.DAOImpl;
 
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.library.DAO.IBookDAO;
 import com.library.POJO.Book;
+import com.library.dbConnection.*;
 
 public class BookDAOImpl implements IBookDAO {
-
+	
+	
+	private PreparedStatement preparedStatement;
+	
+	 public BookDAOImpl(){
+	
+		 try
+		 {
+			DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
+			Connection connection = databaseConnection.getConnection();
+			preparedStatement  = connection.prepareStatement("SELECT Item_ID,ISBN, Title FROM books WHERE Item_ID = ?");
+		}
+		 catch (Exception e) {
+			 e.printStackTrace();
+		}
+	 }
+	
 	@Override
 	public Book getBookByID(int itemID) {
-		// TODO Auto-generated method stub
+		
+		Book book = new Book();
+		
+		try
+		{
+			preparedStatement.setInt(1, itemID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			
+			if(!resultSet.next())
+			{
+				return null;
+			}
+			
+			book.setISBN(resultSet.getInt("ISBN"));
+			book.setItemID(resultSet.getInt("Item_ID"));
+			book.setTitle(resultSet.getString("Title"));
+			
+			return book;
+	        
+			
+		}	
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
@@ -73,4 +118,10 @@ public class BookDAOImpl implements IBookDAO {
 		return null;
 	}
 
+	public static void main(String[] args) {
+	
+	
+		
+	}
+	
 }
