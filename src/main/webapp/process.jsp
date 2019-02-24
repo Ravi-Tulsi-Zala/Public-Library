@@ -1,28 +1,13 @@
+<%@page import="com.library.signUp.UserExtendedInfo"%>
+<%@page import="com.library.signUp.UserBasicInfo"%>
+<%@page import="com.library.signUp.IUserExtendedInfo"%>
+<%@page import="com.library.signUp.IUserBasicInfo"%>
 <%@page import="com.library.signUp.User"
-import ="com.library.signUp.SignUpController"
-%>  
+	import="com.library.signUp.SignUpController"%>
 
-<jsp:useBean id="obj" class="com.library.signUp.User"/>  
+<jsp:useBean id="obj" class="com.library.signUp.User" />
 
-<jsp:setProperty property="*" name="obj"/>  
-  
-	<%
-	User user = new User();
-	if(request.getParameter("uname") == ""){
-		out.print("FAIL");
-	}
-	user.setFullName(request.getParameter("uname"));
-	user.setPassword(request.getParameter("upass"));
-	user.setCpassword(request.getParameter("ucpass"));
-	user.setEmail(request.getParameter("uemail"));
-	user.setPhoneNumber(request.getParameter("uphone"));
-	SignUpController object = new SignUpController(user);
-	object.registerUser();
-	User ab = object.call();
-	out.println(ab.getEmail()+"--"+ab.getCpassword()+"--"+ab.getPassword()+"--"+ab.getFullName()+"--"+
-			ab.getEmail()+"--"+ab.getPhoneNumber()+"--");%>
-	
-	out.print("You are successfully registered"+ request.getParameter("uname"));  
-	
-  
-%>  
+<jsp:setProperty property="*" name="obj" />
+<%
+out.print("devanshu");
+%>
