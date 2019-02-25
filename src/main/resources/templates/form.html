@@ -1,0 +1,75 @@
+<html>
+<script>
+	function myFunction(str) {
+		if (str == "check1") {
+			var x = document.getElementById("password");
+			if (x.type === "password") {
+				x.type = "text";
+			} else {
+				x.type = "password";
+			}
+		} else {
+			var x = document.getElementById("cpassword");
+			if (x.type === "password") {
+				x.type = "text";
+			} else {
+				x.type = "password";
+			}
+		}
+	}
+</script>
+<body>
+
+	<form action="#" th:action="@{/process}" th:object="${user}" method="post">
+		<table>
+			<tr>
+				<td>Name:</td>
+				<td><input  name="uname" type="text" th:field="*{fullName}" /></td>
+				<td th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Name
+					Error</td>
+			</tr>
+			<tr>
+				<td>Email:</td>
+				<td><input name="uemail" type="text" th:field="*{email}" /></td>
+				<td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Age
+					Error</td>
+			</tr>
+			<tr>
+				<td>Phone:</td>
+				<td><input type="number" name="uphone" th:field="*{phoneNumber}" /></td>
+				<td th:if="${#fields.hasErrors('phoneNumber')}"
+					th:errors="*{phoneNumber}">Age Error</td>
+			</tr>
+			<tr>
+				<td>Password:</td>
+				<td><input name="upass" id="password" type="password" th:field="*{password}" />
+				</td>
+				<td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Age
+					Error</td>
+
+			</tr>
+			<tr>
+				<td><input type="checkbox" id="check1"
+					onclick="myFunction('check1')">Show Password</td>
+			</tr>
+
+			<tr>
+				<td>Confirm Password:</td>
+				<td><input name="ucpass" type="password" id="cpassword"
+					th:field="*{cpassword}" /></td>
+				<td th:if="${#fields.hasErrors('cpassword')}"
+					th:errors="*{cpassword}">Age Error</td>
+
+			</tr>
+			<tr>
+				<td><input type="checkbox" id="check2"
+					onclick="myFunction('check2')">Show Password</td>
+			</tr>
+
+			<tr>
+				<td><button type="submit">Submit</button></td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>
