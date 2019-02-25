@@ -59,10 +59,10 @@ function myFunction(this) {
 	<h1>Library items:</h1>
 	<h2>Books, Movies, Music</h2>
 	<form action="/process" name="signUpForm" method="post">
-		<input type="text" name="uname" value="na%>" onclick="this.value=''" /><br />
+		<input type="text" name="uname" value="na%>"  /><br />
 		<input type="text" name="uemail" value="Email-ID"
 			onclick="this.value=''" /><br /> <input type="password"
-			name="upass" id="u_pass" value="Password" onclick="this.value=''" /><br />
+			name="upass" id="u_pass" value="Password" /><br />
 		<input type="checkbox" onclick="myFunction(this)">Show
 		Password <input type="password" name="ucpass" id="uc_pass"
 			value="Password" onclick="this.value=''" /><br /> <input

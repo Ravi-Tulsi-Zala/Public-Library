@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.library.signUp.IUserBasicInfo;
@@ -20,25 +21,22 @@ import com.library.signUp.UserExtendedInfo;
 
 @Controller
 public class libraryItems_demo extends HttpServlet implements WebMvcConfigurer {
-//	@RequestMapping("/")
-//	String entry() {
-//
-//		return "Home";
-//	}
 
-	@PostMapping("/process")
-	public String process(HttpServletRequest request, HttpServletResponse response) {
+	@RequestMapping("/process")
+	public String process(HttpServletRequest request, HttpServletResponse response,@Valid User user, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+            return "form";
+        }
+
 		IUserBasicInfo basic = new UserBasicInfo();
 		IUserExtendedInfo extended = new UserExtendedInfo();
-		String abc = request.getParameter("uemail");
-		basic.setEmail(request.getParameter("uemail"));
-		basic.setPwd(request.getParameter("upass"));
-		extended.setCPassword(request.getParameter("ucpass"));
-		extended.setFullname(request.getParameter("uname"));
-		extended.setPhone(request.getParameter("uphone"));
+		basic.setEmail(request.getParameter("email"));
+		basic.setPwd(request.getParameter("password"));
+		extended.setCPassword(request.getParameter("cpassword"));
+		extended.setFullname(request.getParameter("fullName"));
+		extended.setPhone(request.getParameter("phoneNumber"));
 		SignUpController _signUpController = new SignUpController(basic, extended);
-		request.setAttribute("uemail", "abc");
-		return "process";
+		return "results";
 	}
 
 	@PostMapping(value = "/signUp")
@@ -58,6 +56,6 @@ public class libraryItems_demo extends HttpServlet implements WebMvcConfigurer {
             return "form";
         }
 
-        return "process";
+        return "results";
     }
 }
