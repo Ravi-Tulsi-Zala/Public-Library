@@ -3,7 +3,9 @@ package com.library.DAO;
 import com.library.POJO.User;
 
 public interface IUserDAO {
-	public String getPassword(String emailAddress);
-	public void changePassword(String emailAddress,String password);
-	public void registerUser(User user);
+	public Boolean checkPassword(String emailAddress,String Password);
+	public Boolean changePassword(String emailAddress,String password);
+	public Boolean registerUser(User user);
+	public Boolean isUserActive(String emailAddress);
+	public Boolean toggleStatus(String emailAddress);
 }

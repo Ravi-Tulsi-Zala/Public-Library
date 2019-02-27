@@ -1,6 +1,7 @@
 package com.library.DAOImpl;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import com.library.DAO.IUserDAO;
@@ -9,14 +10,14 @@ import com.library.dbConnection.DatabaseConnection;
 
 public class UserDAOImpl implements IUserDAO {
 	
-	java.sql.Statement stm;
+	Connection connection;
+	private PreparedStatement preparedStatement;
 	String query;
 	
 	public UserDAOImpl() {
 		try {
 			DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
-			Connection connection = databaseConnection.getConnection();
-			stm = connection.createStatement();
+			this.connection = databaseConnection.getConnection();
 		} catch (Exception e)
 		{
 			e.printStackTrace();
@@ -24,28 +25,98 @@ public class UserDAOImpl implements IUserDAO {
 	}
 
 	@Override
-	public String getPassword(String emailAddress) {
+	public Boolean checkPassword(String emailAddress,String Password) {
 		query = "select password from user_info where Email = '" + emailAddress + "'";
 		ResultSet result;
 		try {
-			result = stm.executeQuery(query);
-			return result.getString("Password");
+			preparedStatement  = connection.prepareStatement(query);
+			result = preparedStatement.executeQuery(query);
+			if(!result.next())
+			{
+				return false;
+			}
+			String databasePassword = result.getString("Password");
+			return  databasePassword.equals(Password);
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		return null;
+		return false;
 	}
 
 	@Override
-	public void changePassword(String emailAddress, String password) {
-		
+	public Boolean changePassword(String emailAddress, String password) {
+		 query = "update user_info set password ='" + password + "' where Email='" + emailAddress + "'";
+		 try {
+			 preparedStatement = connection.prepareStatement(query);
+			 preparedStatement.executeUpdate(query);
+			 return true;
+		 }
+		 catch(Exception e)
+		 {
+			 e.printStackTrace();
+		 }
+		 return false;
 	}
 
 	@Override
-	public void registerUser(User user) {
+	public Boolean registerUser(User user) {
 		
+		query = "Insert into user_info (User_name,Phone_Number,Email,Password,Status) values ('" + user.getFullName() 
+				+ "'," + user.getPhoneNumber() + ",'" +  user.getEmailAddress() + "','" + user.getPassword() + "','Inactive')";
+		try {
+			 preparedStatement = connection.prepareStatement(query);
+			 preparedStatement.executeUpdate(query);
+			 return true;
+		 }
+		 catch(Exception e)
+		 {
+			 e.printStackTrace();
+		 }
+		 return false;
+	}
+
+	@Override
+	public Boolean isUserActive(String emailAddress) {
+		query = "Select status from user_info where Email = '" + emailAddress + "'";
+		try {
+			preparedStatement  = connection.prepareStatement(query);
+			ResultSet result = preparedStatement.executeQuery(query);
+			if(!result.next())
+			{
+				return false;
+			}
+			String userStatus = result.getString("Status");
+			return  userStatus.equals("Active");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public Boolean toggleStatus(String emailAddress) {
+		if(isUserActive(emailAddress))
+		{
+			query = "update user_info set Status = 'Inactive' where Email='" + emailAddress + "'";
+		}
+		else
+		{
+			query = "update user_info set Status = 'Active' where Email='" + emailAddress + "'";
+		}
+		try {
+			 preparedStatement = connection.prepareStatement(query);
+			 preparedStatement.executeUpdate(query);
+			 return true;
+		 }
+		 catch(Exception e)
+		 {
+			 e.printStackTrace();
+		 }
+		 return false;
 	}
 
 }

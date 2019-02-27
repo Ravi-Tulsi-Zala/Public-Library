@@ -5,6 +5,14 @@ public class User {
 	String emailAddress;
 	String password;
 	int phoneNumber;
+	String Status;
+	
+	public String getStatus() {
+		return Status;
+	}
+	public void setStatus(String status) {
+		Status = status;
+	}
 	public String getFullName() {
 		return fullName;
 	}
@@ -29,5 +37,4 @@ public class User {
 	public void setPhoneNumber(int phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	
 }

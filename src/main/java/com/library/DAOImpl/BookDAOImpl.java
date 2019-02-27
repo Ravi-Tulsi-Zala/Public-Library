@@ -15,14 +15,15 @@ public class BookDAOImpl implements IBookDAO {
 	
 	
 	private PreparedStatement preparedStatement;
+	String query;
+	Connection connection;
 	
 	 public BookDAOImpl(){
-	
+
 		 try
 		 {
 			DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
-			Connection connection = databaseConnection.getConnection();
-			preparedStatement  = connection.prepareStatement("SELECT Item_ID,ISBN, Title FROM books WHERE Item_ID = ?");
+			this.connection = databaseConnection.getConnection();
 		}
 		 catch (Exception e) {
 			 e.printStackTrace();
@@ -36,9 +37,9 @@ public class BookDAOImpl implements IBookDAO {
 		
 		try
 		{
-			preparedStatement.setInt(1, itemID);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			
+			query = "SELECT Item_ID,ISBN, Title FROM books WHERE Item_ID = '" + itemID + "'"; 
+			preparedStatement  = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();	
 			if(!resultSet.next())
 			{
 				return null;
@@ -116,12 +117,6 @@ public class BookDAOImpl implements IBookDAO {
 	public ArrayList<Book> getBooks(ArrayList<Integer> itemIDS) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	public static void main(String[] args) {
-	
-	
-		
 	}
 	
 }

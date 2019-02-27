@@ -7,15 +7,50 @@ import org.junit.Test;
 
 import com.library.DAO.IUserDAO;
 import com.library.DAOImpl.UserDAOImpl;
+import com.library.POJO.User;
 
 
 public class UserTest {
 
 	IUserDAO userDAO = new UserDAOImpl();
+	
 	@Test
 	public void getPasswordTest() {
-		String password =  userDAO.getPassword("ravizala@gmail.com");
-		assertEquals("helloWorld",password);
+		Boolean checkPassword =  userDAO.checkPassword("ravizala100@gmail.com", "trial3");
+		assertEquals(true, checkPassword);
 	}
-
+	
+	@Test
+	public void changePasswordTest() {
+		Boolean passwordChangeStatus = userDAO.changePassword("ravizala100@gmail.com", "trial3");
+		assertEquals(true,passwordChangeStatus);
+	}
+/*	
+	@Test
+	public void registerUserTest()
+	{
+		 User user = new User();
+		 user.setFullName("Nirav");
+		 user.setEmailAddress("nr952727@dal.ca");
+		 user.setPhoneNumber(909992915);
+		 user.setPassword("yahoo");
+		 Boolean checkUserRegisteration = userDAO.registerUser(user);
+		 assertEquals(true,checkUserRegisteration);
+	} */
+	
+	@Test
+	public void ToogleUserStatusTest() {
+		Boolean userStatusChangeStatus = userDAO.toggleStatus("nr952727@dal.ca");
+		assertEquals(true,userStatusChangeStatus);
+	}
+	
+	
+	@Test 
+	public void isUserActiveTest()
+	{
+		Boolean checkUserStatus = userDAO.isUserActive("nr952727@dal.ca");
+		assertEquals(true,checkUserStatus);
+	}
+	
+	
 }
