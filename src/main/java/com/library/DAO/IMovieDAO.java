@@ -2,7 +2,7 @@ package com.library.DAO;
 
 import java.util.ArrayList;
 
-import com.library.POJO.Movie;
+import com.library.BusinessModels.Movie;
 
 public interface IMovieDAO {
 	

@@ -4,8 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import com.library.BusinessModels.User;
 import com.library.DAO.IUserDAO;
-import com.library.POJO.User;
 import com.library.dbConnection.DatabaseConnection;
 
 public class UserDAOImpl implements IUserDAO {

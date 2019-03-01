@@ -7,8 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.library.BusinessModels.Book;
 import com.library.DAO.IBookDAO;
-import com.library.POJO.Book;
 import com.library.dbConnection.*;
 
 public class BookDAOImpl implements IBookDAO {
@@ -40,6 +40,7 @@ public class BookDAOImpl implements IBookDAO {
 			query = "SELECT Item_ID,ISBN, Title FROM books WHERE Item_ID = '" + itemID + "'"; 
 			preparedStatement  = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();	
+			
 			if(!resultSet.next())
 			{
 				return null;
@@ -48,6 +49,7 @@ public class BookDAOImpl implements IBookDAO {
 			book.setISBN(resultSet.getInt("ISBN"));
 			book.setItemID(resultSet.getInt("Item_ID"));
 			book.setTitle(resultSet.getString("Title"));
+			
 			
 			return book;
 	        
@@ -117,6 +119,10 @@ public class BookDAOImpl implements IBookDAO {
 	public ArrayList<Book> getBooks(ArrayList<Integer> itemIDS) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public static void main(String[] args) {
+		
 	}
 	
 }

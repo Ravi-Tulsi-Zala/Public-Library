@@ -2,7 +2,7 @@ package com.library.DAO;
 
 import java.util.ArrayList;
 
-import com.library.POJO.Music;;
+import com.library.BusinessModels.Music;;
 
 public interface IMusicDAO {
 

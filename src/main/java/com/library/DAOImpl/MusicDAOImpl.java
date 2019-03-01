@@ -2,8 +2,8 @@ package com.library.DAOImpl;
 
 import java.util.ArrayList;
 
+import com.library.BusinessModels.Music;
 import com.library.DAO.IMusicDAO;
-import com.library.POJO.Music;
 
 public class MusicDAOImpl implements IMusicDAO {
 
