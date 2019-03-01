@@ -16,4 +16,5 @@ public interface IBookDAO {
 	public void deleteBookByID(int itemID);
 	public void createBook(Book book);
 	public void updateBook(Book book);
+	public Boolean checkAvailability(Book book);
 }

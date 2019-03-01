@@ -9,7 +9,14 @@ public class Book {
 	String publisher;
 	String description;
 	int itemID;
+	int Availablity;
 	
+	public int getAvailablity() {
+		return Availablity;
+	}
+	public void setAvailablity(int availablity) {
+		Availablity = availablity;
+	}
 	public int getItemID() {
 		return itemID;
 	}
