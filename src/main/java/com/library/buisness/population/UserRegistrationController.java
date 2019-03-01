@@ -1,5 +1,7 @@
 package com.library.buisness.population;
 
+import com.library.model.IUsersDB;
+
 public class UserRegistrationController implements IUserRegistrationController {
 	
 	private IUsersDB usersDB;
