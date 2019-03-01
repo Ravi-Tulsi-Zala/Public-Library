@@ -25,7 +25,7 @@ public class libraryItems_demo extends HttpServlet implements WebMvcConfigurer {
 	@RequestMapping("/process")
 	public String process(HttpServletRequest request, HttpServletResponse response,@Valid User user, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-            return "form";
+            return "signUpForm";
         }
 
 		IUserBasicInfo basic = new UserBasicInfo();
@@ -39,21 +39,21 @@ public class libraryItems_demo extends HttpServlet implements WebMvcConfigurer {
 		return "results";
 	}
 
-	@PostMapping(value = "/signUp")
-	public String responseBody() {
-		return "signUp";
-	}
+//	@PostMapping(value = "/signUp")
+//	public String responseBody() {
+//		return "signUp";
+//	}
 
-	@GetMapping("/")
+	@GetMapping("/signUp")
 	public String showForm(User user) {
-        return "form";
+        return "signUpForm";
     }
 
-    @PostMapping("/")
+    @PostMapping("/signUp")
     public String checkPersonInfo(@Valid User user, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            return "form";
+            return "signUpForm";
         }
 
         return "results";
