@@ -10,7 +10,7 @@ import com.library.signUp.IUserExtendedInfo;
 import com.library.signUp.User;
 import com.library.signUp.UserBasicInfo;
 import com.library.signUp.UserExtendedInfo;
-	
+
 public class SignUpMocked {
 	public String fullName;
 	public String phoneNumber;
@@ -20,18 +20,19 @@ public class SignUpMocked {
 	ArrayList arrItems;
 	IUserBasicInfo basic;
 	IUserExtendedInfo extended;
-Map mapObj;
+	Map mapObj;
+
 	public SignUpMocked() {
-		
+
 //		mapObj = new HashMap<String,ArrayList>();
 		basic = new UserBasicInfo();
 		extended = new UserExtendedInfo();
-		
+
 	}
 
 	public Map addCorruptData() {
 		ArrayList arrItems = new ArrayList<String>();
-		Map mapObj = new HashMap<String,ArrayList>();
+		Map mapObj = new HashMap<String, ArrayList>();
 		basic.setEmail("devanshu0101@gmail.com");
 		basic.setPwd("1qaz!QAZ");
 		extended.setCPassword("1qazZAQ!");
@@ -39,13 +40,13 @@ Map mapObj;
 		extended.setPhone("902");
 		arrItems.add(basic);
 		arrItems.add(extended);
-		mapObj.put("corrupt-data",arrItems);
+		mapObj.put("corrupt-data", arrItems);
 		return mapObj;
 	}
-	
+
 	public Map addMock() {
 		arrItems = new ArrayList<String>();
-		mapObj = new HashMap<String,ArrayList>();
+		mapObj = new HashMap<String, ArrayList>();
 		basic.setEmail("devanshu1@gmail.com");
 		basic.setPwd("123456789");
 		extended.setCPassword("123456789");
@@ -53,7 +54,7 @@ Map mapObj;
 		extended.setPhone("9024031714");
 		arrItems.add(basic);
 		arrItems.add(extended);
-		mapObj.put("clean-data",arrItems);
+		mapObj.put("clean-data", arrItems);
 		return mapObj;
 	}
 
@@ -65,15 +66,15 @@ Map mapObj;
 
 	}
 
-	
 	public boolean register(User user) {
 		arrItems = new ArrayList<String>();
-		//mapObj.put("dev",user);
+		// mapObj.put("dev",user);
 		return true;
 	}
+
 	public User register1(User user) {
 		arrItems = new ArrayList<String>();
-	//	mapObj.put("dev",user);
-		return null;//(User) mapObj.get("dev");
+		// mapObj.put("dev",user);
+		return null;// (User) mapObj.get("dev");
 	}
 }

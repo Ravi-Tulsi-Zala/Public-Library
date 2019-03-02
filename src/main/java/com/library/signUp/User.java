@@ -1,28 +1,11 @@
 package com.library.signUp;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-
 public class User {
 
-	@NotNull
-	@Size(max = 30)
 	private String fullName;
-	@NotNull
-	@Size(min = 10,max = 15) //if country code is also appended.
 	private String phoneNumber;
-	@NotNull
-	@Pattern( regexp = "^(.+)@(.+)$")
 	private String email;
-	@NotNull
-	@Size(min = 8,max=10)
-	@Pattern(regexp = "^[A-Za-z0-9]*$")
 	private String password;
-	@NotNull
-	@Size(min = 8,max=10)
-	@Pattern(regexp = "^[A-Za-z0-9]*$")
 	private String cpassword;
 
 	public String getFullName() {

@@ -18,47 +18,46 @@
 		}
 	}
 
-	function check() {
+	//I might use this in futu
+	/* function check() {
 		if (document.getElementById('password').value === document
 				.getElementById('cpassword').value) {
 			return true;
 		} else {
 			document.getElementById('message').innerHTML = "no match";
-			document.getElementById('message').style.color= "red";
+			document.getElementById('message').style.color = "red";
 			return false;
 		}
-	}
+	} */
 </script>
 <body>
 
-	<form action="/process" th:action="@{/process}" th:object="${user}"
+	<form action="/signUp" th:action="@{/signUp}" th:object="${user}"
 		method="post">
 		<table id="table">
 			<tr>
-				<td>Name:</td>
-				<td><input name="uname" type="text" th:field="*{fullName}" /></td>
-				<td th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Name
-					Error</td>
+				<td>Full Name:</td>
+				<td><input name="upass" type="text" th:field="*{fullName}" /></td>
+				<td th:text="${fullName}">name error</td>
 			</tr>
-			<tr>
-				<td>Email:</td>
-				<td><input name="uemail" type="text" th:field="*{email}" /></td>
-				<td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Age
-					Error</td>
-			</tr>
+
+
 			<tr>
 				<td>Phone:</td>
 				<td><input type="number" name="uphone"
 					th:field="*{phoneNumber}" /></td>
-				<td th:if="${#fields.hasErrors('phoneNumber')}"
-					th:errors="*{phoneNumber}">Age Error</td>
+				<td th:text="${phoneNumber}">phone error</td>
+			</tr>
+			<tr>
+				<td>Email:</td>
+				<td><input name="uemail" type="text" th:field="*{email}" /></td>
+				<td th:text="${email}">email error</td>
+
 			</tr>
 			<tr>
 				<td>Password:</td>
-				<td><input name="upass" id="password" type="password"
-					th:field="*{password}" /></td>
-				<td th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
-					>Age Error</td>
+				<td><input name="upass" type="password" th:field="*{password}" /></td>
+				<td th:text="${password}">Password error</td>
 
 			</tr>
 			<tr>
@@ -68,10 +67,9 @@
 
 			<tr>
 				<td>Confirm Password:</td>
-				<td><input name="ucpass" type="password" id="cpassword"
+				<td><input name="ucpass" type="password"
 					th:field="*{cpassword}" /></td>
-				<td th:if="${#fields.hasErrors('cpassword')}"
-					th:errors="*{cpassword}" >password error</td>
+				<td th:text="${cpassword}">Password error</td>
 				<td><span id='message'></span></td>
 
 			</tr>
@@ -82,7 +80,7 @@
 
 			<tr>
 
-				<td><button type="submit" onclick="return check();">Submit</button></td>
+				<td><button type="submit">Submit</button></td>
 			</tr>
 		</table>
 	</form>
