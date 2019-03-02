@@ -56,4 +56,49 @@ public class BookTest {
 		String bookTitle = bookDAO.getBookTitle(1001);
 		assertEquals("The girl who played with fire",bookTitle);
 	}
+	
+	@Test
+	public void getBookByKeywordTest()
+	{
+		ArrayList<Book> books = bookDAO.getBookByKeyword("girl");
+		assertEquals("The girl who played with fire",books.get(0).getTitle());
+	}
+	
+	@Test
+	public void deleteBookTest()
+	{
+		Boolean isBookDeleted = bookDAO.deleteBookByID(1002);
+		assertEquals(true,isBookDeleted);
+	}
+	/*
+	@Test
+	public void createBookTest()
+	{
+		Book book = new Book();
+		book.setAuthor("Albert Camus");
+		book.setAvailablity(1);
+		book.setCategory("Philoshophy");
+		book.setDescription("How sysphus loves rolling the bolder to the mountain top");
+		book.setISBN(265);
+		book.setItemID(1002);
+		book.setPublisher("Paris publication");
+		book.setTitle("Myth of sysphus");
+		Boolean isBookCreated = bookDAO.createBook(book);
+		assertEquals(true,isBookCreated);
+	} */
+	
+	@Test
+	public void updateBookTest() {
+		Book book = new Book();
+		book.setAuthor("Albert Camus");
+		book.setAvailablity(1);
+		book.setCategory("Philoshophy");
+		book.setDescription("How sysphus loves rolling the bolder to the mountain top");
+		book.setISBN(265);
+		book.setItemID(1002);
+		book.setPublisher("Swedan publication");
+		book.setTitle("Myth of sysphus");
+		Boolean isBookUpdated = bookDAO.updateBook(book);
+		assertEquals(true,isBookUpdated);
+	} 
 }
