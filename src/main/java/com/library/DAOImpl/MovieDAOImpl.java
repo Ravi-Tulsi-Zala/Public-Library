@@ -180,47 +180,4 @@ public class MovieDAOImpl implements IMovieDAO {
 
 	}
 
-	public static void main(String[] args) {
-
-		MovieDAOImpl movieDAOImpl = new MovieDAOImpl();
-		Movie movie = new Movie();
-		ArrayList<Movie> moviesByDirectorName;
-		moviesByDirectorName = movieDAOImpl.getMoviesByDirectorName("Christopher Nolan");
-
-		for (int i = 0; i < moviesByDirectorName.size(); i++) {
-			movie = new Movie();
-			movie = moviesByDirectorName.get(i);
-			System.out.println(movie.getItemID());
-			System.out.println(movie.getCategory());
-			System.out.println(movie.getDescription());
-			System.out.println(movie.getDirector());
-			System.out.println(movie.getAvailability());
-			System.out.println(movie.getTitle());
-
-		}
-
-		ArrayList<Movie> moviesByCategory;
-		moviesByCategory = movieDAOImpl.getMoviesByCategory("Sci-Fi");
-
-		for (int i = 0; i < moviesByCategory.size(); i++) {
-			movie = new Movie();
-			movie = moviesByCategory.get(i);
-			System.out.println(movie.getItemID());
-			System.out.println(movie.getCategory());
-			System.out.println(movie.getDescription());
-			System.out.println(movie.getDirector());
-			System.out.println(movie.getAvailability());
-			System.out.println(movie.getTitle());
-		}
-		movie.setItemID(2005);
-		movie.setCategory("Sci-Fi");
-		movie.setDescription(
-				"A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a CEO.");
-		movie.setDirector("Christopher Nolan");
-		movie.setTitle("Inception");
-		movie.setAvailability(10);
-		movieDAOImpl.createMovie(movie);
-
-	}
-
 }
