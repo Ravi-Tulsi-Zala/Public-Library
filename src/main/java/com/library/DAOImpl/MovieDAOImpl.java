@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.library.BusinessModels.Movie;
 import com.library.DAO.IMovieDAO;
@@ -71,11 +72,11 @@ public class MovieDAOImpl implements IMovieDAO {
 	}
 
 	@Override
-	public ArrayList<Movie> getMoviesByDirectorName(String directorName) {
+	public List<Movie> getMoviesByDirectorName(String directorName) {
 
 		Movie movie = new Movie();
 		query = "SELECT * from movie WHERE Director = ?";
-		ArrayList<Movie> moviesByDirectorName = new ArrayList<Movie>();
+		List<Movie> moviesByDirectorName = new ArrayList<Movie>();
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
@@ -98,11 +99,11 @@ public class MovieDAOImpl implements IMovieDAO {
 	}
 
 	@Override
-	public ArrayList<Movie> getMoviesByCategory(String category) {
+	public List<Movie> getMoviesByCategory(String category) {
 
 		Movie movie = new Movie();
 		query = "SELECT * from movie WHERE Category = ?";
-		ArrayList<Movie> moviesByCategory = new ArrayList<Movie>();
+		List<Movie> moviesByCategory = new ArrayList<Movie>();
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
@@ -126,11 +127,11 @@ public class MovieDAOImpl implements IMovieDAO {
 	}
 
 	@Override
-	public ArrayList<Movie> getMoviesByDescription(String movieDescription) {
+	public List<Movie> getMoviesByDescription(String movieDescription) {
 
 		Movie movie = new Movie();
 		query = "SELECT * from movie WHERE Description = ?";
-		ArrayList<Movie> moviesByDescription = new ArrayList<Movie>();
+		List<Movie> moviesByDescription = new ArrayList<Movie>();
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
@@ -179,5 +180,4 @@ public class MovieDAOImpl implements IMovieDAO {
 	public void deleteMovie(Movie movie) {
 
 	}
-
 }
