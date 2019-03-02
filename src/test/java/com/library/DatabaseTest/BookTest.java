@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com.library.DAO.IBookDAO;
 import com.library.DAOImpl.BookDAOImpl;
-import com.library.POJO.Book;
+import com.library.BusinessModels.Book;
 
 
 public class BookTest {

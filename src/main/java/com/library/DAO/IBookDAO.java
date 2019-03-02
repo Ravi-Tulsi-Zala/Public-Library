@@ -2,7 +2,7 @@ package com.library.DAO;
 
 import java.util.ArrayList;
 
-import com.library.POJO.Book;
+import com.library.BusinessModels.Book;
 
 public interface IBookDAO {
 	public Book getBookByID(int itemID);

@@ -1,6 +1,6 @@
 package com.library.DAO;
 
-import com.library.POJO.User;
+import com.library.BusinessModels.User;
 
 public interface IUserDAO {
 	public Boolean checkPassword(String emailAddress,String Password);

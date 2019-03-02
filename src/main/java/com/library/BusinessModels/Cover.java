@@ -1,4 +1,4 @@
-package com.library.POJO;
+package com.library.BusinessModels;
 
 import com.mysql.jdbc.Blob;
 

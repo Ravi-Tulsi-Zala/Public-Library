@@ -1,4 +1,4 @@
-package com.library.POJO;
+package com.library.BusinessModels;
 
 public class Movie {
 	String category;
@@ -6,6 +6,8 @@ public class Movie {
 	String director;
 	String description;
 	int itemID;
+	int availability;
+	
 	
 	public int getItemID() {
 		return itemID;
@@ -36,5 +38,13 @@ public class Movie {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public int getAvailability() {
+		return availability;
+	}
+	
+	public void setAvailability(int availability) {
+		this.availability = availability;
 	}
 }

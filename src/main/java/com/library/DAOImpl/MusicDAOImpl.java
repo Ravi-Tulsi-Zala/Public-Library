@@ -1,9 +1,8 @@
 package com.library.DAOImpl;
 
-import java.util.ArrayList;
-
+import java.util.List;
+import com.library.BusinessModels.Music;
 import com.library.DAO.IMusicDAO;
-import com.library.POJO.Music;
 
 public class MusicDAOImpl implements IMusicDAO {
 
@@ -20,19 +19,19 @@ public class MusicDAOImpl implements IMusicDAO {
 	}
 
 	@Override
-	public ArrayList<Music> getMusicByArtistName(String musicArtistName) {
+	public List<Music> getMusicByArtistName(String musicArtistName) {
 
 		return null;
 	}
 
 	@Override
-	public ArrayList<Music> getMusicByCategory(String category) {
+	public List<Music> getMusicByCategory(String category) {
 	
 		return null;
 	}
 
 	@Override
-	public ArrayList<Music> getMusicByDescription(String musicDescription) {
+	public List<Music> getMusicByDescription(String musicDescription) {
 	
 		return null;
 	}
@@ -45,13 +44,13 @@ public class MusicDAOImpl implements IMusicDAO {
 
 	@Override
 	public void updateMusic(Music music) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void deleteMusic(Music music) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
