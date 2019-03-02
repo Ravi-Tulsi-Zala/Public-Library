@@ -24,7 +24,6 @@ public class SignUpMocked {
 
 	public SignUpMocked() {
 
-//		mapObj = new HashMap<String,ArrayList>();
 		basic = new UserBasicInfo();
 		extended = new UserExtendedInfo();
 
@@ -59,22 +58,7 @@ public class SignUpMocked {
 	}
 
 	public boolean verify(User user) {
-//			if(mapObj.get("dev")==user) {
-//				return true;
-//			}
 		return false;
 
-	}
-
-	public boolean register(User user) {
-		arrItems = new ArrayList<String>();
-		// mapObj.put("dev",user);
-		return true;
-	}
-
-	public User register1(User user) {
-		arrItems = new ArrayList<String>();
-		// mapObj.put("dev",user);
-		return null;// (User) mapObj.get("dev");
 	}
 }
