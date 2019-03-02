@@ -2,7 +2,7 @@ package com.library.DAOMapper;
 
 import java.sql.ResultSet;
 
-import com.library.POJO.Book;
+import com.library.BusinessModels.Book;;
 
 public class BookMapper {
 	

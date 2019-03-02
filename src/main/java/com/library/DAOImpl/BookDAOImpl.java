@@ -8,11 +8,7 @@ import java.util.ArrayList;
 
 import com.library.BusinessModels.Book;
 import com.library.DAO.IBookDAO;
-<<<<<<< HEAD
 import com.library.DAOMapper.BookMapper;
-import com.library.POJO.Book;
-=======
->>>>>>> 140e059d879c28d2614ed78740c9ffdb7557a9e7
 import com.library.dbConnection.*;
 
 public class BookDAOImpl implements IBookDAO {
@@ -48,10 +44,7 @@ public class BookDAOImpl implements IBookDAO {
 			{
 				return null;
 			}
-<<<<<<< HEAD
-			book = bookMaper.mapBook(resultSet);
-=======
-			
+			book = bookMaper.mapBook(resultSet);		
 			book.setISBN(resultSet.getInt("ISBN"));
 			book.setItemID(resultSet.getInt("Item_ID"));
 			book.setTitle(resultSet.getString("Title"));
@@ -59,9 +52,6 @@ public class BookDAOImpl implements IBookDAO {
 			book.setCategory(resultSet.getString("Category"));
 			book.setDescription(resultSet.getString("Description"));
 			book.setPublisher(resultSet.getString("Publisher"));
-			
-			
->>>>>>> 140e059d879c28d2614ed78740c9ffdb7557a9e7
 			return book;
 		}	
 		catch (Exception e) {
@@ -253,7 +243,6 @@ public class BookDAOImpl implements IBookDAO {
 		return null;
 	}
 
-<<<<<<< HEAD
 	@Override
 	public Boolean createBook(Book book) {
 		String category = book.getCategory();
@@ -277,11 +266,6 @@ public class BookDAOImpl implements IBookDAO {
 			 e.printStackTrace();
 		 }
 		 return false;
-=======
-	
-	public static void main(String[] args) {
-		
->>>>>>> 140e059d879c28d2614ed78740c9ffdb7557a9e7
 	}
 	
 	@Override
