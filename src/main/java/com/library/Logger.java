@@ -10,26 +10,25 @@ import java.nio.file.StandardOpenOption;
 
 public class Logger {
 
-	private static Logger logger;// = new Logger();
-	
+	private static Logger logger;
+
 	private Logger() {
-		// TODO Auto-generated constructor stub
 	}
-	
+
 	public static Logger loggerInstance() {
-		if(logger == null) {
+		if (logger == null) {
 			logger = new Logger();
 		}
 		return logger;
 	}
-	
+
 	public void writeLog(String log) {
 		try {
-		    Files.write(Paths.get("myFile.txt"), log.getBytes(), StandardOpenOption.APPEND);
-		}catch (IOException e) {
-		    //exception handling left as an exercise for the reader
+			Files.write(Paths.get("myFile.txt"), log.getBytes(), StandardOpenOption.APPEND);
+		} catch (IOException e) {
+			// exception handling left as an exercise for the reader
 		}
-		
+
 	}
-	
+
 }
