@@ -1,9 +1,6 @@
 package com.library;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -11,9 +8,6 @@ import java.nio.file.StandardOpenOption;
 public class Logger {
 
 	private static Logger logger;
-
-	private Logger() {
-	}
 
 	public static Logger loggerInstance() {
 		if (logger == null) {

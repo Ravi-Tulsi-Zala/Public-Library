@@ -6,13 +6,11 @@ public class UserExtendedInfo implements IUserExtendedInfo {
 	private String cpassword;
 	@Override
 	public String getFullname() {
-		// TODO Auto-generated method stub
 		return fullName;
 	}
 
 	@Override
 	public String getPhone() {
-		// TODO Auto-generated method stub
 		return phoneNumber;
 	}
 

@@ -12,45 +12,37 @@ public class SignUpController {
 	static Map.Entry<String, String> entryMap;
 	static List<Entry<String, String>> listofValidationErrors;
 
-	// Till DB is integrated values are validated against some dummy values.
-	public static ArrayList<Map.Entry<String, String>> setUserData(User user, HttpServletRequest request) {
+	// Till DB is integrated values are validated against some dummy values. 
+	// In next sprint i will add the functionality to check validation with XML file. Also will create a const file for string values.
+	public static ArrayList<Map.Entry<String, String>> insertInDBIfAuthenticate(IUserBasicInfo userBasicInfo,
+			IUserExtendedInfo userExtendedInfo, HttpServletRequest request) {
 
 		listofValidationErrors = new ArrayList<Map.Entry<String, String>>();
 		listofValidationErrors.clear();
-		if (user.getEmail() == "" || user.getEmail() == "devanshu.srivastava1@gmail.com") {
+		if (userBasicInfo.getEmail() == "" || !userBasicInfo.getEmail().contains("@")  ||userBasicInfo.getEmail() == "devanshu.srivastava1@gmail.com") {
 			entryMap = new AbstractMap.SimpleEntry<String, String>("email", "email cannot be the same.");
 			listofValidationErrors.add(entryMap);
-		} else {
-			user.setEmail(request.getParameter("email"));
 		}
-		if (user.getPassword() == "" || !user.getPassword().matches("[A-Za-z0-9]*$")) {
+		if (userBasicInfo.getPwd() == "" || !userBasicInfo.getPwd().matches("[A-Za-z0-9]*$")) {
 			entryMap = new AbstractMap.SimpleEntry<String, String>("password",
 					"password should contain all these characters.[A-Za-z0-9]*$");
 			listofValidationErrors.add(entryMap);
-		} else {
-			user.setPassword(request.getParameter("password"));
 		}
-		if (user.getCpassword() == ""
-				|| !user.getCpassword().matches("[A-Za-z0-9]*$") && !user.getCpassword().equals(user.getPassword())) {
+		if (userExtendedInfo.getCPassword() == "" || !userExtendedInfo.getCPassword().matches("[A-Za-z0-9]*$")
+				&& !userExtendedInfo.getCPassword().equals(userBasicInfo.getPwd())) {
 			entryMap = new AbstractMap.SimpleEntry<String, String>("cpassword",
 					"password should contain all these characters.[A-Za-z0-9]*$");
 			listofValidationErrors.add(entryMap);
-		} else {
-			user.setCpassword(request.getParameter("cpassword"));
 		}
-		if (user.getFullName() == "") {
+		if (userExtendedInfo.getFullname() == "") {
 			entryMap = new AbstractMap.SimpleEntry<String, String>("fullName", "provide full name");
 			listofValidationErrors.add(entryMap);
-		} else {
-			user.setFullName(request.getParameter("fullName"));
 		}
-		if (user.getPhoneNumber() == "" || user.getPhoneNumber().length() > 0 && user.getPhoneNumber().length() < 10) {
+		if (userExtendedInfo.getPhone() == "" || userExtendedInfo.getPhone().length() > 0 && userExtendedInfo.getPhone().length() < 10) {
 			entryMap = new AbstractMap.SimpleEntry<String, String>("phoneNumber", "provide phone number");
 			listofValidationErrors.add(entryMap);
-		} else {
-			user.setPhoneNumber(request.getParameter("phoneNumber"));
 		}
-
+		// If true connect DB as list has no validations to check.
 		if (listofValidationErrors.size() == 0) {
 			connectDB(); // will be worked upon.
 		}

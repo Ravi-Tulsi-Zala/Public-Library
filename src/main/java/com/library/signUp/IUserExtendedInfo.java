@@ -7,5 +7,4 @@ public interface IUserExtendedInfo {
 	public void  setPhone(String phone);
 	public String getCPassword();
 	public void  setCPassword(String cpass);
-
 }
