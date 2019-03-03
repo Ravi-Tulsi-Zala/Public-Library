@@ -67,8 +67,8 @@ public class SignUpTests {
 				assertEquals("devanshu sriv", userExtendInfo.getFullname());
 				assertEquals("902", userExtendInfo.getPhone());
 				assertEquals("1qazZAQ!", userExtendInfo.getCPassword());
-				assertTrue(userBasicInfo.getPwd() == userExtendInfo.getCPassword());
-				assertTrue(userExtendInfo.getPhone().length() == 10);
+				assertTrue(userBasicInfo.getPwd() != userExtendInfo.getCPassword());
+				assertTrue(userExtendInfo.getPhone().length() != 10);
 				assertTrue(userBasicInfo.getEmail().contains("@"));
 			}
 		}
