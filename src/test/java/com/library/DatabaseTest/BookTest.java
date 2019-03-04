@@ -2,14 +2,12 @@ package com.library.DatabaseTest;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-
-import com.library.DAO.IBookDAO;
-import com.library.DAOImpl.BookDAO;
+import com.library.IDAO.IBookDAO;
 import com.library.BusinessModels.Book;
+import com.library.DAO.BookDAO;
 
 
 public class BookTest {

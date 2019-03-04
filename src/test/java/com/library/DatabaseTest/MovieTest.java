@@ -5,12 +5,12 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.library.BusinessModels.Movie;
-import com.library.DAO.IMovieDAO;
-import com.library.DAOImpl.MovieDAOImpl;
+import com.library.DAO.MovieDAO;
+import com.library.IDAO.IMovieDAO;
 
 public class MovieTest {
 
-	IMovieDAO iMovieDAO = new MovieDAOImpl();
+	IMovieDAO iMovieDAO = new MovieDAO();
 
 	@Test
 	public void getMovieByIdTest() {

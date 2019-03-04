@@ -1,4 +1,4 @@
-package com.library.DAO;
+package com.library.IDAO;
 
 
 import java.util.List;
@@ -12,9 +12,9 @@ public interface IMovieDAO {
 	public List<Movie> getMoviesByDirectorName(String directorName);
 	public List<Movie> getMoviesByCategory(String category);
 	public List<Movie> getMoviesByDescription(String movieDescription);
-	public void createMovie(Movie movie);
-	public void updateMovie(Movie movie);
-	public void deleteMovie(Movie movie); 
+	public Boolean createMovie(Movie movie);
+	public Boolean updateMovie(Movie movie);
+	public Boolean deleteMovie(Movie movie); 
 	
 	
 }

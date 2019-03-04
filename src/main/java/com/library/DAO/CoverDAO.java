@@ -1,6 +1,6 @@
-package com.library.DAOImpl;
+package com.library.DAO;
 
-import com.library.DAO.ICoverDAO;
+import com.library.IDAO.ICoverDAO;
 import com.mysql.jdbc.Blob;
 
 public class CoverDAO implements ICoverDAO {

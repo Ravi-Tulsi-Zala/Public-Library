@@ -1,12 +1,11 @@
+package com.library.DAO;
 
-package com.library.DAOImpl;
 import java.util.ArrayList;
 import java.util.List;
 import com.library.BusinessModels.Book;
-import com.library.DAO.IBookDAO;
-import com.library.DAO.ILibraryItemDAO;
+import com.library.IDAO.IBookDAO;
 
-public class LibraryItemDAO implements ILibraryItemDAO {
+public class LibraryItemDAO implements com.library.IDAO.ILibraryItemDAO {
 
 	@Override
 	public List<Integer> getRecentlyAdded() {
@@ -19,7 +18,7 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public List<Integer> getItemFromKeyword(String keyword) {
 		IBookDAO bookDAO = new BookDAO();

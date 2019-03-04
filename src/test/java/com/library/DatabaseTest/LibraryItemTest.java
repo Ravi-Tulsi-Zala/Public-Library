@@ -2,8 +2,9 @@ package com.library.DatabaseTest;
 
 import org.junit.Test;
 
-import com.library.DAO.ILibraryItemDAO;
-import com.library.DAOImpl.LibraryItemDAO;
+import com.library.DAO.LibraryItemDAO;
+import com.library.IDAO.ILibraryItemDAO;
+
 
 public class LibraryItemTest {
 

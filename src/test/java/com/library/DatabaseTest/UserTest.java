@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.library.BusinessModels.User;
-import com.library.DAO.IUserDAO;
-import com.library.DAOImpl.UserDAO;
+import com.library.DAO.UserDAO;
+import com.library.IDAO.IUserDAO;
+
 
 
 public class UserTest {

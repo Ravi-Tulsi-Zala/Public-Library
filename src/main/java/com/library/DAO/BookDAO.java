@@ -1,4 +1,4 @@
-package com.library.DAOImpl;
+package com.library.DAO;
 
 
 import java.sql.Connection;
@@ -8,13 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.library.BusinessModels.Book;
-import com.library.DAO.IBookDAO;
+import com.library.IDAO.IBookDAO;
 import com.library.DAOMapper.IBookMapper;
 import com.library.DAOMapperImpl.BookMapper;
 import com.library.dbConnection.*;
 
 public class BookDAO implements IBookDAO {
-	
 	
 	private PreparedStatement preparedStatement;
 	private String query;
@@ -161,7 +160,8 @@ public class BookDAO implements IBookDAO {
 			Book book = new Book();
 			query = "SELECT * FROM books WHERE Description like '%" + bookDescription + "%'"; 
 			preparedStatement  = connection.prepareStatement(query);
-			ResultSet resultSet = preparedStatement.executeQuery();	
+			ResultSet resultSet = preparedStatement.executeQuery();
+			
 			if(!resultSet.next())
 			{
 				return null;

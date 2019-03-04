@@ -6,6 +6,7 @@ public class Music {
 	String artist;
 	String recordLabel;
 	int itemID;
+	int availability;
 	
 	public int getItemID() {
 		return itemID;
@@ -36,6 +37,14 @@ public class Music {
 	}
 	public void setRecordLabel(String recordLabel) {
 		this.recordLabel = recordLabel;
+	}
+	
+	public int getAvailability() {
+		return availability;
+	}
+	
+	public void setAvailability(int availability) {
+		this.availability = availability;
 	}
 	
 }
