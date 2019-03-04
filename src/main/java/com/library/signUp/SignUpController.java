@@ -17,8 +17,8 @@ public class SignUpController {
 
 	// Till DB is integrated values are validated against some dummy values. 
 	// In next sprint i will add the functionality to check validation with XML file. Also will create a const file for string values.
-	public static ArrayList<Map.Entry<String, String>> insertInDBIfAuthenticate(IUserBasicInfo userBasicInfo,
-			IUserExtendedInfo userExtendedInfo, HttpServletRequest request) {
+	public ArrayList<Map.Entry<String, String>> insertInDBIfAuthenticate(IUserBasicInfo userBasicInfo,
+			IUserExtendedInfo userExtendedInfo) {
 
 		listofValidationErrors = new ArrayList<Map.Entry<String, String>>();
 		listofValidationErrors.clear();

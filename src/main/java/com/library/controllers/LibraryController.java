@@ -21,14 +21,14 @@ import com.library.signUp.SignUpController;
 import com.library.signUp.User;
 import com.library.signUp.UserBasicInfo;
 import com.library.signUp.UserExtendedInfo;
+import com.library.singIn.Facade;
 import com.library.singIn.SignInController;
 
 @Controller
 public class LibraryController extends HttpServlet implements WebMvcConfigurer {
 
 	@PostMapping("/signUp")
-	public String processSignUpForm(ModelMap model, HttpServletRequest request, HttpServletResponse response,
-			User user) {
+	public String processSignUpForm(ModelMap model,User user) {
 
 		IUserExtendedInfo userExtendedInfo = new UserExtendedInfo();
 		IUserBasicInfo userBasicInfo = new UserBasicInfo();
@@ -38,8 +38,7 @@ public class LibraryController extends HttpServlet implements WebMvcConfigurer {
 		userExtendedInfo.setFullname(user.getFullName());
 		userExtendedInfo.setPhone(user.getPhoneNumber());
 
-		List<Map.Entry<String, String>> list = SignUpController.insertInDBIfAuthenticate(userBasicInfo,
-				userExtendedInfo, request);
+		List<Map.Entry<String, String>> list = new Facade().signUpUserData(userBasicInfo, userExtendedInfo);
 		for (int i = 0; i < list.size(); i++) {
 			model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
 		}
@@ -55,26 +54,33 @@ public class LibraryController extends HttpServlet implements WebMvcConfigurer {
 	public String getSignUpForm(User user) {
 		return "SignUpForm";
 	}
-	
-	
+
 //	@RequestMapping("/")
 //	String entry() {
 //		return "Home.jsp";
-//	}
-	
-	@GetMapping("/signInProcess")
-	public String responseBody() {
-		return "signInForm";
+//	} 	
+
+	@GetMapping("/signIn")
+	public String responseBody(User user) {
+		return "SignInForm";
 	}
-	
-	@PostMapping("/signInProcess")
-	public String process(HttpServletRequest request, HttpServletResponse response) {
-		
+
+	@PostMapping("/signIn")
+	public String process(ModelMap model,User user) {
+
 		IUserBasicInfo basic = new UserBasicInfo();
-		basic.setEmail(request.getParameter("uemail"));
-		basic.setPwd(request.getParameter("uname"));
-		SignInController _signInController = new SignInController(basic);
-		return "results";
+		basic.setEmail(user.getEmail());
+		basic.setPwd(user.getPassword());
+		List<Map.Entry<String, String>> list =  new Facade().signInUserData(basic);
+		for (int i = 0; i < list.size(); i++) {
+			model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
+		}
+		// model object has by default two values; anytime it gets more than that
+		// signifies a validation violation
+		if (model.size() > 2) {
+			return "SignInForm";
+		}
+		return "Results";
 	}
 
 }
