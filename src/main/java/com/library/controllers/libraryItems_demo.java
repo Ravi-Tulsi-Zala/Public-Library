@@ -1,6 +1,7 @@
 package com.library.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,22 +43,21 @@ public class libraryItems_demo {
 	    return new ResponseEntity<String>("POST Response", HttpStatus.OK);
 	}
 	
-	@GetMapping("/getAdvancedSearchPage")
+	@GetMapping("/advancedSearch")
 	public String getAdvancedSearchPage(Model model) {
-		model.addAttribute("searchSelections", new SearchQuery());
-		return "AdvancedSearchPage.html";
+		model.addAttribute("searchQuery", new SearchQuery());
+		return "AdvancedSearchPage.jsp";
 	}
 	
 
-	@PostMapping ("/search")
-	public String getAdvancedSearchResults(@ModelAttribute/*("searchQuery")*/ SearchQuery searchQuery,
-										   ModelMap model) 
+	@PostMapping("/search")
+	public String getSearchResults(@ModelAttribute/*("searchQuery")*/ SearchQuery searchQuery, ModelMap model) 
 	{		
 		SearchResult searchResults = dataBase.search(searchQuery);
 		
 		searchResults.setSearchResultsPageNumber(searchQuery.getSearchResultsPageNumber());
 		model.addAttribute("searchResults", searchResults);
 		
-		return "SearchResults.jsp";
-	}
+		return "SearchResults.jsp";	
+	}	
 }

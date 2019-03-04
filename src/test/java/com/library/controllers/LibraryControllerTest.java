@@ -54,7 +54,7 @@ public class LibraryControllerTest {
     	SearchResult searchResult = new SearchResult();
     	SearchQuery searchQuery = new SearchQuery();
     	searchQuery.setSearchTerms("Jack London");
-    	searchQuery.setIsExtendedSearch(false);
+    	searchQuery.setExtendedSearch(true);
     	
     	
     	LinkedList<ItemDescriptor> booksFoundInSearch = new LinkedList<ItemDescriptor>();
@@ -81,23 +81,30 @@ public class LibraryControllerTest {
         			.andExpect(model().attribute("searchResults",
 						allOf(hasProperty("bookSearchResults", 
 								hasItems(
-										allOf(hasProperty("itemDescription", is("The Star Rover")), 
-											  hasProperty("itemImageUrl", is("/static/images/TheStarRover_Cover.jpeg")),
-											  hasProperty("itemID", is("JL_TSR_6161")))
+										allOf(
+												hasProperty("itemDescription", is("The Star Rover")), 
+												hasProperty("itemImageUrl", is("/static/images/TheStarRover_Cover.jpeg")),
+												hasProperty("itemID", is("JL_TSR_6161"))
+											  )
 										,
 
-										allOf(hasProperty("itemDescription", is("The Scarlet Plague")), 
-											  hasProperty("itemImageUrl", is("/static/images/TheScarletPlague_Cover.jpeg")),
-											  hasProperty("itemID", is("JL_TSP_218358")))
+										allOf(
+												hasProperty("itemDescription", is("The Scarlet Plague")), 
+												hasProperty("itemImageUrl", is("/static/images/TheScarletPlague_Cover.jpeg")),
+												hasProperty("itemID", is("JL_TSP_218358"))
+											  )
 										)))))
         			
         			.andExpect(model().attribute("searchResults", hasProperty("movieSearchResults", hasSize(1))))
         			.andExpect(model().attribute("searchResults",
 						allOf(hasProperty("movieSearchResults", 
 								hasItem(
-										allOf(hasProperty("itemDescription", is("White Fang")), 
-											  hasProperty("itemImageUrl", is("/static/images/WhiteFang_Cover.jpeg")),
-											  hasProperty("itemID", is("JL_WF_4568585"))))))))
+										allOf(
+												hasProperty("itemDescription", is("White Fang")), 
+												hasProperty("itemImageUrl", is("/static/images/WhiteFang_Cover.jpeg")),
+												hasProperty("itemID", is("JL_WF_4568585"))
+											  )
+									   )))))
         			
         			.andExpect(model().attribute("searchResults", hasProperty("musicSearchResults", is(nullValue()))))
         			;			

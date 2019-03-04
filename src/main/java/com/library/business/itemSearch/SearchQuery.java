@@ -5,7 +5,7 @@ public class SearchQuery {
 	private String searchTerms = null;
 	private String searchResultsPageNumber = null;
 	
-	private boolean isExtendedSearch = false;
+	private boolean extendedSearch = false;
 	
 	private boolean searchInBooks = false;
 	private boolean searchBookTitle = false;
@@ -19,16 +19,16 @@ public class SearchQuery {
 	private boolean searchMusicArtist = false;
 	private boolean searchMusicRecordLabel = false;
 	
-	private boolean searchInMovie = false;
+	private boolean searchInMovies = false;
 	private boolean searchMovieTitle = false;
 	private boolean searchMovieDirector = false;
 	private boolean searchMovieDescription = false;
 	
 	public boolean isExtendedSearch() {
-		return isExtendedSearch;
+		return extendedSearch;
 	}
-	public void setIsExtendedSearch(boolean isExtendedSearch) {
-		this.isExtendedSearch = isExtendedSearch;
+	public void setExtendedSearch(boolean extendedSearch) {
+		this.extendedSearch = extendedSearch;
 	}
 	
 	public String getSearchTerms() {
@@ -103,11 +103,11 @@ public class SearchQuery {
 	public void setSearchMusicRecordLabel(boolean searchMusicRecordLabel) {
 		this.searchMusicRecordLabel = searchMusicRecordLabel;
 	}
-	public boolean isSearchInMovie() {
-		return searchInMovie;
+	public boolean isSearchInMovies() {
+		return searchInMovies;
 	}
-	public void setSearchInMovie(boolean searchInMovie) {
-		this.searchInMovie = searchInMovie;
+	public void setSearchInMovies(boolean searchInMovie) {
+		this.searchInMovies = searchInMovie;
 	}
 	public boolean isSearchMovieTitle() {
 		return searchMovieTitle;
