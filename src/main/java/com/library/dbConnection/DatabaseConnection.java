@@ -10,11 +10,11 @@ public class DatabaseConnection {
 
 	private DatabaseConnection() {
 
-		DatabaseCredential databaseCredential = new DatabaseCredential();
-		String databaseName = databaseCredential.getDatabaseName();
-		String username = databaseCredential.getUserName();
-		String password = databaseCredential.getPassword();
-		String serverName = databaseCredential.getServerName();
+		DatabaseCredentials databaseCredentials = new DatabaseCredentials();
+		String databaseName = databaseCredentials.getDatabaseName();
+		String username = databaseCredentials.getUserName();
+		String password = databaseCredentials.getPassword();
+		String serverName = databaseCredentials.getServerName();
 		String databaseURL = "jdbc:mysql://" + serverName + "/" + databaseName;
 
 		try {

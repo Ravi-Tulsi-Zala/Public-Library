@@ -1,19 +1,21 @@
 package com.library.DAO;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.library.BusinessModels.Book;
 
 public interface IBookDAO {
 	public Book getBookByID(int itemID);
 	public Book getBookByISBN(int bookISBN);
-	public ArrayList<Book> getBookByTitle(String bookTitle);
-	public ArrayList<Book> getBooksByAuthor(String bookAuthor);
-	public ArrayList<Book> getBookByPublisher(String bookPublisher);
-	public ArrayList<Book> getBookByDescription(String bookDescription);
+	public List<Book> getBookByTitle(String bookTitle);
+	public List<Book> getBooksByAuthor(String bookAuthor);
+	public List<Book> getBookByPublisher(String bookPublisher);
+	public List<Book> getBookByDescription(String bookDescription);
 	public String getBookTitle(int itemID);
 	public Boolean deleteBookByID(int itemID);
 	public Boolean createBook(Book book);
 	public Boolean updateBook(Book book);
-	public ArrayList<Book> getBookByKeyword(String keyword);
+	public List<Book> getBookByKeyword(String keyword);
+	public int getLastID();
+	public void changeBooksItemID(int itemID);
 }

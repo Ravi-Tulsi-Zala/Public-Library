@@ -8,13 +8,13 @@ import com.library.BusinessModels.User;
 import com.library.DAO.IUserDAO;
 import com.library.dbConnection.DatabaseConnection;
 
-public class UserDAOImpl implements IUserDAO {
+public class UserDAO implements IUserDAO {
 	
 	Connection connection;
 	private PreparedStatement preparedStatement;
 	String query;
 	
-	public UserDAOImpl() {
+	public UserDAO() {
 		try {
 			DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
 			this.connection = databaseConnection.getConnection();
@@ -36,7 +36,8 @@ public class UserDAOImpl implements IUserDAO {
 				return false;
 			}
 			String databasePassword = result.getString("Password");
-			return  databasePassword.equals(Password);
+			Boolean doesPasswordMatch = databasePassword.equals(Password);
+			return  doesPasswordMatch;
 		}
 		catch(Exception e)
 		{
@@ -88,7 +89,8 @@ public class UserDAOImpl implements IUserDAO {
 				return false;
 			}
 			String userStatus = result.getString("Status");
-			return  userStatus.equals("Active");
+			Boolean isUserActive = userStatus.equals("Active");
+			return  isUserActive;
 		}
 		catch(Exception e)
 		{

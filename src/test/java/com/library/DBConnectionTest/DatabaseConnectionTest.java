@@ -1,4 +1,4 @@
-package com.library.dbConnectionTest;
+package com.library.DBConnectionTest;
 
 import static org.junit.Assert.*;
 

@@ -1,15 +1,12 @@
-package com.library.dbConnectionTest;
+package com.library.DBConnectionTest;
 
 import static org.junit.Assert.*;
-
-
 import org.junit.Test;
+import com.library.dbConnection.DatabaseCredentials;
 
-import com.library.dbConnection.DatabaseCredential;
+public class DatabaseCredentialsTest {
 
-public class DatabaseCredentialTest {
-
-	DatabaseCredential databaseCredential = new DatabaseCredential();
+	DatabaseCredentials databaseCredential = new DatabaseCredentials();
 	
 	@Test
 	public void checkUserName() {

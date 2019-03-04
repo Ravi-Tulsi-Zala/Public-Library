@@ -3,7 +3,7 @@ package com.library.DAOImpl;
 import com.library.DAO.ICoverDAO;
 import com.mysql.jdbc.Blob;
 
-public class CoverDAOImpl implements ICoverDAO {
+public class CoverDAO implements ICoverDAO {
 
 	@Override
 	public Blob getCover(int itemID) {
@@ -12,7 +12,7 @@ public class CoverDAOImpl implements ICoverDAO {
 	}
 
 	@Override
-	public void setCover(int itemID, Blob cover) {
+	public void setCover(int itemID, Blob coverBlob) {
 	
 		
 	}

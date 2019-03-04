@@ -5,17 +5,17 @@ public class Book {
 	String category;
 	String title;
 	String author;
-	int ISBN;
+	int isbn;
 	String publisher;
 	String description;
 	int itemID;
-	int Availablity;
+	int availablity;
 	
 	public int getAvailablity() {
-		return Availablity;
+		return availablity;
 	}
 	public void setAvailablity(int availablity) {
-		Availablity = availablity;
+		this.availablity = availablity;
 	}
 	public int getItemID() {
 		return itemID;
@@ -42,10 +42,10 @@ public class Book {
 		this.author = author;
 	}
 	public int getISBN() {
-		return ISBN;
+		return isbn;
 	}
-	public void setISBN(int iSBN) {
-		ISBN = iSBN;
+	public void setISBN(int isbn) {
+		this.isbn = isbn;
 	}
 	public String getPublisher() {
 		return publisher;

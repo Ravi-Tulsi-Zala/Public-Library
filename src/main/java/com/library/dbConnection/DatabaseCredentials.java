@@ -3,7 +3,7 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class DatabaseCredential { 
+public class DatabaseCredentials { 
 	
 	private String username;
 	private String password;
@@ -11,7 +11,7 @@ public class DatabaseCredential {
 	private String serverName;
 	private String port;
 	
-	public DatabaseCredential() {
+	public DatabaseCredentials() {
 		
 		try {
 			Properties DatabaseProperties = new Properties();
