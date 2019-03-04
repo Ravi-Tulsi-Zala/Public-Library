@@ -166,7 +166,8 @@ public class BookDAOImpl implements IBookDAO {
 			Book book = new Book();
 			query = "SELECT * FROM books WHERE Description like '%" + bookDescription + "%'"; 
 			preparedStatement  = connection.prepareStatement(query);
-			ResultSet resultSet = preparedStatement.executeQuery();	
+			ResultSet resultSet = preparedStatement.executeQuery();
+			
 			if(!resultSet.next())
 			{
 				return null;

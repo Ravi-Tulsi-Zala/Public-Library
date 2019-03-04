@@ -11,10 +11,10 @@ public interface IMusicDAO {
 	public Music getMusicByTitle(String musicTitle);
 	public List<Music> getMusicByArtistName(String musicArtistName);
 	public List<Music> getMusicByCategory(String category);
-	public List<Music> getMusicByDescription(String musicDescription);
-	public void createMusic(Music music);
-	public void updateMusic(Music music);
-	public void deleteMusic(Music music); 
+	public List<Music> getMusicByRecordLabel(String recordLabel);
+	public Boolean createMusic(Music music);
+	public Boolean updateMusic(Music music);
+	public Boolean deleteMusic(Music music); 
 	
 	
 	

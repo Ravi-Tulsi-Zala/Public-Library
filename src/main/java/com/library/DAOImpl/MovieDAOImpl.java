@@ -64,6 +64,7 @@ public class MovieDAOImpl implements IMovieDAO {
 				movie.setDescription(resultSet.getString("Description"));
 				movie.setDirector(resultSet.getString("Director"));
 				movie.setAvailability(resultSet.getInt("Availability"));
+				movie.setTitle(resultSet.getString("Availability"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -108,7 +109,6 @@ public class MovieDAOImpl implements IMovieDAO {
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, category);
-
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = new Movie();
@@ -154,7 +154,7 @@ public class MovieDAOImpl implements IMovieDAO {
 	}
 
 	@Override
-	public void createMovie(Movie movie) {
+	public Boolean createMovie(Movie movie) {
 
 		try {
 			query = "INSERT INTO movie (Item_ID,Category,Title,Director,Description,Availability) VALUES (?, ?, ?, ?, ?, ?)";
@@ -166,18 +166,64 @@ public class MovieDAOImpl implements IMovieDAO {
 			preparedStatement.setString(5, movie.getDescription());
 			preparedStatement.setInt(6, movie.getAvailability());
 			preparedStatement.executeUpdate();
+			return true;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 
 	@Override
-	public void updateMovie(Movie movie) {
+	public Boolean updateMovie(Movie movie) {
 
+		try {
+			query = "UPDATE movie SET Category=?,Title=?,Director=?,Description=?,Availability=? WHERE Item_ID=? ";
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, movie.getCategory());
+			preparedStatement.setString(2, movie.getTitle());
+			preparedStatement.setString(3, movie.getDirector());
+			preparedStatement.setString(4, movie.getDescription());
+			preparedStatement.setInt(5, movie.getAvailability());
+			preparedStatement.setInt(6, movie.getItemID());
+			preparedStatement.executeUpdate();
+			return true;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
-	public void deleteMovie(Movie movie) {
+	public Boolean deleteMovie(Movie movie) {
 
+		try {
+			query = "DELETE from movie WHERE Item_ID = ?";
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, movie.getItemID());
+			preparedStatement.executeUpdate();
+			return true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public static void main(String[] args) {
+
+		MovieDAOImpl movieDAOImpl = new MovieDAOImpl();
+		Movie movie = new Movie();
+		
+		movie.setItemID(2004);
+		movie.setCategory("Adventure");
+		movie.setDescription(
+				"A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a CEO.");
+		movie.setDirector("Christopher Nolan");
+		movie.setTitle("Inception");
+		movie.setAvailability(20);
+		movieDAOImpl.updateMovie(movie);
+			
 	}
 }
