@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.library.BusinessModels.Movie;
+import com.library.DAOMapper.IMovieMapper;
+import com.library.DAOMapperImpl.MovieMapper;
 import com.library.IDAO.IMovieDAO;
 import com.library.dbConnection.DatabaseConnection;
 
@@ -15,6 +17,7 @@ public class MovieDAO implements IMovieDAO {
 	private PreparedStatement preparedStatement;
 	String query;
 	Connection connection;
+	IMovieMapper iMovieMapper = new MovieMapper();
 
 	public MovieDAO() {
 
@@ -36,11 +39,7 @@ public class MovieDAO implements IMovieDAO {
 			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				movie.setTitle(resultSet.getString("Title"));
-				movie.setCategory(resultSet.getString("Category"));
-				movie.setDescription(resultSet.getString("Description"));
-				movie.setDirector(resultSet.getString("Director"));
-				movie.setAvailability(resultSet.getInt("Availability"));
+				movie = iMovieMapper.mapMovie(resultSet);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -59,12 +58,7 @@ public class MovieDAO implements IMovieDAO {
 			preparedStatement.setString(1, movieTitle);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				movie.setItemID(resultSet.getInt("Item_ID"));
-				movie.setCategory(resultSet.getString("Category"));
-				movie.setDescription(resultSet.getString("Description"));
-				movie.setDirector(resultSet.getString("Director"));
-				movie.setAvailability(resultSet.getInt("Availability"));
-				movie.setTitle(resultSet.getString("Availability"));
+				movie = iMovieMapper.mapMovie(resultSet);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -85,12 +79,7 @@ public class MovieDAO implements IMovieDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = new Movie();
-				movie.setItemID(resultSet.getInt("Item_ID"));
-				movie.setCategory(resultSet.getString("Category"));
-				movie.setDescription(resultSet.getString("Description"));
-				movie.setDirector(resultSet.getString("Director"));
-				movie.setAvailability(resultSet.getInt("Availability"));
-				movie.setTitle(resultSet.getString("Title"));
+				movie = iMovieMapper.mapMovie(resultSet);
 				moviesByDirectorName.add(movie);
 			}
 		} catch (Exception e) {
@@ -112,12 +101,7 @@ public class MovieDAO implements IMovieDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = new Movie();
-				movie.setItemID(resultSet.getInt("Item_ID"));
-				movie.setCategory(resultSet.getString("Category"));
-				movie.setDescription(resultSet.getString("Description"));
-				movie.setDirector(resultSet.getString("Director"));
-				movie.setAvailability(resultSet.getInt("Availability"));
-				movie.setTitle(resultSet.getString("Title"));
+				movie = iMovieMapper.mapMovie(resultSet);
 				moviesByCategory.add(movie);
 			}
 		} catch (Exception e) {
@@ -139,12 +123,7 @@ public class MovieDAO implements IMovieDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = new Movie();
-				movie.setItemID(resultSet.getInt("Item_ID"));
-				movie.setCategory(resultSet.getString("Category"));
-				movie.setDescription(resultSet.getString("Description"));
-				movie.setDirector(resultSet.getString("Director"));
-				movie.setAvailability(resultSet.getInt("Availability"));
-				movie.setTitle(resultSet.getString("Title"));
+				movie = iMovieMapper.mapMovie(resultSet);
 				moviesByDescription.add(movie);
 			}
 		} catch (Exception e) {
@@ -204,7 +183,7 @@ public class MovieDAO implements IMovieDAO {
 			preparedStatement.setInt(1, movie.getItemID());
 			preparedStatement.executeUpdate();
 			return true;
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

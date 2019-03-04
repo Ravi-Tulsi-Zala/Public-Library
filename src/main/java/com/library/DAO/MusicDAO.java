@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import com.library.BusinessModels.Music;
+import com.library.DAOMapper.IMusicMapper;
+import com.library.DAOMapperImpl.MusicMapper;
 import com.library.IDAO.IMusicDAO;
 import com.library.dbConnection.DatabaseConnection;
 
@@ -14,12 +16,14 @@ public class MusicDAO implements IMusicDAO {
 	private PreparedStatement preparedStatement;
 	String query;
 	Connection connection;
+	IMusicMapper iMusicMapper = new MusicMapper();
 
 	public MusicDAO() {
 
 		try {
 			DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
 			this.connection = databaseConnection.getConnection();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -29,17 +33,15 @@ public class MusicDAO implements IMusicDAO {
 	public Music getMusicById(int itemID) {
 
 		Music music = new Music();
+
 		query = "SELECT * from music WHERE Item_ID = ?";
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				music.setTitle(resultSet.getString("Title"));
-				music.setCategory(resultSet.getString("Category"));
-				music.setRecordLabel(resultSet.getString("Record_Label"));
-				music.setArtist(resultSet.getString("Artist"));
-				music.setAvailability(resultSet.getInt("Availability"));
+			while(resultSet.next())
+			{
+				music = iMusicMapper.mapMusic(resultSet);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -48,9 +50,11 @@ public class MusicDAO implements IMusicDAO {
 	}
 
 	@Override
-	public Music getMusicByTitle(String musicTitle) {
+	public List<Music> getMusicByTitle(String musicTitle) {
 
 		Music music = new Music();
+		List<Music> lisOfMusicByTitle = new ArrayList<Music>();
+
 		query = "SELECT * from music WHERE Title = ?";
 
 		try {
@@ -58,18 +62,15 @@ public class MusicDAO implements IMusicDAO {
 			preparedStatement.setString(1, musicTitle);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				music.setItemID(resultSet.getInt("Item_ID"));
-				music.setCategory(resultSet.getString("Category"));
-				music.setRecordLabel(resultSet.getString("Record_Label"));
-				music.setArtist(resultSet.getString("Artist"));
-				music.setAvailability(resultSet.getInt("Availability"));
-				music.setTitle(resultSet.getString("Title"));
 
+				music = new Music();
+				music = iMusicMapper.mapMusic(resultSet);
+				lisOfMusicByTitle.add(music);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return music;
+		return lisOfMusicByTitle;
 	}
 
 	@Override
@@ -85,12 +86,7 @@ public class MusicDAO implements IMusicDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				music = new Music();
-				music.setItemID(resultSet.getInt("Item_ID"));
-				music.setCategory(resultSet.getString("Category"));
-				music.setRecordLabel(resultSet.getString("Record_Label"));
-				music.setArtist(resultSet.getString("Artist"));
-				music.setAvailability(resultSet.getInt("Availability"));
-				music.setTitle(resultSet.getString("Title"));
+				music = iMusicMapper.mapMusic(resultSet);
 				musicsByArtistName.add(music);
 			}
 		} catch (Exception e) {
@@ -113,12 +109,7 @@ public class MusicDAO implements IMusicDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				music = new Music();
-				music.setItemID(resultSet.getInt("Item_ID"));
-				music.setCategory(resultSet.getString("Category"));
-				music.setRecordLabel(resultSet.getString("Record_Label"));
-				music.setArtist(resultSet.getString("Artist"));
-				music.setAvailability(resultSet.getInt("Availability"));
-				music.setTitle(resultSet.getString("Title"));
+				music = iMusicMapper.mapMusic(resultSet);
 				musicsByCategory.add(music);
 			}
 		} catch (Exception e) {
@@ -141,12 +132,7 @@ public class MusicDAO implements IMusicDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				music = new Music();
-				music.setItemID(resultSet.getInt("Item_ID"));
-				music.setCategory(resultSet.getString("Category"));
-				music.setRecordLabel(resultSet.getString("Record_Label"));
-				music.setArtist(resultSet.getString("Artist"));
-				music.setAvailability(resultSet.getInt("Availability"));
-				music.setTitle(resultSet.getString("Title"));
+				music = iMusicMapper.mapMusic(resultSet);
 				musicsByCategory.add(music);
 			}
 		} catch (Exception e) {

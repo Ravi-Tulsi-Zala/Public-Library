@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import com.library.dbConnection.DatabaseCredentials;
 
+
 public class DatabaseCredentialsTest {
 
 	DatabaseCredentials databaseCredential = new DatabaseCredentials();

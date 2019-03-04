@@ -1,11 +1,9 @@
 package com.library.DBConnectionTest;
 
 import static org.junit.Assert.*;
-
-
 import org.junit.Test;
 
-import com.library.dbConnection.DatabaseConnection;;
+import com.library.dbConnection.DatabaseConnection;
 
 public class DatabaseConnectionTest {
 

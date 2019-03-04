@@ -5,5 +5,5 @@ import java.sql.ResultSet;
 import com.library.BusinessModels.Music;
 
 public interface IMusicMapper {
-	public Music mapBook(ResultSet resultSet);
+	public Music mapMusic(ResultSet resultSet);
 }

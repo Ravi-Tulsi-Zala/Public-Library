@@ -8,7 +8,7 @@ import com.library.BusinessModels.Music;;
 public interface IMusicDAO {
 
 	public Music getMusicById(int itemID);
-	public Music getMusicByTitle(String musicTitle);
+	public List<Music> getMusicByTitle(String musicTitle);
 	public List<Music> getMusicByArtistName(String musicArtistName);
 	public List<Music> getMusicByCategory(String category);
 	public List<Music> getMusicByRecordLabel(String recordLabel);

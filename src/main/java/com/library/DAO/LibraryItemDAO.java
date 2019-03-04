@@ -9,13 +9,13 @@ public class LibraryItemDAO implements com.library.IDAO.ILibraryItemDAO {
 
 	@Override
 	public List<Integer> getRecentlyAdded() {
-		// TODO Auto-generated method stub
+	
 		return null;
 	}
 
 	@Override
 	public List<Integer> getMostPopular() {
-		// TODO Auto-generated method stub
+	
 		return null;
 	}
 	
