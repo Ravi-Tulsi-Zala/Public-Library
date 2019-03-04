@@ -210,20 +210,4 @@ public class MovieDAOImpl implements IMovieDAO {
 		}
 		return false;
 	}
-	
-	public static void main(String[] args) {
-
-		MovieDAOImpl movieDAOImpl = new MovieDAOImpl();
-		Movie movie = new Movie();
-		
-		movie.setItemID(2004);
-		movie.setCategory("Adventure");
-		movie.setDescription(
-				"A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a CEO.");
-		movie.setDirector("Christopher Nolan");
-		movie.setTitle("Inception");
-		movie.setAvailability(20);
-		movieDAOImpl.updateMovie(movie);
-			
-	}
 }
