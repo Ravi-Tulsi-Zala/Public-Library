@@ -37,7 +37,7 @@ public class MusicDAO implements IMusicDAO {
 		query = "SELECT * from music WHERE Item_ID = ?";
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, itemID);
+			preparedStatement.setIn  t(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while(resultSet.next())
 			{
@@ -55,11 +55,11 @@ public class MusicDAO implements IMusicDAO {
 		Music music = new Music();
 		List<Music> lisOfMusicByTitle = new ArrayList<Music>();
 
-		query = "SELECT * from music WHERE Title = ?";
+		query = "SELECT * from music WHERE Title LIKE ?";
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, musicTitle);
+			preparedStatement.setString(1, "%"+musicTitle+"%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 
@@ -77,12 +77,12 @@ public class MusicDAO implements IMusicDAO {
 	public List<Music> getMusicByArtistName(String musicArtistName) {
 
 		Music music = new Music();
-		query = "SELECT * from music WHERE Artist = ?";
+		query = "SELECT * from music WHERE Artist LIKE ?";
 		List<Music> musicsByArtistName = new ArrayList<Music>();
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, musicArtistName);
+			preparedStatement.setString(1, "%"+musicArtistName+"%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				music = new Music();
@@ -100,12 +100,12 @@ public class MusicDAO implements IMusicDAO {
 	public List<Music> getMusicByCategory(String category) {
 
 		Music music = new Music();
-		query = "SELECT * from music WHERE Category = ?";
+		query = "SELECT * from music WHERE Category LIKE ?";
 		List<Music> musicsByCategory = new ArrayList<Music>();
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, category);
+			preparedStatement.setString(1, "%"+category+"%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				music = new Music();
@@ -123,12 +123,12 @@ public class MusicDAO implements IMusicDAO {
 	public List<Music> getMusicByRecordLabel(String recordLabel) {
 
 		Music music = new Music();
-		query = "SELECT * from music WHERE Record_Label = ?";
+		query = "SELECT * from music WHERE Record_Label LIKE ?";
 		List<Music> musicsByCategory = new ArrayList<Music>();
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, recordLabel);
+			preparedStatement.setString(1, "%"+recordLabel+"%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				music = new Music();

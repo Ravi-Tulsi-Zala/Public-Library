@@ -51,11 +51,11 @@ public class MovieDAO implements IMovieDAO {
 	public Movie getMovieByTitle(String movieTitle) {
 
 		Movie movie = new Movie();
-		query = "SELECT * from movie WHERE Title = ?";
+		query = "SELECT * from movie WHERE Title LIKE ?";
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, movieTitle);
+			preparedStatement.setString(1, "%"+movieTitle+"%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = iMovieMapper.mapMovie(resultSet);
@@ -70,12 +70,12 @@ public class MovieDAO implements IMovieDAO {
 	public List<Movie> getMoviesByDirectorName(String directorName) {
 
 		Movie movie = new Movie();
-		query = "SELECT * from movie WHERE Director = ?";
+		query = "SELECT * from movie WHERE Director LIKE ?";
 		List<Movie> moviesByDirectorName = new ArrayList<Movie>();
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, directorName);
+			preparedStatement.setString(1, "%"+directorName+"%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = new Movie();
@@ -92,12 +92,12 @@ public class MovieDAO implements IMovieDAO {
 	public List<Movie> getMoviesByCategory(String category) {
 
 		Movie movie = new Movie();
-		query = "SELECT * from movie WHERE Category = ?";
+		query = "SELECT * from movie WHERE Category LIKE ?";
 		List<Movie> moviesByCategory = new ArrayList<Movie>();
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, category);
+			preparedStatement.setString(1, "%"+category+"%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = new Movie();
@@ -114,12 +114,12 @@ public class MovieDAO implements IMovieDAO {
 	public List<Movie> getMoviesByDescription(String movieDescription) {
 
 		Movie movie = new Movie();
-		query = "SELECT * from movie WHERE Description = ?";
+		query = "SELECT * from movie WHERE Description LIKE ?";
 		List<Movie> moviesByDescription = new ArrayList<Movie>();
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, movieDescription);
+			preparedStatement.setString(1, "%"+movieDescription+"%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = new Movie();
@@ -136,14 +136,14 @@ public class MovieDAO implements IMovieDAO {
 	public Boolean createMovie(Movie movie) {
 
 		try {
-			query = "INSERT INTO movie (Item_ID,Category,Title,Director,Description,Availability) VALUES (?, ?, ?, ?, ?, ?)";
+			query = "INSERT INTO movie (Category,Title,Director,Description,Availability) VALUES (?, ?, ?, ?, ?)";
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, movie.getItemID());
-			preparedStatement.setString(2, movie.getCategory());
-			preparedStatement.setString(3, movie.getTitle());
-			preparedStatement.setString(4, movie.getDirector());
-			preparedStatement.setString(5, movie.getDescription());
-			preparedStatement.setInt(6, movie.getAvailability());
+		
+			preparedStatement.setString(1, movie.getCategory());
+			preparedStatement.setString(2, movie.getTitle());
+			preparedStatement.setString(3, movie.getDirector());
+			preparedStatement.setString(4, movie.getDescription());
+			preparedStatement.setInt(5, movie.getAvailability());
 			preparedStatement.executeUpdate();
 			return true;
 
