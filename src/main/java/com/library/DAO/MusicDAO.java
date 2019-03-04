@@ -37,7 +37,7 @@ public class MusicDAO implements IMusicDAO {
 		query = "SELECT * from music WHERE Item_ID = ?";
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setIn  t(1, itemID);
+			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while(resultSet.next())
 			{
