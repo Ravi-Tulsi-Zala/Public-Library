@@ -6,14 +6,14 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import com.library.DAO.IBookDAO;
-import com.library.DAOImpl.BookDAOImpl;
+import com.library.IDAO.IBookDAO;
 import com.library.BusinessModels.Book;
+import com.library.DAO.BookDAO;
 
 
 public class BookTest {
 
-	IBookDAO bookDAO = new BookDAOImpl();
+	IBookDAO bookDAO = new BookDAO();
 	
 	@Test
 	public void getBookByIDTest() {

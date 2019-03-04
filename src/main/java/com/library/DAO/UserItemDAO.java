@@ -1,7 +1,5 @@
 package com.library.DAO;
 
-public interface UserItemDAO {
-	
-	
+public class UserItemDAO {
 
 }

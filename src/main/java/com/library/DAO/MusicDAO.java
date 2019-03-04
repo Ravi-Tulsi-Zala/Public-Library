@@ -1,4 +1,4 @@
-package com.library.DAOImpl;
+package com.library.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,16 +6,16 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import com.library.BusinessModels.Music;
-import com.library.DAO.IMusicDAO;
+import com.library.IDAO.IMusicDAO;
 import com.library.dbConnection.DatabaseConnection;
 
-public class MusicDAOImpl implements IMusicDAO {
+public class MusicDAO implements IMusicDAO {
 
 	private PreparedStatement preparedStatement;
 	String query;
 	Connection connection;
 
-	public MusicDAOImpl() {
+	public MusicDAO() {
 
 		try {
 			DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();

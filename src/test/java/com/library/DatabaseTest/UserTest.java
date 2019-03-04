@@ -6,13 +6,13 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import com.library.BusinessModels.User;
-import com.library.DAO.IUserDAO;
-import com.library.DAOImpl.UserDAOImpl;
+import com.library.DAO.UserDAO;
+import com.library.IDAO.IUserDAO;
 
 
 public class UserTest {
 
-	IUserDAO userDAO = new UserDAOImpl();
+	IUserDAO userDAO = new UserDAO();
 	
 	@Test
 	public void getPasswordTest() {

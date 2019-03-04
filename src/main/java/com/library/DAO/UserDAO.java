@@ -1,20 +1,20 @@
-package com.library.DAOImpl;
+package com.library.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import com.library.BusinessModels.User;
-import com.library.DAO.IUserDAO;
+import com.library.IDAO.IUserDAO;
 import com.library.dbConnection.DatabaseConnection;
 
-public class UserDAOImpl implements IUserDAO {
+public class UserDAO implements IUserDAO {
 	
 	Connection connection;
 	private PreparedStatement preparedStatement;
 	String query;
 	
-	public UserDAOImpl() {
+	public UserDAO() {
 		try {
 			DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
 			this.connection = databaseConnection.getConnection();

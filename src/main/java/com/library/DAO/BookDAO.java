@@ -1,4 +1,4 @@
-package com.library.DAOImpl;
+package com.library.DAO;
 
 
 import java.sql.Connection;
@@ -7,11 +7,11 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import com.library.BusinessModels.Book;
-import com.library.DAO.IBookDAO;
 import com.library.DAOMapper.BookMapper;
+import com.library.IDAO.IBookDAO;
 import com.library.dbConnection.*;
 
-public class BookDAOImpl implements IBookDAO {
+public class BookDAO implements IBookDAO {
 	
 	
 	private PreparedStatement preparedStatement;
@@ -19,7 +19,7 @@ public class BookDAOImpl implements IBookDAO {
 	private Connection connection;
 	private BookMapper bookMaper = new BookMapper();
 	
-	 public BookDAOImpl(){
+	 public BookDAO(){
 
 		 try
 		 {

@@ -1,4 +1,4 @@
-package com.library.DAOImpl;
+package com.library.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,16 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.library.BusinessModels.Movie;
-import com.library.DAO.IMovieDAO;
+import com.library.IDAO.IMovieDAO;
 import com.library.dbConnection.DatabaseConnection;
 
-public class MovieDAOImpl implements IMovieDAO {
+public class MovieDAO implements IMovieDAO {
 
 	private PreparedStatement preparedStatement;
 	String query;
 	Connection connection;
 
-	public MovieDAOImpl() {
+	public MovieDAO() {
 
 		try {
 			DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
