@@ -1,5 +1,6 @@
 package com.library.singIn;
 
+import com.library.interfaces.IUserBasicInfo;
 
 public class SignInController {
 

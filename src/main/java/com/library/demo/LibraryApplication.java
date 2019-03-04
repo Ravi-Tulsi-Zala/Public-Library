@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-import com.library.controllers.libraryItems_demo;
+import com.library.controllers.LibraryController;
 
 @SpringBootApplication
-@ComponentScan(basePackageClasses = libraryItems_demo.class)
+@ComponentScan(basePackageClasses = LibraryController.class)
 public class LibraryApplication {
 
 	public static void main(String[] args) {
