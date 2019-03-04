@@ -320,6 +320,5 @@ public class BookDAO implements IBookDAO {
 			e.printStackTrace();
 		}
 	}
-
 }
 	
