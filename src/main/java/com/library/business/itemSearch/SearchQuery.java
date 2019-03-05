@@ -3,26 +3,26 @@ package com.library.business.itemSearch;
 public class SearchQuery {
 	
 	private String searchTerms = null;
-	private String searchResultsPageNumber = null;
+	private int requestedSearchResultsPageNumber = 1;
 	
 	private boolean extendedSearch = false;
 	
-	private boolean searchInBooks = false;
-	private boolean searchBookTitle = false;
-	private boolean searchBookAuthor = false;
-	private boolean searchBookPublisher = false;
-	private boolean searchBookDescription = false;
-	private boolean searchBookISBN = false;
+	private boolean searchInBooks = true;
+	private boolean searchBookTitle = true;
+	private boolean searchBookAuthor = true;
+	private boolean searchBookPublisher = true;
+	private boolean searchBookDescription = true;
+	private boolean searchBookISBN = true;
 	
-	private boolean searchInMusic = false;
-	private boolean searchMusicAlbumName = false;
-	private boolean searchMusicArtist = false;
-	private boolean searchMusicRecordLabel = false;
+	private boolean searchInMusic = true;
+	private boolean searchMusicAlbumName = true;
+	private boolean searchMusicArtist = true;
+	private boolean searchMusicRecordLabel = true;
 	
-	private boolean searchInMovies = false;
-	private boolean searchMovieTitle = false;
-	private boolean searchMovieDirector = false;
-	private boolean searchMovieDescription = false;
+	private boolean searchInMovies = true;
+	private boolean searchMovieTitle = true;
+	private boolean searchMovieDirector = true;
+	private boolean searchMovieDescription = true;
 	
 	public boolean isExtendedSearch() {
 		return extendedSearch;
@@ -37,11 +37,11 @@ public class SearchQuery {
 	public void setSearchTerms(String searchTerms) {
 		this.searchTerms = searchTerms;
 	}
-	public String getSearchResultsPageNumber() {
-		return searchResultsPageNumber;
+	public int getRequestedSearchResultsPageNumber() {
+		return requestedSearchResultsPageNumber;
 	}
-	public void setSearchResultsPageNumber(String searchResultsPageNumber) {
-		this.searchResultsPageNumber = searchResultsPageNumber;
+	public void setRequestedSearchResultsPageNumber(int requestedSearchResultsPageNumber) {
+		this.requestedSearchResultsPageNumber = requestedSearchResultsPageNumber;
 	}
 	public boolean isSearchInBooks() {
 		return searchInBooks;

@@ -74,40 +74,54 @@ public class LibraryControllerTest {
         request.flashAttr("searchQuery", searchQuery);
         
 		this.mockMvc.perform(request)
-					.andExpect(status().isOk())
-					.andExpect(view().name("SearchResults.jsp"))
-		
-        			.andExpect(model().attribute("searchResults", hasProperty("bookSearchResults", hasSize(2))))
-        			.andExpect(model().attribute("searchResults",
-						allOf(hasProperty("bookSearchResults", 
-								hasItems(
-										allOf(
-												hasProperty("itemDescription", is("The Star Rover")), 
-												hasProperty("itemImageUrl", is("/static/images/TheStarRover_Cover.jpeg")),
-												hasProperty("itemID", is("JL_TSR_6161"))
-											  )
-										,
+			.andExpect(status().isOk())
+			.andExpect(view().name("SearchResultsPage.html"))
 
-										allOf(
-												hasProperty("itemDescription", is("The Scarlet Plague")), 
-												hasProperty("itemImageUrl", is("/static/images/TheScarletPlague_Cover.jpeg")),
-												hasProperty("itemID", is("JL_TSP_218358"))
-											  )
-										)))))
-        			
-        			.andExpect(model().attribute("searchResults", hasProperty("movieSearchResults", hasSize(1))))
-        			.andExpect(model().attribute("searchResults",
-						allOf(hasProperty("movieSearchResults", 
-								hasItem(
-										allOf(
-												hasProperty("itemDescription", is("White Fang")), 
-												hasProperty("itemImageUrl", is("/static/images/WhiteFang_Cover.jpeg")),
-												hasProperty("itemID", is("JL_WF_4568585"))
-											  )
-									   )))))
-        			
-        			.andExpect(model().attribute("searchResults", hasProperty("musicSearchResults", is(nullValue()))))
-        			;			
+			.andExpect(model().attribute("searchResults", hasProperty("bookSearchResults", hasSize(2))))
+			.andExpect(model().attribute("searchResults",
+				allOf(hasProperty("bookSearchResults", 
+						hasItems(
+								allOf(
+										hasProperty("itemDescription", is("The Star Rover")), 
+										hasProperty("itemImageUrl", is("/static/images/TheStarRover_Cover.jpeg")),
+										hasProperty("itemID", is("JL_TSR_6161"))
+									  )
+								,
+
+								allOf(
+										hasProperty("itemDescription", is("The Scarlet Plague")), 
+										hasProperty("itemImageUrl", is("/static/images/TheScarletPlague_Cover.jpeg")),
+										hasProperty("itemID", is("JL_TSP_218358"))
+									  )
+								)))))
+			
+			.andExpect(model().attribute("searchResults", hasProperty("movieSearchResults", hasSize(1))))
+			.andExpect(model().attribute("searchResults",
+				allOf(hasProperty("movieSearchResults", 
+						hasItem(
+								allOf(
+										hasProperty("itemDescription", is("White Fang")), 
+										hasProperty("itemImageUrl", is("/static/images/WhiteFang_Cover.jpeg")),
+										hasProperty("itemID", is("JL_WF_4568585"))
+									  )
+							   )))))
+			
+			.andExpect(model().attribute("searchResults", hasProperty("musicSearchResults", is(nullValue()))))
+			;
     }
+    
+    
+	@Test
+    public void browseAdvancedSearchPage() throws Exception {
+        
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/advancedSearch");
+        
+		this.mockMvc.perform(request)
+			.andExpect(status().isOk())
+			.andExpect(view().name("AdvancedSearchPage.html"))
+			;
+    }
+    
+    
 }
 

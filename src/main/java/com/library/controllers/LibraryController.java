@@ -67,22 +67,22 @@ public class LibraryController extends HttpServlet implements WebMvcConfigurer {
 	}
 	
 	@GetMapping("/advancedSearch")
-	public String getAdvancedSearchPage(SearchQuery searchQuery, SearchResult searchResult) {
-//		Example how to have 2 beans - searchResult and searchQuery. Look into AdvancedSearchPage.html also
+	public String getAdvancedSearchPage(ModelMap model) {
+		SearchQuery searchQuery = new SearchQuery();
+		searchQuery.setExtendedSearch(true);
+		model.addAttribute("searchQuery", searchQuery);
 		return "AdvancedSearchPage.html";
 	}
 	
 
-	@PostMapping("/advancedSearch")
-	public String getSearchResults(ModelMap model, HttpServletRequest request, HttpServletResponse response,
-			SearchQuery searchQuery) 
+	@PostMapping("/search")
+	public String getSearchResults(ModelMap model, SearchQuery searchQuery) 
 	{		
 		SearchResult searchResults = dataBase.search(searchQuery);
-		
-		searchResults.setSearchResultsPageNumber(searchQuery.getSearchResultsPageNumber());
 		model.addAttribute("searchResults", searchResults);
+		model.addAttribute("searchQuery", searchQuery);
 		
-		return "SearchResults.html";	
+		return "SearchResultsPage.html";	
 	}	
 
 }
