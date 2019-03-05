@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
-<User>
-	<Rules>
-		<pwdRegex>[:?!@#$%^&amp;*()a-zA-Z0-9]{0,}</pwdRegex>
-		<emailRegex>[:?!@#$%^&amp;*()a-zA-Z0-9]{0,}</emailRegex>
-	</Rules>
-</User>
+<Rules>
+	<passwordRegex>[:?!@#$%^&amp;*()][a-zA-Z0-9]{0,}</passwordRegex>
+	<emailRegex>[@][a-zA-Z0-9]{0,}</emailRegex>
+</Rules>
