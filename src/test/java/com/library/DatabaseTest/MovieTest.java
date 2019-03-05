@@ -24,7 +24,7 @@ public class MovieTest {
 
 	@Test
 	public void getMovieByTitleTest() {
-		Movie movie = iMovieDAO.getMovieByTitle("Interstellar");
+		Movie movie = iMovieDAO.getMovieByTitle("interstellar");
 		assertEquals("Christopher Nolan", movie.getDirector());
 	}
 	
@@ -54,7 +54,6 @@ public class MovieTest {
 	public void createMovieTest()
 	{
 		Movie movie = new Movie();
-		movie.setItemID(2006);
 		movie.setCategory("Action");
 		movie.setDescription(
 				"Arthur Curry, the human-born heir to the underwater kingdom of Atlantis, goes on a quest to prevent a war between the worlds of ocean and land.");
