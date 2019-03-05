@@ -80,7 +80,6 @@ public class LibraryController extends HttpServlet implements WebMvcConfigurer {
 	{		
 		SearchResult searchResults = dataBase.search(searchQuery);
 		model.addAttribute("searchResults", searchResults);
-		model.addAttribute("searchQuery", searchQuery);
 		
 		return "SearchResultsPage.html";	
 	}	
