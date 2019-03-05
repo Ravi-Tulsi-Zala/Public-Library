@@ -68,10 +68,10 @@ public class LibraryController extends HttpServlet implements WebMvcConfigurer {
 	@PostMapping("/signIn")
 	public String process(ModelMap model,User user) {
 
-		IUserBasicInfo basic = new UserBasicInfo();
-		basic.setEmail(user.getEmail());
-		basic.setPwd(user.getPassword());
-		List<Map.Entry<String, String>> list =  new Facade().signInUserData(basic);
+		IUserBasicInfo userBasicInfo = new UserBasicInfo();
+		userBasicInfo.setEmail(user.getEmail());
+		userBasicInfo.setPwd(user.getPassword());
+		List<Map.Entry<String, String>> list =  new Facade().signInUserData(userBasicInfo);
 		for (int i = 0; i < list.size(); i++) {
 			model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
 		}
