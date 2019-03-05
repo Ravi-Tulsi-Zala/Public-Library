@@ -1,10 +1,3 @@
-function indicateExtendedsearch() {
-	console.log(document.getElementById("extendedSearch").checked);
-	document.getElementById("extendedSearch").checked = true;
-	console.log(document.getElementById("extendedSearch").checked);
-}
-
-
 
 function disableOrEnableDetailCheckboxes(selectionQuery, isToDisable) {
 	var elements = document.querySelectorAll(selectionQuery);
@@ -14,14 +7,18 @@ function disableOrEnableDetailCheckboxes(selectionQuery, isToDisable) {
 	  }
 }
 
-disableOrEnableDetailCheckboxes("#allDetailCheckboxes > td > div > div > input", true);
+
 
 var categories = ["searchInBooks", "searchInMovies", "searchInMusic"]
 
 for (let i = 0; i < categories.length; ++i) {
-
 	document.getElementById(categories[i]).onchange = function() {
 	    disableOrEnableDetailCheckboxes("#" + categories[i] + "Details" + " > div > input", 
 	    		!document.getElementById(categories[i]).checked);
 	}
 }
+
+disableOrEnableDetailCheckboxes("#serchCategories > div > input", false);
+disableOrEnableDetailCheckboxes("#allDetailCheckboxes > td > div > div > input", true);
+document.getElementById("pageBody").style.display="block";
+
