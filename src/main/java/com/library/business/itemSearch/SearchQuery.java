@@ -7,22 +7,22 @@ public class SearchQuery {
 	
 	private boolean extendedSearch = false;
 	
-	private boolean searchInBooks = true;
-	private boolean searchBookTitle = true;
-	private boolean searchBookAuthor = true;
-	private boolean searchBookPublisher = true;
-	private boolean searchBookDescription = true;
-	private boolean searchBookISBN = true;
+	private boolean searchInBooks = false;
+	private boolean searchBookTitle = false;
+	private boolean searchBookAuthor = false;
+	private boolean searchBookPublisher = false;
+	private boolean searchBookDescription = false;
+	private boolean searchBookISBN = false;
 	
-	private boolean searchInMusic = true;
-	private boolean searchMusicAlbumName = true;
-	private boolean searchMusicArtist = true;
-	private boolean searchMusicRecordLabel = true;
+	private boolean searchInMusic = false;
+	private boolean searchMusicAlbumName = false;
+	private boolean searchMusicArtist = false;
+	private boolean searchMusicRecordLabel = false;
 	
-	private boolean searchInMovies = true;
-	private boolean searchMovieTitle = true;
-	private boolean searchMovieDirector = true;
-	private boolean searchMovieDescription = true;
+	private boolean searchInMovies = false;
+	private boolean searchMovieTitle = false;
+	private boolean searchMovieDirector = false;
+	private boolean searchMovieDescription = false;
 	
 	public boolean isExtendedSearch() {
 		return extendedSearch;

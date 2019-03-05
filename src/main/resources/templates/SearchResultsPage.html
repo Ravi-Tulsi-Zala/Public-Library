@@ -12,7 +12,7 @@
    </head>
    <body id="pageBody">
       <h2>Advanced Search</h2>      
-      <form method="post" action="/search" th:action="@{/search}" >
+      <form method="post" action="/search" th:action="@{/search}"   onsubmit="enableAllCheckBoxes()">
       	<div style="margin-bottom: 20px">
       		<p>Search Terms <input type="text" th:field="${searchResults.temp}" style="width:330px;"/></p>
       	</div> 
