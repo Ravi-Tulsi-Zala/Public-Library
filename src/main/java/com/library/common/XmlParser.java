@@ -20,7 +20,7 @@ public class XmlParser {
 
 	static List<Entry<String, String>> list;
 
-	public static List<Map.Entry<String, String>> parser(String filePath) {
+	public static List<Map.Entry<String, String>> parse(String filePath) {
 		HashMap<String, String> values = new HashMap<String, String>();
 		list = new ArrayList<Map.Entry<String, String>>();
 		Map.Entry pair = null;
@@ -42,6 +42,7 @@ public class XmlParser {
 				}
 			}
 			// https://stackoverflow.com/questions/1066589/iterate-through-a-hashmap
+			// User iterator pattern.
 			Iterator it = values.entrySet().iterator();
 			while (it.hasNext()) {
 				pair = (Map.Entry) it.next();

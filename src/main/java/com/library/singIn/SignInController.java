@@ -24,6 +24,7 @@ public class SignInController {
 	public ArrayList<Entry<String, String>> authenticateSignIn() {
 		AuthenticationFacade facade = new AuthenticationFacade();
 		listofValidationErrors = facade.signInUserData(basic);
+		// If true connect DB as list has no validations to check.
 		if (listofValidationErrors.size() == 0) {
 //			connectDB(); // will be worked upon.
 		}

@@ -21,6 +21,7 @@ public class SignUpController {
 	public ArrayList<Entry<String, String>> authenticateSignUp() {
 		AuthenticationFacade facade = new AuthenticationFacade();
 		listofValidationErrors = facade.signUpUserData(userBasicInfo,userExtendedInfo);
+		// If true connect DB as list has no validations to check.
 		if (listofValidationErrors.size() == 0) {
 //			connectDB(); // will be worked upon.
 		}
