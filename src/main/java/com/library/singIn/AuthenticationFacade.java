@@ -44,27 +44,28 @@ public class AuthenticationFacade {
 			listofValidationErrors = new ArrayList<Map.Entry<String, String>>();
 			listofValidationErrors.clear();
 
-			if (userBasicInfo.getEmail() == "" || !Pattern.compile(emailRegex).matcher(userBasicInfo.getEmail()).find()
-					|| userBasicInfo.getEmail() == "devanshu.srivastava1@gmail.com") {
+			if (userBasicInfo.getEmail().equals("")
+					|| !Pattern.compile(emailRegex).matcher(userBasicInfo.getEmail()).find()
+					|| userBasicInfo.getEmail().equals("devanshu.srivastava1@gmail.com")) {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(email, Constants.EMAIL_ERROR);
 				listofValidationErrors.add(entryMap);
 			}
-			if (userBasicInfo.getPwd() == ""
+			if (userBasicInfo.getPwd().equals("")
 					|| !Pattern.compile(passwordRegex).matcher(userBasicInfo.getPwd()).find()) {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(password, Constants.PASSWORD_ERROR);
 				listofValidationErrors.add(entryMap);
 			}
-			if (userExtendedInfo.getCPassword() == ""
+			if (userExtendedInfo.getCPassword().equals("")
 					|| !Pattern.compile(passwordRegex).matcher(userExtendedInfo.getCPassword()).find()
 							&& !userExtendedInfo.getCPassword().equals(userBasicInfo.getPwd())) {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(cpassword, Constants.PASSWORD_ERROR);
 				listofValidationErrors.add(entryMap);
 			}
-			if (userExtendedInfo.getFullname() == "") {
+			if (userExtendedInfo.getFullname().equals("")) {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(fullName, Constants.UNFILLED_ERROR);
 				listofValidationErrors.add(entryMap);
 			}
-			if (userExtendedInfo.getPhone() == ""
+			if (userExtendedInfo.getPhone().equals("")
 					|| userExtendedInfo.getPhone().length() > 0 && userExtendedInfo.getPhone().length() < 10) {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(phoneNumber, Constants.NUMBER_ERROR);
 				listofValidationErrors.add(entryMap);
@@ -80,15 +81,16 @@ public class AuthenticationFacade {
 			setRegexRules();
 			listofValidationErrors = new ArrayList<Map.Entry<String, String>>();
 			listofValidationErrors.clear();
-			
-			//some string comparison will be excluded once i get the DB integrated.
-			
-			if (userBasicInfo.getEmail() == "" || !Pattern.compile(emailRegex).matcher(userBasicInfo.getEmail()).find()
-					|| userBasicInfo.getEmail() == "devanshu.srivastava1@gmail.com") {
+
+			// some string comparison will be excluded once i get the DB integrated.
+
+			if (userBasicInfo.getEmail().equals("")
+					|| !Pattern.compile(emailRegex).matcher(userBasicInfo.getEmail()).find()
+					|| userBasicInfo.getEmail().equals("devanshu.srivastava1@gmail.com")) {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(email, Constants.EMAIL_ERROR);
 				listofValidationErrors.add(entryMap);
 			}
-			if (userBasicInfo.getPwd() == ""
+			if (userBasicInfo.getPwd().equals("")
 					|| !Pattern.compile(passwordRegex).matcher(userBasicInfo.getPwd()).find()) {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(password, Constants.PASSWORD_ERROR);
 				listofValidationErrors.add(entryMap);
