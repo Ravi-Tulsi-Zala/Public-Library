@@ -1,4 +1,4 @@
-package com.library.signUp;
+package com.library.interfaces;
 
 public interface IUserExtendedInfo {
 	public String getFullname();
