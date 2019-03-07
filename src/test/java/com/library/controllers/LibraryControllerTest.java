@@ -1,6 +1,7 @@
 package com.library.controllers;
 
 import static org.hamcrest.CoreMatchers.is;
+
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -9,11 +10,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.LinkedList;
 
+import javax.inject.Inject;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
@@ -36,7 +38,7 @@ import com.library.model.IDataBase;
 @ContextConfiguration(classes={LibraryApplication.class})
 public class LibraryControllerTest {
 
-    @Autowired
+    @Inject
     private MockMvc mockMvc;
 
     @MockBean

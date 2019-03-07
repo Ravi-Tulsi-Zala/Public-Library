@@ -1,6 +1,7 @@
 package com.library.controllers;
 
 import java.util.List;
+
 import java.util.Map;
 
 import javax.servlet.http.HttpServlet;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import javax.inject.Inject;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +35,7 @@ basePackageClasses = DataBaseBean.class)
 @Controller
 public class LibraryController extends HttpServlet implements WebMvcConfigurer {
 
-	@Autowired
+	@Inject
 	private IDataBase dataBase;
 	
 	@PostMapping("/signUp")
