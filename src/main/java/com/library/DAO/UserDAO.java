@@ -26,11 +26,12 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public Boolean checkPassword(String emailAddress,String Password) {
-		query = "select password from user_info where Email = '" + emailAddress + "'";
+		query = "SELECT Password from user_info WHERE Email = ?";
 		ResultSet result;
 		try {
 			preparedStatement  = connection.prepareStatement(query);
-			result = preparedStatement.executeQuery(query);
+			preparedStatement.setString(1, emailAddress);
+			result = preparedStatement.executeQuery();
 			if(!result.next())
 			{
 				return false;
@@ -48,10 +49,12 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public Boolean changePassword(String emailAddress, String password) {
-		 query = "update user_info set password ='" + password + "' where Email='" + emailAddress + "'";
+		 query = "UPDATE user_info SET Password = ? WHERE Email = ?";
 		 try {
 			 preparedStatement = connection.prepareStatement(query);
-			 preparedStatement.executeUpdate(query);
+			 preparedStatement.setString(1, password);
+			 preparedStatement.setString(2, emailAddress);
+			 preparedStatement.executeUpdate();
 			 return true;
 		 }
 		 catch(Exception e)
@@ -64,11 +67,15 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public Boolean registerUser(User user) {
 		
-		query = "Insert into user_info (User_name,Phone_Number,Email,Password,Status) values ('" + user.getFullName() 
-				+ "'," + user.getPhoneNumber() + ",'" +  user.getEmailAddress() + "','" + user.getPassword() + "','Inactive')";
+		query = "INSERT INTO user_info (User_name,Phone_Number,Email,Password,Status) VALUES (?,?,?,?.?)";
 		try {
 			 preparedStatement = connection.prepareStatement(query);
-			 preparedStatement.executeUpdate(query);
+			 preparedStatement.setString(1,user.getFullName());
+			 preparedStatement.setInt(2, user.getPhoneNumber());
+			 preparedStatement.setString(3, user.getEmailAddress());
+			 preparedStatement.setString(4, user.getPassword());
+			 preparedStatement.setString(5, "Inactive");
+			 preparedStatement.executeUpdate();
 			 return true;
 		 }
 		 catch(Exception e)
@@ -80,10 +87,11 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public Boolean isUserActive(String emailAddress) {
-		query = "Select status from user_info where Email = '" + emailAddress + "'";
+		query = "SELECT Status from user_info WHERE Email = ?";
 		try {
 			preparedStatement  = connection.prepareStatement(query);
-			ResultSet result = preparedStatement.executeQuery(query);
+			preparedStatement.setString(1, emailAddress);
+			ResultSet result = preparedStatement.executeQuery();
 			if(!result.next())
 			{
 				return false;
@@ -101,19 +109,33 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public Boolean toggleStatus(String emailAddress) {
+		
+		try {
+			
+		
 		if(isUserActive(emailAddress))
 		{
-			query = "update user_info set Status = 'Inactive' where Email='" + emailAddress + "'";
+			query = "UPDATE user_info SET Status = ? WHERE Email=?";
+			
+			 preparedStatement = connection.prepareStatement(query);
+			 preparedStatement.setString(1, "Active");
+			 preparedStatement.setString(2, emailAddress);
+			 preparedStatement.executeUpdate();
+			 return true;
+		 
 		}
 		else
 		{
-			query = "update user_info set Status = 'Active' where Email='" + emailAddress + "'";
+			query = "UPDATE user_info SET Status = ? WHERE Email=?";
+			
+				 preparedStatement = connection.prepareStatement(query);
+				 preparedStatement.setString(1, "Inactive");
+				 preparedStatement.setString(2, emailAddress);
+				 preparedStatement.executeUpdate();
+				 return true;
+			 
 		}
-		try {
-			 preparedStatement = connection.prepareStatement(query);
-			 preparedStatement.executeUpdate(query);
-			 return true;
-		 }
+		}
 		 catch(Exception e)
 		 {
 			 e.printStackTrace();

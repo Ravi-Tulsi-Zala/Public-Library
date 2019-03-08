@@ -1,12 +1,12 @@
 package com.library.BusinessModels;
 
 public class Movie {
-	String category;
-	String title;
-	String director;
-	String description;
-	int itemID;
-	int availability;
+	private String category;
+	private String title;
+	private String director;
+	private String description;
+	private int itemID;
+	private int availability;
 	
 	
 	public int getItemID() {

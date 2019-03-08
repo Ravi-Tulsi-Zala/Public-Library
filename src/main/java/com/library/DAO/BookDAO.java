@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.library.BusinessModels.Book;
 import com.library.IDAO.IBookDAO;
+import com.library.common.Constants;
 import com.library.DAOMapper.IBookMapper;
 import com.library.DAOMapperImpl.BookMapper;
 import com.library.dbConnection.*;
@@ -37,10 +38,10 @@ public class BookDAO implements IBookDAO {
 		try
 		{
 			Book book = new Book();
-			query = "SELECT * FROM books WHERE Item_ID = '" + itemID + "'"; 
+			query = "SELECT * FROM books WHERE Item_ID = ?";
 			preparedStatement  = connection.prepareStatement(query);
+			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();	
-			
 			if(!resultSet.next())
 			{
 				return null;
@@ -60,8 +61,9 @@ public class BookDAO implements IBookDAO {
 		try
 		{
 			Book book = new Book();
-			query = "SELECT * FROM books WHERE ISBN = '" + bookISBN + "'"; 
+			query = "SELECT * FROM books WHERE ISBN = ?"; 
 			preparedStatement  = connection.prepareStatement(query);
+			preparedStatement.setInt(1, bookISBN);
 			ResultSet resultSet = preparedStatement.executeQuery();	
 			if(!resultSet.next())
 			{
@@ -79,12 +81,12 @@ public class BookDAO implements IBookDAO {
 
 	@Override
 	public List<Book> getBookByTitle(String bookTitle) {
-		
 		try {
 			List<Book> books = new ArrayList<Book>();
 			Book book = new Book();
-			query = "SELECT * FROM books WHERE Title like '%" + bookTitle + "%'"; 
+			query = "SELECT * FROM books WHERE Title like ?"; 
 			preparedStatement  = connection.prepareStatement(query);
+			preparedStatement.setString(1, "%"+ bookTitle + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();	
 			if(!resultSet.next())
 			{
@@ -108,9 +110,10 @@ public class BookDAO implements IBookDAO {
 		try {
 			List<Book> books = new ArrayList<Book>();
 			Book book = new Book();
-			query = "SELECT * FROM books WHERE Author like '%" + bookAuthor + "%'"; 
+			query = "SELECT * FROM books WHERE Author like ?"; 
 			preparedStatement  = connection.prepareStatement(query);
-			ResultSet resultSet = preparedStatement.executeQuery();	
+			preparedStatement.setString(1, "%"+bookAuthor+"%");
+			ResultSet resultSet = preparedStatement.executeQuery();
 			if(!resultSet.next())
 			{
 				return null;
@@ -133,8 +136,9 @@ public class BookDAO implements IBookDAO {
 		try {
 			List<Book> books = new ArrayList<Book>();
 			Book book = new Book();
-			query = "SELECT * FROM books WHERE Publisher like '%" + bookPublisher + "%'"; 
+			query = "SELECT * FROM books WHERE Publisher like ?"; 
 			preparedStatement  = connection.prepareStatement(query);
+			preparedStatement.setString(1, "%"+bookPublisher + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();	
 			if(!resultSet.next())
 			{
@@ -158,8 +162,9 @@ public class BookDAO implements IBookDAO {
 		try {
 			ArrayList<Book> books = new ArrayList<Book>();
 			Book book = new Book();
-			query = "SELECT * FROM books WHERE Description like '%" + bookDescription + "%'"; 
+			query = "SELECT * FROM books WHERE Description like ?"; 
 			preparedStatement  = connection.prepareStatement(query);
+			preparedStatement.setString(1, "%" + bookDescription + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			
 			if(!resultSet.next())
@@ -183,8 +188,9 @@ public class BookDAO implements IBookDAO {
 	public String getBookTitle(int itemID) {
 		try
 		{
-			query = "SELECT Title FROM books WHERE Item_ID = '" + itemID + "'"; 
+			query = "SELECT Title FROM books WHERE Item_ID = ?"; 
 			preparedStatement  = connection.prepareStatement(query);
+			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();	
 			if(!resultSet.next())
 			{
@@ -204,8 +210,12 @@ public class BookDAO implements IBookDAO {
 		try {
 			List<Book> books = new ArrayList<Book>();
 			Book book = new Book();
-			query = "SELECT * FROM books WHERE Title like '%" + keyword + "%' or Author like '%" + keyword + "%' or Publisher like '%" + keyword + "%' or Description like '%" + keyword + "%'" ; 
+			query = "SELECT * FROM books WHERE Title like ? or Author like ? or Publisher like ? or Description like ?"; 
 			preparedStatement  = connection.prepareStatement(query);
+			preparedStatement.setString(1, "%"+keyword+"%");
+			preparedStatement.setString(2, "%"+keyword+"%");
+			preparedStatement.setString(3, "%"+keyword+"%");
+			preparedStatement.setString(4, "%"+keyword+"%");
 			ResultSet resultSet = preparedStatement.executeQuery();	
 			if(!resultSet.next())
 			{
@@ -228,8 +238,9 @@ public class BookDAO implements IBookDAO {
 	public Boolean deleteBookByID(int itemID) {
 		try
 		{
-			query = "Delete FROM books WHERE Item_ID = '" + itemID + "'";
+			query = "Delete FROM books WHERE Item_ID = ?";
 			preparedStatement  = connection.prepareStatement(query);
+			preparedStatement.setInt(1, itemID);
 			preparedStatement.executeUpdate();	
 			changeBooksItemID(itemID);
 			return true;
@@ -245,17 +256,25 @@ public class BookDAO implements IBookDAO {
 		String category = book.getCategory();
 		String title = book.getTitle();
 		String author = book.getAuthor();
-		int ISBN = book.getISBN();
+		int isbn = book.getISBN();
 		String publisher = book.getPublisher();
 		String description =  book.getDescription();
 		int itemID = getLastID() + 1;
 		int availablity = book.getAvailablity();
-		query = "Insert into books (Item_ID,Category,Title,Author,ISBN,Publisher,Description,Availability) Values"
-				+ " ('" + itemID + "','" + category + "','" + title + "','" + author + "'," + ISBN + ",'" 
-				+ publisher + "','" + description + "'," + availablity + ")";
 		try {
+			
+			query = "Insert into books (Item_ID,Category,Title,Author,ISBN,Publisher,Description,Availability) Values "
+					+ "(?,?,?,?,?,?,?,?)";
 			 preparedStatement = connection.prepareStatement(query);
-			 preparedStatement.executeUpdate(query);
+			 preparedStatement.setInt(1, itemID);
+			 preparedStatement.setString(2, category);
+			 preparedStatement.setString(3, title);
+			 preparedStatement.setString(4, author);
+			 preparedStatement.setInt(5, isbn);
+			 preparedStatement.setString(6, publisher);
+			 preparedStatement.setString(7, description);
+			 preparedStatement.setInt(8, availablity);
+			 preparedStatement.executeUpdate();
 			 return true;
 		 }
 		 catch(Exception e)
@@ -270,16 +289,25 @@ public class BookDAO implements IBookDAO {
 		String category = book.getCategory();
 		String title = book.getTitle();
 		String author = book.getAuthor();
-		int ISBN = book.getISBN();
+		int isbn = book.getISBN();
 		String publisher = book.getPublisher();
 		String description =  book.getDescription();
 		int itemID = book.getItemID();
 		int availablity = book.getAvailablity();
-		query = "Update books  set Category = '" + category + "', Title = '" + title + "', Author = '" + author + "', ISBN =  '" + ISBN
-				+ "', Publisher = '" + publisher + "', Description = '" + description + "', Availability = '" + availablity + "'WHERE Item_ID =" + itemID;
 		try {
+			query = "Update books  set Category = ?, Title = ?, Author = ?, ISBN =  ?,"
+					+ "Publisher = ?, Description = ?, Availability = ? WHERE Item_ID = ?";
 			 preparedStatement = connection.prepareStatement(query);
-			 preparedStatement.executeUpdate(query);
+			 preparedStatement.setString(1,category);
+			 preparedStatement.setString(2,title);
+			 preparedStatement.setString(3, author);
+			 preparedStatement.setInt(4, isbn);
+			 preparedStatement.setString(5, publisher);
+			 preparedStatement.setString(6, description);
+			 preparedStatement.setInt(7, availablity);
+			 preparedStatement.setInt(8, itemID);
+			 System.out.println(preparedStatement);
+			 preparedStatement.executeUpdate();
 			 return true;
 		 }
 		 catch(Exception e)
@@ -293,12 +321,14 @@ public class BookDAO implements IBookDAO {
 	public int getLastID() {
 		try
 		{
+			
 			query = "SELECT Item_ID from books where Item_ID = (SELECT MAX(Item_ID) FROM books)"; 
 			preparedStatement  = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();	
 			if(!resultSet.next())
 			{
-				return 100000;
+				Constants constants = new Constants();
+				return constants.First_Book_Number;
 			}
 			return resultSet.getInt("Item_ID"); 
 		}	
@@ -312,8 +342,9 @@ public class BookDAO implements IBookDAO {
 	public void changeBooksItemID(int itemID) {
 		try
 		{
-			query = "Update books set Item_ID = Item_ID - 1 where Item_ID > " + itemID;
+			query = "Update books set Item_ID = Item_ID - 1 where Item_ID > ?";
 			preparedStatement  = connection.prepareStatement(query);
+			preparedStatement.setInt(1, itemID);
 			preparedStatement.executeUpdate();	
 		}	
 		catch (Exception e) {

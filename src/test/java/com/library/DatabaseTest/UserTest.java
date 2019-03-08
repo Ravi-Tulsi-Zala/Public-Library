@@ -49,7 +49,7 @@ public class UserTest {
 	public void isUserActiveTest()
 	{
 		Boolean checkUserStatus = userDAO.isUserActive("nr952727@dal.ca");
-		assertEquals(true,checkUserStatus);
+		assertEquals(false,checkUserStatus);
 	}
 	
 	

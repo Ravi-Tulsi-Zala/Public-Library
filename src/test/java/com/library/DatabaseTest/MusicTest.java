@@ -51,7 +51,6 @@ public class MusicTest {
 	@Test
 	public void createMusicTest() {
 		Music music = new Music();
-		music.setItemID(3005);
 		music.setCategory("Rock");
 		music.setRecordLabel("Capitol");
 		music.setTitle("Scientist");
