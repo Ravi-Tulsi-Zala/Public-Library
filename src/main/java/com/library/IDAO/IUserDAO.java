@@ -1,6 +1,6 @@
 package com.library.IDAO;
 
-import com.library.BusinessModels.User;
+import com.library.businessModels.User;
 
 public interface IUserDAO {
 	public Boolean checkPassword(String emailAddress,String password);

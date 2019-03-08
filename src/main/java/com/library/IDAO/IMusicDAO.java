@@ -3,7 +3,7 @@ package com.library.IDAO;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.library.BusinessModels.Music;;
+import com.library.businessModels.Music;;
 
 public interface IMusicDAO {
 

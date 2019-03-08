@@ -7,8 +7,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.library.BusinessModels.Book;
 import com.library.IDAO.IBookDAO;
+import com.library.businessModels.Book;
 import com.library.common.Constants;
 import com.library.DAOMapper.IBookMapper;
 import com.library.DAOMapperImpl.BookMapper;

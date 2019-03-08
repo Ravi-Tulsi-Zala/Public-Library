@@ -3,8 +3,8 @@ package com.library.DAOMapperImpl;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.library.BusinessModels.Music;
 import com.library.DAOMapper.IMusicMapper;
+import com.library.businessModels.Music;
 
 public class MusicMapper implements IMusicMapper{
 

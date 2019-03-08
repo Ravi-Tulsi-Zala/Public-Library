@@ -1,4 +1,4 @@
-package com.library.BusinessModels;
+package com.library.businessModels;
 
 import java.util.Date;
 

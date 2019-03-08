@@ -6,10 +6,10 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.library.BusinessModels.Movie;
 import com.library.DAOMapper.IMovieMapper;
 import com.library.DAOMapperImpl.MovieMapper;
 import com.library.IDAO.IMovieDAO;
+import com.library.businessModels.Movie;
 import com.library.dbConnection.DatabaseConnection;
 
 public class MovieDAO implements IMovieDAO {
