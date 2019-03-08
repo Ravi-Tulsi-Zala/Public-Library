@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.library.business.itemSearch.SearchQuery;
@@ -102,6 +104,12 @@ public class LibraryController implements WebMvcConfigurer {
 		if (model.size() > 2) {
 			return "SignInForm";
 		}
+		return "Results";
+	}
+	
+	@RequestMapping(value="/signIn", method=RequestMethod.POST, params="action=forgot_password")
+	public String forgotPassword(ModelMap model,User user) {
+
 		return "Results";
 	}
 
