@@ -64,7 +64,7 @@ public class LibraryController implements WebMvcConfigurer {
 		SearchQuery searchQuery = new SearchQuery();
 		searchQuery.setExtendedSearch(true);
 		model.addAttribute("searchQuery", searchQuery);
-		return "AdvancedSearchPage.html";
+		return "AdvancedSearchPage";
 	}
 	
 

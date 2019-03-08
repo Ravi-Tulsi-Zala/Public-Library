@@ -120,7 +120,7 @@ public class LibraryControllerTest {
         
 		this.mockMvc.perform(request)
 			.andExpect(status().isOk())
-			.andExpect(view().name("AdvancedSearchPage.html"))
+			.andExpect(view().name("AdvancedSearchPage"))
 			;
     }
     
