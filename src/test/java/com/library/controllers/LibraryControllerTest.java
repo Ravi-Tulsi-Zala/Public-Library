@@ -24,10 +24,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.library.business.itemSearch.ItemDescriptor;
-import com.library.business.itemSearch.SearchQuery;
-import com.library.business.itemSearch.SearchResult;
 import com.library.demo.LibraryApplication;
+import com.library.itemSearch.ItemDescriptor;
+import com.library.itemSearch.SearchQuery;
+import com.library.itemSearch.SearchResult;
 import com.library.model.IDataBase;
 
 

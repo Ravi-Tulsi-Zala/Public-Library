@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.library.business.itemSearch.SearchQuery;
-import com.library.business.itemSearch.SearchResult;
 import com.library.model.DataBaseBean;
 import com.library.model.IDataBase;
+import com.library.signIn.SignInController;
 import com.library.interfaces.IUserBasicInfo;
 import com.library.interfaces.IUserExtendedInfo;
+import com.library.itemSearch.SearchQuery;
+import com.library.itemSearch.SearchResult;
 import com.library.signUp.SignUpController;
 import com.library.signUp.User;
 import com.library.signUp.UserBasicInfo;
 import com.library.signUp.UserExtendedInfo;
-import com.library.singIn.SignInController;
 
 @ComponentScan(basePackages = {"com.library.model"},
 basePackageClasses = DataBaseBean.class)

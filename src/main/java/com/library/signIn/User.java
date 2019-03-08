@@ -1,4 +1,4 @@
-package com.library.singIn;
+package com.library.signIn;
 
 public class User {
 	private String fullName;

@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 
 import com.library.interfaces.IUserBasicInfo;
 import com.library.interfaces.IUserExtendedInfo;
-import com.library.singIn.AuthenticationFacade;
+import com.library.signIn.AuthenticationFacade;
 
 public class SignUpController {
 	private List<Entry<String, String>> listofValidationErrors;

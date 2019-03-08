@@ -1,4 +1,4 @@
-package com.library.buisness.population;
+package com.library.population;
 
 public class UserInfo implements IUserInfo {
 	
