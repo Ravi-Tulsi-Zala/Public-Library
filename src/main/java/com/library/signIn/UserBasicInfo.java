@@ -1,4 +1,4 @@
-package com.library.singIn;
+package com.library.signIn;
 
 import com.library.interfaces.IUserBasicInfo;
 

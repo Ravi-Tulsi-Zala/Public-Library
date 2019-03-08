@@ -1,8 +1,8 @@
 package com.library.model;
 
-import com.library.buisness.population.IMyUser;
-import com.library.buisness.population.IUserBasicInfo;
-import com.library.buisness.population.IUserInfo;
+import com.library.population.IMyUser;
+import com.library.population.IUserBasicInfo;
+import com.library.population.IUserInfo;
 
 public interface IUsersDB {
 	

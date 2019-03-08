@@ -5,10 +5,10 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.library.buisness.population.IUserBasicInfo;
-import com.library.buisness.population.IUserExtendedInfo;
-import com.library.buisness.population.UserBasicInfo;
-import com.library.buisness.population.UserExtendedInfo;
+import com.library.population.IUserBasicInfo;
+import com.library.population.IUserExtendedInfo;
+import com.library.population.UserBasicInfo;
+import com.library.population.UserExtendedInfo;
 
 public class UserExtendedInfoTest {
 	
