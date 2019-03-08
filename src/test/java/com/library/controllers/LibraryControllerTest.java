@@ -77,7 +77,7 @@ public class LibraryControllerTest {
         
 		this.mockMvc.perform(request)
 			.andExpect(status().isOk())
-			.andExpect(view().name("SearchResultsPage.html"))
+			.andExpect(view().name("SearchResultsPage"))
 
 			.andExpect(model().attribute("searchResults", hasProperty("bookSearchResults", hasSize(2))))
 			.andExpect(model().attribute("searchResults",

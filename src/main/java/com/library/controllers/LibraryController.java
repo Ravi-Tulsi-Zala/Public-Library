@@ -74,7 +74,7 @@ public class LibraryController implements WebMvcConfigurer {
 		SearchResult searchResults = dataBase.search(searchQuery);
 		model.addAttribute("searchResults", searchResults);
 		
-		return "SearchResultsPage.html";	
+		return "SearchResultsPage";	
 	}	
 
 //	@RequestMapping("/")
