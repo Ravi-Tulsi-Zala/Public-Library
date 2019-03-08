@@ -1,4 +1,4 @@
-package com.library.business.population;
+package com.library.population;
 
 import static org.junit.Assert.*;
 
