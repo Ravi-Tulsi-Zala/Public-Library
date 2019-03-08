@@ -1,4 +1,4 @@
-package com.library.DatabaseTest;
+package com.library.databaseTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -7,9 +7,9 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.library.BusinessModels.Music;
 import com.library.DAO.MusicDAO;
 import com.library.IDAO.IMusicDAO;
+import com.library.businessModels.Music;
 
 public class MusicTest {
 

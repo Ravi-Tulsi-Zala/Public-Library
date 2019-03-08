@@ -2,8 +2,9 @@ package com.library.DAO;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.library.BusinessModels.Book;
+
 import com.library.IDAO.IBookDAO;
+import com.library.businessModels.Book;
 
 public class LibraryItemDAO implements com.library.IDAO.ILibraryItemDAO {
 

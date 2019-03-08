@@ -1,4 +1,4 @@
-package com.library.DatabaseTest;
+package com.library.databaseTest;
 
 import static org.junit.Assert.*;
 
@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 import com.library.IDAO.IBookDAO;
-import com.library.BusinessModels.Book;
+import com.library.businessModels.Book;
 import com.library.DAO.BookDAO;
 
 

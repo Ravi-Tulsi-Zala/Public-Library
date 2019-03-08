@@ -3,7 +3,7 @@ package com.library.IDAO;
 
 import java.util.List;
 
-import com.library.BusinessModels.Movie;
+import com.library.businessModels.Movie;
 
 public interface IMovieDAO {
 	

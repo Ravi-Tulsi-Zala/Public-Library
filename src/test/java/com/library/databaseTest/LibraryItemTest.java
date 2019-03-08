@@ -1,4 +1,4 @@
-package com.library.DatabaseTest;
+package com.library.databaseTest;
 
 import org.junit.Test;
 

@@ -2,8 +2,9 @@ package com.library.DAOMapperImpl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import com.library.BusinessModels.Movie;
+
 import com.library.DAOMapper.IMovieMapper;
+import com.library.businessModels.Movie;
 
 public class MovieMapper implements IMovieMapper {
 

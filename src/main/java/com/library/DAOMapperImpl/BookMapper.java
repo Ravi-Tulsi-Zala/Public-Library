@@ -4,8 +4,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.library.BusinessModels.Book;
-import com.library.DAOMapper.IBookMapper;;
+import com.library.DAOMapper.IBookMapper;
+import com.library.businessModels.Book;;
 
 public class BookMapper implements IBookMapper {
 	

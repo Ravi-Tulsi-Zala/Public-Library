@@ -5,10 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import com.library.BusinessModels.Music;
+
 import com.library.DAOMapper.IMusicMapper;
 import com.library.DAOMapperImpl.MusicMapper;
 import com.library.IDAO.IMusicDAO;
+import com.library.businessModels.Music;
 import com.library.dbConnection.DatabaseConnection;
 
 public class MusicDAO implements IMusicDAO {

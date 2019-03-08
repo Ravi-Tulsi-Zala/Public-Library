@@ -1,4 +1,4 @@
-package com.library.BusinessModels;
+package com.library.businessModels;
 
 public class Movie {
 	private String category;
