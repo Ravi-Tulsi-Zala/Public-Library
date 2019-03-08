@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.library.buisness.population.IUserBasicInfo;
-import com.library.buisness.population.UserBasicInfo;
+import com.library.population.IUserBasicInfo;
+import com.library.population.UserBasicInfo;
 
 public class UserBasicInfoTest {
 	

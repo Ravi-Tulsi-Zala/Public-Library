@@ -1,4 +1,4 @@
-package com.library.business.itemSearch;
+package com.library.itemSearch;
 
 public class ItemDescriptor {
 	private String itemDescription;
