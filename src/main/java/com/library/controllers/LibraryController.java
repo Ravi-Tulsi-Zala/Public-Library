@@ -1,26 +1,36 @@
 package com.library.controllers;
 
 import java.util.List;
-import java.util.Map;
 
+import java.util.Map;
+import javax.inject.Inject;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.library.business.itemSearch.SearchQuery;
+import com.library.business.itemSearch.SearchResult;
+import com.library.model.DataBaseBean;
+import com.library.model.IDataBase;
 import com.library.interfaces.IUserBasicInfo;
 import com.library.interfaces.IUserExtendedInfo;
 import com.library.signUp.SignUpController;
 import com.library.signUp.User;
 import com.library.signUp.UserBasicInfo;
 import com.library.signUp.UserExtendedInfo;
-import com.library.singIn.AuthenticationFacade;
 import com.library.singIn.SignInController;
 
+@ComponentScan(basePackages = {"com.library.model"},
+basePackageClasses = DataBaseBean.class)
 @Controller
 public class LibraryController implements WebMvcConfigurer {
 
+	@Inject
+	private IDataBase dataBase;
+	
 	@PostMapping("/signUp")
 	public String processSignUpForm(ModelMap model,User user) {
 
@@ -48,6 +58,24 @@ public class LibraryController implements WebMvcConfigurer {
 	public String getSignUpForm(User user) {
 		return "SignUpForm";
 	}
+	
+	@GetMapping("/advancedSearch")
+	public String getAdvancedSearchPage(ModelMap model) {
+		SearchQuery searchQuery = new SearchQuery();
+		searchQuery.setExtendedSearch(true);
+		model.addAttribute("searchQuery", searchQuery);
+		return "AdvancedSearchPage";
+	}
+	
+
+	@PostMapping("/search")
+	public String getSearchResults(ModelMap model, SearchQuery searchQuery) 
+	{		
+		SearchResult searchResults = dataBase.search(searchQuery);
+		model.addAttribute("searchResults", searchResults);
+		
+		return "SearchResultsPage";	
+	}	
 
 //	@RequestMapping("/")
 //	String entry() {

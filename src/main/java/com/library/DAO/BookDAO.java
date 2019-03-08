@@ -274,7 +274,7 @@ public class BookDAO implements IBookDAO {
 			 preparedStatement.setString(6, publisher);
 			 preparedStatement.setString(7, description);
 			 preparedStatement.setInt(8, availablity);
-			 preparedStatement.executeUpdate(query);
+			 preparedStatement.executeUpdate();
 			 return true;
 		 }
 		 catch(Exception e)
@@ -307,7 +307,7 @@ public class BookDAO implements IBookDAO {
 			 preparedStatement.setInt(7, availablity);
 			 preparedStatement.setInt(8, itemID);
 			 System.out.println(preparedStatement);
-			 preparedStatement.executeUpdate(query);
+			 preparedStatement.executeUpdate();
 			 return true;
 		 }
 		 catch(Exception e)

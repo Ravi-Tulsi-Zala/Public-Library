@@ -53,6 +53,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+<<<<<<< HEAD
 		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 		<dependency>
 		    <groupId>mysql</groupId>
@@ -60,6 +61,13 @@
 		    <version>5.1.47</version>
 		</dependency>
 
+=======
+		<dependency>
+		    <groupId>javax.inject</groupId>
+		    <artifactId>javax.inject</artifactId>
+		    <version>1</version>
+		</dependency>
+>>>>>>> 743219094a53d80ad9a78eb3b2caa92b31300032
 	</dependencies>
 
 	<build>

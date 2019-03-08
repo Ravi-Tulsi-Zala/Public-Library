@@ -1,4 +1,8 @@
-package com.library.buisness.population;
+package com.library.model;
+
+import com.library.buisness.population.IMyUser;
+import com.library.buisness.population.IUserBasicInfo;
+import com.library.buisness.population.IUserInfo;
 
 public interface IUsersDB {
 	
