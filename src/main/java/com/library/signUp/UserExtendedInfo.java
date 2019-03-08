@@ -1,5 +1,7 @@
 package com.library.signUp;
 
+import com.library.interfaces.IUserExtendedInfo;
+
 public class UserExtendedInfo implements IUserExtendedInfo {
 	private String fullName;
 	private String phoneNumber;
