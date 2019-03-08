@@ -5,10 +5,10 @@ import java.util.Date;
 public class UserItem {
 	
 	
-	String email;
-	int Item_ID;
-	Date timestamp;
-	short status;
+	private String email;
+	private int Item_ID;
+	private Date timestamp;
+	private short status;
 	
 	public String getEmail() {
 		return email;

@@ -1,11 +1,11 @@
 package com.library.BusinessModels;
 
 public class User {
-	String fullName;
-	String emailAddress;
-	String password;
-	int phoneNumber;
-	String Status;
+	private String fullName;
+	private String emailAddress;
+	private String password;
+	private int phoneNumber;
+	private String Status;
 	
 	public String getStatus() {
 		return Status;

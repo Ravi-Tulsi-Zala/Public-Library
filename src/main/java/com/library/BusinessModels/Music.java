@@ -1,12 +1,12 @@
 package com.library.BusinessModels;
 
 public class Music {
-	String category;
-	String title;
-	String artist;
-	String recordLabel;
-	int itemID;
-	int availability;
+	private String category;
+	private String title;
+	private String artist;
+	private String recordLabel;
+	private int itemID;
+	private int availability;
 	
 	public int getItemID() {
 		return itemID;

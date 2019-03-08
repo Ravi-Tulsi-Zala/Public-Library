@@ -79,7 +79,6 @@ public class BookTest {
 		book.setCategory("Philoshophy");
 		book.setDescription("How sysphus loves rolling the bolder to the mountain top");
 		book.setISBN(265);
-		book.setItemID(1002);
 		book.setPublisher("Paris publication");
 		book.setTitle("Myth of sysphus");
 		Boolean isBookCreated = bookDAO.createBook(book);

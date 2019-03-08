@@ -26,10 +26,11 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public Boolean checkPassword(String emailAddress,String Password) {
-		query = "select password from user_info where Email = '" + emailAddress + "'";
+		query = "select password from user_info where Email = ?";
 		ResultSet result;
 		try {
 			preparedStatement  = connection.prepareStatement(query);
+			preparedStatement.setString(1, emailAddress);
 			result = preparedStatement.executeQuery(query);
 			if(!result.next())
 			{
@@ -48,9 +49,11 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public Boolean changePassword(String emailAddress, String password) {
-		 query = "update user_info set password ='" + password + "' where Email='" + emailAddress + "'";
+		 query = "update user_info set password = ? where Email= ?";
 		 try {
 			 preparedStatement = connection.prepareStatement(query);
+			 preparedStatement.setString(1, password);
+			 preparedStatement.setString(2, emailAddress);
 			 preparedStatement.executeUpdate(query);
 			 return true;
 		 }
@@ -64,10 +67,15 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public Boolean registerUser(User user) {
 		
-		query = "Insert into user_info (User_name,Phone_Number,Email,Password,Status) values ('" + user.getFullName() 
-				+ "'," + user.getPhoneNumber() + ",'" +  user.getEmailAddress() + "','" + user.getPassword() + "','Inactive')";
+		query = "Insert into user_info (User_name,Phone_Number,Email,Password,Status) "
+				+ "values (?,?,?,?.?)";
 		try {
 			 preparedStatement = connection.prepareStatement(query);
+			 preparedStatement.setString(1,user.getFullName());
+			 preparedStatement.setInt(2, user.getPhoneNumber());
+			 preparedStatement.setString(3, user.getEmailAddress());
+			 preparedStatement.setString(4, user.getPassword());
+			 preparedStatement.setString(5, "Inactive");
 			 preparedStatement.executeUpdate(query);
 			 return true;
 		 }
@@ -80,9 +88,10 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public Boolean isUserActive(String emailAddress) {
-		query = "Select status from user_info where Email = '" + emailAddress + "'";
+		query = "Select status from user_info where Email = ?";
 		try {
 			preparedStatement  = connection.prepareStatement(query);
+			preparedStatement.setString(1, emailAddress);
 			ResultSet result = preparedStatement.executeQuery(query);
 			if(!result.next())
 			{
@@ -103,14 +112,15 @@ public class UserDAO implements IUserDAO {
 	public Boolean toggleStatus(String emailAddress) {
 		if(isUserActive(emailAddress))
 		{
-			query = "update user_info set Status = 'Inactive' where Email='" + emailAddress + "'";
+			query = "update user_info set Status = 'Inactive' where Email=?";
 		}
 		else
 		{
-			query = "update user_info set Status = 'Active' where Email='" + emailAddress + "'";
+			query = "update user_info set Status = 'Active' where Email=?";
 		}
 		try {
 			 preparedStatement = connection.prepareStatement(query);
+			 preparedStatement.setString(1, emailAddress);
 			 preparedStatement.executeUpdate(query);
 			 return true;
 		 }

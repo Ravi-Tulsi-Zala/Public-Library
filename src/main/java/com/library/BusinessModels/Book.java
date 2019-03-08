@@ -2,14 +2,14 @@ package com.library.BusinessModels;
 
 public class Book {
 	
-	String category;
-	String title;
-	String author;
-	int isbn;
-	String publisher;
-	String description;
-	int itemID;
-	int availablity;
+	private String category;
+	private String title;
+	private String author;
+	private int isbn;
+	private String publisher;
+	private String description;
+	private int itemID;
+	private int availablity;
 	
 	public int getAvailablity() {
 		return availablity;

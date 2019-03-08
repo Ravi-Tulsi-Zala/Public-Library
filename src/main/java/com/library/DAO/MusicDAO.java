@@ -145,14 +145,13 @@ public class MusicDAO implements IMusicDAO {
 	public Boolean createMusic(Music music) {
 
 		try {
-			query = "INSERT INTO music (Item_ID,Category,Title,Artist,Record_Label,Availability) VALUES (?, ?, ?, ?, ?, ?)";
+			query = "INSERT INTO music (Category,Title,Artist,Record_Label,Availability) VALUES ( ?, ?, ?, ?, ?)";
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, music.getItemID());
-			preparedStatement.setString(2, music.getCategory());
-			preparedStatement.setString(3, music.getTitle());
-			preparedStatement.setString(4, music.getArtist());
-			preparedStatement.setString(5, music.getRecordLabel());
-			preparedStatement.setInt(6, music.getAvailability());
+			preparedStatement.setString(1, music.getCategory());
+			preparedStatement.setString(2, music.getTitle());
+			preparedStatement.setString(3, music.getArtist());
+			preparedStatement.setString(4, music.getRecordLabel());
+			preparedStatement.setInt(5, music.getAvailability());
 			preparedStatement.executeUpdate();
 			return true;
 		} catch (Exception e) {

@@ -3,8 +3,8 @@ package com.library.BusinessModels;
 import com.mysql.jdbc.Blob;
 
 public class Cover {
-	int itemID;
-	Blob cover;
+	private int itemID;
+	private Blob cover;
 	public int getItemID() {
 		return itemID;
 	}
