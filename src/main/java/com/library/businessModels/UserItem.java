@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class UserItem {
 	
-	
 	private String email;
 	private int Item_ID;
 	private Date timestamp;
@@ -35,6 +34,4 @@ public class UserItem {
 		this.status = status;
 	}
 	
-	
-
 }
