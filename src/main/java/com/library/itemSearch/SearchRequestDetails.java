@@ -1,6 +1,6 @@
 package com.library.itemSearch;
 
-public class SearchQuery {
+public class SearchRequestDetails {
 	
 	private String searchTerms = null;
 	private int requestedSearchResultsPageNumber = 1;

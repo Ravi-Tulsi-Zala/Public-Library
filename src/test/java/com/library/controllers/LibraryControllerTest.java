@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.library.demo.LibraryApplication;
 import com.library.itemSearch.ItemDescriptor;
-import com.library.itemSearch.SearchQuery;
+import com.library.itemSearch.SearchRequestDetails;
 import com.library.itemSearch.SearchResult;
 import com.library.model.IDataBase;
 
@@ -54,9 +54,9 @@ public class LibraryControllerTest {
     public void searchingInBooks() throws Exception {
     	
     	SearchResult searchResult = new SearchResult();
-    	SearchQuery searchQuery = new SearchQuery();
-    	searchQuery.setSearchTerms("Jack London");
-    	searchQuery.setExtendedSearch(true);
+    	SearchRequestDetails searchRequestDetails = new SearchRequestDetails();
+    	searchRequestDetails.setSearchTerms("Jack London");
+    	searchRequestDetails.setExtendedSearch(true);
     	
     	
     	LinkedList<ItemDescriptor> booksFoundInSearch = new LinkedList<ItemDescriptor>();
@@ -70,10 +70,11 @@ public class LibraryControllerTest {
     	
     	searchResult.setMusicSearchResults(null);
     	
-        when(dataBaseMock.search(searchQuery)).thenReturn(searchResult);
+        when(dataBaseMock.search(searchRequestDetails)).thenReturn(searchResult);
         
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/search");
-        request.flashAttr("searchQuery", searchQuery);
+        // "searchRequestDetails" is a bean --> method in the Controller should expect argument of type SearchRequestDetails with whatever name.
+        request.flashAttr("searchRequestDetails", searchRequestDetails); 
         
 		this.mockMvc.perform(request)
 			.andExpect(status().isOk())

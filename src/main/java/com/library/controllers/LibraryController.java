@@ -16,7 +16,7 @@ import com.library.model.IDataBase;
 import com.library.signIn.SignInController;
 import com.library.interfaces.IUserBasicInfo;
 import com.library.interfaces.IUserExtendedInfo;
-import com.library.itemSearch.SearchQuery;
+import com.library.itemSearch.SearchRequestDetails;
 import com.library.itemSearch.SearchResult;
 import com.library.signUp.SignUpController;
 import com.library.signUp.User;
@@ -61,7 +61,7 @@ public class LibraryController implements WebMvcConfigurer {
 	
 	@GetMapping("/advancedSearch")
 	public String getAdvancedSearchPage(ModelMap model) {
-		SearchQuery searchQuery = new SearchQuery();
+		SearchRequestDetails searchQuery = new SearchRequestDetails();
 		searchQuery.setExtendedSearch(true);
 		model.addAttribute("searchQuery", searchQuery);
 		return "AdvancedSearchPage";
@@ -69,9 +69,9 @@ public class LibraryController implements WebMvcConfigurer {
 	
 
 	@PostMapping("/search")
-	public String getSearchResults(ModelMap model, SearchQuery searchQuery) 
+	public String getSearchResults(ModelMap model, SearchRequestDetails searchRequestDetails) 
 	{		
-		SearchResult searchResults = dataBase.search(searchQuery);
+		SearchResult searchResults = dataBase.search(searchRequestDetails);
 		model.addAttribute("searchResults", searchResults);
 		
 		return "SearchResultsPage";	

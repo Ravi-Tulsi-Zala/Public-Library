@@ -1,6 +1,6 @@
 package com.library.model;
 
-import com.library.itemSearch.SearchQuery;
+import com.library.itemSearch.SearchRequestDetails;
 import com.library.itemSearch.SearchResult;
 import com.library.population.IMyUser;
 import com.library.population.IUserBasicInfo;
@@ -33,7 +33,7 @@ public class DataBase implements IDataBase {
 	}
 
 	@Override
-	public SearchResult search(SearchQuery searchRequestDetails) {
+	public SearchResult search(SearchRequestDetails searchRequestDetails) {
 		// TODO Auto-generated method stub
 		return null;
 	}
