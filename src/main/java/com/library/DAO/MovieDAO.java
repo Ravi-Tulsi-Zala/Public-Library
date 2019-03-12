@@ -4,13 +4,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.library.DAOMapper.IMovieMapper;
 import com.library.DAOMapperImpl.MovieMapper;
 import com.library.IDAO.IMovieDAO;
+import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.dbConnection.DatabaseConnection;
+import com.library.itemSearch.IMovieSearchRequestDetails;
 
 public class MovieDAO implements IMovieDAO {
 
@@ -28,7 +31,13 @@ public class MovieDAO implements IMovieDAO {
 			e.printStackTrace();
 		}
 	}
-
+	
+	@Override
+	public int[] search(IMovieSearchRequestDetails requestDetails) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@Override
 	public Movie getMovieById(int itemID) {
 

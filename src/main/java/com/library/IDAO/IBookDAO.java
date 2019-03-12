@@ -3,8 +3,10 @@ package com.library.IDAO;
 import java.util.List;
 
 import com.library.businessModels.Book;
+import com.library.itemSearch.IBookSearchRequestDetails;
 
 public interface IBookDAO {
+	public int[] search(IBookSearchRequestDetails requestDetails);
 	public Book getBookByID(int itemID);
 	public Book getBookByISBN(int bookISBN);
 	public List<Book> getBookByTitle(String bookTitle);

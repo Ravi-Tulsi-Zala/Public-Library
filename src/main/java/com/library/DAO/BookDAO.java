@@ -5,14 +5,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.library.IDAO.IBookDAO;
 import com.library.businessModels.Book;
+import com.library.businessModels.LibraryItem;
 import com.library.common.Constants;
 import com.library.DAOMapper.IBookMapper;
 import com.library.DAOMapperImpl.BookMapper;
 import com.library.dbConnection.*;
+import com.library.itemSearch.IBookSearchRequestDetails;
 
 public class BookDAO implements IBookDAO {
 	
@@ -32,6 +35,12 @@ public class BookDAO implements IBookDAO {
 			 e.printStackTrace();
 		}
 	 }
+	 
+	@Override
+	public int[] search(IBookSearchRequestDetails requestDetails) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	@Override
 	public Book getBookByID(int itemID) {
@@ -260,7 +269,7 @@ public class BookDAO implements IBookDAO {
 		String publisher = book.getPublisher();
 		String description =  book.getDescription();
 		int itemID = getLastID() + 1;
-		int availablity = book.getAvailablity();
+		int availablity = book.getAvailability();
 		try {
 			
 			query = "Insert into books (Item_ID,Category,Title,Author,ISBN,Publisher,Description,Availability) Values "
@@ -293,7 +302,7 @@ public class BookDAO implements IBookDAO {
 		String publisher = book.getPublisher();
 		String description =  book.getDescription();
 		int itemID = book.getItemID();
-		int availablity = book.getAvailablity();
+		int availablity = book.getAvailability();
 		try {
 			query = "Update books  set Category = ?, Title = ?, Author = ?, ISBN =  ?,"
 					+ "Publisher = ?, Description = ?, Availability = ? WHERE Item_ID = ?";
