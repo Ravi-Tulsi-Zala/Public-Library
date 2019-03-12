@@ -75,7 +75,7 @@ public class BookTest {
 	{
 		Book book = new Book();
 		book.setAuthor("Albert Camus");
-		book.setAvailablity(1);
+		book.setAvailability(1);
 		book.setCategory("Philoshophy");
 		book.setDescription("How sysphus loves rolling the bolder to the mountain top");
 		book.setISBN(265);
@@ -89,7 +89,7 @@ public class BookTest {
 	public void updateBookTest() {
 		Book book = new Book();
 		book.setAuthor("Albert Camus");
-		book.setAvailablity(1);
+		book.setAvailability(1);
 		book.setCategory("Philoshophy");
 		book.setDescription("How sysphus loves rolling the bolder to the mountain top");
 		book.setISBN(265);
