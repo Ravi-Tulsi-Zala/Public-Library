@@ -1,6 +1,9 @@
-package com.library.itemSearch;
+package com.library.search;
 
-public class SearchRequestDetails {
+
+public class SearchRequestDetails implements IBookSearchRequestDetails, 
+											 IMovieSearchRequestDetails, 
+											 IMusicSearchRequestDetails {
 	
 	private String searchTerms = null;
 	private int requestedSearchResultsPageNumber = 1;
@@ -31,6 +34,7 @@ public class SearchRequestDetails {
 		this.extendedSearch = extendedSearch;
 	}
 	
+	@Override
 	public String getSearchTerms() {
 		return searchTerms;
 	}
@@ -49,30 +53,35 @@ public class SearchRequestDetails {
 	public void setSearchInBooks(boolean searchInBooks) {
 		this.searchInBooks = searchInBooks;
 	}
+	@Override
 	public boolean isSearchBookTitle() {
 		return searchBookTitle;
 	}
 	public void setSearchBookTitle(boolean searchBookTitle) {
 		this.searchBookTitle = searchBookTitle;
 	}
+	@Override
 	public boolean isSearchBookAuthor() {
 		return searchBookAuthor;
 	}
 	public void setSearchBookAuthor(boolean searchBookAuthor) {
 		this.searchBookAuthor = searchBookAuthor;
 	}
+	@Override
 	public boolean isSearchBookPublisher() {
 		return searchBookPublisher;
 	}
 	public void setSearchBookPublisher(boolean searchBookPublisher) {
 		this.searchBookPublisher = searchBookPublisher;
 	}
+	@Override
 	public boolean isSearchBookDescription() {
 		return searchBookDescription;
 	}
 	public void setSearchBookDescription(boolean searchBookDescription) {
 		this.searchBookDescription = searchBookDescription;
 	}
+	@Override
 	public boolean isSearchBookISBN() {
 		return searchBookISBN;
 	}
@@ -85,18 +94,21 @@ public class SearchRequestDetails {
 	public void setSearchInMusic(boolean searchInMusic) {
 		this.searchInMusic = searchInMusic;
 	}
+	@Override
 	public boolean isSearchMusicAlbumName() {
 		return searchMusicAlbumName;
 	}
 	public void setSearchMusicAlbumName(boolean searchMusicAlbumName) {
 		this.searchMusicAlbumName = searchMusicAlbumName;
 	}
+	@Override
 	public boolean isSearchMusicArtist() {
 		return searchMusicArtist;
 	}
 	public void setSearchMusicArtist(boolean searchMusicArtist) {
 		this.searchMusicArtist = searchMusicArtist;
 	}
+	@Override
 	public boolean isSearchMusicRecordLabel() {
 		return searchMusicRecordLabel;
 	}
@@ -109,18 +121,21 @@ public class SearchRequestDetails {
 	public void setSearchInMovies(boolean searchInMovie) {
 		this.searchInMovies = searchInMovie;
 	}
+	@Override
 	public boolean isSearchMovieTitle() {
 		return searchMovieTitle;
 	}
 	public void setSearchMovieTitle(boolean searchMovieTitle) {
 		this.searchMovieTitle = searchMovieTitle;
 	}
+	@Override
 	public boolean isSearchMovieDirector() {
 		return searchMovieDirector;
 	}
 	public void setSearchMovieDirector(boolean searchMovieDirector) {
 		this.searchMovieDirector = searchMovieDirector;
 	}
+	@Override
 	public boolean isSearchMovieDescription() {
 		return searchMovieDescription;
 	}
@@ -128,7 +143,28 @@ public class SearchRequestDetails {
 		this.searchMovieDescription = searchMovieDescription;
 	}
 	
-	
-	
-
+	public boolean onlyRequestedPageDiffers(SearchRequestDetails otherSearchRequestDetails) {
+		if(this.searchTerms.equals(otherSearchRequestDetails.searchTerms) &&
+			this.extendedSearch == otherSearchRequestDetails.extendedSearch &&
+				
+			this.searchInBooks == otherSearchRequestDetails.searchInBooks &&
+			this.searchBookAuthor == otherSearchRequestDetails.searchBookAuthor &&
+			this.searchBookPublisher == otherSearchRequestDetails.searchBookPublisher &&
+			this.searchBookDescription == otherSearchRequestDetails.searchBookDescription &&
+			this.searchBookISBN == otherSearchRequestDetails.searchBookISBN &&
+				
+			this.searchInMusic == otherSearchRequestDetails.searchInMusic &&
+			this.searchMusicAlbumName == otherSearchRequestDetails.searchMusicAlbumName &&
+			this.searchMusicArtist == otherSearchRequestDetails.searchMusicArtist &&
+			this.searchMusicRecordLabel == otherSearchRequestDetails.searchMusicRecordLabel &&
+				
+			this.searchInMovies == otherSearchRequestDetails.searchInMovies &&
+			this.searchMovieTitle == otherSearchRequestDetails.searchMovieTitle &&
+			this.searchMovieDirector == otherSearchRequestDetails.searchMovieDirector &&
+			this.searchMovieDescription == otherSearchRequestDetails.searchMovieDescription) {
+			
+			return true;
+		}
+		return false;
+	}
 }

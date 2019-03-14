@@ -1,22 +1,80 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<html>
    <head>
-      <title>Spring MVC Form Handling</title>
+      <title>Search Results</title>
       <style>
       td {
       	padding-bottom: 20px;
       	padding-right:50px
       }
+      
+      h5 {
+      	margin: 0;
+      	font-weight:400;
+      }
       </style>
    </head>
-   <body id="pageBody">
-      <h2>Advanced Search</h2>      
-<!--       <form method="post" action="/search" th:action="@{/search}"   onsubmit="enableAllCheckBoxes()"> -->
-<!--       	<div style="margin-bottom: 20px"> -->
-<!--       		<p>Search Terms <input type="text" th:field="${searchResults}" style="width:330px;"/></p> -->
-<!--       	</div>  -->
-<!--       	<input type = "submit" value = "Search"/>  	 -->
-<!--       </form>       -->
-   </body>   
+	<body>		
+	   	<div>
+		  <form method="post" action="/search" th:action="@{/search}">
+<!--       		<input type="text" th:field="${searchRequestDetails.requestedSearchResultsPageNumber}" 
+      						maxlength="3" style="font-size:2em;margin: 0 0.5em; width:50px;padding: 0 2%;"/> -->
+      		<input type="text" th:field="${searchRequestDetails.searchTerms}">
+      		<input type="submit">		      									
+		  </form>		    
+	   	  <a style="float:right;line-height: 3em;" href="logOut">Logout</a>
+	   	  <span style="float:right;margin-right: 20px;line-height: 3em;" th:text="${userEmail}">Test</span>
+	   	  <h1 style="text-align: center;">Welcome To The Library!</h1>
+	   	</div>
+		<div>
+		  <span style="color: blue;display:block;width: 100%;">Books</span>
+		  <div style="width: 9%;display: inline-block;" th:each="book : ${searchResults.bookSearchResults}">
+		    <img style="width: 100%;" src="https://cdn3.iconfinder.com/data/icons/brands-applications/512/File-512.png"/>
+		    <p th:text=${book.title} style="text-align: center;"></p>		  
+		  </div>
+		</div>
+		<div>
+		  <span style="color: blue;display:block;width: 100%;">Music</span>
+			  <div style="width: 9%;display: inline-block;" th:each="music : ${searchResults.musicSearchResults}">
+			    <img style="width: 100%;" src="https://cdn3.iconfinder.com/data/icons/brands-applications/512/File-512.png"/>
+			    <p th:text=${music.title} style="text-align: center;"></p>		  
+			  </div>
+		</div>		
+		<div>
+		  <span style="color: blue;display:block;width: 100%;">Movies</span>
+			  <div style="width: 9%;display: inline-block;" th:each="movie : ${searchResults.movieSearchResults}">
+			    <img style="width: 100%;" src="https://cdn3.iconfinder.com/data/icons/brands-applications/512/File-512.png"/>
+			    <p th:text=${movie.title} style="text-align: center;"></p>		  
+			  </div>		  
+		</div>	
+		<div>	
+		  <div style="margin-left: 40%">
+		    <div style="display:inline-block;font-size: 2em;cursor:pointer;"><<</div>
+		    <div style="display:inline-block;">
+				<form method="post" action="/search" th:action="@{/search}">
+		      		<input type="text" th:field="${searchRequestDetails.requestedSearchResultsPageNumber}" 
+		      						maxlength="3" style="font-size:2em;margin: 0 0.5em; width:50px;padding: 0 2%;"/>
+		      		<input type="text" th:field="${searchRequestDetails.searchTerms}" style="display:none">
+		      		<input type="submit" style="display:none">		      						
+					<input type="checkbox" id="extendedSearch" th:field="${searchRequestDetails.extendedSearch}" style="display:none"/>
+					<input type="checkbox" id="searchInBooks" th:field="${searchRequestDetails.searchInBooks}" style="display:none"/>
+					<input type="checkbox" id ="searchInMovies" th:field="${searchRequestDetails.searchInMovies}" style="display:none"/>
+					<input type="checkbox" id ="searchInMusic" th:field="${searchRequestDetails.searchInMusic}" style="display:none"/>
+					<input type="checkbox" id="bookTitle" th:field="${searchRequestDetails.searchBookTitle}" style="display:none"/>
+					<input type="checkbox" id="bookAuthor" th:field="${searchRequestDetails.searchBookAuthor}" style="display:none"/>
+					<input type="checkbox" id="bookPublisher" th:field="${searchRequestDetails.searchBookPublisher}" style="display:none"/>
+					<input type="checkbox" id="bookDescription" th:field="${searchRequestDetails.searchBookDescription}" style="display:none"/>
+					<input type="checkbox" id="bookISBN" th:field="${searchRequestDetails.searchBookISBN}" style="display:none"/>
+					<input type="checkbox" id="musicAlbumName" th:field="${searchRequestDetails.searchMusicAlbumName}" style="display:none"/>
+					<input type="checkbox" id="musicArtist" th:field="${searchRequestDetails.searchMusicArtist}" style="display:none"/>
+					<input type="checkbox" id="musicRecordLabel" th:field="${searchRequestDetails.searchMusicRecordLabel}" style="display:none"/>
+					<input type="checkbox" id="movieTitle" th:field="${searchRequestDetails.searchMovieTitle}" style="display:none"/>
+					<input type="checkbox" id="movieDirector" th:field="${searchRequestDetails.searchMovieDirector}" style="display:none"/>
+					<input type="checkbox" id="movieDescription" th:field="${searchRequestDetails.searchMovieDescription}" style="display:none"/>				
+				</form>		    
+		    </div>
+		    <div style="display:inline-block;font-size: 2em;cursor:pointer;">>></div>
+		  </div>
+		</div>
+	</body>
 </html>

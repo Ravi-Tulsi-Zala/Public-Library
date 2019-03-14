@@ -17,7 +17,7 @@ public class BookTest {
 	@Test
 	public void getBookByIDTest() {
 		Book book = bookDAO.getBookByID(100001);
-		assertEquals(269,book.getISBN());
+		assertEquals(269,book.getIsbn());
 	}
 	
 	@Test
@@ -57,13 +57,6 @@ public class BookTest {
 	}
 	
 	@Test
-	public void getBookByKeywordTest()
-	{
-		List<Book> books = bookDAO.getBookByKeyword("girl");
-		assertEquals("The girl who played with fire",books.get(0).getTitle());
-	}
-	
-	@Test
 	public void deleteBookTest()
 	{
 		Boolean isBookDeleted = bookDAO.deleteBookByID(100002);
@@ -78,7 +71,7 @@ public class BookTest {
 		book.setAvailability(1);
 		book.setCategory("Philoshophy");
 		book.setDescription("How sysphus loves rolling the bolder to the mountain top");
-		book.setISBN(265);
+		book.setIsbn(265);
 		book.setPublisher("Paris publication");
 		book.setTitle("Myth of sysphus");
 		Boolean isBookCreated = bookDAO.createBook(book);
@@ -92,7 +85,7 @@ public class BookTest {
 		book.setAvailability(1);
 		book.setCategory("Philoshophy");
 		book.setDescription("How sysphus loves rolling the bolder to the mountain top");
-		book.setISBN(265);
+		book.setIsbn(265);
 		book.setItemID(1002);
 		book.setPublisher("Swedan publication");
 		book.setTitle("Myth of sysphus");

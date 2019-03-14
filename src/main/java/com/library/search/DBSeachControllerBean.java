@@ -1,4 +1,4 @@
-package com.library.model;
+package com.library.search;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DBSeachControllerBean {
 	@Bean
-	public DBSeachController getSingletoneDataBaseInstance() {
+	public DBSeachController getDBSeachControllerInstance() {
 		return new DBSeachController();
 	}
 }

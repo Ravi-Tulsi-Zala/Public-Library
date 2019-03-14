@@ -8,9 +8,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.Enumeration;
 import java.util.LinkedList;
 
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionContext;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,17 +22,20 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import com.library.businessModels.Book;
+import com.library.businessModels.Movie;
 import com.library.demo.LibraryApplication;
-import com.library.itemSearch.ItemDescriptor;
-import com.library.itemSearch.SearchRequestDetails;
-import com.library.itemSearch.SearchResult;
-import com.library.model.IDataBase;
+import com.library.search.IDBSearchController;
+import com.library.search.SearchRequestDetails;
+import com.library.search.SearchResults;
+import com.library.signIn.AuthenticatedUsers;
 
 
 @RunWith(SpringRunner.class)
@@ -42,39 +49,73 @@ public class LibraryControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private IDataBase dataBaseMock;
+    private IDBSearchController dataBaseMock;
+    
+    private MockHttpSession mockHttpSession;
     
     @Before
     public void setUp() {
         Mockito.reset(dataBaseMock);
+        mockHttpSession = new MockHttpSession();
+        AuthenticatedUsers.instance().addAuthenticatedUser(mockHttpSession, "asd@mail.com");
      }
 
     @SuppressWarnings("unchecked")
 	@Test
-    public void searchingInBooks() throws Exception {
+    public void executeSearch() throws Exception {
     	
-    	SearchResult searchResult = new SearchResult();
-    	SearchRequestDetails searchRequestDetails = new SearchRequestDetails();
-    	searchRequestDetails.setSearchTerms("Jack London");
-    	searchRequestDetails.setExtendedSearch(true);
+    	SearchResults searchResult = new SearchResults();
+    	SearchRequestDetails searchRqstDetails = new SearchRequestDetails();
+    	searchRqstDetails.setSearchTerms("Jack London");
+    	searchRqstDetails.setExtendedSearch(true);
     	
+		Book book1 = new Book();
+		book1.setIsbn(111);
+		book1.setItemID(1111);
+		book1.setTitle("The Star Rover");
+		book1.setAuthor("Jack London");
+		book1.setCategory("Novel");
+		book1.setDescription("Good Story!");
+		book1.setPublisher("Good One Publisher");
+		book1.setAvailability(10);
+		
+		Book book2 = new Book();
+		book2.setIsbn(222);
+		book2.setItemID(2222);
+		book2.setTitle("The Scarlet Plague");
+		book2.setAuthor("Jack London");
+		book2.setCategory("Post-Apocalyptic Fiction");
+		book2.setDescription("Good Story Too!");
+		book2.setPublisher("Old Good Publisher");
+		book2.setAvailability(11);
     	
-    	LinkedList<ItemDescriptor> booksFoundInSearch = new LinkedList<ItemDescriptor>();
-    	booksFoundInSearch.add(new ItemDescriptor("The Star Rover", "/static/images/TheStarRover_Cover.jpeg", "JL_TSR_6161"));
-    	booksFoundInSearch.add(new ItemDescriptor("The Scarlet Plague", "/static/images/TheScarletPlague_Cover.jpeg", "JL_TSP_218358"));
+    	LinkedList<Book> booksFoundInSearch = new LinkedList<Book>();
+    	booksFoundInSearch.add(book1);
+    	booksFoundInSearch.add(book2);
     	searchResult.setBookSearchResults(booksFoundInSearch);
     	
-    	LinkedList<ItemDescriptor> moviesFoundInSearch = new LinkedList<ItemDescriptor>();
-    	moviesFoundInSearch.add(new ItemDescriptor("White Fang", "/static/images/WhiteFang_Cover.jpeg", "JL_WF_4568585"));
+		Movie movie = new Movie();
+	
+		movie.setItemID(3333);
+		movie.setTitle("Doctor Zhivago");
+		movie.setDirector("David Lean");
+		movie.setCategory("Drama");
+		movie.setDescription("Cannot describe - you have to see it!");
+		movie.setAvailability(12);
+    	
+    	LinkedList<Movie> moviesFoundInSearch = new LinkedList<Movie>();
+    	moviesFoundInSearch.add(movie);
     	searchResult.setMovieSearchResults(moviesFoundInSearch);
     	
     	searchResult.setMusicSearchResults(null);
-    	
-        when(dataBaseMock.search(searchRequestDetails)).thenReturn(searchResult);
         
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/search");
         // "searchRequestDetails" is a bean --> method in the Controller should expect argument of type SearchRequestDetails with whatever name.
-        request.flashAttr("searchRequestDetails", searchRequestDetails); 
+        request.flashAttr("searchRequestDetails", searchRqstDetails); 
+        request.session(mockHttpSession);
+        
+        when(dataBaseMock.search(searchRqstDetails, mockHttpSession)).thenReturn(searchResult);
+       
         
 		this.mockMvc.perform(request)
 			.andExpect(status().isOk())
@@ -85,16 +126,26 @@ public class LibraryControllerTest {
 				allOf(hasProperty("bookSearchResults", 
 						hasItems(
 								allOf(
-										hasProperty("itemDescription", is("The Star Rover")), 
-										hasProperty("itemImageUrl", is("/static/images/TheStarRover_Cover.jpeg")),
-										hasProperty("itemID", is("JL_TSR_6161"))
+										hasProperty("description", is("Good Story!")), 
+										hasProperty("author", is("Jack London")),
+										hasProperty("isbn", is(111)),
+										hasProperty("publisher", is("Good One Publisher")),
+										hasProperty("category", is("Novel")),
+										hasProperty("title", is("The Star Rover")),
+										hasProperty("itemID", is(1111)),
+										hasProperty("availability", is(10))
 									  )
 								,
 
 								allOf(
-										hasProperty("itemDescription", is("The Scarlet Plague")), 
-										hasProperty("itemImageUrl", is("/static/images/TheScarletPlague_Cover.jpeg")),
-										hasProperty("itemID", is("JL_TSP_218358"))
+										hasProperty("description", is("Good Story Too!")), 
+										hasProperty("author", is("Jack London")),
+										hasProperty("isbn", is(222)),
+										hasProperty("publisher", is("Old Good Publisher")),
+										hasProperty("category", is("Post-Apocalyptic Fiction")),
+										hasProperty("title", is("The Scarlet Plague")),
+										hasProperty("itemID", is(2222)),
+										hasProperty("availability", is(11))
 									  )
 								)))))
 			
@@ -103,9 +154,12 @@ public class LibraryControllerTest {
 				allOf(hasProperty("movieSearchResults", 
 						hasItem(
 								allOf(
-										hasProperty("itemDescription", is("White Fang")), 
-										hasProperty("itemImageUrl", is("/static/images/WhiteFang_Cover.jpeg")),
-										hasProperty("itemID", is("JL_WF_4568585"))
+										hasProperty("director", is("David Lean")),
+										hasProperty("description", is("Cannot describe - you have to see it!")),
+										hasProperty("category", is("Drama")),
+										hasProperty("title", is("Doctor Zhivago")),
+										hasProperty("itemID", is(3333)),
+										hasProperty("availability", is(12))
 									  )
 							   )))))
 			
@@ -118,13 +172,13 @@ public class LibraryControllerTest {
     public void browseAdvancedSearchPage() throws Exception {
         
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/advancedSearch");
+        request.session(mockHttpSession);
         
 		this.mockMvc.perform(request)
 			.andExpect(status().isOk())
 			.andExpect(view().name("AdvancedSearchPage"))
 			;
-    }
-    
+    }   
     
 }
 

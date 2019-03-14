@@ -1,5 +1,7 @@
-package com.library.model;
+package com.library.search;
 
-public interface IDataBase extends IUsersDB, IItemsDB {
+import javax.servlet.http.HttpSession;
 
+public interface IDBSearchController {
+	public SearchResults search(SearchRequestDetails searchRequestDetails, HttpSession httpSession);
 }
