@@ -11,16 +11,18 @@ import com.library.DAOMapper.IMusicMapper;
 import com.library.DAOMapperImpl.MusicMapper;
 import com.library.IDAO.IMusicDAO;
 import com.library.businessModels.LibraryItem;
+import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.dbConnection.DatabaseConnection;
-import com.library.itemSearch.IMusicSearchRequestDetails;
+import com.library.search.IMovieSearchRequestDetails;
+import com.library.search.IMusicSearchRequestDetails;
 
 public class MusicDAO implements IMusicDAO {
 
 	private PreparedStatement preparedStatement;
 	String query;
 	Connection connection;
-	IMusicMapper iMusicMapper = new MusicMapper();
+	IMusicMapper musicMapper = new MusicMapper();
 
 	public MusicDAO() {
 
@@ -31,12 +33,6 @@ public class MusicDAO implements IMusicDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public int[] search(IMusicSearchRequestDetails requestDetails) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	 
 	@Override
@@ -51,7 +47,7 @@ public class MusicDAO implements IMusicDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while(resultSet.next())
 			{
-				music = iMusicMapper.mapMusic(resultSet);
+				music = musicMapper.mapMusic(resultSet);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -74,7 +70,7 @@ public class MusicDAO implements IMusicDAO {
 			while (resultSet.next()) {
 
 				music = new Music();
-				music = iMusicMapper.mapMusic(resultSet);
+				music = musicMapper.mapMusic(resultSet);
 				lisOfMusicByTitle.add(music);
 			}
 		} catch (Exception e) {
@@ -96,7 +92,7 @@ public class MusicDAO implements IMusicDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				music = new Music();
-				music = iMusicMapper.mapMusic(resultSet);
+				music = musicMapper.mapMusic(resultSet);
 				musicsByArtistName.add(music);
 			}
 		} catch (Exception e) {
@@ -119,7 +115,7 @@ public class MusicDAO implements IMusicDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				music = new Music();
-				music = iMusicMapper.mapMusic(resultSet);
+				music = musicMapper.mapMusic(resultSet);
 				musicsByCategory.add(music);
 			}
 		} catch (Exception e) {
@@ -142,7 +138,7 @@ public class MusicDAO implements IMusicDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				music = new Music();
-				music = iMusicMapper.mapMusic(resultSet);
+				music = musicMapper.mapMusic(resultSet);
 				musicsByCategory.add(music);
 			}
 		} catch (Exception e) {
@@ -202,6 +198,50 @@ public class MusicDAO implements IMusicDAO {
 			e.printStackTrace();
 		}
 		return false;
-
+	}
+	
+	private void prepareSearchQuery(IMusicSearchRequestDetails requestDetails) {
+		query = "SELECT * FROM music WHERE ";
+		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
+		for(String term : searchterms) {
+			if(requestDetails.isSearchMusicAlbumName()) {
+				query += "Title like \"%" + term + "%\" or ";
+			}
+			if(requestDetails.isSearchMusicArtist()) {
+				query += "Artist like \"%" + term + "%\" or ";
+			}
+			if(requestDetails.isSearchMusicRecordLabel()) {
+				query += "Record_Label like \"%" + term + "%\" or ";
+			}
+		}
+		
+		query = query.substring(0, query.length() - 4);
+	}
+	
+	@Override
+	public LinkedList<Music> getMusicBySearchTerms(IMusicSearchRequestDetails searchRequestDetails) {
+		LinkedList<Music> musics = new LinkedList<Music>();
+		Music music;
+		prepareSearchQuery(searchRequestDetails);
+		
+		try {
+			preparedStatement  = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();	
+			if(!resultSet.next())
+			{
+				return null;
+			}
+			do
+			{
+				music = musicMapper.mapMusic(resultSet);
+				musics.add(music);
+			} while(resultSet.next());
+			
+			return musics;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 }

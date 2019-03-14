@@ -15,7 +15,7 @@ import com.library.common.Constants;
 import com.library.DAOMapper.IBookMapper;
 import com.library.DAOMapperImpl.BookMapper;
 import com.library.dbConnection.*;
-import com.library.itemSearch.IBookSearchRequestDetails;
+import com.library.search.IBookSearchRequestDetails;
 
 public class BookDAO implements IBookDAO {
 	
@@ -35,12 +35,8 @@ public class BookDAO implements IBookDAO {
 			 e.printStackTrace();
 		}
 	 }
-	 
-	@Override
-	public int[] search(IBookSearchRequestDetails requestDetails) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+
 	
 	@Override
 	public Book getBookByID(int itemID) {
@@ -214,17 +210,38 @@ public class BookDAO implements IBookDAO {
 		return null;
 	}
 	
+	private void prepareSearchQuery(IBookSearchRequestDetails requestDetails) {
+		query = "SELECT * FROM books WHERE ";
+		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
+		for(String term : searchterms) {
+			if(requestDetails.isSearchBookAuthor()) {
+				query += "Author like \"%" + term + "%\" or ";
+			}
+			if(requestDetails.isSearchBookDescription()) {
+				query += "Description like \"%" + term + "%\" or ";
+			}
+			if(requestDetails.isSearchBookISBN()) {
+				query += "ISBN like \"%" + term + "%\" or ";
+			}
+			if(requestDetails.isSearchBookPublisher()) {
+				query += "Publisher like \"%" + term + "%\" or ";
+			}
+			if(requestDetails.isSearchBookTitle()) {
+				query += "Title like \"%" + term + "%\" or ";
+			}
+		}
+		
+		query = query.substring(0, query.length() - 4);
+	}
+	
 	@Override
-	public List<Book> getBookByKeyword(String keyword) {
+	public LinkedList<Book> getBooksBySearchTerms(IBookSearchRequestDetails searchRequestDetails) {
+		LinkedList<Book> books = new LinkedList<Book>();
+		Book book;
+		prepareSearchQuery(searchRequestDetails);
+		
 		try {
-			List<Book> books = new ArrayList<Book>();
-			Book book = new Book();
-			query = "SELECT * FROM books WHERE Title like ? or Author like ? or Publisher like ? or Description like ?"; 
 			preparedStatement  = connection.prepareStatement(query);
-			preparedStatement.setString(1, "%"+keyword+"%");
-			preparedStatement.setString(2, "%"+keyword+"%");
-			preparedStatement.setString(3, "%"+keyword+"%");
-			preparedStatement.setString(4, "%"+keyword+"%");
 			ResultSet resultSet = preparedStatement.executeQuery();	
 			if(!resultSet.next())
 			{
@@ -235,11 +252,12 @@ public class BookDAO implements IBookDAO {
 				book = bookMapper.mapBook(resultSet);
 				books.add(book);
 			} while(resultSet.next());
+			
 			return books;
-		}	
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return null;
 	}
 
@@ -265,7 +283,7 @@ public class BookDAO implements IBookDAO {
 		String category = book.getCategory();
 		String title = book.getTitle();
 		String author = book.getAuthor();
-		int isbn = book.getISBN();
+		int isbn = book.getIsbn();
 		String publisher = book.getPublisher();
 		String description =  book.getDescription();
 		int itemID = getLastID() + 1;
@@ -298,7 +316,7 @@ public class BookDAO implements IBookDAO {
 		String category = book.getCategory();
 		String title = book.getTitle();
 		String author = book.getAuthor();
-		int isbn = book.getISBN();
+		int isbn = book.getIsbn();
 		String publisher = book.getPublisher();
 		String description =  book.getDescription();
 		int itemID = book.getItemID();

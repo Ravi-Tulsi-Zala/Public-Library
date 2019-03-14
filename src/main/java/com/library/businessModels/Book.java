@@ -13,10 +13,10 @@ public class Book extends LibraryItem {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	public int getISBN() {
+	public int getIsbn() {
 		return isbn;
 	}
-	public void setISBN(int isbn) {
+	public void setIsbn(int isbn) {
 		this.isbn = isbn;
 	}
 	public String getPublisher() {
