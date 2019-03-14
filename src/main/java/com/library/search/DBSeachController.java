@@ -91,9 +91,7 @@ public class DBSeachController implements IDBSearchController {
 				resultsForPageNumber.getMovieSearchResults().add(iterator.next()); 
 			}
 		}
-		
-		resultsForPageNumber.setSearchRequestDetails(searchRequestsAndResults.searchRequestDetails);
-		
+				
 		return resultsForPageNumber;
 	}
 	
