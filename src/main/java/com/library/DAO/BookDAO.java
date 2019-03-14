@@ -209,7 +209,7 @@ public class BookDAO implements IBookDAO {
 	}
 	
 	private void prepareSearchQuery(IBookSearchRequestDetails requestDetails) {
-		query = "SELECT * FROM books WHERE ";
+		query = "SELECT DISTINCT * FROM books WHERE ";
 		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
 		for(String term : searchterms) {
 			if(requestDetails.isSearchBookAuthor()) {

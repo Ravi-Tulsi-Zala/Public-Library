@@ -193,7 +193,7 @@ public class MovieDAO implements IMovieDAO {
 	}
 	
 	private void prepareSearchQuery(IMovieSearchRequestDetails requestDetails) {
-		query = "SELECT * FROM movie WHERE ";
+		query = "SELECT DISTINCT * FROM movie WHERE ";
 		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
 		for(String term : searchterms) {
 			if(requestDetails.isSearchMovieTitle()) {

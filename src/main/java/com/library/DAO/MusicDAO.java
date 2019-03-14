@@ -201,7 +201,7 @@ public class MusicDAO implements IMusicDAO {
 	}
 	
 	private void prepareSearchQuery(IMusicSearchRequestDetails requestDetails) {
-		query = "SELECT * FROM music WHERE ";
+		query = "SELECT DISTINCT * FROM music WHERE ";
 		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
 		for(String term : searchterms) {
 			if(requestDetails.isSearchMusicAlbumName()) {
