@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+   <head>
+      <title>Spring MVC Form Handling</title>
+      <style>
+      td {
+      	padding-bottom: 20px;
+      	padding-right:50px
+      }
+      
+      h5 {
+      	margin: 0;
+      	font-weight:400;
+      }
+      </style>
+   </head>
+   <body id="pageBody" style="display:none">
+      <h2>Advanced Search</h2>      
+      <form method="post" action="/welcome" th:action="@{/welcome}">
+      	<div style="float:left;margin-bottom: 20px">
+      		<p>Search Terms <input type="text" style="width:330px;"/></p>
+      	</div>
+      	<div style="float:right;margin-bottom:20px">
+      	<input type="button" value="SignIn/SignOut" />
+      	</div>   	
+      </form>      
+   </body>
+   
+</html>

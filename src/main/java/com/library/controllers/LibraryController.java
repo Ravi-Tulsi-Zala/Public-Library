@@ -104,5 +104,18 @@ public class LibraryController implements WebMvcConfigurer {
 		}
 		return "Results";
 	}
+	
+	
+	@GetMapping("/welcome")
+	public String welcomeBody(User user) {
+		return "Welcome";
+	}
+
+	@PostMapping("/welcome")
+	public String welcomeProcess(ModelMap model,User user) {
+
+		
+		return "Welcome";
+	}
 
 }
