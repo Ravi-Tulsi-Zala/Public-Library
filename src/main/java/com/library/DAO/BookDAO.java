@@ -10,8 +10,6 @@ import java.util.List;
 
 import com.library.IDAO.IBookDAO;
 import com.library.businessModels.Book;
-import com.library.businessModels.LibraryItem;
-import com.library.common.Constants;
 import com.library.DAOMapper.IBookMapper;
 import com.library.DAOMapperImpl.BookMapper;
 import com.library.dbConnection.*;
@@ -23,7 +21,7 @@ public class BookDAO implements IBookDAO {
 	private String query;
 	private Connection connection;
 	private IBookMapper bookMapper = new BookMapper();
-	
+	private int firstBookNumber = 10000;
 	 public BookDAO(){
 
 		 try
@@ -354,8 +352,7 @@ public class BookDAO implements IBookDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();	
 			if(!resultSet.next())
 			{
-				Constants constants = new Constants();
-				return constants.First_Book_Number;
+				return firstBookNumber;
 			}
 			return resultSet.getInt("Item_ID"); 
 		}	
