@@ -1,9 +1,24 @@
 package com.library.controllers;
 
+import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import java.util.Map;
+import java.util.Properties;
+
 import javax.inject.Inject;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -12,10 +27,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.SignInController;
+import com.library.email.EmailUtility;
 import com.library.interfaces.IUserBasicInfo;
 import com.library.interfaces.IUserExtendedInfo;
 import com.library.search.DBSeachControllerBean;
@@ -127,5 +144,9 @@ public class LibraryController implements WebMvcConfigurer {
 		}
 		return "HomePage";
 	}
-
+	@RequestMapping(value = "/sendemail")
+	public String sendEmail() throws AddressException, MessagingException, IOException {
+	   EmailUtility.sendmail();
+	   return "Email sent successfully";   
+	}
 }
