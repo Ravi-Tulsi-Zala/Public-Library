@@ -1,9 +1,9 @@
-package com.library.DAOMapper;
+package com.library.IBussinessModelSetter;
 
 import java.sql.ResultSet;
 
 import com.library.businessModels.Movie;
 
-public interface IMovieMapper {
+public interface IMovieSetter {
 	public Movie mapMovie(ResultSet resultSet);
 }

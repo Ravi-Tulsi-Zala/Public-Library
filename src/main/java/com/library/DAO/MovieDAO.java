@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.library.DAOMapper.IMovieMapper;
-import com.library.DAOMapperImpl.MovieMapper;
+import com.library.BussinessModelSetter.MovieSetter;
+import com.library.IBussinessModelSetter.IMovieSetter;
 import com.library.IDAO.IMovieDAO;
 import com.library.businessModels.Movie;
 import com.library.dbConnection.DatabaseConnection;
@@ -19,7 +19,7 @@ public class MovieDAO implements IMovieDAO {
 	private PreparedStatement preparedStatement;
 	String query;
 	Connection connection;
-	IMovieMapper movieMapper = new MovieMapper();
+	IMovieSetter movieMapper = new MovieSetter();
 
 	public MovieDAO() {
 
