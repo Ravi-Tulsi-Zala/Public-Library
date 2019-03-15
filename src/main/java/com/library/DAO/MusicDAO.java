@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.library.DAOMapper.IMusicMapper;
-import com.library.DAOMapperImpl.MusicMapper;
+import com.library.BussinessModelSetter.MusicSetter;
+import com.library.IBussinessModelSetter.IMusicSetter;
 import com.library.IDAO.IMusicDAO;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
@@ -22,7 +22,7 @@ public class MusicDAO implements IMusicDAO {
 	private PreparedStatement preparedStatement;
 	String query;
 	Connection connection;
-	IMusicMapper musicMapper = new MusicMapper();
+	IMusicSetter musicMapper = new MusicSetter();
 
 	public MusicDAO() {
 

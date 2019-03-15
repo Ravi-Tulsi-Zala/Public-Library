@@ -10,8 +10,8 @@ import java.util.List;
 
 import com.library.IDAO.IBookDAO;
 import com.library.businessModels.Book;
-import com.library.DAOMapper.IBookMapper;
-import com.library.DAOMapperImpl.BookMapper;
+import com.library.BussinessModelSetter.BookSetter;
+import com.library.IBussinessModelSetter.IBookSetter;
 import com.library.dbConnection.*;
 import com.library.search.IBookSearchRequestDetails;
 
@@ -20,8 +20,7 @@ public class BookDAO implements IBookDAO {
 	private PreparedStatement preparedStatement;
 	private String query;
 	private Connection connection;
-	private IBookMapper bookMapper = new BookMapper();
-	private int firstBookNumber = 10000;
+	private IBookSetter bookMapper = new BookSetter();
 	 public BookDAO(){
 
 		 try
@@ -267,13 +266,12 @@ public class BookDAO implements IBookDAO {
 			preparedStatement  = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
 			preparedStatement.executeUpdate();	
-			changeBooksItemID(itemID);
 			return true;
 		}	
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return false;
 	}
 
 	@Override
@@ -284,21 +282,19 @@ public class BookDAO implements IBookDAO {
 		int isbn = book.getIsbn();
 		String publisher = book.getPublisher();
 		String description =  book.getDescription();
-		int itemID = getLastID() + 1;
 		int availablity = book.getAvailability();
 		try {
 			
-			query = "Insert into books (Item_ID,Category,Title,Author,ISBN,Publisher,Description,Availability) Values "
-					+ "(?,?,?,?,?,?,?,?)";
+			query = "Insert into books (Category,Title,Author,ISBN,Publisher,Description,Availability) Values "
+					+ "(?,?,?,?,?,?,?)";
 			 preparedStatement = connection.prepareStatement(query);
-			 preparedStatement.setInt(1, itemID);
-			 preparedStatement.setString(2, category);
-			 preparedStatement.setString(3, title);
-			 preparedStatement.setString(4, author);
-			 preparedStatement.setInt(5, isbn);
-			 preparedStatement.setString(6, publisher);
-			 preparedStatement.setString(7, description);
-			 preparedStatement.setInt(8, availablity);
+			 preparedStatement.setString(1, category);
+			 preparedStatement.setString(2, title);
+			 preparedStatement.setString(3, author);
+			 preparedStatement.setInt(4, isbn);
+			 preparedStatement.setString(5, publisher);
+			 preparedStatement.setString(6, description);
+			 preparedStatement.setInt(7, availablity);
 			 preparedStatement.executeUpdate();
 			 return true;
 		 }
@@ -331,7 +327,6 @@ public class BookDAO implements IBookDAO {
 			 preparedStatement.setString(6, description);
 			 preparedStatement.setInt(7, availablity);
 			 preparedStatement.setInt(8, itemID);
-			 System.out.println(preparedStatement);
 			 preparedStatement.executeUpdate();
 			 return true;
 		 }
@@ -340,40 +335,6 @@ public class BookDAO implements IBookDAO {
 			 e.printStackTrace();
 		 }
 		 return false;
-	}
-
-	@Override
-	public int getLastID() {
-		try
-		{
-			
-			query = "SELECT Item_ID from books where Item_ID = (SELECT MAX(Item_ID) FROM books)"; 
-			preparedStatement  = connection.prepareStatement(query);
-			ResultSet resultSet = preparedStatement.executeQuery();	
-			if(!resultSet.next())
-			{
-				return firstBookNumber;
-			}
-			return resultSet.getInt("Item_ID"); 
-		}	
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
-	@Override
-	public void changeBooksItemID(int itemID) {
-		try
-		{
-			query = "Update books set Item_ID = Item_ID - 1 where Item_ID > ?";
-			preparedStatement  = connection.prepareStatement(query);
-			preparedStatement.setInt(1, itemID);
-			preparedStatement.executeUpdate();	
-		}	
-		catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }
 	
