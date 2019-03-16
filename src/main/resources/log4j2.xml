@@ -20,13 +20,13 @@
 			<AppenderRef ref="FileAppender" />
 		</Logger>
 
-		<Logger name="org.springframework.boot" level="debug"
+		<Logger name="org.springframework.boot" level="info"
 			additivity="false">
 			<AppenderRef ref="ConsoleAppender" />
 			<AppenderRef ref="FileAppender" />
 		</Logger>
 
-		<Logger name="org.springframework.core" level="debug"
+		<Logger name="org.springframework.core" level="info"
 			additivity="false">
 			<AppenderRef ref="ConsoleAppender" />
 			<AppenderRef ref="FileAppender" />

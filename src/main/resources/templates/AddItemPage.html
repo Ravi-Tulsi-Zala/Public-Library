@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Add Item</title>
+    <meta charset="UTF-8" />
     <script type="text/javascript">
         function setForm(value) {
-
+			
             if(value == 'Book') {
                 document.getElementById('Book').style='display:block;';
                 document.getElementById('Movie').style='display:none;';
@@ -22,8 +23,18 @@
             }
         }
 
-        var loadFile = function(event) {
-        var output = document.getElementById('output');
+        var loadFileBook = function(event) {
+        var output = document.getElementById('outputBookCover');
+            output.src = URL.createObjectURL(event.target.files[0]);
+        };
+        
+        var loadFileMovie = function(event) {
+        var output = document.getElementById('outputMovieCover');
+            output.src = URL.createObjectURL(event.target.files[0]);
+        };
+        
+        var loadFileMusic = function(event) {
+        var output = document.getElementById('outputMusicCover');
             output.src = URL.createObjectURL(event.target.files[0]);
         };
 
@@ -66,12 +77,27 @@
       margin: 4px 2px;
      
     }
+    #headerDiv
+    {
+    	text-align:center;
+    }
+    
+    #headerText
+    {
+    	font-size: 2em;
+    	font-weight: bolder;
+    }
+	#adminLink
+	{
+		float: right;
+		font-size: x-large;
+	}    
 </style>
 </head>
-<body>
-    <div style="text-align:center">
-        <span style="font-size: 2em;font-weight: bolder">Library Management System</span>
-        <a href="#" style="float: right;font-size: x-large">Administrator</a>
+<body id="">
+    <div id="headerDiv">
+        <span id="headerText">Library Management System</span>
+        <a href="#" id="adminLink">Administrator</a>
     </div>
     <h2>Add Item</h2>
     <div class="formElements">
@@ -83,7 +109,7 @@
         </select>
     </div>  
     <div id="Book">
-        <form  method="post"  name="bookForm" action="">
+        <form  method="post" name="bookForm" action="">
             <div class="formElements">
                 <label>Category</label> 
                 <select id="bookCategory" >
@@ -113,12 +139,12 @@
             <div class="formElements">
                 <label>Description</label>
                 <textarea name="bookDescription"></textarea>
-            </div>
+            </div> 
             
             <div class="coverImg">
                 <label>Cover Image:</label> 
-                <input type="file" accept="image/*" onchange="loadFile(event)">
-                <img id="output"/>
+                <input type="file" accept="image/*" onchange="loadFileBook(event)">
+                <img id="outputBookCover"/>
             </div>
            
             <span><button class="btn" id="save" name="saveBtn" >Save Item</button></span>
@@ -152,8 +178,8 @@
             </div>
             <div class="coverImg">
                 <label>Cover Image:</label> 
-                <input type="file" accept="image/*" onchange="loadFile(event)">
-                <img id="output"/>
+                <input type="file" accept="image/*" onchange="loadFileMovie(event)">
+                <img id="outputMovieCover"/>
             </div>
             <span><button class="btn" id="save" name="saveBtn" >Save Item</button></span>
             <span><button class="btn" id="cancel" name="cancelBtn" >Cancel</button></span>
@@ -174,6 +200,7 @@
                 <label>Title</label> 
                 <input type="text" name="musicTitle">
             </div>
+           
             <div class="formElements">
                 <label>Artist</label> 
                 <input type="text" name="musicArtist">
@@ -184,8 +211,8 @@
             </div>
             <div class="coverImg">
                 <label>Cover Image:</label> 
-                <input type="file" accept="image/*" onchange="loadFile(event)">
-                <img id="output"/>
+                <input type="file" accept="image/*" onchange="loadFileMusic(event)">
+                <img id="outputMusicCover"/>
             </div>
             <span><button class="btn"  id="save" name="saveBtn" >Save Item</button></span>
             <span><button class="btn"  id="cancel" name="cancelBtn" >Cancel</button></span> 
