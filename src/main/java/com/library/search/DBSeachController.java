@@ -16,10 +16,10 @@ import com.library.businessModels.Music;
 public class DBSeachController implements IDBSearchController {
 
 	
-	private final int NUM_OF_SEARCH_RESULTS_IN_DISPLAY_ROW = 10; // should move to the configuration file?
+	private final int NUM_OF_SEARCH_RESULTS_IN_DISPLAY_ROW = 10; // should move to the configuration file
 	private Map<String, SearchRequestsAndResults> sessionIdToSearchRequestsAndResults = new HashMap<>();
 	
-	class SearchRequestsAndResults {
+	protected class SearchRequestsAndResults {
 		SearchRequestDetails searchRequestDetails;
 		SearchResults searchResults;
 		
@@ -31,40 +31,64 @@ public class DBSeachController implements IDBSearchController {
 
 	
 	@Override
-	public SearchResults search(SearchRequestDetails searchRequestDetails, HttpSession httpSession) {
-		SearchRequestsAndResults searchRequestsAndResults;
+	synchronized public SearchResults search(SearchRequestDetails searchRequestDetails, HttpSession httpSession) {
+		SearchRequestsAndResults searchRequestsAndResults = null;
 		String sessionId = httpSession.getId();
 		
-		if(!(sessionIdToSearchRequestsAndResults.containsKey(httpSession.getId())) || !(sessionIdToSearchRequestsAndResults.
-				get(sessionId).searchRequestDetails.onlyRequestedPageDiffers(searchRequestDetails))) {
-			SearchResults searchResults = new SearchResults();
-			if(searchRequestDetails.isExtendedSearch()) {
-				if(searchRequestDetails.isSearchInBooks()) {
-					searchResults.setBookSearchResults(new BookDAO().getBooksBySearchTerms(searchRequestDetails));
-				}
-				if(searchRequestDetails.isSearchInMusic()) {
-					searchResults.setMusicSearchResults(new MusicDAO().getMusicBySearchTerms(searchRequestDetails));
-				}
-				if(searchRequestDetails.isSearchInMovies()) {
-					searchResults.setMovieSearchResults(new MovieDAO().getMoviesBySearchTerms(searchRequestDetails));
-				}
+		boolean isNotFirstSearchForSessionID = sessionIdToSearchRequestsAndResults.containsKey(httpSession.getId());
+		boolean isSameSearechCriteriaButAnotherResultsPage = false;
+		if(isNotFirstSearchForSessionID) {
+			isSameSearechCriteriaButAnotherResultsPage = 
+					sessionIdToSearchRequestsAndResults.get(sessionId).searchRequestDetails.onlyRequestedPageDiffers(searchRequestDetails);
+		}
+		
+		if(isNotFirstSearchForSessionID) {
+			if(isSameSearechCriteriaButAnotherResultsPage) {
+				searchRequestsAndResults = sessionIdToSearchRequestsAndResults.get(httpSession.getId());
+				searchRequestsAndResults.searchRequestDetails.setRequestedSearchResultsPageNumber(
+						searchRequestDetails.getRequestedSearchResultsPageNumber());
 			} else {
+				sessionIdToSearchRequestsAndResults.remove(httpSession.getId());
+				executeNewSearchInDb(searchRequestDetails,httpSession);
+			}
+		} else {
+			searchRequestsAndResults = executeNewSearchInDb(searchRequestDetails, httpSession);
+		}
+		
+		SearchResults resultSetForRequestedPageNum = calculateResultSetForRequestedSearchPageNumber(searchRequestsAndResults);
+//		CoverImageController
+//		loadCoverImages(resultSetForRequestedPageNum);
+		return resultSetForRequestedPageNum;
+	}
+
+	protected SearchRequestsAndResults executeNewSearchInDb(SearchRequestDetails searchRequestDetails, HttpSession httpSession) {
+		SearchResults searchResults = searchInDb(searchRequestDetails);
+		SearchRequestsAndResults searchRequestsAndResults = new SearchRequestsAndResults(searchRequestDetails, searchResults);
+		sessionIdToSearchRequestsAndResults.put(httpSession.getId(), searchRequestsAndResults);
+		return searchRequestsAndResults;
+	}
+
+	protected SearchResults searchInDb(SearchRequestDetails searchRequestDetails) {
+		SearchResults searchResults = new SearchResults();
+		if(searchRequestDetails.isExtendedSearch()) {
+			if(searchRequestDetails.isSearchInBooks()) {
 				searchResults.setBookSearchResults(new BookDAO().getBooksBySearchTerms(searchRequestDetails));
+			}
+			if(searchRequestDetails.isSearchInMusic()) {
 				searchResults.setMusicSearchResults(new MusicDAO().getMusicBySearchTerms(searchRequestDetails));
+			}
+			if(searchRequestDetails.isSearchInMovies()) {
 				searchResults.setMovieSearchResults(new MovieDAO().getMoviesBySearchTerms(searchRequestDetails));
 			}
-			searchRequestsAndResults = new SearchRequestsAndResults(searchRequestDetails, searchResults);
-			sessionIdToSearchRequestsAndResults.put(httpSession.getId(), searchRequestsAndResults);
 		} else {
-			searchRequestsAndResults = sessionIdToSearchRequestsAndResults.get(httpSession.getId());
-			searchRequestsAndResults.searchRequestDetails.setRequestedSearchResultsPageNumber(
-					searchRequestDetails.getRequestedSearchResultsPageNumber());
+			searchResults.setBookSearchResults(new BookDAO().getBooksBySearchTerms(searchRequestDetails));
+			searchResults.setMusicSearchResults(new MusicDAO().getMusicBySearchTerms(searchRequestDetails));
+			searchResults.setMovieSearchResults(new MovieDAO().getMoviesBySearchTerms(searchRequestDetails));
 		}
-
-		return calculateResultsForPageNumber(searchRequestsAndResults);
+		return searchResults;
 	}
 	
-	private SearchResults calculateResultsForPageNumber(SearchRequestsAndResults searchRequestsAndResults) {
+	protected SearchResults calculateResultSetForRequestedSearchPageNumber(SearchRequestsAndResults searchRequestsAndResults) {
 		int pageNumber = searchRequestsAndResults.searchRequestDetails.getRequestedSearchResultsPageNumber();
 		SearchResults resultsForPageNumber = new SearchResults();
 		
@@ -94,7 +118,4 @@ public class DBSeachController implements IDBSearchController {
 				
 		return resultsForPageNumber;
 	}
-	
-	
-
 }
