@@ -15,6 +15,7 @@ function validateSearchForm() {
 	
 	var atLeastOneFiledIsSelectedForBooks = document.getElementById("bookTitle").checked == true ||
 	document.getElementById("bookAuthor").checked == true  ||
+	document.getElementById("bookCategory").checked == true  ||
 	document.getElementById("bookPublisher").checked == true  ||
 	document.getElementById("bookDescription").checked == true  ||
 	document.getElementById("bookISBN").checked == true ;

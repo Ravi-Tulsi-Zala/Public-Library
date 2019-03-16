@@ -13,6 +13,7 @@ public class SearchRequestDetails implements IBookSearchRequestDetails,
 	private boolean searchInBooks = false;
 	private boolean searchBookTitle = false;
 	private boolean searchBookAuthor = false;
+	private boolean searchBookCategory = false;
 	private boolean searchBookPublisher = false;
 	private boolean searchBookDescription = false;
 	private boolean searchBookISBN = false;
@@ -63,6 +64,13 @@ public class SearchRequestDetails implements IBookSearchRequestDetails,
 	@Override
 	public boolean isSearchBookAuthor() {
 		return searchBookAuthor;
+	}
+	@Override
+	public boolean isSearchBookCategory() {
+		return searchBookCategory;
+	}
+	public void setSearchBookCategory(boolean searchBookCategory) {
+		this.searchBookCategory = searchBookCategory;
 	}
 	public void setSearchBookAuthor(boolean searchBookAuthor) {
 		this.searchBookAuthor = searchBookAuthor;

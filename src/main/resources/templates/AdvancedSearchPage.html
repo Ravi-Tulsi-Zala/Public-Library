@@ -61,7 +61,11 @@
 					<div>
 						<input type="checkbox" id="bookAuthor" th:field="${searchRequestDetails.searchBookAuthor}"/>
 						<label th:for="bookAuthor" th:text="'Author'"></label>
-					</div>	
+					</div>
+					<div>
+						<input type="checkbox" id="bookCategory" th:field="${searchRequestDetails.searchBookCategory}"/>
+						<label th:for="bookAuthor" th:text="'Category'"></label>
+					</div>							
 					<div>
 						<input type="checkbox" id="bookPublisher" th:field="${searchRequestDetails.searchBookPublisher}"/>
 						<label th:for="bookPublisher" th:text="'Publisher'"></label>
