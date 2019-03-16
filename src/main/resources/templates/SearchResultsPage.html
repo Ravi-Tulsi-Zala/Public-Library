@@ -16,7 +16,7 @@
    </head>
 	<body>		
 	   	<div>
-		  <form method="post" action="/search" th:action="@{/search}" style="float:left;line-height: 3em;">
+		  <form method="post"  onsubmit="return validateSearchForm()" action="/search" th:action="@{/search}" style="float:left;line-height: 3em;">
       		<input type="text" th:field="${searchRequestDetails.searchTerms}">
 			<input type="checkbox" id="extendedSearch" th:field="${searchRequestDetails.extendedSearch}" style="display:none"/>
 			<input type="checkbox" id="searchInBooks" th:field="${searchRequestDetails.searchInBooks}" style="display:none"/>
@@ -96,4 +96,5 @@
 		  </div>
 		</div>
 	</body>
+	<script src="js/SearchCreteriaInputValidation.js"></script>
 </html>
