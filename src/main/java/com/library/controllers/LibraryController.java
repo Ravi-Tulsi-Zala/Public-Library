@@ -80,16 +80,18 @@ public class LibraryController implements WebMvcConfigurer {
 
 	@PostMapping("/search")
 	public String getSearchResults(HttpSession httpSession, ModelMap model, SearchRequestDetails srchRequestDetails)  {
-		if(AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			SearchResults searchResults = dbSearchController.search(srchRequestDetails, httpSession);
 			model.addAttribute("searchRequestDetails", srchRequestDetails);
 			model.addAttribute("searchResults", searchResults);
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 			
 			return "SearchResultsPage";	
-		}
-		return "NoAccessToNonAuthenticated";
-	}	
+	}
+	
+	@GetMapping("/")
+	public String getItemDetailsById() {
+		return "ItemDetailsPage";
+	}
 
 //	@RequestMapping("/")
 //	String entry() {
