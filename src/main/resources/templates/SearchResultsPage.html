@@ -18,6 +18,21 @@
 	   	<div>
 		  <form method="post" action="/search" th:action="@{/search}" style="float:left;line-height: 3em;">
       		<input type="text" th:field="${searchRequestDetails.searchTerms}">
+			<input type="checkbox" id="extendedSearch" th:field="${searchRequestDetails.extendedSearch}" style="display:none"/>
+			<input type="checkbox" id="searchInBooks" th:field="${searchRequestDetails.searchInBooks}" style="display:none"/>
+			<input type="checkbox" id ="searchInMovies" th:field="${searchRequestDetails.searchInMovies}" style="display:none"/>
+			<input type="checkbox" id ="searchInMusic" th:field="${searchRequestDetails.searchInMusic}" style="display:none"/>
+			<input type="checkbox" id="bookTitle" th:field="${searchRequestDetails.searchBookTitle}" style="display:none"/>
+			<input type="checkbox" id="bookAuthor" th:field="${searchRequestDetails.searchBookAuthor}" style="display:none"/>
+			<input type="checkbox" id="bookPublisher" th:field="${searchRequestDetails.searchBookPublisher}" style="display:none"/>
+			<input type="checkbox" id="bookDescription" th:field="${searchRequestDetails.searchBookDescription}" style="display:none"/>
+			<input type="checkbox" id="bookISBN" th:field="${searchRequestDetails.searchBookISBN}" style="display:none"/>
+			<input type="checkbox" id="musicAlbumName" th:field="${searchRequestDetails.searchMusicAlbumName}" style="display:none"/>
+			<input type="checkbox" id="musicArtist" th:field="${searchRequestDetails.searchMusicArtist}" style="display:none"/>
+			<input type="checkbox" id="musicRecordLabel" th:field="${searchRequestDetails.searchMusicRecordLabel}" style="display:none"/>
+			<input type="checkbox" id="movieTitle" th:field="${searchRequestDetails.searchMovieTitle}" style="display:none"/>
+			<input type="checkbox" id="movieDirector" th:field="${searchRequestDetails.searchMovieDirector}" style="display:none"/>
+			<input type="checkbox" id="movieDescription" th:field="${searchRequestDetails.searchMovieDescription}" style="display:none"/>
       		<input type="submit">		      									
 		  </form>		    
 	   	  <a style="float:right;line-height: 3em;" href="logOut">Logout</a>
