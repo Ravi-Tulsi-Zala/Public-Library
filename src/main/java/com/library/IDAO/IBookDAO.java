@@ -15,6 +15,7 @@ public interface IBookDAO {
 	public Boolean deleteBookByID(int itemID);
 	public Boolean createBook(Book book);
 	public Boolean updateBook(Book book);
+	public List<Book> getBookByCategory(String category);
 	public List<Book> getBookByKeyword(String keyword);
 	public int getLastID();
 	public void changeBooksItemID(int itemID);

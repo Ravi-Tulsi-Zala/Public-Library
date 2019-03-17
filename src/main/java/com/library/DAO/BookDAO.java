@@ -351,5 +351,31 @@ public class BookDAO implements IBookDAO {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public List<Book> getBookByCategory(String category) {
+		try {
+			List<Book> books = new ArrayList<Book>();
+			Book book = new Book();
+			query = "SELECT * FROM books WHERE Category=?"; 
+			preparedStatement  = connection.prepareStatement(query);
+			preparedStatement.setString(1,category);
+			ResultSet resultSet = preparedStatement.executeQuery();	
+			if(!resultSet.next())
+			{
+				return null;
+			}
+			do
+			{
+				book = bookMapper.mapBook(resultSet);
+				books.add(book);
+			} while(resultSet.next());
+			return books;
+		}	
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
 	

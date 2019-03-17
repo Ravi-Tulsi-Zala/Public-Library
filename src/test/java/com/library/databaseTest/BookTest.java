@@ -105,4 +105,12 @@ public class BookTest {
 		int Item_ID = bookDAO.getLastID();
 		assertEquals(100001, Item_ID);
 	}
+	
+	@Test
+	public void getBookByCategoryTest()
+	{
+		List<Book> books = bookDAO.getBooksByAuthor("Horror");
+		System.out.print(books.get(0).getCategory());
+		assertEquals("Horror",books.get(0).getCategory());
+	}
 }
