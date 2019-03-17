@@ -15,7 +15,6 @@ public class BookDisplay implements IDisplayObjects{
 	{
 		List<Book> books = new ArrayList<Book>();
 		BookDAO bookDAO = new BookDAO();
-		books = bookDAO.
 	}
 	
 	@Override
