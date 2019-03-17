@@ -22,12 +22,10 @@ public class MovieDAO implements IMovieDAO {
 	private PreparedStatement preparedStatement;
 	String query;
 	Connection connection;
-<<<<<<< HEAD
+
 	IMovieMapper iMovieMapper = new MovieMapper();
 	private static final Logger logger = LogManager.getLogger(MovieDAO.class);
-=======
-	IMovieMapper movieMapper = new MovieMapper();
->>>>>>> e13b8c9679d4fc9e59572356061a1531d9df1699
+
 
 	public MovieDAO() {
 
@@ -49,7 +47,7 @@ public class MovieDAO implements IMovieDAO {
 			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				movie = movieMapper.mapMovie(resultSet);
+				movie = iMovieMapper.mapMovie(resultSet);
 			}
 		} catch (Exception e) {
 			
@@ -69,7 +67,7 @@ public class MovieDAO implements IMovieDAO {
 			preparedStatement.setString(1, "%"+movieTitle+"%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				movie = movieMapper.mapMovie(resultSet);
+				movie = iMovieMapper.mapMovie(resultSet);
 			}
 		} catch (Exception e) {
 			logger.log(Level.ALL,"SQL related exception",e);
@@ -90,7 +88,7 @@ public class MovieDAO implements IMovieDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = new Movie();
-				movie = movieMapper.mapMovie(resultSet);
+				movie = iMovieMapper.mapMovie(resultSet);
 				moviesByDirectorName.add(movie);
 			}
 		} catch (Exception e) {
@@ -112,7 +110,7 @@ public class MovieDAO implements IMovieDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = new Movie();
-				movie = movieMapper.mapMovie(resultSet);
+				movie = iMovieMapper.mapMovie(resultSet);
 				moviesByCategory.add(movie);
 			}
 		} catch (Exception e) {
@@ -134,7 +132,7 @@ public class MovieDAO implements IMovieDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = new Movie();
-				movie = movieMapper.mapMovie(resultSet);
+				movie = iMovieMapper.mapMovie(resultSet);
 				moviesByDescription.add(movie);
 			}
 		} catch (Exception e) {
@@ -234,7 +232,7 @@ public class MovieDAO implements IMovieDAO {
 			}
 			do
 			{
-				movie = movieMapper.mapMovie(resultSet);
+				movie = iMovieMapper.mapMovie(resultSet);
 				movies.add(movie);
 			} while(resultSet.next());
 			

@@ -119,8 +119,6 @@ public class LibraryController implements WebMvcConfigurer {
 		}
 		return "Results";
 	}
-<<<<<<< HEAD
-=======
 	
 	@GetMapping("/logOut")
 	public String processLogOut(HttpSession httpSession, ModelMap model,User user) {
@@ -131,5 +129,4 @@ public class LibraryController implements WebMvcConfigurer {
 		return "HomePage";
 	}
 
->>>>>>> e13b8c9679d4fc9e59572356061a1531d9df1699
 }
