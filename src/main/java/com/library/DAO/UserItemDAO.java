@@ -1,5 +1,7 @@
 package com.library.DAO;
 
-public class UserItemDAO {
+import com.library.IDAO.IUserItemDAO;
+
+public class UserItemDAO implements IUserItemDAO {
 
 }
