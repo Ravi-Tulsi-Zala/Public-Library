@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.logging.log4j.Level;
@@ -14,14 +15,17 @@ import com.library.DAOMapperImpl.MovieMapper;
 import com.library.IDAO.IMovieDAO;
 import com.library.businessModels.Movie;
 import com.library.dbConnection.DatabaseConnection;
+import com.library.search.IMovieSearchRequestDetails;
 
 public class MovieDAO implements IMovieDAO {
 
 	private PreparedStatement preparedStatement;
 	String query;
 	Connection connection;
+
 	IMovieMapper iMovieMapper = new MovieMapper();
 	private static final Logger logger = LogManager.getLogger(MovieDAO.class);
+
 
 	public MovieDAO() {
 
@@ -32,7 +36,7 @@ public class MovieDAO implements IMovieDAO {
 			
 		}
 	}
-
+	
 	@Override
 	public Movie getMovieById(int itemID) {
 
@@ -43,7 +47,7 @@ public class MovieDAO implements IMovieDAO {
 			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				movie = iMovieMapper.mapMovie(resultSet);
+				movie = movieMapper.mapMovie(resultSet);
 			}
 		} catch (Exception e) {
 			
@@ -63,7 +67,7 @@ public class MovieDAO implements IMovieDAO {
 			preparedStatement.setString(1, "%"+movieTitle+"%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				movie = iMovieMapper.mapMovie(resultSet);
+				movie = movieMapper.mapMovie(resultSet);
 			}
 		} catch (Exception e) {
 			logger.log(Level.ALL,"SQL related exception",e);
@@ -84,7 +88,7 @@ public class MovieDAO implements IMovieDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = new Movie();
-				movie = iMovieMapper.mapMovie(resultSet);
+				movie = movieMapper.mapMovie(resultSet);
 				moviesByDirectorName.add(movie);
 			}
 		} catch (Exception e) {
@@ -106,7 +110,7 @@ public class MovieDAO implements IMovieDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = new Movie();
-				movie = iMovieMapper.mapMovie(resultSet);
+				movie = movieMapper.mapMovie(resultSet);
 				moviesByCategory.add(movie);
 			}
 		} catch (Exception e) {
@@ -128,7 +132,7 @@ public class MovieDAO implements IMovieDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = new Movie();
-				movie = iMovieMapper.mapMovie(resultSet);
+				movie = movieMapper.mapMovie(resultSet);
 				moviesByDescription.add(movie);
 			}
 		} catch (Exception e) {
@@ -193,5 +197,50 @@ public class MovieDAO implements IMovieDAO {
 			logger.log(Level.ALL,"SQL related exception",e);
 		}
 		return false;
+	}
+	
+	private void prepareSearchQuery(IMovieSearchRequestDetails requestDetails) {
+		query = "SELECT * FROM movie WHERE ";
+		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
+		for(String term : searchterms) {
+			if(requestDetails.isSearchMovieTitle()) {
+				query += "Title like \"%" + term + "%\" or ";
+			}
+			if(requestDetails.isSearchMovieDirector()) {
+				query += "Director like \"%" + term + "%\" or ";
+			}
+			if(requestDetails.isSearchMovieDescription()) {
+				query += "Description like \"%" + term + "%\" or ";
+			}
+		}
+		
+		query = query.substring(0, query.length() - 4);
+	}
+	
+	@Override
+	public LinkedList<Movie> getMoviesBySearchTerms(IMovieSearchRequestDetails searchRequestDetails) {
+		LinkedList<Movie> movies = new LinkedList<Movie>();
+		Movie movie;
+		prepareSearchQuery(searchRequestDetails);
+		
+		try {
+			preparedStatement  = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();	
+			if(!resultSet.next())
+			{
+				return null;
+			}
+			do
+			{
+				movie = movieMapper.mapMovie(resultSet);
+				movies.add(movie);
+			} while(resultSet.next());
+			
+			return movies;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 }
