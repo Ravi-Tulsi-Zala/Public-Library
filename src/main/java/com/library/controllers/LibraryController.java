@@ -1,10 +1,9 @@
 package com.library.controllers;
 
 import java.util.List;
-
 import java.util.Map;
+
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.annotation.ComponentScan;
@@ -14,15 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.library.signIn.AuthenticatedUsers;
-import com.library.signIn.SignInController;
 import com.library.interfaces.IUserBasicInfo;
 import com.library.interfaces.IUserExtendedInfo;
 import com.library.search.DBSeachControllerBean;
 import com.library.search.IDBSearchController;
 import com.library.search.SearchRequestDetails;
 import com.library.search.SearchResults;
-import com.library.signUp.SignUpController;
+import com.library.signIn.AuthenticatedUsers;
 import com.library.signUp.User;
 import com.library.signUp.UserBasicInfo;
 import com.library.signUp.UserExtendedInfo;
@@ -36,26 +33,31 @@ public class LibraryController implements WebMvcConfigurer {
 
 	@PostMapping("/signUp")
 	public String processSignUpForm(ModelMap model, User user) {
-		ILibraryFactory factory = new LibraryControllerFactory();
-		IUserExtendedInfo userExtendedInfo = new UserExtendedInfo();
-		IUserBasicInfo userBasicInfo = new UserBasicInfo();
-		userBasicInfo.setEmail(user.getEmail());
-		userBasicInfo.setPwd(user.getPassword());
-		userExtendedInfo.setCPassword(user.getCpassword());
-		userExtendedInfo.setFullname(user.getFullName());
-		userExtendedInfo.setPhone(user.getPhoneNumber());
-		LibraryFactorySingleton.instance().build(factory);
-		List<Map.Entry<String, String>> list = LibraryFactorySingleton.instance().getFactory()
-				.signUp(userBasicInfo, userExtendedInfo).authenticateSignUp();
-		for (int i = 0; i < list.size(); i++) {
-			model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
-		}
-		// model object has by default two values; anytime it gets more than that
-		// signifies a validation violation
-		if (model.size() > 2) {
-			return "SignUpForm";
+		try {
+			ILibraryFactory factory = new LibraryControllerFactory();
+			IUserExtendedInfo userExtendedInfo = new UserExtendedInfo();
+			IUserBasicInfo userBasicInfo = new UserBasicInfo();
+			userBasicInfo.setEmail(user.getEmail());
+			userBasicInfo.setPwd(user.getPassword());
+			userExtendedInfo.setCPassword(user.getCpassword());
+			userExtendedInfo.setFullname(user.getFullName());
+			userExtendedInfo.setPhone(user.getPhoneNumber());
+			LibraryFactorySingleton.instance().build(factory);
+			List<Map.Entry<String, String>> list = LibraryFactorySingleton.instance().getFactory()
+					.signUp(userBasicInfo, userExtendedInfo).authenticateSignUp();
+			for (int i = 0; i < list.size(); i++) {
+				model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
+			}
+			// model object has by default two values; anytime it gets more than that
+			// signifies a validation violation
+			if (model.size() > 2) {
+				return "SignUpForm";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return "Results";
+
 	}
 
 	@GetMapping("/signUp")
@@ -110,21 +112,25 @@ public class LibraryController implements WebMvcConfigurer {
 
 	@PostMapping("/signIn")
 	public String process(HttpSession httpSession, ModelMap model, User user) {
-		ILibraryFactory factory = new LibraryControllerFactory();
-		IUserBasicInfo userBasicInfo = new UserBasicInfo();
-		userBasicInfo.setEmail(user.getEmail());
-		userBasicInfo.setPwd(user.getPassword());
-		LibraryFactorySingleton.instance().build(factory);
-		List<Map.Entry<String, String>> list = LibraryFactorySingleton.instance().getFactory()
-				.signIn(userBasicInfo, httpSession).authenticateSignIn();
+		try {
+			ILibraryFactory factory = new LibraryControllerFactory();
+			IUserBasicInfo userBasicInfo = new UserBasicInfo();
+			userBasicInfo.setEmail(user.getEmail());
+			userBasicInfo.setPwd(user.getPassword());
+			LibraryFactorySingleton.instance().build(factory);
+			List<Map.Entry<String, String>> list = LibraryFactorySingleton.instance().getFactory()
+					.signIn(userBasicInfo, httpSession).authenticateSignIn();
 
-		for (int i = 0; i < list.size(); i++) {
-			model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
-		}
-		// model object has by default two values and anytime it gets more than that
-		// signifies a validation violation
-		if (model.size() > 2) {
-			return "SignInForm";
+			for (int i = 0; i < list.size(); i++) {
+				model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
+			}
+			// model object has by default two values and anytime it gets more than that
+			// signifies a validation violation
+			if (model.size() > 2) {
+				return "SignInForm";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return "Results";
 	}
