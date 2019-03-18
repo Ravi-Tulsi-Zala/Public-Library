@@ -1,10 +1,11 @@
 package com.library.controllers;
 
+import java.sql.Blob;
+
 import java.util.List;
 
 import java.util.Map;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.annotation.ComponentScan;
@@ -12,10 +13,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.SignInController;
+import com.library.DAO.CoverDAO;
 import com.library.interfaces.IUserBasicInfo;
 import com.library.interfaces.IUserExtendedInfo;
 import com.library.search.DBSeachControllerBean;
@@ -32,6 +36,11 @@ basePackageClasses = DBSeachControllerBean.class)
 @Controller
 public class LibraryController implements WebMvcConfigurer {
 
+	private int[] imageId = {2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012,
+							100001,100002,100003,
+							3001,3002, 3003, 3004, 3005, 3006, 3007, 3008, 3009, 3010, 3011, 3012, 3013, 3014};
+	private int arrayIndex = 0;
+	
 	@Inject
 	private IDBSearchController dbSearchController;
 	
@@ -129,5 +138,34 @@ public class LibraryController implements WebMvcConfigurer {
 		}
 		return "HomePage";
 	}
+	
+	@PostMapping(value = "/uploadFile")
+	public String uploadFileHandler(@RequestParam("file") MultipartFile file) {
 
+		if (!file.isEmpty()) {
+			try {
+				String originalFileName = file.getOriginalFilename();
+				byte[] bytes = file.getBytes();
+			
+				Blob coverBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
+				String[] fileNameTokens = file.getOriginalFilename().split("\\.");
+				String fileExtension = fileNameTokens[fileNameTokens.length -1];
+				
+				CoverDAO coverDao = new CoverDAO();
+				coverDao.createCoverByID(imageId[arrayIndex], coverBlob, fileExtension);
+				++arrayIndex;
+
+				return "UploadFile";
+			} catch (Exception e) {
+				return "UploadFile";
+			}
+		} else {
+			return "UploadFile";
+		}
+	}
+	
+	@GetMapping(value = "/uploadFile")
+	public String getFileUploadPage() {
+		return "UploadFile";
+	}
 }
