@@ -57,13 +57,6 @@ public class BookTest {
 	}
 	
 	@Test
-	public void getBookByKeywordTest()
-	{
-		List<Book> books = bookDAO.getBookByKeyword("girl");
-		assertEquals("The girl who played with fire",books.get(0).getTitle());
-	}
-	
-	@Test
 	public void deleteBookTest()
 	{
 		Boolean isBookDeleted = bookDAO.deleteBookByID(100002);
@@ -75,7 +68,7 @@ public class BookTest {
 	{
 		Book book = new Book();
 		book.setAuthor("Albert Camus");
-		book.setAvailablity(1);
+		book.setAvailability(1);
 		book.setCategory("Philoshophy");
 		book.setDescription("How sysphus loves rolling the bolder to the mountain top");
 		book.setIsbn(265);
@@ -89,7 +82,7 @@ public class BookTest {
 	public void updateBookTest() {
 		Book book = new Book();
 		book.setAuthor("Albert Camus");
-		book.setAvailablity(1);
+		book.setAvailability(1);
 		book.setCategory("Philoshophy");
 		book.setDescription("How sysphus loves rolling the bolder to the mountain top");
 		book.setIsbn(265);

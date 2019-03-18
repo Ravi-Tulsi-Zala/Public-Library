@@ -1,24 +1,16 @@
 package com.library.businessModels;
 
-public class Book {
+public class Book extends LibraryItem {
 	
-	private String category;
-	private String title;
 	private String author;
 	private int isbn;
 	private String publisher;
 	private String description;
-	private int itemID;
 	private int availablity;
+	private int itemID;
+	private String title;
+	private String category;
 	
-	
-	public int getIsbn() {
-		return isbn;
-	}
-	
-	public void setIsbn(int isbn) {
-		this.isbn = isbn;
-	}
 	
 	public int getAvailablity() {
 		return availablity;
@@ -44,13 +36,21 @@ public class Book {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public String getAuthor() {
 		return author;
 	}
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	
+
+	public int getIsbn() {
+		return isbn;
+	}
+	public void setIsbn(int isbn) {
+		this.isbn = isbn;
+	}
+
 	public String getPublisher() {
 		return publisher;
 	}

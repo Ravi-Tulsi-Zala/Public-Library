@@ -20,6 +20,7 @@ public class BookMapper implements IBookMapper {
 			book.setCategory(resultSet.getString("Category"));
 			book.setDescription(resultSet.getString("Description"));
 			book.setPublisher(resultSet.getString("Publisher"));
+			book.setAvailability(resultSet.getInt("Availability"));
 			return book;
 		}
 		catch (Exception e) {
