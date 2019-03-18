@@ -1,9 +1,9 @@
-package com.library.DAOMapper;
+package com.library.IBussinessModelSetter;
 
 import java.sql.ResultSet;
 
 import com.library.businessModels.Music;
 
-public interface IMusicMapper {
+public interface IMusicSetter {
 	public Music mapMusic(ResultSet resultSet);
 }

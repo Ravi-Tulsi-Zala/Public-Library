@@ -1,4 +1,4 @@
-package com.library.DAOMapper;
+package com.library.IBussinessModelSetter;
 	import java.sql.ResultSet;
 	import com.library.businessModels.Cover;
 

@@ -1,12 +1,12 @@
-package com.library.DAOMapperImpl;
+package com.library.BussinessModelSetter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.library.DAOMapper.IMovieMapper;
+import com.library.IBussinessModelSetter.IMovieSetter;
 import com.library.businessModels.Movie;
 
-public class MovieMapper implements IMovieMapper {
+public class MovieSetter implements IMovieSetter {
 
 	@Override
 	public Movie mapMovie(ResultSet resultSet) {

@@ -1,7 +1,8 @@
-package com.library.DAOMapperImpl;
+package com.library.BussinessModelSetter;
 
 import java.sql.ResultSet;
-import com.library.DAOMapper.ICoverMapper;
+
+import com.library.IBussinessModelSetter.ICoverMapper;
 import com.library.businessModels.Cover;
 
 public class CoverMapper implements ICoverMapper {

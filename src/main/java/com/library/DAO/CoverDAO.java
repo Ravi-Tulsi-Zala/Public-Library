@@ -1,12 +1,13 @@
 package com.library.DAO;
 
 import java.sql.Blob;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.library.DAOMapperImpl.CoverMapper;
+import com.library.BussinessModelSetter.CoverMapper;
 import com.library.IDAO.ICoverDAO;
 import com.library.businessModels.Cover;
 import com.library.dbConnection.DatabaseConnection;

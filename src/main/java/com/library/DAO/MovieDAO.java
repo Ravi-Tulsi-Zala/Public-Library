@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.library.BussinessModelSetter.MovieSetter;
+import com.library.IBussinessModelSetter.IMovieSetter;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.library.DAOMapper.IMovieMapper;
-import com.library.DAOMapperImpl.MovieMapper;
 import com.library.IDAO.IMovieDAO;
 import com.library.businessModels.Movie;
 import com.library.dbConnection.DatabaseConnection;
@@ -22,8 +22,7 @@ public class MovieDAO implements IMovieDAO {
 	private PreparedStatement preparedStatement;
 	String query;
 	Connection connection;
-
-	IMovieMapper movieMapper = new MovieMapper();
+	IMovieSetter movieSetter = new MovieSetter();
 	private static final Logger logger = LogManager.getLogger(MovieDAO.class);
 
 
@@ -47,7 +46,7 @@ public class MovieDAO implements IMovieDAO {
 			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				movie = movieMapper.mapMovie(resultSet);
+				movie = movieSetter.mapMovie(resultSet);
 			}
 		} catch (Exception e) {
 			
@@ -67,7 +66,7 @@ public class MovieDAO implements IMovieDAO {
 			preparedStatement.setString(1, "%"+movieTitle+"%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				movie = movieMapper.mapMovie(resultSet);
+				movie = movieSetter.mapMovie(resultSet);
 			}
 		} catch (Exception e) {
 			logger.log(Level.ALL,"SQL related exception",e);
@@ -88,7 +87,7 @@ public class MovieDAO implements IMovieDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = new Movie();
-				movie = movieMapper.mapMovie(resultSet);
+				movie = movieSetter.mapMovie(resultSet);
 				moviesByDirectorName.add(movie);
 			}
 		} catch (Exception e) {
@@ -110,7 +109,7 @@ public class MovieDAO implements IMovieDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = new Movie();
-				movie = movieMapper.mapMovie(resultSet);
+				movie = movieSetter.mapMovie(resultSet);
 				moviesByCategory.add(movie);
 			}
 		} catch (Exception e) {
@@ -132,7 +131,7 @@ public class MovieDAO implements IMovieDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = new Movie();
-				movie = movieMapper.mapMovie(resultSet);
+				movie = movieSetter.mapMovie(resultSet);
 				moviesByDescription.add(movie);
 			}
 		} catch (Exception e) {
@@ -231,8 +230,10 @@ public class MovieDAO implements IMovieDAO {
 		try {
 			preparedStatement  = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();	
+
 			while(resultSet.next()) {
-				movie = movieMapper.mapMovie(resultSet);
+				movie = movieSetter.mapMovie(resultSet);
+				movie = movieSetter.mapMovie(resultSet);
 				movies.add(movie);
 			}
 			

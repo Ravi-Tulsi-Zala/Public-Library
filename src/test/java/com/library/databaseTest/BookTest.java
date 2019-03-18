@@ -92,10 +92,4 @@ public class BookTest {
 		Boolean isBookUpdated = bookDAO.updateBook(book);
 		assertEquals(true,isBookUpdated);
 	}
-	
-//	@Test
-//	public void getLastIDTest() {
-//		int Item_ID = bookDAO.getLastID();
-//		assertEquals(100001, Item_ID);
-//	}
 }

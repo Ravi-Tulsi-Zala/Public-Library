@@ -18,7 +18,5 @@ public interface IBookDAO {
 	public Boolean deleteBookByID(int itemID);
 	public Boolean createBook(Book book);
 	public Boolean updateBook(Book book);
-	public List<Book> getBooksBySearchTerms(IBookSearchRequestDetails searchRequestDetails);
-	public int getLastID();
-	public void changeBooksItemID(int itemID);
+	LinkedList<Book> getBooksBySearchTerms(IBookSearchRequestDetails searchRequestDetails);
 }
