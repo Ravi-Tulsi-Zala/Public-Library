@@ -133,9 +133,4 @@ public class LibraryController implements WebMvcConfigurer {
 		}
 		return "HomePage";
 	}
-	
-	@GetMapping(value = "/uploadFile")
-	public String getFileUploadPage() {
-		return "UploadFile";
-	}
 }
