@@ -35,11 +35,6 @@ import com.library.signUp.UserExtendedInfo;
 basePackageClasses = DBSeachControllerBean.class)
 @Controller
 public class LibraryController implements WebMvcConfigurer {
-
-	private int[] imageId = {2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012,
-							100001,100002,100003,
-							3001,3002, 3003, 3004, 3005, 3006, 3007, 3008, 3009, 3010, 3011, 3012, 3013, 3014};
-	private int arrayIndex = 0;
 	
 	@Inject
 	private IDBSearchController dbSearchController;
@@ -137,31 +132,6 @@ public class LibraryController implements WebMvcConfigurer {
 			AuthenticatedUsers.instance().removeAuthenticatedUser(httpSession); 
 		}
 		return "HomePage";
-	}
-	
-	@PostMapping(value = "/uploadFile")
-	public String uploadFileHandler(@RequestParam("file") MultipartFile file) {
-
-		if (!file.isEmpty()) {
-			try {
-				String originalFileName = file.getOriginalFilename();
-				byte[] bytes = file.getBytes();
-			
-				Blob coverBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
-				String[] fileNameTokens = file.getOriginalFilename().split("\\.");
-				String fileExtension = fileNameTokens[fileNameTokens.length -1];
-				
-				CoverDAO coverDao = new CoverDAO();
-				coverDao.createCoverByID(imageId[arrayIndex], coverBlob, fileExtension);
-				++arrayIndex;
-
-				return "UploadFile";
-			} catch (Exception e) {
-				return "UploadFile";
-			}
-		} else {
-			return "UploadFile";
-		}
 	}
 	
 	@GetMapping(value = "/uploadFile")

@@ -1,9 +1,10 @@
 package com.library.IDAO;
 
 import java.sql.Blob;
+import com.library.businessModels.Cover;
 
-public interface ICoverBlobDAO {
-	public Blob getCoverBlobByID(int itemID);
-	public boolean setCoverBlobByID(int itemID, Blob cover);
-	public boolean deleteCoverBlobByID(int itemID);
+public interface ICoverDAO {
+	public Cover getCoverByID(int itemID);
+	public boolean createCoverByID(int itemID, Blob cover, String fileExtension);
+	public boolean deleteBlobByID(int itemID);
 }

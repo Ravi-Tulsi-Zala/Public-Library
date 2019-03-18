@@ -12,6 +12,7 @@ import com.library.DAO.MusicDAO;
 import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
+import com.library.localStorage.CoverImageProxy;
 // This class is a Java bean --> singleton by default.
 public class DBSeachController implements IDBSearchController {
 
@@ -31,37 +32,38 @@ public class DBSeachController implements IDBSearchController {
 
 	
 	@Override
-	synchronized public SearchResults search(SearchRequestDetails searchRequestDetails, HttpSession httpSession) {
+	public SearchResults search(SearchRequestDetails searchRequestDetails, HttpSession httpSession) {
 		SearchRequestsAndResults searchRequestsAndResults = null;
 		String sessionId = httpSession.getId();
 		
 		boolean isNotFirstSearchForSessionID = sessionIdToSearchRequestsAndResults.containsKey(httpSession.getId());
-		boolean isSameSearechCriteriaButAnotherResultsPage = false;
+		boolean isSameSearchCriteriaButDifferentResultsPage = false;
 		if(isNotFirstSearchForSessionID) {
-			isSameSearechCriteriaButAnotherResultsPage = 
+			isSameSearchCriteriaButDifferentResultsPage = 
 					sessionIdToSearchRequestsAndResults.get(sessionId).searchRequestDetails.onlyRequestedPageDiffers(searchRequestDetails);
 		}
 		
 		if(isNotFirstSearchForSessionID) {
-			if(isSameSearechCriteriaButAnotherResultsPage) {
+			if(isSameSearchCriteriaButDifferentResultsPage) {
 				searchRequestsAndResults = sessionIdToSearchRequestsAndResults.get(httpSession.getId());
-				searchRequestsAndResults.searchRequestDetails.setRequestedSearchResultsPageNumber(
-						searchRequestDetails.getRequestedSearchResultsPageNumber());
+				searchRequestsAndResults.searchRequestDetails.setRequestedResultsPageNumber(
+						searchRequestDetails.getRequestedResultsPageNumber());
 			} else {
+				CoverImageProxy.instance().deleteCoverImages(httpSession);
 				sessionIdToSearchRequestsAndResults.remove(httpSession.getId());
-				executeNewSearchInDb(searchRequestDetails,httpSession);
+				searchRequestsAndResults = executeSearchInDb(searchRequestDetails,httpSession);
 			}
 		} else {
-			searchRequestsAndResults = executeNewSearchInDb(searchRequestDetails, httpSession);
+			searchRequestsAndResults = executeSearchInDb(searchRequestDetails, httpSession);
 		}
 		
-		SearchResults resultSetForRequestedPageNum = calculateResultSetForRequestedSearchPageNumber(searchRequestsAndResults);
-//		CoverImageController
-//		loadCoverImages(resultSetForRequestedPageNum);
-		return resultSetForRequestedPageNum;
+		SearchResults resultSet = getResultSetForRequestedPageNumber(searchRequestsAndResults);
+		int requestedPageNumber = searchRequestsAndResults.searchRequestDetails.getRequestedResultsPageNumber();
+		CoverImageProxy.instance().loadCoverImages(resultSet, Integer.toString(requestedPageNumber), httpSession);
+		return resultSet;
 	}
 
-	protected SearchRequestsAndResults executeNewSearchInDb(SearchRequestDetails searchRequestDetails, HttpSession httpSession) {
+	protected SearchRequestsAndResults executeSearchInDb(SearchRequestDetails searchRequestDetails, HttpSession httpSession) {
 		SearchResults searchResults = searchInDb(searchRequestDetails);
 		SearchRequestsAndResults searchRequestsAndResults = new SearchRequestsAndResults(searchRequestDetails, searchResults);
 		sessionIdToSearchRequestsAndResults.put(httpSession.getId(), searchRequestsAndResults);
@@ -88,8 +90,8 @@ public class DBSeachController implements IDBSearchController {
 		return searchResults;
 	}
 	
-	protected SearchResults calculateResultSetForRequestedSearchPageNumber(SearchRequestsAndResults searchRequestsAndResults) {
-		int pageNumber = searchRequestsAndResults.searchRequestDetails.getRequestedSearchResultsPageNumber();
+	protected SearchResults getResultSetForRequestedPageNumber(SearchRequestsAndResults searchRequestsAndResults) {
+		int pageNumber = searchRequestsAndResults.searchRequestDetails.getRequestedResultsPageNumber();
 		SearchResults resultsForPageNumber = new SearchResults();
 		
 		if(null != searchRequestsAndResults.searchResults.getBookSearchResults()) {

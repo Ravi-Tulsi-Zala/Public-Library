@@ -6,31 +6,33 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.library.IDAO.ICoverBlobDAO;
+import com.library.DAOMapperImpl.CoverMapper;
+import com.library.IDAO.ICoverDAO;
+import com.library.businessModels.Cover;
 import com.library.dbConnection.DatabaseConnection;
 
-public class CoverBlobDAO implements ICoverBlobDAO {
+public class CoverDAO implements ICoverDAO {
 	
-	private final int INDEX_OF_BLOB_COLUMN_IN_RESULT_SET = 0;
-	private final String SELECT_COVER_BY_ITEM_ID_QUERY = "SELECT Cover FROM cover WHERE Item_ID = ?";
-	private final String INSERT_COVER_BY_ITEM_ID_QUERY = "INSERT INTO cover (Item_ID, Cover) Values (?,?)";
-	private final String DELETE_COVER_BY_ITEM_ID_QUERY = "DELETE FROM cover WHERE Item_ID = ?";
+	private final String SELECT_COVER_BY_ITEM_ID_QUERY = "SELECT * FROM covers WHERE Item_ID = ?";
+	private final String INSERT_COVER_BY_ITEM_ID_QUERY = "INSERT INTO covers (Item_ID,Cover_Blob,File_Extension) Values (?,?,?)";
+	private final String DELETE_COVER_BY_ITEM_ID_QUERY = "DELETE FROM covers WHERE Item_ID = ?";
 	private PreparedStatement preparedStatement;
 	private Connection dbConnection;
+	private CoverMapper coverMapper = new CoverMapper();
 	
-	public CoverBlobDAO() {
+	public CoverDAO() {
 			DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
 			this.dbConnection = databaseConnection.getConnection();
 	}
 	
 	@Override
-	public Blob getCoverBlobByID(int itemID) {		
+	public Cover getCoverByID(int itemID) {		
 		try {
 			preparedStatement = dbConnection.prepareStatement(SELECT_COVER_BY_ITEM_ID_QUERY);
 			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
-				return resultSet.getBlob(INDEX_OF_BLOB_COLUMN_IN_RESULT_SET);
+				return coverMapper.mapCover(resultSet);
 			}
 			return null;
 		} catch (SQLException e) {
@@ -48,11 +50,12 @@ public class CoverBlobDAO implements ICoverBlobDAO {
 	}
 
 	@Override
-	public boolean setCoverBlobByID(int itemID, Blob coverBlob) {
+	public boolean createCoverByID(int itemID, Blob coverBlob, String fileExtension) {
 		try {
 			preparedStatement = dbConnection.prepareStatement(INSERT_COVER_BY_ITEM_ID_QUERY);
 			preparedStatement.setInt(1, itemID);
 			preparedStatement.setBlob(2, coverBlob);
+			preparedStatement.setString(3, fileExtension);
 			preparedStatement.executeUpdate();
 			
 			return true;
@@ -72,7 +75,7 @@ public class CoverBlobDAO implements ICoverBlobDAO {
 	}
 
 	@Override
-	public boolean deleteCoverBlobByID(int itemID) {
+	public boolean deleteBlobByID(int itemID) {
 		try {
 			preparedStatement = dbConnection.prepareStatement(DELETE_COVER_BY_ITEM_ID_QUERY);
 			preparedStatement.setInt(1, itemID);

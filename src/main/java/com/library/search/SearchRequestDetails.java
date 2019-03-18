@@ -6,7 +6,7 @@ public class SearchRequestDetails implements IBookSearchRequestDetails,
 											 IMusicSearchRequestDetails {
 	
 	private String searchTerms = null;
-	private int requestedSearchResultsPageNumber = 1;
+	private int requestedResultsPageNumber = 1;
 	
 	private boolean extendedSearch = false;
 	
@@ -42,11 +42,11 @@ public class SearchRequestDetails implements IBookSearchRequestDetails,
 	public void setSearchTerms(String searchTerms) {
 		this.searchTerms = searchTerms;
 	}
-	public int getRequestedSearchResultsPageNumber() {
-		return requestedSearchResultsPageNumber;
+	public int getRequestedResultsPageNumber() {
+		return requestedResultsPageNumber;
 	}
-	public void setRequestedSearchResultsPageNumber(int requestedSearchResultsPageNumber) {
-		this.requestedSearchResultsPageNumber = requestedSearchResultsPageNumber;
+	public void setRequestedResultsPageNumber(int requestedSearchResultsPageNumber) {
+		this.requestedResultsPageNumber = requestedSearchResultsPageNumber;
 	}
 	public boolean isSearchInBooks() {
 		return searchInBooks;
