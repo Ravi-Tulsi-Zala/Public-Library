@@ -27,12 +27,20 @@ public class SignInController {
 
 	public ArrayList<Entry<String, String>> authenticateSignIn() {
 		listofValidationErrors = AuthenticateUserForms.instance().signInUserData(userBasicInfo);
+		
 		// If true connect DB as list has no validations to check.
 		if (listofValidationErrors.size() == 0) {
+			
 			AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, userBasicInfo.getEmail());
 //			connectDB(); // will be worked upon.
 		}
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
 
+	}
+	public String isAdmin() {
+		if(userBasicInfo.getEmail().equals(Authentication.isAdmin)){
+			return "AdminMainPage";
+		}
+		return "MainPage";
 	}
 }

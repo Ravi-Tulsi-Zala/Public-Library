@@ -108,7 +108,8 @@ public class LibraryController implements WebMvcConfigurer {
 		IUserBasicInfo userBasicInfo = new UserBasicInfo();
 		userBasicInfo.setEmail(user.getEmail());
 		userBasicInfo.setPwd(user.getPassword());
-		List<Map.Entry<String, String>> list =  new SignInController(userBasicInfo, httpSession).authenticateSignIn();
+		SignInController signInController=	new SignInController(userBasicInfo, httpSession);
+		List<Map.Entry<String, String>> list =  signInController.authenticateSignIn();
 		for (int i = 0; i < list.size(); i++) {
 			model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
 		}
@@ -117,7 +118,7 @@ public class LibraryController implements WebMvcConfigurer {
 		if (model.size() > 2) {
 			return "SignInForm";
 		}
-		return "Results";
+		return signInController.isAdmin();
 	}
 	
 	@GetMapping("/logOut")
