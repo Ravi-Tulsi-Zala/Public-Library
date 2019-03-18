@@ -20,18 +20,18 @@ public class LibraryItemDAO implements com.library.IDAO.ILibraryItemDAO {
 		return null;
 	}
 	
-//	@Override
-//	public List<Integer> getItemFromKeyword(String keyword) {
-//		IBookDAO bookDAO = new BookDAO();
-//		List<Integer> items = new ArrayList<Integer>();
-//		List<Book> bookItem = new ArrayList<Book>();
-//		bookItem = bookDAO.getBooksBySearchTerms(keyword);
-//		int itemID;
-//		for(int i=0;i<bookItem.size();i++)
-//		{
-//			itemID = bookItem.get(i).getItemID();
-//			items.add(i,itemID);
-//		}
-//		return items;
-//	}
+	@Override
+	public List<Integer> getItemFromKeyword(String keyword) {
+		IBookDAO bookDAO = new BookDAO();
+		List<Integer> items = new ArrayList<Integer>();
+		List<Book> bookItem = new ArrayList<Book>();
+		bookItem = bookDAO.getBooksBySearchTerms(keyword);
+		int itemID;
+		for(int i=0;i<bookItem.size();i++)
+		{
+			itemID = bookItem.get(i).getItemID();
+			items.add(i,itemID);
+		}
+		return items;
+	}
 }

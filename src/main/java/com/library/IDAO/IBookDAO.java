@@ -18,5 +18,5 @@ public interface IBookDAO {
 	public Boolean deleteBookByID(int itemID);
 	public Boolean createBook(Book book);
 	public Boolean updateBook(Book book);
-	public List<Book> getBooksBySearchTerms(IBookSearchRequestDetails searchRequestDetails);
+	public List<Book> getBooksBySearchTerms(String keyword);
 }
