@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import com.library.DAOMapper.IMovieMapper;
 import com.library.DAOMapperImpl.MovieMapper;
 import com.library.IDAO.IMovieDAO;
@@ -19,7 +22,10 @@ public class MovieDAO implements IMovieDAO {
 	private PreparedStatement preparedStatement;
 	String query;
 	Connection connection;
+
 	IMovieMapper movieMapper = new MovieMapper();
+	private static final Logger logger = LogManager.getLogger(MovieDAO.class);
+
 
 	public MovieDAO() {
 
@@ -27,7 +33,7 @@ public class MovieDAO implements IMovieDAO {
 			DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
 			this.connection = databaseConnection.getConnection();
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 		}
 	}
 	
@@ -44,7 +50,8 @@ public class MovieDAO implements IMovieDAO {
 				movie = movieMapper.mapMovie(resultSet);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			
+			logger.log(Level.ALL,"SQL related exception",e);
 		}
 		return movie;
 	}
@@ -63,7 +70,7 @@ public class MovieDAO implements IMovieDAO {
 				movie = movieMapper.mapMovie(resultSet);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL,"SQL related exception",e);
 		}
 		return movie;
 	}
@@ -85,7 +92,7 @@ public class MovieDAO implements IMovieDAO {
 				moviesByDirectorName.add(movie);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL,"SQL related exception",e);
 		}
 		return moviesByDirectorName;
 	}
@@ -107,7 +114,7 @@ public class MovieDAO implements IMovieDAO {
 				moviesByCategory.add(movie);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL,"SQL related exception",e);
 		}
 		return moviesByCategory;
 	}
@@ -129,7 +136,7 @@ public class MovieDAO implements IMovieDAO {
 				moviesByDescription.add(movie);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL,"SQL related exception",e);
 		}
 		return moviesByDescription;
 	}
@@ -150,7 +157,7 @@ public class MovieDAO implements IMovieDAO {
 			return true;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL,"SQL related exception",e);
 		}
 		return false;
 	}
@@ -171,7 +178,7 @@ public class MovieDAO implements IMovieDAO {
 			return true;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL,"SQL related exception",e);
 		}
 		return false;
 	}
@@ -187,7 +194,7 @@ public class MovieDAO implements IMovieDAO {
 			return true;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL,"SQL related exception",e);
 		}
 		return false;
 	}
