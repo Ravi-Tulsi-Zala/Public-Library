@@ -11,6 +11,15 @@ public class Book {
 	private int itemID;
 	private int availablity;
 	
+	
+	public int getIsbn() {
+		return isbn;
+	}
+	
+	public void setIsbn(int isbn) {
+		this.isbn = isbn;
+	}
+	
 	public int getAvailablity() {
 		return availablity;
 	}
@@ -41,12 +50,7 @@ public class Book {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	public int getISBN() {
-		return isbn;
-	}
-	public void setISBN(int isbn) {
-		this.isbn = isbn;
-	}
+	
 	public String getPublisher() {
 		return publisher;
 	}

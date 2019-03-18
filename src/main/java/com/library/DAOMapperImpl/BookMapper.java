@@ -13,7 +13,7 @@ public class BookMapper implements IBookMapper {
 	{
 		try {
 			Book book = new Book();
-			book.setISBN(resultSet.getInt("ISBN"));
+			book.setIsbn(resultSet.getInt("ISBN"));
 			book.setItemID(resultSet.getInt("Item_ID"));
 			book.setTitle(resultSet.getString("Title"));
 			book.setAuthor(resultSet.getString("Author"));

@@ -256,7 +256,7 @@ public class BookDAO implements IBookDAO {
 		String category = book.getCategory();
 		String title = book.getTitle();
 		String author = book.getAuthor();
-		int isbn = book.getISBN();
+		int isbn = book.getIsbn();
 		String publisher = book.getPublisher();
 		String description =  book.getDescription();
 		int itemID = getLastID() + 1;
@@ -289,7 +289,7 @@ public class BookDAO implements IBookDAO {
 		String category = book.getCategory();
 		String title = book.getTitle();
 		String author = book.getAuthor();
-		int isbn = book.getISBN();
+		int isbn = book.getIsbn();
 		String publisher = book.getPublisher();
 		String description =  book.getDescription();
 		int itemID = book.getItemID();

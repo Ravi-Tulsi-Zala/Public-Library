@@ -109,36 +109,36 @@
         </select>
     </div>  
     <div id="Book">
-        <form  method="post" name="bookForm" action="">
+        <form  method="post" name="bookForm" th:action="@{/addBook}" th:object="${book}">
             <div class="formElements">
                 <label>Category</label> 
-                <select id="bookCategory" >
-                    <option value="Mystery">Mystery</option>
-                    <option value="Romance">Romance</option>
-                    <option value="History">History</option>
-                    <option value="Sci-Fi">Sci-Fi</option>
-                    <option value="Fantasy">Fantasy</option>
+                <select id="bookCategory" th:field="*{category}" >
+                    <option th:value="'Mystery'" th:text="Mystery">Mystery</option>
+                    <option th:value="'Romance'" th:text="Romance">Romance</option>
+                    <option th:value="'History'" th:text="History">History</option>
+                    <option th:value="'Sci-Fi'" th:text="Sci-Fi">Sci-Fi</option>
+                    <option th:value="'Fantasy'" th:text="Fantasy">Fantasy</option>
                 </select>   
             </div>
             <div class="formElements">
                 <label>Title</label> 
-                <input type="text" name="bookTitle">
+                <input type="text" th:field="*{title}" >
             </div>
             <div class="formElements">
                 <label>Author</label> 
-                <input type="text" name="bookAuthor">
+                <input type="text"  th:field="*{author}" >
             </div>
             <div class="formElements">
                 <label>ISBN</label>
-                <input type="text" name="bookISBN">
+                <input type="number"  th:field="*{isbn}" >
             </div>
             <div class="formElements">
                 <label>Publisher</label>
-                <input type="text" name="bookPublisher">
+                <input type="text" th:field="*{publisher}" >
             </div>
             <div class="formElements">
                 <label>Description</label>
-                <textarea name="bookDescription"></textarea>
+                <textarea th:field="*{description}"  ></textarea>
             </div> 
             
             <div class="coverImg">
@@ -147,8 +147,8 @@
                 <img id="outputBookCover"/>
             </div>
            
-            <span><button class="btn" id="saveBook" name="saveBookBtn" >Save Item</button></span>
-            <span><button class="btn" id="cancelBook" name="cancelBookBtn" >Cancel</button></span>           
+            <span><input class="btn" type="submit" value="Save Item" ></span>
+            <span><input class="btn" type="reset" value="Cancel" ></span>           
         </form>
     </div>
 
@@ -156,7 +156,7 @@
         <form  method="post" name="movieForm" action="">
             <div class="formElements">
                 <label>Category</label> 
-                <select id="bookCategory" >
+                <select id="movieCategory" >
                     <option value="Action">Action</option>
                     <option value="Thiller">Thriller</option>
                     <option value="Comedy">Comedy</option>
@@ -189,7 +189,7 @@
         <form  method="post" name="musicForm" action="">
             <div class="formElements">
                 <label>Category</label> 
-                <select id="bookCategory" >
+                <select id="musicCategory" >
                     <option value="Rock">Rock</option>
                     <option value="Soul">Soul</option>
                     <option value="Blues">Blues</option>
