@@ -27,17 +27,18 @@ import com.library.signUp.User;
 import com.library.signUp.UserBasicInfo;
 import com.library.signUp.UserExtendedInfo;
 
-@ComponentScan(basePackages = {"com.library.model"},
-basePackageClasses = DBSeachControllerBean.class)
+@ComponentScan(basePackages = { "com.library.model" }, basePackageClasses = DBSeachControllerBean.class)
 @Controller
 public class LibraryController implements WebMvcConfigurer {
 
 	@Inject
 	private IDBSearchController dbSearchController;
-	
-	@PostMapping("/signUp")
-	public String processSignUpForm(ModelMap model,User user) {
 
+	@PostMapping("/signUp")
+	public String processSignUpForm(ModelMap model, User user) {
+		ILibraryFactory factory = new LibraryControllerFactory();
+		LibraryFactorySingleton.instance().build(factory);
+		
 		IUserExtendedInfo userExtendedInfo = new UserExtendedInfo();
 		IUserBasicInfo userBasicInfo = new UserBasicInfo();
 		userBasicInfo.setEmail(user.getEmail());
@@ -46,7 +47,8 @@ public class LibraryController implements WebMvcConfigurer {
 		userExtendedInfo.setFullname(user.getFullName());
 		userExtendedInfo.setPhone(user.getPhoneNumber());
 
-		List<Map.Entry<String, String>> list = new SignUpController(userBasicInfo, userExtendedInfo).authenticateSignUp();
+		List<Map.Entry<String, String>> list = LibraryFactorySingleton.instance().getFactory().signUp(userBasicInfo, userExtendedInfo)
+				.authenticateSignUp();
 		for (int i = 0; i < list.size(); i++) {
 			model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
 		}
@@ -62,34 +64,41 @@ public class LibraryController implements WebMvcConfigurer {
 	public String getSignUpForm(User user) {
 		return "SignUpForm";
 	}
-	
+
 	@GetMapping("/advancedSearch")
 	public String getAdvancedSearchPage(HttpSession httpSession, ModelMap model) {
-		AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, "removeMeFromTheController@mail.com"); //remove once we will have users in the db
-		if(AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
+		AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, "removeMeFromTheController@mail.com"); // remove
+																												// once
+																												// we
+																												// will
+																												// have
+																												// users
+																												// in
+																												// the
+																												// db
+		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			SearchRequestDetails searchRequestDetails = new SearchRequestDetails();
 			searchRequestDetails.setExtendedSearch(true);
 			model.addAttribute("searchRequestDetails", searchRequestDetails);
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
-			
+
 			return "AdvancedSearchPage";
 		}
 		return "NoAccessToNonAuthenticated";
 	}
-	
 
 	@PostMapping("/search")
-	public String getSearchResults(HttpSession httpSession, ModelMap model, SearchRequestDetails srchRequestDetails)  {
-		if(AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
+	public String getSearchResults(HttpSession httpSession, ModelMap model, SearchRequestDetails srchRequestDetails) {
+		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			SearchResults searchResults = dbSearchController.search(srchRequestDetails, httpSession);
 			model.addAttribute("searchRequestDetails", srchRequestDetails);
 			model.addAttribute("searchResults", searchResults);
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
-			
-			return "SearchResultsPage";	
+
+			return "SearchResultsPage";
 		}
 		return "NoAccessToNonAuthenticated";
-	}	
+	}
 
 //	@RequestMapping("/")
 //	String entry() {
@@ -100,31 +109,35 @@ public class LibraryController implements WebMvcConfigurer {
 	public String responseBody(User user) {
 		return "SignInForm";
 	}
-	
 
 	@PostMapping("/signIn")
-	public String process(HttpSession httpSession, ModelMap model,User user) {
+	public String process(HttpSession httpSession, ModelMap model, User user) {
+
+		ILibraryFactory factory = new LibraryControllerFactory();
+		LibraryFactorySingleton.instance().build(factory);
 
 		IUserBasicInfo userBasicInfo = new UserBasicInfo();
 		userBasicInfo.setEmail(user.getEmail());
 		userBasicInfo.setPwd(user.getPassword());
-		List<Map.Entry<String, String>> list =  new SignInController(userBasicInfo, httpSession).authenticateSignIn();
+		List<Map.Entry<String, String>> list = LibraryFactorySingleton.instance().getFactory()
+				.signIn(userBasicInfo, httpSession).authenticateSignIn();
 		for (int i = 0; i < list.size(); i++) {
 			model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
 		}
-		// model object has by default two values; anytime it gets more than that
+		// model object has by default two values and anytime it gets more than that
 		// signifies a validation violation
 		if (model.size() > 2) {
 			return "SignInForm";
 		}
 		return "Results";
 	}
-	
+
 	@GetMapping("/logOut")
-	public String processLogOut(HttpSession httpSession, ModelMap model,User user) {
-		if(AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
-			//make DBSearchController listener of AuthenticatedUsers and returnItem/AddItem/deleteItem/updateItem
-			AuthenticatedUsers.instance().removeAuthenticatedUser(httpSession); 
+	public String processLogOut(HttpSession httpSession, ModelMap model, User user) {
+		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
+			// make DBSearchController listener of AuthenticatedUsers and
+			// returnItem/AddItem/deleteItem/updateItem
+			AuthenticatedUsers.instance().removeAuthenticatedUser(httpSession);
 		}
 		return "HomePage";
 	}
