@@ -1,13 +1,13 @@
-package com.library.DAOMapperImpl;
+package com.library.BussinessModelSetter;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.library.DAOMapper.IBookMapper;
+import com.library.IBussinessModelSetter.IBookSetter;
 import com.library.businessModels.Book;;
 
-public class BookMapper implements IBookMapper {
+public class BookSetter implements IBookSetter {
 	
 	public Book mapBook(ResultSet resultSet) 
 	{

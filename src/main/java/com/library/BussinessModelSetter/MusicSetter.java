@@ -1,12 +1,12 @@
-package com.library.DAOMapperImpl;
+package com.library.BussinessModelSetter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.library.DAOMapper.IMusicMapper;
+import com.library.IBussinessModelSetter.IMusicSetter;
 import com.library.businessModels.Music;
 
-public class MusicMapper implements IMusicMapper{
+public class MusicSetter implements IMusicSetter{
 
 	@Override
 	public Music mapMusic(ResultSet resultSet) {

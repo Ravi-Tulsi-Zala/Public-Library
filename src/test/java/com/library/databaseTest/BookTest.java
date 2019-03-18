@@ -94,16 +94,9 @@ public class BookTest {
 	}
 	
 	@Test
-	public void getLastIDTest() {
-		int Item_ID = bookDAO.getLastID();
-		assertEquals(100001, Item_ID);
-	}
-	
-	@Test
 	public void getBookByCategoryTest()
 	{
-		List<Book> books = bookDAO.getBooksByAuthor("Horror");
-		System.out.print(books.get(0).getCategory());
+		List<Book> books = bookDAO.getBookByCategory("Horror");
 		assertEquals("Horror",books.get(0).getCategory());
 	}
 }
