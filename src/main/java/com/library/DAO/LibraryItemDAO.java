@@ -19,5 +19,4 @@ public class LibraryItemDAO implements com.library.IDAO.ILibraryItemDAO {
 	
 		return null;
 	}
-	
 }
