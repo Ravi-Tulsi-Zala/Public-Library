@@ -33,6 +33,5 @@ public class SignInController {
 //			connectDB(); // will be worked upon.
 		}
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
-
 	}
 }

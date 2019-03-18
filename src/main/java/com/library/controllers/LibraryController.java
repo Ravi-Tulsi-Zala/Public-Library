@@ -146,7 +146,7 @@ public class LibraryController implements WebMvcConfigurer {
 	}
 	@RequestMapping(value = "/sendemail")
 	public String sendEmail() throws AddressException, MessagingException, IOException {
-	   EmailUtility.sendmail();
+	   EmailUtility.sendmail("","","","");
 	   return "Email sent successfully";   
 	}
 }
