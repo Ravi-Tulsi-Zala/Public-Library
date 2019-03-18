@@ -37,8 +37,6 @@ public class LibraryController implements WebMvcConfigurer {
 	@PostMapping("/signUp")
 	public String processSignUpForm(ModelMap model, User user) {
 		ILibraryFactory factory = new LibraryControllerFactory();
-		LibraryFactorySingleton.instance().build(factory);
-		
 		IUserExtendedInfo userExtendedInfo = new UserExtendedInfo();
 		IUserBasicInfo userBasicInfo = new UserBasicInfo();
 		userBasicInfo.setEmail(user.getEmail());
@@ -46,9 +44,9 @@ public class LibraryController implements WebMvcConfigurer {
 		userExtendedInfo.setCPassword(user.getCpassword());
 		userExtendedInfo.setFullname(user.getFullName());
 		userExtendedInfo.setPhone(user.getPhoneNumber());
-
-		List<Map.Entry<String, String>> list = LibraryFactorySingleton.instance().getFactory().signUp(userBasicInfo, userExtendedInfo)
-				.authenticateSignUp();
+		LibraryFactorySingleton.instance().build(factory);
+		List<Map.Entry<String, String>> list = LibraryFactorySingleton.instance().getFactory()
+				.signUp(userBasicInfo, userExtendedInfo).authenticateSignUp();
 		for (int i = 0; i < list.size(); i++) {
 			model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
 		}
@@ -112,15 +110,14 @@ public class LibraryController implements WebMvcConfigurer {
 
 	@PostMapping("/signIn")
 	public String process(HttpSession httpSession, ModelMap model, User user) {
-
 		ILibraryFactory factory = new LibraryControllerFactory();
-		LibraryFactorySingleton.instance().build(factory);
-
 		IUserBasicInfo userBasicInfo = new UserBasicInfo();
 		userBasicInfo.setEmail(user.getEmail());
 		userBasicInfo.setPwd(user.getPassword());
+		LibraryFactorySingleton.instance().build(factory);
 		List<Map.Entry<String, String>> list = LibraryFactorySingleton.instance().getFactory()
 				.signIn(userBasicInfo, httpSession).authenticateSignIn();
+
 		for (int i = 0; i < list.size(); i++) {
 			model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
 		}
