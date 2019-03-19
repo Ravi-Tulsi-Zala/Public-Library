@@ -1,10 +1,11 @@
 package com.library.controllers;
 
+import java.sql.Blob;
+
 import java.util.List;
 
 import java.util.Map;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.annotation.ComponentScan;
@@ -12,10 +13,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.SignInController;
+import com.library.DAO.CoverDAO;
 import com.library.interfaces.IUserBasicInfo;
 import com.library.interfaces.IUserExtendedInfo;
 import com.library.search.DBSeachControllerBean;
@@ -31,7 +35,7 @@ import com.library.signUp.UserExtendedInfo;
 basePackageClasses = DBSeachControllerBean.class)
 @Controller
 public class LibraryController implements WebMvcConfigurer {
-
+	
 	@Inject
 	private IDBSearchController dbSearchController;
 	
@@ -80,16 +84,18 @@ public class LibraryController implements WebMvcConfigurer {
 
 	@PostMapping("/search")
 	public String getSearchResults(HttpSession httpSession, ModelMap model, SearchRequestDetails srchRequestDetails)  {
-		if(AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			SearchResults searchResults = dbSearchController.search(srchRequestDetails, httpSession);
 			model.addAttribute("searchRequestDetails", srchRequestDetails);
 			model.addAttribute("searchResults", searchResults);
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 			
 			return "SearchResultsPage";	
-		}
-		return "NoAccessToNonAuthenticated";
-	}	
+	}
+	
+	@GetMapping("/")
+	public String getItemDetailsById() {
+		return "ItemDetailsPage";
+	}
 
 //	@RequestMapping("/")
 //	String entry() {
@@ -128,5 +134,4 @@ public class LibraryController implements WebMvcConfigurer {
 		}
 		return "HomePage";
 	}
-
 }
