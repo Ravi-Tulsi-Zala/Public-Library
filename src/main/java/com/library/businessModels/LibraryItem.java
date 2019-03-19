@@ -4,14 +4,9 @@ public abstract class LibraryItem {
 	private String category;
 	private String title;
 	private int itemID;
-	private int availablity;
+	private int availability;
+	private String coverImageUrl;
 	
-	public int getAvailability() {
-		return availablity;
-	}
-	public void setAvailability(int availablity) {
-		this.availablity = availablity;
-	}
 	public int getItemID() {
 		return itemID;
 	}
@@ -29,5 +24,17 @@ public abstract class LibraryItem {
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public int getAvailability() {
+		return availability;
+	}
+	public void setAvailability(int availability) {
+		this.availability = availability;
+	}
+	public String getCoverImageUrl() {
+		return coverImageUrl;
+	}
+	public void setCoverImageUrl(String coverImageUrl) {
+		this.coverImageUrl = coverImageUrl;
 	}
 }

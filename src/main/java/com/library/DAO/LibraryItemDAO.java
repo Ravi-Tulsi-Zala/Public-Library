@@ -1,12 +1,10 @@
 package com.library.DAO;
 
-import java.util.ArrayList;
 import java.util.List;
+import com.library.IDAO.ILibraryItemDAO;
 
-import com.library.IDAO.IBookDAO;
-import com.library.businessModels.Book;
 
-public class LibraryItemDAO implements com.library.IDAO.ILibraryItemDAO {
+public class LibraryItemDAO implements ILibraryItemDAO {
 
 	@Override
 	public List<Integer> getRecentlyAdded() {

@@ -201,7 +201,12 @@ public class MusicDAO implements IMusicDAO {
 	}
 	
 	private void prepareSearchQuery(IMusicSearchRequestDetails requestDetails) {
-		query = "SELECT * FROM music WHERE ";
+		
+		if(0 == requestDetails.getSearchTerms().length()) {
+			//logger.log("ERROR: Search terms length is zero.");
+		}
+		
+		query = "SELECT DISTINCT * FROM music WHERE ";
 		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
 		for(String term : searchterms) {
 			if(requestDetails.isSearchMusicAlbumName()) {
@@ -227,21 +232,17 @@ public class MusicDAO implements IMusicDAO {
 		try {
 			preparedStatement  = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();	
-			if(!resultSet.next())
-			{
-				return null;
-			}
-			do
-			{
+			
+			while(resultSet.next()) {
 				music = musicMapper.mapMusic(resultSet);
 				musics.add(music);
-			} while(resultSet.next());
+			}
 			
 			return musics;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return musics;
 	}
 }

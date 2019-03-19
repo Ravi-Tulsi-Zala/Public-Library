@@ -6,13 +6,14 @@ public class SearchRequestDetails implements IBookSearchRequestDetails,
 											 IMusicSearchRequestDetails {
 	
 	private String searchTerms = null;
-	private int requestedSearchResultsPageNumber = 1;
+	private int requestedResultsPageNumber = 1;
 	
 	private boolean extendedSearch = false;
 	
 	private boolean searchInBooks = false;
 	private boolean searchBookTitle = false;
 	private boolean searchBookAuthor = false;
+	private boolean searchBookCategory = false;
 	private boolean searchBookPublisher = false;
 	private boolean searchBookDescription = false;
 	private boolean searchBookISBN = false;
@@ -41,11 +42,11 @@ public class SearchRequestDetails implements IBookSearchRequestDetails,
 	public void setSearchTerms(String searchTerms) {
 		this.searchTerms = searchTerms;
 	}
-	public int getRequestedSearchResultsPageNumber() {
-		return requestedSearchResultsPageNumber;
+	public int getRequestedResultsPageNumber() {
+		return requestedResultsPageNumber;
 	}
-	public void setRequestedSearchResultsPageNumber(int requestedSearchResultsPageNumber) {
-		this.requestedSearchResultsPageNumber = requestedSearchResultsPageNumber;
+	public void setRequestedResultsPageNumber(int requestedSearchResultsPageNumber) {
+		this.requestedResultsPageNumber = requestedSearchResultsPageNumber;
 	}
 	public boolean isSearchInBooks() {
 		return searchInBooks;
@@ -63,6 +64,13 @@ public class SearchRequestDetails implements IBookSearchRequestDetails,
 	@Override
 	public boolean isSearchBookAuthor() {
 		return searchBookAuthor;
+	}
+	@Override
+	public boolean isSearchBookCategory() {
+		return searchBookCategory;
+	}
+	public void setSearchBookCategory(boolean searchBookCategory) {
+		this.searchBookCategory = searchBookCategory;
 	}
 	public void setSearchBookAuthor(boolean searchBookAuthor) {
 		this.searchBookAuthor = searchBookAuthor;

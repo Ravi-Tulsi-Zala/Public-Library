@@ -208,7 +208,12 @@ public class BookDAO implements IBookDAO {
 	}
 	
 	private void prepareSearchQuery(IBookSearchRequestDetails requestDetails) {
-		query = "SELECT * FROM books WHERE ";
+		
+		if(0 == requestDetails.getSearchTerms().length()) {
+			//logger.log("ERROR: Search terms length is zero.");
+		}
+		
+		query = "SELECT DISTINCT * FROM books WHERE ";
 		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
 		for(String term : searchterms) {
 			if(requestDetails.isSearchBookAuthor()) {
@@ -226,6 +231,9 @@ public class BookDAO implements IBookDAO {
 			if(requestDetails.isSearchBookTitle()) {
 				query += "Title like \"%" + term + "%\" or ";
 			}
+			if(requestDetails.isSearchBookCategory()) {
+				query += "Category like \"%" + term + "%\" or ";
+			}
 		}
 		
 		query = query.substring(0, query.length() - 4);
@@ -240,22 +248,16 @@ public class BookDAO implements IBookDAO {
 		try {
 			preparedStatement  = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();	
-			if(!resultSet.next())
-			{
-				return null;
-			}
-			do
-			{
+			while(resultSet.next()) {
 				book = bookMapper.mapBook(resultSet);
 				books.add(book);
-			} while(resultSet.next());
+			}
 			
 			return books;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return null;
+		return books;
 	}
 
 	@Override
