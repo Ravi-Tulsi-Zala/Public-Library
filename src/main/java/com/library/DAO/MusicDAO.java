@@ -6,15 +6,11 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
 import com.library.DAOMapper.IMusicMapper;
 import com.library.DAOMapperImpl.MusicMapper;
 import com.library.IDAO.IMusicDAO;
-import com.library.businessModels.LibraryItem;
-import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.dbConnection.DatabaseConnection;
-import com.library.search.IMovieSearchRequestDetails;
 import com.library.search.IMusicSearchRequestDetails;
 
 public class MusicDAO implements IMusicDAO {

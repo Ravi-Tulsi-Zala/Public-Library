@@ -1,9 +1,13 @@
 package com.library.businessModels;
 
-public class Music extends LibraryItem {
+public class Music {
 	
 	private String artist;
 	private String recordLabel;
+	private String category;
+	private String title;
+	private int itemID;
+	private int availability;
 	
 	public String getArtist() {
 		return artist;
@@ -17,4 +21,29 @@ public class Music extends LibraryItem {
 	public void setRecordLabel(String recordLabel) {
 		this.recordLabel = recordLabel;
 	}	
+	
+	public int getAvailability() {
+		return availability;
+	}
+	public void setAvailability(int availability) {
+		this.availability = availability;
+	}
+	public int getItemID() {
+		return itemID;
+	}
+	public void setItemID(int itemID) {
+		this.itemID = itemID;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
 }

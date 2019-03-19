@@ -153,10 +153,10 @@
     </div>
 
     <div id="Movie" style="display: none"> 
-        <form  method="post" name="movieForm" action="">
+        <form  method="post" name="movieForm" th:action="@{/addMovie}" th:object="${movie}">
             <div class="formElements">
                 <label>Category</label> 
-                <select id="movieCategory" >
+                <select id="movieCategory" th:field="*{category}" >
                     <option value="Action">Action</option>
                     <option value="Thiller">Thriller</option>
                     <option value="Comedy">Comedy</option>
@@ -166,30 +166,31 @@
             </div>
             <div class="formElements">
                 <label>Title</label> 
-                <input type="text" name="movieTitle">
+                <input type="text" th:field="*{title}">
             </div>
             <div class="formElements">
                 <label>Director</label> 
-                <input type="text" name="movieDirector">
+                <input type="text" th:field="*{director}">
             </div>
             <div class="formElements">
                 <label>Description</label>
-                <textarea name="movieDescription"></textarea>
+                <textarea th:field="*{description}"></textarea>
             </div>
             <div class="coverImg">
                 <label>Cover Image:</label> 
                 <input type="file" accept="image/*" onchange="loadFileMovie(event)">
                 <img id="outputMovieCover"/>
             </div>
-            <span><button class="btn" id="saveMovie" name="saveMovieBtn" >Save Item</button></span>
-            <span><button class="btn" id="cancelMovie" name="cancelMovieBtn" >Cancel</button></span>
+            <span><input class="btn" type="submit" value="Save Item" ></span>
+            <span><input class="btn" type="reset" value="Cancel" ></span>  
         </form> 
     </div>
+  
     <div id="Music" style="display: none">
-        <form  method="post" name="musicForm" action="">
+        <form  method="post" name="musicForm" th:action="@{/addMusic}" th:object="${music}">
             <div class="formElements">
-                <label>Category</label> 
-                <select id="musicCategory" >
+                <label>Category</label> 	
+                <select id="musicCategory" th:field="*{category}">
                     <option value="Rock">Rock</option>
                     <option value="Soul">Soul</option>
                     <option value="Blues">Blues</option>
@@ -198,24 +199,24 @@
             </div>
             <div class="formElements">
                 <label>Title</label> 
-                <input type="text" name="musicTitle">
+                <input type="text"  th:field="*{title}">
             </div>
            
             <div class="formElements">
                 <label>Artist</label> 
-                <input type="text" name="musicArtist">
+                <input type="text"  th:field="*{artist}">
             </div>
             <div class="formElements">
                 <label>Record Label</label>
-                <input type="text" name="musicRecordLabel">
+                <input type="text"  th:field="*{recordLabel}">
             </div>
             <div class="coverImg">
                 <label>Cover Image:</label> 
                 <input type="file" accept="image/*" onchange="loadFileMusic(event)">
                 <img id="outputMusicCover"/>
             </div>
-            <span><button class="btn" id="saveMusic" name="saveMusicBtn" >Save Item</button></span>
-            <span><button class="btn" id="cancelMusic" name="cancelMusicBtn" >Cancel</button></span> 
+            <span><input class="btn" type="submit" value="Save Item" ></span>
+            <span><input class="btn" type="reset" value="Cancel" ></span>  
         </form>
     </div>
 </body>

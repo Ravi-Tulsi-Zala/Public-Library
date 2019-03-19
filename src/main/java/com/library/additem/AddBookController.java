@@ -9,11 +9,11 @@ public class AddBookController {
 	IDAOFactory factory;
 
 	public AddBookController() {
-		
+		factory = new DAOFactory();
 	}
 
 	public void addBookRecordInDatabase(Book book) {
-		factory = new DAOFactory();
+		
 		IBookDAO bookDAO = factory.makeBookDAO();
 		bookDAO.createBook(book);
 	}

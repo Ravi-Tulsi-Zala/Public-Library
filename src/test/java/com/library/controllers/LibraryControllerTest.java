@@ -77,7 +77,7 @@ public class LibraryControllerTest {
 		book1.setCategory("Novel");
 		book1.setDescription("Good Story!");
 		book1.setPublisher("Good One Publisher");
-		book1.setAvailability(10);
+		book1.setAvailablity(10);
 		
 		Book book2 = new Book();
 		book2.setIsbn(222);
@@ -87,7 +87,7 @@ public class LibraryControllerTest {
 		book2.setCategory("Post-Apocalyptic Fiction");
 		book2.setDescription("Good Story Too!");
 		book2.setPublisher("Old Good Publisher");
-		book2.setAvailability(11);
+		book2.setAvailablity(11);
     	
     	LinkedList<Book> booksFoundInSearch = new LinkedList<Book>();
     	booksFoundInSearch.add(book1);

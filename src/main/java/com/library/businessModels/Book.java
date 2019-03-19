@@ -1,6 +1,6 @@
 package com.library.businessModels;
 
-public class Book extends LibraryItem {
+public class Book {
 	
 	private String author;
 	private int isbn;
@@ -10,7 +10,6 @@ public class Book extends LibraryItem {
 	private int itemID;
 	private String title;
 	private String category;
-	
 	
 	public int getAvailablity() {
 		return availablity;
