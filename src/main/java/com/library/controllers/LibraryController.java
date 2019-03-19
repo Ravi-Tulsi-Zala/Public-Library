@@ -27,7 +27,7 @@ import com.library.signUp.UserExtendedInfo;
 @ComponentScan(basePackages = { "com.library.model" }, basePackageClasses = DBSeachControllerBean.class)
 @Controller
 public class LibraryController implements WebMvcConfigurer {
-
+	private List<Map.Entry<String, String>> list = null;
 	@Inject
 	private IDBSearchController dbSearchController;
 
@@ -43,7 +43,7 @@ public class LibraryController implements WebMvcConfigurer {
 			userExtendedInfo.setFullname(user.getFullName());
 			userExtendedInfo.setPhone(user.getPhoneNumber());
 			LibraryFactorySingleton.instance().build(factory);
-			List<Map.Entry<String, String>> list = LibraryFactorySingleton.instance().getFactory()
+			list= LibraryFactorySingleton.instance().getFactory()
 					.signUp(userBasicInfo, userExtendedInfo).authenticateSignUp();
 			for (int i = 0; i < list.size(); i++) {
 				model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
@@ -118,7 +118,7 @@ public class LibraryController implements WebMvcConfigurer {
 			userBasicInfo.setEmail(user.getEmail());
 			userBasicInfo.setPwd(user.getPassword());
 			LibraryFactorySingleton.instance().build(factory);
-			List<Map.Entry<String, String>> list = LibraryFactorySingleton.instance().getFactory()
+			list = LibraryFactorySingleton.instance().getFactory()
 					.signIn(userBasicInfo, httpSession).authenticateSignIn();
 
 			for (int i = 0; i < list.size(); i++) {
