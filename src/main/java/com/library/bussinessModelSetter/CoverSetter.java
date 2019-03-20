@@ -2,11 +2,11 @@ package com.library.bussinessModelSetter;
 
 import java.sql.ResultSet;
 
-import com.library.IBussinessModelSetter.ICoverMapper;
+import com.library.IBussinessModelSetter.ICoverSetter;
 import com.library.businessModels.Cover;
 import com.mysql.jdbc.Blob;
 
-public class CoverSetter implements ICoverMapper {
+public class CoverSetter implements ICoverSetter {
 	
 	@Override
 	public Cover mapCover(ResultSet resultSet) {
