@@ -1,11 +1,10 @@
 package com.library.IDAO;
 
-import com.mysql.jdbc.Blob;
+import java.sql.Blob;
+import com.library.businessModels.Cover;
 
 public interface ICoverDAO {
-	public Blob getCover(int itemID);
-	public void setCover(int itemID, Blob cover);
-	public Boolean isPresent(int itemID);
-	public void deleteCover(int itemID);
-	public void editCover(int itemID, Blob cover);
+	public Cover getCoverByID(int itemID);
+	public boolean createCoverByID(int itemID, Blob cover, String fileExtension);
+	public boolean deleteBlobByID(int itemID);
 }

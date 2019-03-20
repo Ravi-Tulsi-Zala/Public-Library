@@ -4,20 +4,25 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
-import com.library.DAOMapper.IMusicMapper;
-import com.library.DAOMapperImpl.MusicMapper;
+import com.library.IBussinessModelSetter.IMusicSetter;
 import com.library.IDAO.IMusicDAO;
+import com.library.businessModels.LibraryItem;
+import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
+import com.library.bussinessModelSetter.MusicSetter;
 import com.library.dbConnection.DatabaseConnection;
+import com.library.search.IMovieSearchRequestDetails;
+import com.library.search.IMusicSearchRequestDetails;
 
 public class MusicDAO implements IMusicDAO {
 
 	private PreparedStatement preparedStatement;
 	String query;
 	Connection connection;
-	IMusicMapper iMusicMapper = new MusicMapper();
+	IMusicSetter musicMapper = new MusicSetter();
 
 	public MusicDAO() {
 
@@ -29,7 +34,7 @@ public class MusicDAO implements IMusicDAO {
 			e.printStackTrace();
 		}
 	}
-
+	 
 	@Override
 	public Music getMusicById(int itemID) {
 
@@ -42,7 +47,7 @@ public class MusicDAO implements IMusicDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while(resultSet.next())
 			{
-				music = iMusicMapper.mapMusic(resultSet);
+				music = musicMapper.mapMusic(resultSet);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -65,7 +70,7 @@ public class MusicDAO implements IMusicDAO {
 			while (resultSet.next()) {
 
 				music = new Music();
-				music = iMusicMapper.mapMusic(resultSet);
+				music = musicMapper.mapMusic(resultSet);
 				lisOfMusicByTitle.add(music);
 			}
 		} catch (Exception e) {
@@ -87,7 +92,7 @@ public class MusicDAO implements IMusicDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				music = new Music();
-				music = iMusicMapper.mapMusic(resultSet);
+				music = musicMapper.mapMusic(resultSet);
 				musicsByArtistName.add(music);
 			}
 		} catch (Exception e) {
@@ -110,7 +115,7 @@ public class MusicDAO implements IMusicDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				music = new Music();
-				music = iMusicMapper.mapMusic(resultSet);
+				music = musicMapper.mapMusic(resultSet);
 				musicsByCategory.add(music);
 			}
 		} catch (Exception e) {
@@ -133,7 +138,7 @@ public class MusicDAO implements IMusicDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				music = new Music();
-				music = iMusicMapper.mapMusic(resultSet);
+				music = musicMapper.mapMusic(resultSet);
 				musicsByCategory.add(music);
 			}
 		} catch (Exception e) {
@@ -193,6 +198,51 @@ public class MusicDAO implements IMusicDAO {
 			e.printStackTrace();
 		}
 		return false;
-
+	}
+	
+	private void prepareSearchQuery(IMusicSearchRequestDetails requestDetails) {
+		
+		if(0 == requestDetails.getSearchTerms().length()) {
+			//logger.log("ERROR: Search terms length is zero.");
+		}
+		
+		query = "SELECT DISTINCT * FROM music WHERE ";
+		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
+		for(String term : searchterms) {
+			if(requestDetails.isSearchMusicAlbumName()) {
+				query += "Title like \"%" + term + "%\" or ";
+			}
+			if(requestDetails.isSearchMusicArtist()) {
+				query += "Artist like \"%" + term + "%\" or ";
+			}
+			if(requestDetails.isSearchMusicRecordLabel()) {
+				query += "Record_Label like \"%" + term + "%\" or ";
+			}
+		}
+		
+		query = query.substring(0, query.length() - 4);
+	}
+	
+	@Override
+	public LinkedList<Music> getMusicBySearchTerms(IMusicSearchRequestDetails searchRequestDetails) {
+		LinkedList<Music> musics = new LinkedList<Music>();
+		Music music;
+		prepareSearchQuery(searchRequestDetails);
+		
+		try {
+			preparedStatement  = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();	
+			
+			while(resultSet.next()) {
+				music = musicMapper.mapMusic(resultSet);
+				musics.add(music);
+			}
+			
+			return musics;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return musics;
 	}
 }

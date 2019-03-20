@@ -1,8 +1,11 @@
 package com.library.IDAO;
 
+import java.util.LinkedList;
+
 import java.util.List;
 
 import com.library.businessModels.Book;
+import com.library.search.IBookSearchRequestDetails;
 
 public interface IBookDAO {
 	public Book getBookByID(int itemID);
@@ -15,7 +18,6 @@ public interface IBookDAO {
 	public Boolean deleteBookByID(int itemID);
 	public Boolean createBook(Book book);
 	public Boolean updateBook(Book book);
-	public List<Book> getBookByKeyword(String keyword);
-	public int getLastID();
-	public void changeBooksItemID(int itemID);
+	public List<Book> getBookByCategory(String category);
+	public List<Book> getBooksBySearchTerms(IBookSearchRequestDetails searchRequestDetails);
 }
