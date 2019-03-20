@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
-import com.library.signUp.IUserBasicInfo;
-import com.library.signUp.IUserExtendedInfo;
+import com.library.businessModels.IUserBasicInfo;
+import com.library.businessModels.IUserExtendedInfo;
 
 public class AuthenticateUserForms extends Authentication {
 

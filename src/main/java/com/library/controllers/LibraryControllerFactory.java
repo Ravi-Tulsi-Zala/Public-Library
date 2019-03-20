@@ -2,21 +2,20 @@ package com.library.controllers;
 
 import javax.servlet.http.HttpSession;
 
-import com.library.interfaces.IUserBasicInfo;
-import com.library.interfaces.IUserExtendedInfo;
+import com.library.businessModels.User;
 import com.library.signIn.SignInController;
 import com.library.signUp.SignUpController;
 
 public class LibraryControllerFactory implements ILibraryFactory {
 
 	@Override
-	public SignInController signIn(IUserBasicInfo userBasicInfo, HttpSession httpSession) {
-		return new SignInController(userBasicInfo, httpSession);
+	public SignInController signIn(User user, HttpSession httpSession) {
+		return new SignInController(user, httpSession);
 	}
 
 	@Override
-	public SignUpController signUp(IUserBasicInfo userBasicInfo, IUserExtendedInfo userExtendedInfo) {
-		return new SignUpController(userBasicInfo, userExtendedInfo);
+	public SignUpController signUp(User user) {
+		return new SignUpController(user);
 	}
 
 }

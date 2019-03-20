@@ -14,9 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.library.Logger;
+import com.library.businessModels.UserBasicInfo;
+import com.library.businessModels.UserExtendedInfo;
 import com.library.mockDB.SignUpMocked;
-import com.library.signUp.UserBasicInfo;
-import com.library.signUp.UserExtendedInfo;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

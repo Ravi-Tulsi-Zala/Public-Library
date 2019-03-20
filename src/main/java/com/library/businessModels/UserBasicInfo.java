@@ -1,4 +1,4 @@
-package com.library.signUp;
+package com.library.businessModels;
 
 public class UserBasicInfo implements IUserBasicInfo{
 	private String email;

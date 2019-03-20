@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.library.signUp.IUserBasicInfo;
-import com.library.signUp.IUserExtendedInfo;
-import com.library.signUp.UserBasicInfo;
-import com.library.signUp.UserExtendedInfo;
+import com.library.businessModels.IUserBasicInfo;
+import com.library.businessModels.IUserExtendedInfo;
+import com.library.businessModels.UserBasicInfo;
+import com.library.businessModels.UserExtendedInfo;
 
 public class SignUpMocked {
 	public String fullName;
@@ -20,7 +20,7 @@ public class SignUpMocked {
 	private IUserBasicInfo userBasicInfo;
 	private IUserExtendedInfo userExtendedInfo;
 	Map map;
-	
+
 	public SignUpMocked() {
 		userBasicInfo = new UserBasicInfo();
 		userExtendedInfo = new UserExtendedInfo();
