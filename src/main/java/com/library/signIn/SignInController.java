@@ -11,11 +11,15 @@ import com.library.interfaces.IUserBasicInfo;
 public class SignInController {
 
 	private IUserBasicInfo userBasicInfo;
+	private User user;
 	private HttpSession httpSession;
 	private List<Entry<String, String>> listofValidationErrors;
 
-	public SignInController(IUserBasicInfo userBasicInfo, HttpSession httpSession) {
-		this.userBasicInfo = userBasicInfo;
+	public SignInController(User user, HttpSession httpSession) {
+		this.user = user;
+		this.userBasicInfo = new UserBasicInfo();
+		this.userBasicInfo.setEmail(user.getEmail());
+		this.userBasicInfo.setPwd(user.getPassword());
 		this.httpSession = httpSession;
 	}
 
