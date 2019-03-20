@@ -11,10 +11,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.library.Logger;
+import com.library.businessModels.UserBasicInfo;
 import com.library.mockDB.SignInMocked;
 import com.library.mockDB.SignUpMocked;
-import com.library.signUp.UserBasicInfo;
-import com.library.signUp.UserExtendedInfo;
 
 public class SignInTest {
 	private static SignInMocked signInMocked;
@@ -53,11 +52,5 @@ public class SignInTest {
 				assertEquals("devanshu0101@gmail.com", userBasicInfo.getEmail());
 			}
 		}
-	}
-
-	@Test
-	public void testLogger() {
-		Logger logger = Logger.loggerInstance();
-		logger.writeLog("Test message!");
 	}
 }

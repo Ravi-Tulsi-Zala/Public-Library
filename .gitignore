@@ -1,6 +1,10 @@
 /target/
 !.mvn/wrapper/maven-wrapper.jar
 
+### Personal Files that I don't want added ###
+*.log
+logfile.log
+
 ### STS ###
 .apt_generated
 .classpath
@@ -23,3 +27,5 @@
 /nbdist/
 /.nb-gradle/
 /build/
+
+/dynamicContent/
