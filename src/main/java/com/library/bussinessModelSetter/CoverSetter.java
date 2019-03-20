@@ -1,18 +1,19 @@
-package com.library.BussinessModelSetter;
+package com.library.bussinessModelSetter;
 
 import java.sql.ResultSet;
 
-import com.library.IBussinessModelSetter.ICoverMapper;
+import com.library.IBussinessModelSetter.ICoverSetter;
 import com.library.businessModels.Cover;
+import com.mysql.jdbc.Blob;
 
-public class CoverMapper implements ICoverMapper {
+public class CoverSetter implements ICoverSetter {
 	
 	@Override
 	public Cover mapCover(ResultSet resultSet) {
 		try {
 			Cover cover = new Cover();
 			cover.setItemID(resultSet.getInt("Item_ID"));
-			cover.setCoverBlob(resultSet.getBlob("Cover_Blob"));
+			cover.setCoverBlob((Blob) resultSet.getBlob("Cover_Blob"));
 			cover.setFileExtension(resultSet.getString("File_Extension"));
 			return cover;
 		}

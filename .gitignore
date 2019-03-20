@@ -27,5 +27,9 @@ logfile.log
 /nbdist/
 /.nb-gradle/
 /build/
+<<<<<<< HEAD
+/bin/
+=======
 
 /dynamicContent/
+>>>>>>> 7d4d8495d7610108b359fbd1e08ec6ae3b383273

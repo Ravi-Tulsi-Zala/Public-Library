@@ -10,7 +10,7 @@ import java.util.List;
 
 import com.library.IDAO.IBookDAO;
 import com.library.businessModels.Book;
-import com.library.BussinessModelSetter.BookSetter;
+import com.library.bussinessModelSetter.BookSetter;
 import com.library.IBussinessModelSetter.IBookSetter;
 import com.library.dbConnection.*;
 import com.library.search.IBookSearchRequestDetails;
@@ -32,8 +32,6 @@ public class BookDAO implements IBookDAO {
 			 e.printStackTrace();
 		}
 	 }
-	
-
 	
 	@Override
 	public Book getBookByID(int itemID) {
@@ -337,6 +335,32 @@ public class BookDAO implements IBookDAO {
 			 e.printStackTrace();
 		 }
 		 return false;
+	}
+
+	@Override
+	public List<Book> getBookByCategory(String category) {
+		try {
+			List<Book> books = new ArrayList<Book>();
+			Book book = new Book();
+			query = "SELECT * FROM books WHERE Category=?"; 
+			preparedStatement  = connection.prepareStatement(query);
+			preparedStatement.setString(1,category);
+			ResultSet resultSet = preparedStatement.executeQuery();	
+			if(!resultSet.next())
+			{
+				return null;
+			}
+			do
+			{
+				book = bookMapper.mapBook(resultSet);
+				books.add(book);
+			} while(resultSet.next());
+			return books;
+		}	
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
 	

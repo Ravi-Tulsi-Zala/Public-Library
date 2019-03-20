@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.library.BussinessModelSetter.MovieSetter;
 import com.library.IBussinessModelSetter.IMovieSetter;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.library.IDAO.IMovieDAO;
 import com.library.businessModels.Movie;
+import com.library.bussinessModelSetter.MovieSetter;
 import com.library.dbConnection.DatabaseConnection;
 import com.library.search.IMovieSearchRequestDetails;
 

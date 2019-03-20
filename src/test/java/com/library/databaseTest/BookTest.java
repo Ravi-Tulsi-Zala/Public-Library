@@ -92,4 +92,11 @@ public class BookTest {
 		Boolean isBookUpdated = bookDAO.updateBook(book);
 		assertEquals(true,isBookUpdated);
 	}
+	
+	@Test
+	public void getBookByCategoryTest()
+	{
+		List<Book> books = bookDAO.getBookByCategory("Horror");
+		assertEquals("Horror",books.get(0).getCategory());
+	}
 }

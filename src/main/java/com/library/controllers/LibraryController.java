@@ -13,8 +13,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.library.signIn.AuthenticatedUsers;
+import com.library.signIn.SignInController;
+import com.library.browsePage.BrowseDisplayFactory;
+import com.library.browsePage.IBrowseDisplayFactory;
+import com.library.browsePage.IBrowseDisplayObjects;
+import com.library.DAO.CoverDAO;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.library.interfaces.IUserBasicInfo;
 import com.library.interfaces.IUserExtendedInfo;
 import com.library.search.DBSeachControllerBean;
