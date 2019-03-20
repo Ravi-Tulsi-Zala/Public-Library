@@ -7,15 +7,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
-import javax.servlet.http.HttpServletRequest;
-
-import com.library.Logger;
-import com.library.common.XmlParser;
-import com.library.interfaces.IUserBasicInfo;
-import com.library.interfaces.IUserExtendedInfo;
-import com.library.signUp.SignUpController;
-import com.library.signUp.UserBasicInfo;
-import com.library.signUp.UserExtendedInfo;
+import com.library.businessModels.IUserBasicInfo;
+import com.library.businessModels.IUserExtendedInfo;
 
 public class AuthenticateUserForms extends Authentication {
 
@@ -28,7 +21,6 @@ public class AuthenticateUserForms extends Authentication {
 	private static final String cpassword = "cpassword";
 	private static final String phoneNumber = "phoneNumber";
 
-	
 	private static AuthenticateUserForms instance = null;
 
 	public static AuthenticateUserForms instance() {
@@ -37,8 +29,7 @@ public class AuthenticateUserForms extends Authentication {
 		}
 		return instance;
 	}
-	
-	
+
 	public AuthenticateUserForms() {
 		setErrorStringRules();
 		setValidationRules();
@@ -66,11 +57,10 @@ public class AuthenticateUserForms extends Authentication {
 			}
 			if (userExtendedInfo.getCPassword().equals("")
 					|| !Pattern.compile(passwordRegex).matcher(userExtendedInfo.getCPassword()).find()) {
-				
+
 				entryMap = new AbstractMap.SimpleEntry<String, String>(cpassword, passwordErrorStatement);
 				listofValidationErrors.add(entryMap);
-			}
-			else if (!userExtendedInfo.getCPassword().equals(userBasicInfo.getPwd())) {
+			} else if (!userExtendedInfo.getCPassword().equals(userBasicInfo.getPwd())) {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(cpassword, cpasswordErrorStatement);
 				listofValidationErrors.add(entryMap);
 			}

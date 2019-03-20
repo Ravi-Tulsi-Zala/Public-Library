@@ -1,6 +1,4 @@
-package com.library.signUp;
-
-import com.library.interfaces.IUserExtendedInfo;
+package com.library.businessModels;
 
 public class UserExtendedInfo implements IUserExtendedInfo {
 	private String fullName;

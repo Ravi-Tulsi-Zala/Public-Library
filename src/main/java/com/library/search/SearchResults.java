@@ -11,14 +11,7 @@ public class SearchResults {
 	private LinkedList<Book> bookSearchResults = new LinkedList<Book>();
 	private LinkedList<Music> musicSearchResults = new LinkedList<Music>();
 	private LinkedList<Movie> movieSearchResults = new LinkedList<Movie>();
-	private SearchRequestDetails searchRequestDetails = null;
-	
-	public SearchRequestDetails getSearchRequestDetails() {
-		return searchRequestDetails;
-	}
-	public void setSearchRequestDetails(SearchRequestDetails searchRequestDetails) {
-		this.searchRequestDetails = searchRequestDetails;
-	}
+
 	public LinkedList<Book> getBookSearchResults() {
 		return bookSearchResults;
 	}
