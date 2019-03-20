@@ -50,4 +50,9 @@ public class SignInController {
 		}
 		return "MainPage";
 	}
+	
+	public boolean forgotPassword() {
+		
+		return true;
+	}
 }
