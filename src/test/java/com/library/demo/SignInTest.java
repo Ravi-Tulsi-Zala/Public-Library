@@ -54,10 +54,4 @@ public class SignInTest {
 			}
 		}
 	}
-
-	@Test
-	public void testLogger() {
-		Logger logger = Logger.loggerInstance();
-		logger.writeLog("Test message!");
-	}
 }

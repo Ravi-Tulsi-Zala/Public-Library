@@ -16,7 +16,7 @@ public abstract class Authentication {
 	private static final String passwordRegexKeyRoot = "passwordRegex";
 	private static final String emailRegexKeyRoot = "emailRegex";
 	private static final String phoneCheckKeyRoot = "phoneCheck";
-
+	private static final String adminCheckKeyRoot = "adminId";
 	private static final String emailErrorKeyRoot = "emailErrorString";
 	private static final String passwordErrorKeyRoot = "passwordErrorString";
 	private static final String emptyErrorKeyRoot = "emptyErrorString";
@@ -35,6 +35,7 @@ public abstract class Authentication {
 	protected String blankErrorStatement;
 	protected String phoneErrorStatement;
 	protected String cpasswordErrorStatement;
+	protected static String isAdmin;
 
 	private static final String filePathToValidations = "AuthenticationRules.xml";
 	private static final String filePathToErrorStatements = "ValidationStatements.xml";
@@ -58,6 +59,9 @@ public abstract class Authentication {
 					break;
 				case phoneCheckKeyRoot:
 					this.phoneCheck = Integer.parseInt(list.get(i).getValue());
+					break;
+				case adminCheckKeyRoot:
+					this.isAdmin = list.get(i).getValue();
 					break;
 				default:
 					break;

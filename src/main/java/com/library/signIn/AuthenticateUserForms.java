@@ -28,7 +28,6 @@ public class AuthenticateUserForms extends Authentication {
 	private static final String cpassword = "cpassword";
 	private static final String phoneNumber = "phoneNumber";
 
-	
 	private static AuthenticateUserForms instance = null;
 
 	public static AuthenticateUserForms instance() {
@@ -37,8 +36,7 @@ public class AuthenticateUserForms extends Authentication {
 		}
 		return instance;
 	}
-	
-	
+
 	public AuthenticateUserForms() {
 		setErrorStringRules();
 		setValidationRules();
@@ -66,11 +64,10 @@ public class AuthenticateUserForms extends Authentication {
 			}
 			if (userExtendedInfo.getCPassword().equals("")
 					|| !Pattern.compile(passwordRegex).matcher(userExtendedInfo.getCPassword()).find()) {
-				
+
 				entryMap = new AbstractMap.SimpleEntry<String, String>(cpassword, passwordErrorStatement);
 				listofValidationErrors.add(entryMap);
-			}
-			else if (!userExtendedInfo.getCPassword().equals(userBasicInfo.getPwd())) {
+			} else if (!userExtendedInfo.getCPassword().equals(userBasicInfo.getPwd())) {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(cpassword, cpasswordErrorStatement);
 				listofValidationErrors.add(entryMap);
 			}
