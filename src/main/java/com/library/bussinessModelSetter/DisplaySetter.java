@@ -1,4 +1,4 @@
-package com.library.BussinessModelSetter;
+package com.library.bussinessModelSetter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,6 +8,7 @@ import com.library.DAOFactory.IDAOFactory;
 import com.library.IBussinessModelSetter.IDisplaySetter;
 import com.library.IDAO.ICoverDAO;
 import com.library.businessModels.Book;
+import com.library.businessModels.Cover;
 import com.library.businessModels.Display;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
@@ -29,8 +30,11 @@ public class DisplaySetter implements IDisplaySetter{
 			Book book = bookIterator.next();
 			display.setTitle(book.getTitle());
 			display.setItemID(book.getItemID());
-			Blob coverBlob = coverDAO.getCover(display.getItemID());
-			display.setImage(coverBlob);
+			Cover cover =  coverDAO.getCoverByID(display.getItemID());
+			if(cover!=null)
+			{
+				display.setImage(cover.getCoverBlob());
+			}
 			displayObjects.add(display);
 		}
 		return displayObjects;
@@ -46,8 +50,11 @@ public class DisplaySetter implements IDisplaySetter{
 			Movie movie = movieIterator.next();
 			display.setTitle(movie.getTitle());
 			display.setItemID(movie.getItemID());
-			Blob coverBlob = coverDAO.getCover(display.getItemID());
-			display.setImage(coverBlob);
+			Cover cover = coverDAO.getCoverByID(display.getItemID());
+			if(cover!=null)
+			{
+				display.setImage(cover.getCoverBlob());
+			}
 			displayObjects.add(display);
 		}
 		return displayObjects;
@@ -63,8 +70,11 @@ public class DisplaySetter implements IDisplaySetter{
 			Music music = musicIterator.next();
 			display.setTitle(music.getTitle());
 			display.setItemID(music.getItemID());
-			Blob coverBlob = coverDAO.getCover(display.getItemID());
-			display.setImage(coverBlob);
+			Cover cover = coverDAO.getCoverByID(display.getItemID());
+			if(cover!=null)
+			{
+				display.setImage(cover.getCoverBlob());
+			}
 			displayObjects.add(display);
 		}
 		return displayObjects;

@@ -22,9 +22,9 @@
    	</div>
 
       <h2>Advanced Search</h2>      
-      <form method="post" action="/search" th:action="@{/search}">
+      <form id="advancedSearchForm" onsubmit="return validateSearchForm()" method="post" action="/search" th:action="@{/search}">
       	<div style="margin-bottom: 20px">
-      		<p>Search Terms <input type="text" th:field="${searchRequestDetails.searchTerms}" style="width:330px;"/></p>
+      		<p>Search Terms <input id="searchTerms" type="text" th:field="${searchRequestDetails.searchTerms}" style="width:330px;"/></p>
       	</div>   	
       	
         <table>            
@@ -61,7 +61,11 @@
 					<div>
 						<input type="checkbox" id="bookAuthor" th:field="${searchRequestDetails.searchBookAuthor}"/>
 						<label th:for="bookAuthor" th:text="'Author'"></label>
-					</div>	
+					</div>
+					<div>
+						<input type="checkbox" id="bookCategory" th:field="${searchRequestDetails.searchBookCategory}"/>
+						<label th:for="bookCategory" th:text="'Category'"></label>
+					</div>							
 					<div>
 						<input type="checkbox" id="bookPublisher" th:field="${searchRequestDetails.searchBookPublisher}"/>
 						<label th:for="bookPublisher" th:text="'Publisher'"></label>
@@ -120,6 +124,7 @@
       </form>      
    </body>
    
-   <script src="js/AdvancedSearchPage.js"></script>
+   	<script src="js/SearchCreteriaInputValidation.js"></script>
+ 	<script src="js/AdvancedSearchPage.js"></script>
    
 </html>

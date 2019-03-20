@@ -4,18 +4,25 @@ import com.mysql.jdbc.Blob;
 
 public class Cover {
 	private int itemID;
-	private Blob cover;
+	private Blob coverBlob;
+	private String fileExtension;
+	
 	public int getItemID() {
 		return itemID;
 	}
 	public void setItemID(int itemID) {
 		this.itemID = itemID;
 	}
-	public Blob getCover() {
-		return cover;
+	public Blob getCoverBlob() {
+		return coverBlob;
 	}
-	public void setCover(Blob cover) {
-		this.cover = cover;
+	public void setCoverBlob(Blob coverBlob) {
+		this.coverBlob = coverBlob;
 	}
-		
+	public String getFileExtension() {
+		return fileExtension;
+	}
+	public void setFileExtension(String fileExtension) {
+		this.fileExtension = fileExtension;
+	}
 }

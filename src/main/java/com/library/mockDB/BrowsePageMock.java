@@ -22,6 +22,7 @@ public class BrowsePageMock {
 			book.setItemID(id);
 			id += 1;
 			content += 1;
+			books.add(book);
 		}
 		return books;
 	}
@@ -37,6 +38,7 @@ public class BrowsePageMock {
 			movie.setItemID(id);
 			id += 1;
 			content += 1;
+			movies.add(movie);
 		}
 		return movies;
 	}
@@ -52,6 +54,7 @@ public class BrowsePageMock {
 			music.setItemID(id);
 			id += 1;
 			content += 1;
+			musics.add(music);
 		}
 		return musics;
 	}

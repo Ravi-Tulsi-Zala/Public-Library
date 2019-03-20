@@ -1,4 +1,4 @@
-package com.library.BussinessModelSetter;
+package com.library.bussinessModelSetter;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -29,13 +29,4 @@ public class BookSetter implements IBookSetter {
 		return null;
 	}
 
-	@Override
-	public List<Integer> getItemIDFromBook(List<Book> books) {
-		List<Integer> items = new ArrayList<Integer>();
-		for(int i=0;i<books.size();i++)
-		{
-			items.add(books.get(i).getItemID());
-		}
-		return items;
-	}
 }

@@ -39,8 +39,7 @@ public class Display {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		
+		}	
 		if(this.image==null)
 		{
 			try {

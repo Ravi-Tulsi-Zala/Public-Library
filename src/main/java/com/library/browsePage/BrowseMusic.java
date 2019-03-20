@@ -2,19 +2,18 @@ package com.library.browsePage;
 
 import java.util.List;
 
-import com.library.BussinessModelSetter.DisplaySetter;
 import com.library.DAOFactory.DAOFactory;
 import com.library.DAOFactory.IDAOFactory;
 import com.library.IBussinessModelSetter.IDisplaySetter;
 import com.library.IDAO.IMusicDAO;
 import com.library.businessModels.Display;
 import com.library.businessModels.Music;
+import com.library.bussinessModelSetter.DisplaySetter;
 
 public class BrowseMusic implements IBrowseDisplayObjects{
 
-	IMusicDAO musicDAO;
-	IDisplaySetter displaySetter = new DisplaySetter();
-	String itemType;
+	private IMusicDAO musicDAO;
+	private String itemType;
 	
 	public BrowseMusic()
 	{
@@ -24,7 +23,8 @@ public class BrowseMusic implements IBrowseDisplayObjects{
 	}
 	
 	@Override
-	public List<Display> makeDisplayItem(String category) {
+	public List<Display> itemsByCategory(String category) {
+		IDisplaySetter displaySetter = new DisplaySetter();
 		List<Music> music = musicDAO.getMusicByCategory(category);
 		List<Display> displayMusic = displaySetter.getMusicDisplayObjects(music);
 		return displayMusic;

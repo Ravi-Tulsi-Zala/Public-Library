@@ -2,19 +2,18 @@ package com.library.browsePage;
 
 import java.util.List;
 
-import com.library.BussinessModelSetter.DisplaySetter;
 import com.library.DAOFactory.DAOFactory;
 import com.library.DAOFactory.IDAOFactory;
 import com.library.IBussinessModelSetter.IDisplaySetter;
 import com.library.IDAO.IMovieDAO;
 import com.library.businessModels.Display;
 import com.library.businessModels.Movie;
+import com.library.bussinessModelSetter.DisplaySetter;
 
 public class BrowseMovies implements IBrowseDisplayObjects{
 	
-	IMovieDAO movieDAO;
-	IDisplaySetter displaySetter = new DisplaySetter();
-	String itemType;
+	private IMovieDAO movieDAO;
+	private String itemType;
 	
 	public BrowseMovies()
 	{
@@ -24,7 +23,8 @@ public class BrowseMovies implements IBrowseDisplayObjects{
 	}
 
 	@Override
-	public List<Display> makeDisplayItem(String category) {
+	public List<Display> itemsByCategory(String category) {
+		IDisplaySetter displaySetter = new DisplaySetter();
 		List<Movie> movies = movieDAO.getMoviesByCategory(category);
 		List<Display> displayMovies = displaySetter.getMovieDisplayObjects(movies);
 		return displayMovies;
