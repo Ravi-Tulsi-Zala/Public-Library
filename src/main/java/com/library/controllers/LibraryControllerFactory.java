@@ -2,8 +2,8 @@ package com.library.controllers;
 
 import javax.servlet.http.HttpSession;
 
+import com.library.businessModels.User;
 import com.library.signIn.SignInController;
-import com.library.signIn.User;
 import com.library.signUp.SignUpController;
 
 public class LibraryControllerFactory implements ILibraryFactory {

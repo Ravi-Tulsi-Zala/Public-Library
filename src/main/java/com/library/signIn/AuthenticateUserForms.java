@@ -7,15 +7,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
-import javax.servlet.http.HttpServletRequest;
-
-import com.library.Logger;
-import com.library.common.XmlParser;
-import com.library.interfaces.IUserBasicInfo;
-import com.library.interfaces.IUserExtendedInfo;
-import com.library.signUp.SignUpController;
-import com.library.signUp.UserBasicInfo;
-import com.library.signUp.UserExtendedInfo;
+import com.library.businessModels.IUserBasicInfo;
+import com.library.businessModels.IUserExtendedInfo;
 
 public class AuthenticateUserForms extends Authentication {
 

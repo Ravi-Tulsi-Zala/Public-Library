@@ -5,8 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.library.interfaces.IUserBasicInfo;
-import com.library.signUp.UserBasicInfo;
+import com.library.businessModels.IUserBasicInfo;
+import com.library.businessModels.UserBasicInfo;
+
 
 public class SignInMocked {
 	private String email;

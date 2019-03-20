@@ -6,8 +6,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.Logger;
-import org.springframework.boot.logging.log4j2.Log4J2LoggingSystem;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,17 +13,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.library.interfaces.IUserBasicInfo;
-import com.library.interfaces.IUserExtendedInfo;
+import com.library.businessModels.Movie;
+import com.library.businessModels.User;
+import com.library.mockDB.WelcomePageMocked;
 import com.library.search.DBSeachControllerBean;
 import com.library.search.IDBSearchController;
 import com.library.search.SearchRequestDetails;
 import com.library.search.SearchResults;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.SignInController;
-import com.library.signIn.User;
-import com.library.signUp.UserBasicInfo;
-import com.library.signUp.UserExtendedInfo;
 
 @ComponentScan(basePackages = { "com.library.model" }, basePackageClasses = DBSeachControllerBean.class)
 @Controller
@@ -129,6 +125,20 @@ public class LibraryController implements WebMvcConfigurer {
 			e.printStackTrace();
 			return ""; //Something went wrong page.
 		}
+	}
+
+	@GetMapping("/welcome")
+	public String welcomeBody(Movie movie) {
+		
+		return "Welcome";
+	}
+
+	@PostMapping("/welcome")
+	public String welcomeProcess(ModelMap model, Movie movie) {
+			model.addAttribute("movie", new WelcomePageMocked().initiateMock());
+
+		
+		return "Welcome";
 	}
 
 	@GetMapping("/logOut")

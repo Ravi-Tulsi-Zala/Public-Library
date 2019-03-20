@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import com.library.interfaces.IUserBasicInfo;
-import com.library.interfaces.IUserExtendedInfo;
+import com.library.businessModels.IUserBasicInfo;
+import com.library.businessModels.IUserExtendedInfo;
+import com.library.businessModels.User;
+import com.library.businessModels.UserBasicInfo;
+import com.library.businessModels.UserExtendedInfo;
 import com.library.signIn.AuthenticateUserForms;
-import com.library.signIn.User;
 
 public class SignUpController {
 	private List<Entry<String, String>> listofValidationErrors;

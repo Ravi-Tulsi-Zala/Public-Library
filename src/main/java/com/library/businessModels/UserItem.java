@@ -20,7 +20,7 @@ public class UserItem {
 		return itemID;
 	}
 	public void setItem_ID(int itemID) {
-		itemID = itemID;
+		this.itemID = itemID;
 	}
 	public Date getTimestamp() {
 		return timestamp;
