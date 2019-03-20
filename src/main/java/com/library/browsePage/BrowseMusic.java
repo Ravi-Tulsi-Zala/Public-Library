@@ -14,11 +14,13 @@ public class BrowseMusic implements IBrowseDisplayObjects{
 
 	IMusicDAO musicDAO;
 	IDisplaySetter displaySetter = new DisplaySetter();
+	String itemType;
 	
 	public BrowseMusic()
 	{
 		IDAOFactory factory = new DAOFactory();
 		musicDAO = factory.makeMusicDAO();	
+		itemType = "Music";
 	}
 	
 	@Override
@@ -30,8 +32,12 @@ public class BrowseMusic implements IBrowseDisplayObjects{
 
 	@Override
 	public List<String> getCategories() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getItemType() {
+		return itemType;
 	}
 
 }

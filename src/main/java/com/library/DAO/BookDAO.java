@@ -33,8 +33,6 @@ public class BookDAO implements IBookDAO {
 		}
 	 }
 	
-
-	
 	@Override
 	public Book getBookByID(int itemID) {
 		try

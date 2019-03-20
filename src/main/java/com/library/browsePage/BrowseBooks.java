@@ -14,11 +14,13 @@ public class BrowseBooks implements IBrowseDisplayObjects{
 
 	IBookDAO bookDAO;
 	IDisplaySetter displaySetter = new DisplaySetter();
+	String itemType;
 	
 	public BrowseBooks()
 	{
 		IDAOFactory factory = new DAOFactory();
-		bookDAO = factory.makeBookDAO();	
+		bookDAO = factory.makeBookDAO();
+		itemType = "Book";
 	}
 	
 	@Override
@@ -32,6 +34,11 @@ public class BrowseBooks implements IBrowseDisplayObjects{
 	public List<String> getCategories() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getItemType() {
+		return itemType;
 	}
 
 }

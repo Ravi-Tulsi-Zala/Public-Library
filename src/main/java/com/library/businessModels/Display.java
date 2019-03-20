@@ -1,6 +1,7 @@
 package com.library.businessModels;
 
 import java.awt.Image;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -10,9 +11,10 @@ import javax.imageio.ImageIO;
 import com.mysql.jdbc.Blob;
 
 public class Display {
-	String title;
-	int itemID;
-	Image image;
+	private String title;
+	private int itemID;
+	private Image image = null;
+	
 	public String getTitle() {
 		return title;
 	}
@@ -37,6 +39,15 @@ public class Display {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		
+		if(this.image==null)
+		{
+			try {
+				this.image = ImageIO.read(new File("defaultCoverImage.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

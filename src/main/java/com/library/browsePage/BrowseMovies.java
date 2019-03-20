@@ -14,11 +14,13 @@ public class BrowseMovies implements IBrowseDisplayObjects{
 	
 	IMovieDAO movieDAO;
 	IDisplaySetter displaySetter = new DisplaySetter();
+	String itemType;
 	
 	public BrowseMovies()
 	{
 		IDAOFactory factory = new DAOFactory();
 		movieDAO = factory.makeMovieDAO();	
+		itemType = "Movie";
 	}
 
 	@Override
@@ -32,6 +34,11 @@ public class BrowseMovies implements IBrowseDisplayObjects{
 	public List<String> getCategories() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getItemType() {
+		return itemType;
 	}
 
 }
