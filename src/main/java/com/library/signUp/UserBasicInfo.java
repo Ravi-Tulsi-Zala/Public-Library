@@ -1,7 +1,5 @@
 package com.library.signUp;
 
-import com.library.interfaces.IUserBasicInfo;
-
 public class UserBasicInfo implements IUserBasicInfo{
 	private String email;
 	private String password;

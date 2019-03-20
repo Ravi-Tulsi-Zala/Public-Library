@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.library.interfaces.IUserBasicInfo;
+import com.library.signUp.IUserBasicInfo;
 import com.library.signUp.UserBasicInfo;
 
 public class SignInMocked {

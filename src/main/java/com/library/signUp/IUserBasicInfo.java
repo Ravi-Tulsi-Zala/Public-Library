@@ -1,4 +1,4 @@
-package com.library.interfaces;
+package com.library.signUp;
 
 public interface IUserBasicInfo {
 	public String getEmail();

@@ -199,7 +199,12 @@ public class MovieDAO implements IMovieDAO {
 	}
 	
 	private void prepareSearchQuery(IMovieSearchRequestDetails requestDetails) {
-		query = "SELECT * FROM movie WHERE ";
+		
+		if(0 == requestDetails.getSearchTerms().length()) {
+			//logger.log("ERROR: Search terms length is zero.");
+		}
+		
+		query = "SELECT DISTINCT * FROM movie WHERE ";
 		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
 		for(String term : searchterms) {
 			if(requestDetails.isSearchMovieTitle()) {
@@ -225,21 +230,18 @@ public class MovieDAO implements IMovieDAO {
 		try {
 			preparedStatement  = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();	
-			if(!resultSet.next())
-			{
-				return null;
-			}
-			do
-			{
+
+			while(resultSet.next()) {
+				movie = movieSetter.mapMovie(resultSet);
 				movie = movieSetter.mapMovie(resultSet);
 				movies.add(movie);
-			} while(resultSet.next());
+			}
 			
 			return movies;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return movies;
 	}
 }

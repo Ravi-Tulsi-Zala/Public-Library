@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.library.common.XmlParser;
-import com.library.interfaces.IUserBasicInfo;
-import com.library.interfaces.IUserExtendedInfo;
+import com.library.signUp.IUserBasicInfo;
+import com.library.signUp.IUserExtendedInfo;
 
 //Template pattern implemented in this class and in its child class. I have implemented setValidationRules() and setErrorStringRules() that are being used by the child class many times.
 // Abstract functions are also added in this class and that are used by child class, where it changes the flow of action as required.
