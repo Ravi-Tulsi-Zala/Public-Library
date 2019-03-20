@@ -285,7 +285,7 @@ public class BookDAO implements IBookDAO {
 		String publisher = book.getPublisher();
 		String description =  book.getDescription();
 		int itemID = getLastID() + 1;
-		int availablity = book.getAvailablity();
+		int availablity = book.getAvailability();
 		try {
 			
 			query = "Insert into books (Item_ID,Category,Title,Author,ISBN,Publisher,Description,Availability) Values "
@@ -318,7 +318,7 @@ public class BookDAO implements IBookDAO {
 		String publisher = book.getPublisher();
 		String description =  book.getDescription();
 		int itemID = book.getItemID();
-		int availablity = book.getAvailablity();
+		int availablity = book.getAvailability();
 		try {
 			query = "Update books  set Category = ?, Title = ?, Author = ?, ISBN =  ?,"
 					+ "Publisher = ?, Description = ?, Availability = ? WHERE Item_ID = ?";

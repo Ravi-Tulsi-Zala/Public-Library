@@ -1,0 +1,44 @@
+package com.library.businessModels;
+
+public class LibraryItem {
+	
+	private String description;
+	private int availability;
+	private int itemID;
+	private String title;
+	private String category;
+	
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public int getAvailability() {
+		return availability;
+	}
+	public void setAvailability(int availability) {
+		this.availability = availability;
+	}
+	public int getItemID() {
+		return itemID;
+	}
+	public void setItemID(int itemID) {
+		this.itemID = itemID;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	
+	
+
+}

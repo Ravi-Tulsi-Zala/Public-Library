@@ -43,7 +43,7 @@ public class LibraryController implements WebMvcConfigurer {
 
 	@PostMapping("/signUp")
 	public String processSignUpForm(ModelMap model, User user) {
-
+		
 		IUserExtendedInfo userExtendedInfo = new UserExtendedInfo();
 		IUserBasicInfo userBasicInfo = new UserBasicInfo();
 		userBasicInfo.setEmail(user.getEmail());
