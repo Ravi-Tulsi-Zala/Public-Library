@@ -42,7 +42,6 @@ public class SignInController {
 //			connectDB(); // will be worked upon.
 		}
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
-
 	}
 	public String isAdmin() {
 		if(userBasicInfo.getEmail().equals(Authentication.isAdmin)){

@@ -1,9 +1,12 @@
 package com.library.controllers;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.annotation.ComponentScan;
@@ -11,10 +14,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.library.businessModels.Movie;
 import com.library.businessModels.User;
+import com.library.email.EmailUtility;
 import com.library.mockDB.WelcomePageMocked;
 import com.library.search.DBSeachControllerBean;
 import com.library.search.IDBSearchController;
@@ -149,5 +154,10 @@ public class LibraryController implements WebMvcConfigurer {
 			AuthenticatedUsers.instance().removeAuthenticatedUser(httpSession);
 		}
 		return "HomePage";
+	}
+	@RequestMapping(value = "/sendemail")
+	public String sendEmail() throws AddressException, MessagingException, IOException {
+	   EmailUtility.sendmail("","","","");
+	   return "Email sent successfully";   
 	}
 }
