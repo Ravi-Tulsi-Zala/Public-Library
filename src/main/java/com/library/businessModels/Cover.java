@@ -1,6 +1,6 @@
 package com.library.businessModels;
 
-import com.mysql.jdbc.Blob;
+import java.sql.Blob;
 
 public class Cover {
 	private int itemID;
