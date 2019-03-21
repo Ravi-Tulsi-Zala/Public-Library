@@ -67,75 +67,16 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public Boolean registerUser(User user) {
 		
-		query = "INSERT INTO user_info (User_name,Phone_Number,Email,Password,Status) VALUES (?,?,?,?.?)";
+		query = "INSERT INTO user_info (User_name,Phone_Number,Email,Password) VALUES (?,?,?,?)";
 		try {
 			 preparedStatement = connection.prepareStatement(query);
 			 preparedStatement.setString(1,user.getFullName());
 			 preparedStatement.setInt(2, user.getPhoneNumber());
 			 preparedStatement.setString(3, user.getEmailAddress());
 			 preparedStatement.setString(4, user.getPassword());
-			 preparedStatement.setString(5, "Inactive");
 			 preparedStatement.executeUpdate();
 			 return true;
 		 }
-		 catch(Exception e)
-		 {
-			 e.printStackTrace();
-		 }
-		 return false;
-	}
-
-	@Override
-	public Boolean isUserActive(String emailAddress) {
-		query = "SELECT Status from user_info WHERE Email = ?";
-		try {
-			preparedStatement  = connection.prepareStatement(query);
-			preparedStatement.setString(1, emailAddress);
-			ResultSet result = preparedStatement.executeQuery();
-			if(!result.next())
-			{
-				return false;
-			}
-			String userStatus = result.getString("Status");
-			Boolean isUserActive = userStatus.equals("Active");
-			return  isUserActive;
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-		return false;
-	}
-
-	@Override
-	public Boolean toggleStatus(String emailAddress) {
-		
-		try {
-			
-		
-		if(isUserActive(emailAddress))
-		{
-			query = "UPDATE user_info SET Status = ? WHERE Email=?";
-			
-			 preparedStatement = connection.prepareStatement(query);
-			 preparedStatement.setString(1, "Active");
-			 preparedStatement.setString(2, emailAddress);
-			 preparedStatement.executeUpdate();
-			 return true;
-		 
-		}
-		else
-		{
-			query = "UPDATE user_info SET Status = ? WHERE Email=?";
-			
-				 preparedStatement = connection.prepareStatement(query);
-				 preparedStatement.setString(1, "Inactive");
-				 preparedStatement.setString(2, emailAddress);
-				 preparedStatement.executeUpdate();
-				 return true;
-			 
-		}
-		}
 		 catch(Exception e)
 		 {
 			 e.printStackTrace();

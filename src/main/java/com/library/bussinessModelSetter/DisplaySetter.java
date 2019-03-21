@@ -30,6 +30,7 @@ public class DisplaySetter implements IDisplaySetter{
 			Book book = bookIterator.next();
 			display.setTitle(book.getTitle());
 			display.setItemID(book.getItemID());
+			display.setItemType("Book");
 			Cover cover =  coverDAO.getCoverByID(display.getItemID());
 			if(cover!=null)
 			{
@@ -50,6 +51,7 @@ public class DisplaySetter implements IDisplaySetter{
 			Movie movie = movieIterator.next();
 			display.setTitle(movie.getTitle());
 			display.setItemID(movie.getItemID());
+			display.setItemType("Movie");
 			Cover cover = coverDAO.getCoverByID(display.getItemID());
 			if(cover!=null)
 			{
@@ -70,6 +72,7 @@ public class DisplaySetter implements IDisplaySetter{
 			Music music = musicIterator.next();
 			display.setTitle(music.getTitle());
 			display.setItemID(music.getItemID());
+			display.setItemType("Music");
 			Cover cover = coverDAO.getCoverByID(display.getItemID());
 			if(cover!=null)
 			{

@@ -14,6 +14,7 @@ public class Display {
 	private String title;
 	private int itemID;
 	private Image image = null;
+	private String itemType;
 	
 	public String getTitle() {
 		return title;
@@ -48,5 +49,11 @@ public class Display {
 				e.printStackTrace();
 			}
 		}
+	}
+	public String getItemType() {
+		return itemType;
+	}
+	public void setItemType(String itemType) {
+		this.itemType = itemType;
 	}
 }

@@ -21,33 +21,23 @@ public class BrowsePageController {
 	
 	
 	private IBrowseDisplayObjects browseDisplayObjects;
-
-	@Value("${itemType}")
-	private String itemType;
 	
-	@Value("${category}")
-	private String category;
-	
-	@RequestMapping("/BrowsePage/{ItemType}")
-	public String BrowsePage(Model model, @PathVariable("ItemType") String itemType) {
+	@RequestMapping("/BrowsePage/{itemType}")
+	public String BrowsePage(@PathVariable String itemType) {
 		
 		IBrowseDisplayFactory browseFactory = BrowseDisplayFactory.getInstance();
 		if(itemType=="Book")
 		{
 			browseDisplayObjects = browseFactory.makeBookDisplay();
-			itemType = "Book";
 		}
 		else if(itemType=="Music")
 		{
 			browseDisplayObjects = browseFactory.makeMusicDisplay();
-			itemType = "Music";
 		}
 		else if(itemType=="Movie")
 		{
 			browseDisplayObjects = browseFactory.makeMusicDisplay();
-			itemType = "Movie";
 		}
-		itemType = browseDisplayObjects.getItemType();
 		return "BrowsePage";
 	}
 }

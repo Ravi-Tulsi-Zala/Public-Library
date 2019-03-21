@@ -21,42 +21,6 @@ public class BookTest {
 	}
 	
 	@Test
-	public void getBookByISBNTest() {
-		Book book = bookDAO.getBookByISBN(269);
-		assertEquals("Ptrick Ruthfus", book.getAuthor());
-	}
-	
-	@Test
-	public void getBookByTitle() {
-		List<Book> books = bookDAO.getBookByTitle("The girl");
-		assertEquals("The girl who played with fire",books.get(0).getTitle());
-	}
-	
-	@Test
-	public void getBookByAuthorTest() {
-		List<Book> books = bookDAO.getBooksByAuthor("Ptrick Ruthfus");
-		assertEquals("Ptrick Ruthfus",books.get(0).getAuthor());
-	}
-	
-	@Test
-	public void getBookByPublisherTest() {
-		List<Book> books = bookDAO.getBookByPublisher("Shrivastav Pubilication");
-		assertEquals("Shrivastav Pubilication",books.get(0).getPublisher());
-	}
-	
-	@Test
-	public void getBookByDescriptionTest() {
-		List<Book> books = bookDAO.getBookByDescription("Horroe");
-		assertEquals("Based on horroe movie",books.get(0).getDescription());
-	}
-	
-	@Test
-	public void getBookTitleTest() {
-		String bookTitle = bookDAO.getBookTitle(100001);
-		assertEquals("The girl who played with fire",bookTitle);
-	}
-	
-	@Test
 	public void deleteBookTest()
 	{
 		Boolean isBookDeleted = bookDAO.deleteBookByID(100002);
