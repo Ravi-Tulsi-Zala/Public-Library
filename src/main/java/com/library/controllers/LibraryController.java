@@ -1,9 +1,12 @@
 package com.library.controllers;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.annotation.ComponentScan;
@@ -17,12 +20,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.library.businessModels.Movie;
 import com.library.businessModels.User;
+import com.library.businessModels.UserBasicInfo;
+import com.library.email.EmailUtility;
 import com.library.mockDB.WelcomePageMocked;
 import com.library.search.DBSeachControllerBean;
 import com.library.search.IDBSearchController;
 import com.library.search.SearchRequestDetails;
 import com.library.search.SearchResults;
 import com.library.signIn.AuthenticatedUsers;
+import com.library.signIn.ForgotPassword;
 import com.library.signIn.SignInController;
 
 @ComponentScan(basePackages = { "com.library.model" }, basePackageClasses = DBSeachControllerBean.class)
@@ -38,8 +44,7 @@ public class LibraryController implements WebMvcConfigurer {
 			ILibraryFactory factory = new LibraryControllerFactory();
 
 			LibraryFactorySingleton.instance().build(factory);
-			list = LibraryFactorySingleton.instance().getFactory().signUp(user)
-					.authenticateSignUp();
+			list = LibraryFactorySingleton.instance().getFactory().signUp(user).authenticateSignUp();
 			for (int i = 0; i < list.size(); i++) {
 				model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
 			}
@@ -125,27 +130,26 @@ public class LibraryController implements WebMvcConfigurer {
 			return signIn.isAdmin();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ""; //Something went wrong page.
+			return ""; // Something went wrong page.
 		}
 	}
-	
-	@RequestMapping(value="/signIn", method=RequestMethod.POST, params="action=forgot_password")
-	public String forgotPassword(ModelMap model,User user) {
+
+	@RequestMapping(value = "/signIn", method = RequestMethod.POST, params = "action=forgot_password")
+	public String forgotPassword(ModelMap model, User user) {
 
 		return "Results";
 	}
 
 	@GetMapping("/welcome")
 	public String welcomeBody(Movie movie) {
-		
+
 		return "Welcome";
 	}
 
 	@PostMapping("/welcome")
 	public String welcomeProcess(ModelMap model, Movie movie) {
-			model.addAttribute("movie", new WelcomePageMocked().initiateMock());
+		model.addAttribute("movie", new WelcomePageMocked().initiateMock());
 
-		
 		return "Welcome";
 	}
 
@@ -157,5 +161,17 @@ public class LibraryController implements WebMvcConfigurer {
 			AuthenticatedUsers.instance().removeAuthenticatedUser(httpSession);
 		}
 		return "HomePage";
+	}
+
+	@GetMapping(value = "/forgotPassword")
+	public String getForgotPasswordForm(ForgotPassword forgotPassword) {
+
+		return "ForgotPassword";
+	}
+
+	@PostMapping(value = "/forgotPassword")
+	public String processForgotPasswordUserForm(ForgotPassword forgotPassword) {
+
+		return "Results";
 	}
 }

@@ -42,7 +42,6 @@ public class SignInController {
 //			connectDB(); // will be worked upon.
 		}
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
-
 	}
 	public String isAdmin() {
 		if(userBasicInfo.getEmail().equals(Authentication.isAdmin)){
@@ -52,6 +51,13 @@ public class SignInController {
 	}
 	
 	public boolean forgotPassword() {
+	
+		ForgotPassword forgotPassword = new ForgotPassword();
+		forgotPassword.setPassword(user.getPassword());
+		forgotPassword.setEmail(user.getEmail());
+		
+		forgotPassword.setSubject("Have a great day !");
+		forgotPassword.setBody("Devanshu you rock.");
 		
 		return true;
 	}
