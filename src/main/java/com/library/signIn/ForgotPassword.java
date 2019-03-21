@@ -32,7 +32,7 @@ public class ForgotPassword extends ForgotPasswordAbstract {
 			String password = getPassword();
 			String subject = getSubject();
 			String body = getBody();
-			EmailUtility.sendmail(emailID, password, subject, body);
+			EmailUtility.sendmail(email, password, subject, body);
 			emailSent = true;
 		} catch (MessagingException | IOException e) {
 			e.printStackTrace();

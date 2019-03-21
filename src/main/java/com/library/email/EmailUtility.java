@@ -18,6 +18,8 @@ import javax.mail.internet.MimeMultipart;
 
 public class EmailUtility {
 	
+	
+	//https://www.tutorialspoint.com/spring_boot/spring_boot_sending_email.htm	
 	public static void sendmail(String email, String password,String subject, String body)
 			throws AddressException, MessagingException, IOException {
 		Properties props = new Properties();
@@ -29,7 +31,7 @@ public class EmailUtility {
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(email,password);
+				return new PasswordAuthentication("devanshu010193@gmail.com","PopMom123");
 			}
 		});
 		Message msg = new MimeMessage(session);

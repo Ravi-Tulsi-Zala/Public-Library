@@ -29,6 +29,7 @@ import com.library.search.SearchRequestDetails;
 import com.library.search.SearchResults;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.ForgotPassword;
+import com.library.signIn.ForgotPasswordController;
 import com.library.signIn.SignInController;
 
 @ComponentScan(basePackages = { "com.library.model" }, basePackageClasses = DBSeachControllerBean.class)
@@ -171,7 +172,7 @@ public class LibraryController implements WebMvcConfigurer {
 
 	@PostMapping(value = "/forgotPassword")
 	public String processForgotPasswordUserForm(ForgotPassword forgotPassword) {
-
+		new ForgotPasswordController().fun();
 		return "Results";
 	}
 }
