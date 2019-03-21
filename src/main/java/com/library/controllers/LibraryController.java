@@ -17,7 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.library.additem.AddBookController;
+import com.library.additem.AddMovieController;
+import com.library.additem.AddMusicController;
+import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
+import com.library.businessModels.Music;
 import com.library.businessModels.User;
 import com.library.email.EmailUtility;
 import com.library.mockDB.WelcomePageMocked;
@@ -35,14 +40,17 @@ public class LibraryController implements WebMvcConfigurer {
 	@Inject
 	private IDBSearchController dbSearchController;
 
+	public LibraryController() {
+		
+	}
+	
 	@PostMapping("/signUp")
 	public String processSignUpForm(ModelMap model, User user) {
 		try {
 			ILibraryFactory factory = new LibraryControllerFactory();
 
 			LibraryFactorySingleton.instance().build(factory);
-			list = LibraryFactorySingleton.instance().getFactory().signUp(user)
-					.authenticateSignUp();
+			list = LibraryFactorySingleton.instance().getFactory().signUp(user).authenticateSignUp();
 			for (int i = 0; i < list.size(); i++) {
 				model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
 			}
@@ -65,15 +73,7 @@ public class LibraryController implements WebMvcConfigurer {
 
 	@GetMapping("/advancedSearch")
 	public String getAdvancedSearchPage(HttpSession httpSession, ModelMap model) {
-		AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, "removeMeFromTheController@mail.com"); // remove
-																												// once
-																												// we
-																												// will
-																												// have
-																												// users
-																												// in
-																												// the
-																												// db
+		AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, "removeMeFromTheController@mail.com");
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			SearchRequestDetails searchRequestDetails = new SearchRequestDetails();
 			searchRequestDetails.setExtendedSearch(true);
@@ -128,21 +128,58 @@ public class LibraryController implements WebMvcConfigurer {
 			return signIn.isAdmin();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ""; //Something went wrong page.
+			return ""; // Something went wrong page.
 		}
+	}
+
+	@GetMapping("/addBook")
+
+	public String responseBookForm(ModelMap model, Book book) {
+
+		model.addAttribute("book", new Book());
+		model.addAttribute("movie", new Movie());
+		model.addAttribute("music", new Music());
+
+		return "AddItemPage";
+	}
+
+	@PostMapping("/addBook")
+	public String addBookToDatabase(ModelMap model, Book book) {
+
+		AddBookController addBookController = new AddBookController();
+		addBookController.addBookRecordInDatabase(book);
+
+		return "ResponseBook";
+	}
+
+	@PostMapping("/addMovie")
+	public String addMovieToDatabase(ModelMap model, Movie movie) {
+
+		AddMovieController addMovieController = new AddMovieController();
+		addMovieController.addMovieRecordInDatabase(movie);
+
+		return "ResponseMovie";
+	}
+
+	@PostMapping("/addMusic")
+	public String addMusicToDatabase(ModelMap model, Music music) {
+
+		AddMusicController addMusicController = new AddMusicController();
+		addMusicController.addMusicRecordInDatabase(music);
+
+		return "ResponseMusic";
 	}
 
 	@GetMapping("/welcome")
 	public String welcomeBody(Movie movie) {
-		
+
 		return "Welcome";
 	}
 
 	@PostMapping("/welcome")
 	public String welcomeProcess(ModelMap model, Movie movie) {
-			model.addAttribute("movie", new WelcomePageMocked().initiateMock());
+		model.addAttribute("movie", new WelcomePageMocked().initiateMock());
 
-		
 		return "Welcome";
 	}
 
@@ -155,9 +192,10 @@ public class LibraryController implements WebMvcConfigurer {
 		}
 		return "HomePage";
 	}
+
 	@RequestMapping(value = "/sendemail")
 	public String sendEmail() throws AddressException, MessagingException, IOException {
-	   EmailUtility.sendmail("","","","");
-	   return "Email sent successfully";   
+		EmailUtility.sendmail("", "", "", "");
+		return "Email sent successfully";
 	}
 }
