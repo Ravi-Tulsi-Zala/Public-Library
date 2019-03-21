@@ -3,9 +3,15 @@ package com.library.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.library.BussinessModelSetter.MusicSetter;
 import com.library.IBussinessModelSetter.IMusicSetter;
 import com.library.IDAO.IMusicDAO;
@@ -19,6 +25,7 @@ public class MusicDAO implements IMusicDAO {
 	String query;
 	Connection connection;
 	IMusicSetter musicMapper = new MusicSetter();
+	private static final Logger logger = LogManager.getLogger(MusicDAO.class);
 
 	public MusicDAO() {
 
@@ -27,7 +34,7 @@ public class MusicDAO implements IMusicDAO {
 			this.connection = databaseConnection.getConnection();
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL, "Unable to connect to database", e);
 		}
 	}
 
@@ -44,57 +51,14 @@ public class MusicDAO implements IMusicDAO {
 			while (resultSet.next()) {
 				music = musicMapper.mapMusic(resultSet);
 			}
+		} catch (SQLException e) {
+
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL, "Can not fetch music using id", e);
 		}
 		return music;
-	}
-
-	@Override
-	public List<Music> getMusicByTitle(String musicTitle) {
-
-		Music music = new Music();
-		List<Music> lisOfMusicByTitle = new ArrayList<Music>();
-
-		query = "SELECT * from music WHERE Title LIKE ?";
-
-		try {
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, "%" + musicTitle + "%");
-			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-
-				music = new Music();
-				music = musicMapper.mapMusic(resultSet);
-				lisOfMusicByTitle.add(music);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return lisOfMusicByTitle;
-	}
-
-	@Override
-	public List<Music> getMusicByArtistName(String musicArtistName) {
-
-		Music music = new Music();
-		query = "SELECT * from music WHERE Artist LIKE ?";
-		List<Music> musicsByArtistName = new ArrayList<Music>();
-
-		try {
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, "%" + musicArtistName + "%");
-			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				music = new Music();
-				music = musicMapper.mapMusic(resultSet);
-				musicsByArtistName.add(music);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return musicsByArtistName;
-
 	}
 
 	@Override
@@ -113,33 +77,15 @@ public class MusicDAO implements IMusicDAO {
 				music = musicMapper.mapMusic(resultSet);
 				musicsByCategory.add(music);
 			}
+		} catch (SQLException e) {
+
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL, "Can not fetch the list of music by the specific category", e);
 		}
 		return musicsByCategory;
 
-	}
-
-	@Override
-	public List<Music> getMusicByRecordLabel(String recordLabel) {
-
-		Music music = new Music();
-		query = "SELECT * from music WHERE Record_Label LIKE ?";
-		List<Music> musicsByCategory = new ArrayList<Music>();
-
-		try {
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, "%" + recordLabel + "%");
-			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				music = new Music();
-				music = musicMapper.mapMusic(resultSet);
-				musicsByCategory.add(music);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return musicsByCategory;
 	}
 
 	@Override
@@ -155,8 +101,12 @@ public class MusicDAO implements IMusicDAO {
 			preparedStatement.setInt(5, music.getAvailability());
 			preparedStatement.executeUpdate();
 			return true;
+		} catch (SQLException e) {
+
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL, "Can not create music entry in database", e);
 		}
 		return false;
 	}
@@ -175,8 +125,12 @@ public class MusicDAO implements IMusicDAO {
 			preparedStatement.setInt(6, music.getItemID());
 			preparedStatement.executeUpdate();
 			return true;
+		} catch (SQLException e) {
+
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL, "Can not update movie into database", e);
 		}
 		return false;
 	}
@@ -189,8 +143,12 @@ public class MusicDAO implements IMusicDAO {
 			preparedStatement.setInt(1, music.getItemID());
 			preparedStatement.executeUpdate();
 			return true;
+		} catch (SQLException e) {
+
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL, "Can not delete movie from database", e);
 		}
 		return false;
 	}

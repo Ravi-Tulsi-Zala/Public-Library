@@ -17,4 +17,6 @@ public class LibraryFactorySingleton {
 	public void build(ILibraryFactory factory) {
 		this.factory = factory;
 	}
+	
+	
 }
