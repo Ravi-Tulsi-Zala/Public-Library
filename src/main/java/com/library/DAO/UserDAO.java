@@ -61,14 +61,13 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public Boolean registerUser(User user) {
 
-		query = "INSERT INTO user_info (User_name,Phone_Number,Email,Password,Status) VALUES (?,?,?,?.?)";
+		query = "INSERT INTO user_info (User_name,Phone_Number,Email,Password) VALUES (?,?,?,?)";
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, user.getFullName());
 			preparedStatement.setString(2, user.getPhoneNumber());
 			preparedStatement.setString(3, user.getEmail());
 			preparedStatement.setString(4, user.getPassword());
-			preparedStatement.setString(5, "Inactive");
 			preparedStatement.executeUpdate();
 			return true;
 		} catch (Exception e) {

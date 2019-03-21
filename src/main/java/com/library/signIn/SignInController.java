@@ -6,12 +6,14 @@ import java.util.Map.Entry;
 
 import javax.servlet.http.HttpSession;
 
+import com.library.DAOFactory.DAOFactory;
+import com.library.IDAO.IUserDAO;
 import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.User;
 import com.library.businessModels.UserBasicInfo;
+import com.library.controllers.ISignInController;
 
-
-public class SignInController {
+public class SignInController implements ISignInController {
 
 	private IUserBasicInfo userBasicInfo;
 	private User user;
@@ -20,34 +22,40 @@ public class SignInController {
 
 	public SignInController(User user, HttpSession httpSession) {
 		this.user = user;
-		this.userBasicInfo = new UserBasicInfo();
-		this.userBasicInfo.setEmail(user.getEmail());
-		this.userBasicInfo.setPwd(user.getPassword());
+		userBasicInfo = new UserBasicInfo();
 		this.httpSession = httpSession;
 	}
 
-	public boolean connectDB() {
-
-		// TODO: call DB
-		return true;
+	public String checkUserCredential() {
+		DAOFactory factory = new DAOFactory();
+		IUserDAO userDAO = factory.makeUserDAO();
+		if (userDAO.checkPassword(user.getEmail(), user.getPassword())) {
+			return "MainPage";
+		} else if (userBasicInfo.getEmail().equals(Authentication.isAdmin)
+				&& userBasicInfo.getPwd().equals(Authentication.isAdminPwd)) {
+			return "AdminMainPage";
+		}
+		return "SignInForm";
 	}
 
 	public ArrayList<Entry<String, String>> authenticateSignIn() {
+
+		userBasicInfo.setEmail(user.getEmail());
+		userBasicInfo.setPwd(user.getPassword());
+
 		listofValidationErrors = AuthenticateUserForms.instance().signInUserData(userBasicInfo);
-		
-		// If true connect DB as list has no validations to check.
+		// If true add user into session; as list has no validations to check.
 		if (listofValidationErrors.size() == 0) {
-			
 			AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, userBasicInfo.getEmail());
-//			connectDB(); // will be worked upon.
 		}
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
-
 	}
+
 	public String isAdmin() {
-		if(userBasicInfo.getEmail().equals(Authentication.isAdmin)){
+		if (userBasicInfo.getEmail().equals(Authentication.isAdmin)) {
 			return "AdminMainPage";
 		}
 		return "MainPage";
 	}
+
 }

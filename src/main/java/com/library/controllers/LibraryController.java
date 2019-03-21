@@ -110,7 +110,7 @@ public class LibraryController implements WebMvcConfigurer {
 		try {
 			ILibraryFactory factory = new LibraryControllerFactory();
 			LibraryFactorySingleton.instance().build(factory);
-			SignInController signIn = LibraryFactorySingleton.instance().getFactory().signIn(user, httpSession);
+			ISignInController signIn = LibraryFactorySingleton.instance().getFactory().signIn(user, httpSession);
 			list = signIn.authenticateSignIn();
 			for (int index = 0; index < list.size(); index++) {
 				model.addAttribute(list.get(index).getKey(), list.get(index).getValue());
@@ -120,10 +120,10 @@ public class LibraryController implements WebMvcConfigurer {
 			if (model.size() > 2) {
 				return "SignInForm";
 			}
-			return signIn.isAdmin();
+			return signIn.checkUserCredential();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ""; //Something went wrong page.
+			return "ErrorPage"; //Something went wrong page.
 		}
 	}
 

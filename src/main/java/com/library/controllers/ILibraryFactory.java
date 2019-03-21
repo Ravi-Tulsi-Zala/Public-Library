@@ -7,6 +7,6 @@ import com.library.signIn.SignInController;
 import com.library.signUp.SignUpController;
 
 public interface ILibraryFactory{
-	public SignInController signIn(User user,HttpSession httpSession);
-	public SignUpController signUp(User user);
+	public ISignInController signIn(User user,HttpSession httpSession);
+	public ISignUpController signUp(User user);
 }
