@@ -6,7 +6,7 @@ public class UserItem {
 	
 	
 	private String email;
-	private int Item_ID;
+	private int itemID;
 	private Date timestamp;
 	private short status;
 	
@@ -17,10 +17,10 @@ public class UserItem {
 		this.email = email;
 	}
 	public int getItem_ID() {
-		return Item_ID;
+		return itemID;
 	}
-	public void setItem_ID(int item_ID) {
-		Item_ID = item_ID;
+	public void setItem_ID(int itemID) {
+		this.itemID = itemID;
 	}
 	public Date getTimestamp() {
 		return timestamp;

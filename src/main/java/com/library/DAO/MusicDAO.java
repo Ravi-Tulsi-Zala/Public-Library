@@ -6,8 +6,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import com.library.DAOMapper.IMusicMapper;
-import com.library.DAOMapperImpl.MusicMapper;
+import com.library.BussinessModelSetter.MusicSetter;
+import com.library.IBussinessModelSetter.IMusicSetter;
 import com.library.IDAO.IMusicDAO;
 import com.library.businessModels.Music;
 import com.library.dbConnection.DatabaseConnection;
@@ -18,7 +18,7 @@ public class MusicDAO implements IMusicDAO {
 	private PreparedStatement preparedStatement;
 	String query;
 	Connection connection;
-	IMusicMapper musicMapper = new MusicMapper();
+	IMusicSetter musicMapper = new MusicSetter();
 
 	public MusicDAO() {
 
@@ -30,7 +30,7 @@ public class MusicDAO implements IMusicDAO {
 			e.printStackTrace();
 		}
 	}
-	 
+
 	@Override
 	public Music getMusicById(int itemID) {
 
@@ -41,8 +41,7 @@ public class MusicDAO implements IMusicDAO {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while(resultSet.next())
-			{
+			while (resultSet.next()) {
 				music = musicMapper.mapMusic(resultSet);
 			}
 		} catch (Exception e) {
@@ -61,7 +60,7 @@ public class MusicDAO implements IMusicDAO {
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, "%"+musicTitle+"%");
+			preparedStatement.setString(1, "%" + musicTitle + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 
@@ -84,7 +83,7 @@ public class MusicDAO implements IMusicDAO {
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, "%"+musicArtistName+"%");
+			preparedStatement.setString(1, "%" + musicArtistName + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				music = new Music();
@@ -107,7 +106,7 @@ public class MusicDAO implements IMusicDAO {
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, "%"+category+"%");
+			preparedStatement.setString(1, "%" + category + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				music = new Music();
@@ -130,7 +129,7 @@ public class MusicDAO implements IMusicDAO {
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, "%"+recordLabel+"%");
+			preparedStatement.setString(1, "%" + recordLabel + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				music = new Music();
@@ -195,49 +194,50 @@ public class MusicDAO implements IMusicDAO {
 		}
 		return false;
 	}
-	
+
 	private void prepareSearchQuery(IMusicSearchRequestDetails requestDetails) {
-		query = "SELECT * FROM music WHERE ";
+
+		if (0 == requestDetails.getSearchTerms().length()) {
+			// logger.log("ERROR: Search terms length is zero.");
+		}
+
+		query = "SELECT DISTINCT * FROM music WHERE ";
 		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
-		for(String term : searchterms) {
-			if(requestDetails.isSearchMusicAlbumName()) {
+		for (String term : searchterms) {
+			if (requestDetails.isSearchMusicAlbumName()) {
 				query += "Title like \"%" + term + "%\" or ";
 			}
-			if(requestDetails.isSearchMusicArtist()) {
+			if (requestDetails.isSearchMusicArtist()) {
 				query += "Artist like \"%" + term + "%\" or ";
 			}
-			if(requestDetails.isSearchMusicRecordLabel()) {
+			if (requestDetails.isSearchMusicRecordLabel()) {
 				query += "Record_Label like \"%" + term + "%\" or ";
 			}
 		}
-		
+
 		query = query.substring(0, query.length() - 4);
 	}
-	
+
 	@Override
 	public LinkedList<Music> getMusicBySearchTerms(IMusicSearchRequestDetails searchRequestDetails) {
 		LinkedList<Music> musics = new LinkedList<Music>();
 		Music music;
 		prepareSearchQuery(searchRequestDetails);
-		
+
 		try {
-			preparedStatement  = connection.prepareStatement(query);
-			ResultSet resultSet = preparedStatement.executeQuery();	
-			if(!resultSet.next())
-			{
-				return null;
-			}
-			do
-			{
+			preparedStatement = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
 				music = musicMapper.mapMusic(resultSet);
 				musics.add(music);
-			} while(resultSet.next());
-			
+			}
+
 			return musics;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return null;
+
+		return musics;
 	}
 }
