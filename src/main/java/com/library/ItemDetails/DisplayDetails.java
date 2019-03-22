@@ -1,4 +1,4 @@
-package ItemDetails;
+package com.library.ItemDetails;
 
 import com.library.businessModels.Display;
 
