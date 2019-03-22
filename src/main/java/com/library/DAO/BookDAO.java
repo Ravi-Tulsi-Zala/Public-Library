@@ -26,7 +26,7 @@ public class BookDAO implements IBookDAO {
 	private Connection connection;
 	private IBookSetter bookMapper = new BookSetter();
 	private static final Logger logger = LogManager.getLogger(BookDAO.class);
-
+	
 	public BookDAO() {
 
 		try {
@@ -35,7 +35,8 @@ public class BookDAO implements IBookDAO {
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Unable to connect to database", e);
 		}
-	}
+	 }
+	
 
 	@Override
 	public Book getBookByID(int itemID) {
@@ -50,11 +51,11 @@ public class BookDAO implements IBookDAO {
 			}
 			book = bookMapper.mapBook(resultSet);
 			return book;
-		} catch (SQLException e) {
+		}	
+		catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
-
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not fetch book by id from database", e);
+			logger.log(Level.ALL, "Book not found for the specific Itemid", e);
 		}
 		return null;
 	}
@@ -123,11 +124,11 @@ public class BookDAO implements IBookDAO {
 			preparedStatement.setInt(1, itemID);
 			preparedStatement.executeUpdate();
 			return true;
-		} catch (SQLException e) {
+		}	
+		catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
-
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not delete book into database", e);
+			logger.log(Level.ALL, "Can not delete Book into database", e);
 		}
 		return false;
 	}
@@ -145,21 +146,21 @@ public class BookDAO implements IBookDAO {
 
 			query = "Inser into books (Category,Title,Author,ISBN,Publisher,Description,Availability) Values "
 					+ "(?,?,?,?,?,?,?)";
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, category);
-			preparedStatement.setString(2, title);
-			preparedStatement.setString(3, author);
-			preparedStatement.setInt(4, isbn);
-			preparedStatement.setString(5, publisher);
-			preparedStatement.setString(6, description);
-			preparedStatement.setInt(7, availablity);
-			preparedStatement.executeUpdate();
-			return true;
-		} catch (SQLException e) {
+			 preparedStatement = connection.prepareStatement(query);
+			 preparedStatement.setString(1, category);
+			 preparedStatement.setString(2, title);
+			 preparedStatement.setString(3, author);
+			 preparedStatement.setInt(4, isbn);
+			 preparedStatement.setString(5, publisher);
+			 preparedStatement.setString(6, description);
+			 preparedStatement.setInt(7, availablity);
+			 preparedStatement.executeUpdate();
+			 return true;
+		 }
+		catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
-
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not insert book into database", e);
+			logger.log(Level.ALL, "Can not insert Book into database", e);
 		}
 		return false;
 	}
@@ -177,22 +178,22 @@ public class BookDAO implements IBookDAO {
 		try {
 			query = "Update books  set Category = ?, Title = ?, Author = ?, ISBN =  ?,"
 					+ "Publisher = ?, Description = ?, Availability = ? WHERE Item_ID = ?";
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, category);
-			preparedStatement.setString(2, title);
-			preparedStatement.setString(3, author);
-			preparedStatement.setInt(4, isbn);
-			preparedStatement.setString(5, publisher);
-			preparedStatement.setString(6, description);
-			preparedStatement.setInt(7, availablity);
-			preparedStatement.setInt(8, itemID);
-			preparedStatement.executeUpdate();
-			return true;
-		} catch (SQLException e) {
+			 preparedStatement = connection.prepareStatement(query);
+			 preparedStatement.setString(1,category);
+			 preparedStatement.setString(2,title);
+			 preparedStatement.setString(3, author);
+			 preparedStatement.setInt(4, isbn);
+			 preparedStatement.setString(5, publisher);
+			 preparedStatement.setString(6, description);
+			 preparedStatement.setInt(7, availablity);
+			 preparedStatement.setInt(8, itemID);
+			 preparedStatement.executeUpdate();
+			 return true;
+		 }
+		catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
-
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not update book into database", e);
+			logger.log(Level.ALL, "Can not update Book into database", e);
 		}
 		return false;
 	}
@@ -214,11 +215,11 @@ public class BookDAO implements IBookDAO {
 				books.add(book);
 			} while (resultSet.next());
 			return books;
-		} catch (SQLException e) {
+		}	
+		catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
-
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not fecth the list of books by category from database", e);
+			logger.log(Level.ALL, "Error fetching the list of Book for this category", e);
 		}
 		return null;
 	}

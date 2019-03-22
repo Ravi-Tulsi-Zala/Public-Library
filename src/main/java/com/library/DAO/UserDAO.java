@@ -16,7 +16,7 @@ public class UserDAO implements IUserDAO {
 	Connection connection;
 	private PreparedStatement preparedStatement;
 	String query;
-	private static final Logger logger = LogManager.getLogger(MovieDAO.class);
+	private static final Logger logger = LogManager.getLogger(UserDAO.class);
 
 	public UserDAO() {
 		try {

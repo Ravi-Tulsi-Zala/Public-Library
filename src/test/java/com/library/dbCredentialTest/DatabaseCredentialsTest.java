@@ -1,4 +1,4 @@
-package com.library.dbConnectionTest;
+package com.library.dbCredentialTest;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
