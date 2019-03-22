@@ -68,7 +68,7 @@ public class RecoverPassword extends RecoverPasswordAbstract {
 		DAOFactory factory = new DAOFactory();
 		IUserDAO user = factory.makeUserDAO();
 		details.setSubject("HELLO my friend.");
-		details.setBody(user.checkPassword(details.getUserEmailID(), ""));
+		details.setBody(user.getEmailRelatedPassword(details.getUserEmailID()));
 	}
 
 }

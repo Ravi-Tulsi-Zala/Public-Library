@@ -28,10 +28,9 @@ public class UserDAO implements IUserDAO {
 	}
 
 	@Override
-	public String checkPassword(String emailAddress, String Password) {
+	public Boolean checkPassword(String emailAddress, String Password) {
 		query = "SELECT Password from user_info WHERE Email = ?";
 		ResultSet result;
-		String databasePassword="";
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, emailAddress);
@@ -39,8 +38,29 @@ public class UserDAO implements IUserDAO {
 			if (!result.next()) {
 				return false;
 			}
-			databasePassword= result.getString("Password");
+			String databasePassword = result.getString("Password");
 			Boolean doesPasswordMatch = databasePassword.equals(Password);
+			return doesPasswordMatch;
+		} catch (SQLException e) {
+
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Can not fetch password from user info", e);
+		}
+		return false;
+	}
+
+	@Override
+	public String getEmailRelatedPassword(String emailAddress) {
+		query = "SELECT Password from user_info WHERE Email = ?";
+		ResultSet result;
+		String databasePassword="";
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, emailAddress);
+			result = preparedStatement.executeQuery();
+			databasePassword = result.getString("Password");
 			return databasePassword;
 		} catch (SQLException e) {
 
@@ -51,7 +71,7 @@ public class UserDAO implements IUserDAO {
 		}
 		return databasePassword;
 	}
-
+	
 	@Override
 	public Boolean changePassword(String emailAddress, String password) {
 		query = "UPDATE user_info SET Password = ? WHERE Email = ?";
