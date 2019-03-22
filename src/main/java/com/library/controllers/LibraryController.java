@@ -41,9 +41,9 @@ public class LibraryController implements WebMvcConfigurer {
 	private IDBSearchController dbSearchController;
 
 	public LibraryController() {
-		
+
 	}
-	
+
 	@PostMapping("/signUp")
 	public String processSignUpForm(ModelMap model, User user) {
 		try {
@@ -133,8 +133,7 @@ public class LibraryController implements WebMvcConfigurer {
 	}
 
 	@GetMapping("/addBook")
-
-	public String responseBookForm(ModelMap model, Book book) {
+	public String mappingsForAddItem(ModelMap model) {
 
 		model.addAttribute("book", new Book());
 		model.addAttribute("movie", new Movie());
@@ -147,9 +146,18 @@ public class LibraryController implements WebMvcConfigurer {
 	public String addBookToDatabase(ModelMap model, Book book) {
 
 		AddBookController addBookController = new AddBookController();
-		addBookController.addBookRecordInDatabase(book);
+		Boolean isBookCreated = addBookController.addBookRecordInDatabase(book);
 
-		return "ResponseBook";
+		if (isBookCreated) {
+			return "ResponseBook";
+		} else {
+			String error = "Error : Book can not be created! Please try again!";
+			model.addAttribute("movie", new Movie());
+			model.addAttribute("music", new Music());
+			model.addAttribute("error", error);
+			return "AddItemPage";
+		}
+
 	}
 
 	@PostMapping("/addMovie")
