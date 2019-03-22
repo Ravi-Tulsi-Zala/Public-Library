@@ -4,9 +4,14 @@ package com.library.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.library.IDAO.IBookDAO;
 import com.library.businessModels.Book;
@@ -21,6 +26,8 @@ public class BookDAO implements IBookDAO {
 	private String query;
 	private Connection connection;
 	private IBookSetter bookMapper = new BookSetter();
+	private static final Logger logger = LogManager.getLogger(BookDAO.class);
+	
 	 public BookDAO(){
 
 		 try
@@ -29,7 +36,7 @@ public class BookDAO implements IBookDAO {
 			this.connection = databaseConnection.getConnection();
 		}
 		 catch (Exception e) {
-			 e.printStackTrace();
+				logger.log(Level.ALL, "Unable to connect to database", e);
 		}
 	 }
 	
@@ -51,8 +58,10 @@ public class BookDAO implements IBookDAO {
 			book = bookMapper.mapBook(resultSet);		
 			return book;
 		}	
-		catch (Exception e) {
-			e.printStackTrace();
+		catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Book not found for the specific Itemid", e);
 		}
 		return null;
 	}
@@ -120,8 +129,10 @@ public class BookDAO implements IBookDAO {
 			preparedStatement.executeUpdate();	
 			return true;
 		}	
-		catch (Exception e) {
-			e.printStackTrace();
+		catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Can not delete Book into database", e);
 		}
 		return false;
 	}
@@ -150,10 +161,11 @@ public class BookDAO implements IBookDAO {
 			 preparedStatement.executeUpdate();
 			 return true;
 		 }
-		 catch(Exception e)
-		 {
-			 e.printStackTrace();
-		 }
+		catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Can not insert Book into database", e);
+		}
 		 return false;
 	}
 	
@@ -182,11 +194,12 @@ public class BookDAO implements IBookDAO {
 			 preparedStatement.executeUpdate();
 			 return true;
 		 }
-		 catch(Exception e)
-		 {
-			 e.printStackTrace();
-		 }
-		 return false;
+		catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Can not update Book into database", e);
+		}
+		return false;
 	}
 	
 	@Override
@@ -209,8 +222,10 @@ public class BookDAO implements IBookDAO {
 			} while(resultSet.next());
 			return books;
 		}	
-		catch (Exception e) {
-			e.printStackTrace();
+		catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the list of Book for this category", e);
 		}
 		return null;
 	}
