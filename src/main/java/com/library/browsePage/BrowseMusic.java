@@ -8,7 +8,7 @@ import com.library.IBussinessModelSetter.IDisplaySetter;
 import com.library.IDAO.IMusicDAO;
 import com.library.businessModels.Display;
 import com.library.businessModels.Music;
-import com.library.bussinessModelSetter.DisplaySetter;
+import com.library.BussinessModelSetter.DisplaySetter;
 
 public class BrowseMusic implements IBrowseDisplayObjects{
 

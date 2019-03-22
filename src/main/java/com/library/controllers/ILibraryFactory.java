@@ -2,13 +2,14 @@ package com.library.controllers;
 
 import javax.servlet.http.HttpSession;
 
-import com.library.interfaces.IUserBasicInfo;
-import com.library.interfaces.IUserExtendedInfo;
-import com.library.signIn.SignInController;
-import com.library.signIn.User;
-import com.library.signUp.SignUpController;
+import com.library.ForgotPassword.IForgotPasswordController;
+import com.library.ForgotPassword.RecoverPassword;
+import com.library.businessModels.User;
+import com.library.signIn.ISignInController;
+import com.library.signUp.ISignUpController;
 
 public interface ILibraryFactory{
-	public SignInController signIn(User user,HttpSession httpSession);
-	public SignUpController signUp(User user);
+	public ISignInController signIn(User user,HttpSession httpSession);
+	public ISignUpController signUp(User user);
+	public IForgotPasswordController forgotPassword(RecoverPassword recoverDetails);
 }

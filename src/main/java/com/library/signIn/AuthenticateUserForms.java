@@ -7,27 +7,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
-import javax.servlet.http.HttpServletRequest;
-
-import com.library.Logger;
-import com.library.common.XmlParser;
-import com.library.interfaces.IUserBasicInfo;
-import com.library.interfaces.IUserExtendedInfo;
-import com.library.signUp.SignUpController;
-import com.library.signUp.UserBasicInfo;
-import com.library.signUp.UserExtendedInfo;
+import com.library.businessModels.IUserBasicInfo;
+import com.library.businessModels.IUserExtendedInfo;
 
 public class AuthenticateUserForms extends Authentication {
 
 	private static List<Entry<String, String>> listofValidationErrors = null;
 	private static Map.Entry<String, String> entryMap = null;
-
 	private static final String fullName = "fullName";
 	private static final String password = "password";
 	private static final String email = "email";
 	private static final String cpassword = "cpassword";
 	private static final String phoneNumber = "phoneNumber";
-
 	private static AuthenticateUserForms instance = null;
 
 	public static AuthenticateUserForms instance() {
@@ -42,9 +33,6 @@ public class AuthenticateUserForms extends Authentication {
 		setValidationRules();
 	}
 
-	// Till DB is integrated values are validated against some dummy values.
-	// In next sprint i will add the functionality to check validation with XML
-	// file. Also will create a const file for string values.
 	public ArrayList<Map.Entry<String, String>> signUpUserData(IUserBasicInfo userBasicInfo,
 			IUserExtendedInfo userExtendedInfo) {
 		try {
@@ -79,9 +67,7 @@ public class AuthenticateUserForms extends Authentication {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(phoneNumber, phoneErrorStatement);
 				listofValidationErrors.add(entryMap);
 			}
-		} catch (
-
-		Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
@@ -91,9 +77,6 @@ public class AuthenticateUserForms extends Authentication {
 		try {
 			listofValidationErrors = new ArrayList<Map.Entry<String, String>>();
 			listofValidationErrors.clear();
-
-			// some string comparison will be excluded once i get the DB integrated.
-			// TODO change the if cond
 			if (userBasicInfo.getEmail().equals("")
 					|| !Pattern.compile(emailRegex).matcher(userBasicInfo.getEmail()).find()) {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(email, emailErrorStatement);

@@ -8,7 +8,7 @@ import com.library.IBussinessModelSetter.IDisplaySetter;
 import com.library.IDAO.IMovieDAO;
 import com.library.businessModels.Display;
 import com.library.businessModels.Movie;
-import com.library.bussinessModelSetter.DisplaySetter;
+import com.library.BussinessModelSetter.DisplaySetter;
 
 public class BrowseMovies implements IBrowseDisplayObjects{
 	

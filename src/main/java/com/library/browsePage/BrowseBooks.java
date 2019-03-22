@@ -8,7 +8,7 @@ import com.library.IBussinessModelSetter.IDisplaySetter;
 import com.library.IDAO.IBookDAO;
 import com.library.businessModels.Book;
 import com.library.businessModels.Display;
-import com.library.bussinessModelSetter.DisplaySetter;
+import com.library.BussinessModelSetter.DisplaySetter;
 
 public class BrowseBooks implements IBrowseDisplayObjects{
 
