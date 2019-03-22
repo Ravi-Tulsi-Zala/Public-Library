@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.library.DAOFactory.DAOFactory;
 import com.library.DAOFactory.IDAOFactory;
 import com.library.IDAO.IUserDAO;
@@ -13,13 +17,14 @@ import com.library.businessModels.User;
 import com.library.businessModels.UserBasicInfo;
 import com.library.businessModels.UserExtendedInfo;
 import com.library.signIn.AuthenticateUserForms;
+import com.library.signIn.SignInController;
 
 public class SignUpController implements ISignUpController {
 	private List<Entry<String, String>> listofValidationErrors;
 	private IUserBasicInfo userBasicInfo;
 	private IUserExtendedInfo userExtendedInfo;
 	private User user;
-
+	private static final Logger logger = LogManager.getLogger(SignUpController.class);
 	public SignUpController(User user) {
 		this.user = user;
 	}
@@ -35,7 +40,13 @@ public class SignUpController implements ISignUpController {
 			userExtendedInfo.setPhone(user.getPhoneNumber());
 			listofValidationErrors = AuthenticateUserForms.instance().signUpUserData(userBasicInfo, userExtendedInfo);
 			if (listofValidationErrors.size() == 0) {
-				registerUser();
+				boolean status = registerUser();
+				if(status) {
+					logger.log(Level.ALL, "User has successfully registered.");	
+				}
+				else {
+					logger.log(Level.ALL, "User has not registered.");
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

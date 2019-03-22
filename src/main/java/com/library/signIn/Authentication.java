@@ -28,9 +28,6 @@ public abstract class Authentication {
 	protected String passwordRegex;
 	protected String emailRegex;
 	protected int phoneCheck;
-
-	// Statements that are visible to the user if they miss out some fields in the
-	// forms.
 	protected String passwordErrorStatement;
 	protected String emailErrorStatement;
 	protected String blankErrorStatement;
@@ -49,7 +46,6 @@ public abstract class Authentication {
 
 	protected void setValidationRules() {
 		try {
-			// this function will help in setting the regex rules into private data members.
 			List<Map.Entry<String, String>> list = XmlParser.parse(filePathToValidations);
 			for (int i = 0; i < list.size(); i++) {
 				switch (list.get(i).getKey()) {
@@ -79,7 +75,6 @@ public abstract class Authentication {
 
 	protected void setErrorStringRules() {
 		try {
-			// this function will help in setting the regex rules into private data members.
 			List<Map.Entry<String, String>> list = XmlParser.parse(filePathToErrorStatements);
 			for (int i = 0; i < list.size(); i++) {
 				switch (list.get(i).getKey()) {

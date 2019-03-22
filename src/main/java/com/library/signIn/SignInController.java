@@ -6,6 +6,11 @@ import java.util.Map.Entry;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.library.DAO.MovieDAO;
 import com.library.DAOFactory.DAOFactory;
 import com.library.ForgotPassword.RecoverPassword;
 import com.library.IDAO.IUserDAO;
@@ -19,7 +24,8 @@ public class SignInController implements ISignInController {
 	private User user;
 	private HttpSession httpSession;
 	private List<Entry<String, String>> listofValidationErrors;
-
+	private static final Logger logger = LogManager.getLogger(SignInController.class);
+	
 	public SignInController(User user, HttpSession httpSession) {
 		this.user = user;
 		userBasicInfo = new UserBasicInfo();
@@ -30,6 +36,7 @@ public class SignInController implements ISignInController {
 		DAOFactory factory = new DAOFactory();
 		IUserDAO userDAO = factory.makeUserDAO();
 		if (userDAO.checkPassword(user.getEmail(), user.getPassword())) {
+			logger.log(Level.ALL, "User has successfully logged in.");
 			return "Welcome";
 		} else if (userBasicInfo.getEmail().equals(Authentication.isAdmin)
 				&& userBasicInfo.getPwd().equals(Authentication.isAdminPwd)) {
@@ -44,6 +51,7 @@ public class SignInController implements ISignInController {
 		listofValidationErrors = AuthenticateUserForms.instance().signInUserData(userBasicInfo);
 		if (listofValidationErrors.size() == 0) {
 			AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, userBasicInfo.getEmail());
+			
 		}
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
 	}
