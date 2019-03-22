@@ -51,7 +51,8 @@ public class AuthenticateUserForms extends Authentication {
 				listofValidationErrors.add(entryMap);
 			}
 			if (userBasicInfo.getPwd().equals("")
-					|| !Pattern.compile(passwordRegex).matcher(userBasicInfo.getPwd()).find()) {
+					|| !Pattern.compile(passwordRegex).matcher(userBasicInfo.getPwd()).find()) 
+			{
 				entryMap = new AbstractMap.SimpleEntry<String, String>(password, passwordErrorStatement);
 				listofValidationErrors.add(entryMap);
 			}
@@ -72,9 +73,7 @@ public class AuthenticateUserForms extends Authentication {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(phoneNumber, phoneErrorStatement);
 				listofValidationErrors.add(entryMap);
 			}
-		} catch (
-
-		Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
