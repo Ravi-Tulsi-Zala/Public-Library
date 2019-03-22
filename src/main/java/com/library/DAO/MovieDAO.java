@@ -102,7 +102,6 @@ public class MovieDAO implements IMovieDAO {
 			return true;
 
 		} catch (SQLException e) {
-
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 
 		} catch (Exception e) {

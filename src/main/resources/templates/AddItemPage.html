@@ -40,53 +40,58 @@
 
 </script>
 <style type="text/css" media="screen">
-label {
-	display: inline-block;
-	width: 140px;
-}
-
-.formElements {
-	margin-bottom: 2%;
-}
-
-.coverImg {
-	overflow: auto;
-	width: 30%;
-}
-
-img {
-	border: 5px solid #fff;
-	border-radius: 5px;
-	padding: 7px;
-	width: 100px;
-	height: 100px;
-	float: right;
-}
-
-.btn {
-	background-color: #008CBA;
-	border-radius: 7px;
-	color: white;
-	padding: 10px;
-	text-align: center;
-	display: inline-block;
-	font-size: 16px;
-	margin: 4px 2px;
-}
-
-#headerDiv {
-	text-align: center;
-}
-
-#headerText {
-	font-size: 2em;
-	font-weight: bolder;
-}
-
-#adminLink {
-	float: right;
-	font-size: x-large;
-}
+	label {
+		display: inline-block;
+		width: 140px;
+	}
+	
+	.formElements {
+		margin-bottom: 2%;
+	}
+	
+	.coverImg {
+		overflow: auto;
+		width: 30%;
+	}
+	
+	img {
+		border: 5px solid #fff;
+		border-radius: 5px;
+		padding: 7px;
+		width: 100px;
+		height: 100px;
+		float: right;
+	}
+	
+	.btn {
+		background-color: #008CBA;
+		border-radius: 7px;
+		color: white;
+		padding: 10px;
+		text-align: center;
+		display: inline-block;
+		font-size: 16px;
+		margin: 4px 2px;
+	}
+	
+	#headerDiv {
+		text-align: center;
+	}
+	
+	#headerText {
+		font-size: 2em;
+		font-weight: bolder;
+	}
+	
+	#adminLink {
+		float: right;
+		font-size: x-large;
+	}
+	p
+	{
+		color: red;
+		font-weight: bolder;
+	}
 </style>
 </head>
 <body id="">
@@ -118,6 +123,9 @@ img {
 			</div>
 			<div class="formElements">
 				<label>Title</label> <input type="text" th:field="*{title}">
+			</div>
+			<div class="formElements" >
+				<p th:text="${error}"></p>
 			</div>
 			<div class="formElements">
 				<label>Author</label> <input type="text" th:field="*{author}">

@@ -12,10 +12,13 @@ public class AddBookController {
 		factory = new DAOFactory();
 	}
 
-	public void addBookRecordInDatabase(Book book) {
+	public boolean addBookRecordInDatabase(Book book) {
 		
 		IBookDAO bookDAO = factory.makeBookDAO();
-		bookDAO.createBook(book);
+		boolean isBookCreated = bookDAO.createBook(book);
+		
+		return  isBookCreated;
+		
 	}
 
 }
