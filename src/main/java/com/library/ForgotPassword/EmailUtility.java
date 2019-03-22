@@ -1,4 +1,4 @@
-package com.library.email;
+package com.library.ForgotPassword;
 
 import java.io.IOException;
 import java.util.Date;
@@ -18,7 +18,9 @@ import javax.mail.internet.MimeMultipart;
 
 public class EmailUtility {
 	
-	public static void sendmail(String email, String password,String subject, String body)
+	
+	//https://www.tutorialspoint.com/spring_boot/spring_boot_sending_email.htm	
+	public static void sendmail(EmailDetails details)
 			throws AddressException, MessagingException, IOException {
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
@@ -29,19 +31,19 @@ public class EmailUtility {
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(email,password);
+				return new PasswordAuthentication(details.getAdminEmailID(),details.getAdminPassword());
 			}
 		});
 		Message msg = new MimeMessage(session);
-		msg.setFrom(new InternetAddress(email, false));
+		msg.setFrom(new InternetAddress(details.getUserEmailID(), false));
 
-		msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-		msg.setSubject(subject);
-		msg.setContent(body, "text/html");
+		msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(details.getUserEmailID()));
+		msg.setSubject(details.getSubject());
+		msg.setContent(details.getBody(), "text/html");
 		msg.setSentDate(new Date());
 
 		MimeBodyPart messageBodyPart = new MimeBodyPart();
-		messageBodyPart.setContent(body, "text/html");
+		messageBodyPart.setContent(details.getBody(), "text/html");
 
 		Multipart multipart = new MimeMultipart();
 		multipart.addBodyPart(messageBodyPart);

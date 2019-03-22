@@ -14,13 +14,11 @@ public class AuthenticateUserForms extends Authentication {
 
 	private static List<Entry<String, String>> listofValidationErrors = null;
 	private static Map.Entry<String, String> entryMap = null;
-
 	private static final String fullName = "fullName";
 	private static final String password = "password";
 	private static final String email = "email";
 	private static final String cpassword = "cpassword";
 	private static final String phoneNumber = "phoneNumber";
-
 	private static AuthenticateUserForms instance = null;
 
 	public static AuthenticateUserForms instance() {
@@ -35,9 +33,6 @@ public class AuthenticateUserForms extends Authentication {
 		setValidationRules();
 	}
 
-	// Till DB is integrated values are validated against some dummy values.
-	// In next sprint i will add the functionality to check validation with XML
-	// file. Also will create a const file for string values.
 	public ArrayList<Map.Entry<String, String>> signUpUserData(IUserBasicInfo userBasicInfo,
 			IUserExtendedInfo userExtendedInfo) {
 		try {
@@ -51,8 +46,7 @@ public class AuthenticateUserForms extends Authentication {
 				listofValidationErrors.add(entryMap);
 			}
 			if (userBasicInfo.getPwd().equals("")
-					|| !Pattern.compile(passwordRegex).matcher(userBasicInfo.getPwd()).find()) 
-			{
+					|| !Pattern.compile(passwordRegex).matcher(userBasicInfo.getPwd()).find()) {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(password, passwordErrorStatement);
 				listofValidationErrors.add(entryMap);
 			}
@@ -83,9 +77,6 @@ public class AuthenticateUserForms extends Authentication {
 		try {
 			listofValidationErrors = new ArrayList<Map.Entry<String, String>>();
 			listofValidationErrors.clear();
-
-			// some string comparison will be excluded once i get the DB integrated.
-			// TODO change the if cond
 			if (userBasicInfo.getEmail().equals("")
 					|| !Pattern.compile(emailRegex).matcher(userBasicInfo.getEmail()).find()) {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(email, emailErrorStatement);

@@ -16,7 +16,7 @@ public class AddMovieController {
 
 	public void addMovieRecordInDatabase(Movie movie) {
 		IMovieDAO iMovieDAO = factory.makeMovieDAO();
-		iMovieDAO.createMovie(movie);
+		Boolean isMovieCreated = iMovieDAO.createMovie(movie);
 	}
 
 }

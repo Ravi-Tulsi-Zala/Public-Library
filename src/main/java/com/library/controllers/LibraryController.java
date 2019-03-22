@@ -1,12 +1,9 @@
 package com.library.controllers;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.annotation.ComponentScan;
@@ -15,8 +12,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
+import com.library.ForgotPassword.RecoverPassword;
+import com.library.ForgotPassword.ForgotPasswordController;
+import com.library.ForgotPassword.IForgotPasswordController;
 import com.library.additem.AddBookController;
 import com.library.additem.AddMovieController;
 import com.library.additem.AddMusicController;
@@ -24,14 +24,14 @@ import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
-import com.library.email.EmailUtility;
 import com.library.mockDB.WelcomePageMocked;
 import com.library.search.DBSeachControllerBean;
 import com.library.search.IDBSearchController;
 import com.library.search.SearchRequestDetails;
 import com.library.search.SearchResults;
 import com.library.signIn.AuthenticatedUsers;
-import com.library.signIn.SignInController;
+import com.library.signIn.ISignInController;
+import com.library.signUp.ISignUpController;
 
 @ComponentScan(basePackages = { "com.library.model" }, basePackageClasses = DBSeachControllerBean.class)
 @Controller
@@ -39,18 +39,19 @@ public class LibraryController implements WebMvcConfigurer {
 	private List<Map.Entry<String, String>> list = null;
 	@Inject
 	private IDBSearchController dbSearchController;
+	private static String securityQuestionValue;
 
 	public LibraryController() {
-		
+		ILibraryFactory factory = new LibraryControllerFactory();
+		LibraryFactorySingleton.instance().build(factory);
+
 	}
-	
+
 	@PostMapping("/signUp")
 	public String processSignUpForm(ModelMap model, User user) {
 		try {
-			ILibraryFactory factory = new LibraryControllerFactory();
-
-			LibraryFactorySingleton.instance().build(factory);
-			list = LibraryFactorySingleton.instance().getFactory().signUp(user).authenticateSignUp();
+			ISignUpController signUpCreate = LibraryFactorySingleton.instance().getFactory().signUp(user);
+			list = signUpCreate.authenticateSignUp();
 			for (int i = 0; i < list.size(); i++) {
 				model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
 			}
@@ -100,11 +101,6 @@ public class LibraryController implements WebMvcConfigurer {
 		return "ItemDetailsPage";
 	}
 
-//	@RequestMapping("/")
-//	String entry() {
-//		return "Home.jsp";
-//	} 	
-
 	@GetMapping("/signIn")
 	public String getSignInForm(User user) {
 		return "SignInForm";
@@ -113,28 +109,25 @@ public class LibraryController implements WebMvcConfigurer {
 	@PostMapping("/signIn")
 	public String processSignInForm(HttpSession httpSession, ModelMap model, User user) {
 		try {
-			ILibraryFactory factory = new LibraryControllerFactory();
-			LibraryFactorySingleton.instance().build(factory);
-			SignInController signIn = LibraryFactorySingleton.instance().getFactory().signIn(user, httpSession);
+			ISignInController signIn = LibraryFactorySingleton.instance().getFactory().signIn(user, httpSession);
 			list = signIn.authenticateSignIn();
 			for (int index = 0; index < list.size(); index++) {
 				model.addAttribute(list.get(index).getKey(), list.get(index).getValue());
 			}
-			// model object has by default two values and anytime it gets more than that
-			// signifies a validation violation
+			// ModelMap by default has two values and anytime it gets more than that
+			// signifies validation violation
 			if (model.size() > 2) {
 				return "SignInForm";
 			}
-			return signIn.isAdmin();
+			return signIn.checkUserCredential();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ""; // Something went wrong page.
+			return "ErrorPage"; // Something went wrong page.
 		}
 	}
 
 	@GetMapping("/addBook")
-
-	public String responseBookForm(ModelMap model, Book book) {
+	public String mappingsForAddItem(ModelMap model) {
 
 		model.addAttribute("book", new Book());
 		model.addAttribute("movie", new Movie());
@@ -147,9 +140,18 @@ public class LibraryController implements WebMvcConfigurer {
 	public String addBookToDatabase(ModelMap model, Book book) {
 
 		AddBookController addBookController = new AddBookController();
-		addBookController.addBookRecordInDatabase(book);
+		Boolean isBookCreated = addBookController.addBookRecordInDatabase(book);
 
-		return "ResponseBook";
+		if (isBookCreated) {
+			return "ResponseBook";
+		} else {
+			String error = "Error : Book can not be created! Please try again!";
+			model.addAttribute("movie", new Movie());
+			model.addAttribute("music", new Music());
+			model.addAttribute("error", error);
+			return "AddItemPage";
+		}
+
 	}
 
 	@PostMapping("/addMovie")
@@ -193,9 +195,24 @@ public class LibraryController implements WebMvcConfigurer {
 		return "HomePage";
 	}
 
-	@RequestMapping(value = "/sendemail")
-	public String sendEmail() throws AddressException, MessagingException, IOException {
-		EmailUtility.sendmail("", "", "", "");
-		return "Email sent successfully";
+	@GetMapping(value = "/forgotPassword")
+	public String getForgotPasswordForm(ModelMap model, RecoverPassword recoverPassword) {
+		IForgotPasswordController fPwdCntrl = LibraryFactorySingleton.instance().getFactory()
+				.forgotPassword(recoverPassword);
+		securityQuestionValue = fPwdCntrl.setQuestion();
+		model.addAttribute("securityQuestion", securityQuestionValue);
+		return "ForgotPassword";
+	}
+
+	@PostMapping(value = "/forgotPassword")
+	public String processForgotPasswordUserForm(ModelMap model, RecoverPassword recoverPassword) {
+		recoverPassword.setSecurityQuestion(securityQuestionValue);
+		IForgotPasswordController fPwdCntrl = LibraryFactorySingleton.instance().getFactory()
+				.forgotPassword(recoverPassword);
+		if (fPwdCntrl.recoverPassword()) {
+			return "Welcome";
+		} else {
+			return "Welcome";
+		}
 	}
 }
