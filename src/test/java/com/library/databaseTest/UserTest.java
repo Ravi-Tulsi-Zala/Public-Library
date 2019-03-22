@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.library.DAO.UserDAO;
 import com.library.IDAO.IUserDAO;
+import com.library.businessModels.User;
 
 
 
@@ -25,18 +26,18 @@ public class UserTest {
 		Boolean passwordChangeStatus = userDAO.changePassword("ravizala100@gmail.com", "trial3");
 		assertEquals(true,passwordChangeStatus);
 	}
-/*	
+	
 	@Test
 	public void registerUserTest()
 	{
 		 User user = new User();
 		 user.setFullName("Nirav");
-		 user.setEmailAddress("nr952727@dal.ca");
-		 user.setPhoneNumber(909992915);
+		 user.setEmail("devaStrivastav@dal.ca");
+		 user.setPhoneNumber("9099929154");
 		 user.setPassword("yahoo");
 		 Boolean checkUserRegisteration = userDAO.registerUser(user);
 		 assertEquals(true,checkUserRegisteration);
-	} */
-	
+	} 
+	 
 	
 }

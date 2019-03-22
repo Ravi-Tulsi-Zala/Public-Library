@@ -19,8 +19,6 @@ public class BookTest {
 		Book book = bookDAO.getBookByID(100001);
 		assertEquals(269,book.getIsbn());
 	}
-	
-	
 	@Test
 	public void deleteBookTest()
 	{
