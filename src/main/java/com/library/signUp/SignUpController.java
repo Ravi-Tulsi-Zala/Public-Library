@@ -15,7 +15,7 @@ import com.library.businessModels.UserExtendedInfo;
 import com.library.controllers.ISignUpController;
 import com.library.signIn.AuthenticateUserForms;
 
-public class SignUpController implements ISignUpController{
+public class SignUpController implements ISignUpController {
 	private List<Entry<String, String>> listofValidationErrors;
 	private IUserBasicInfo userBasicInfo;
 	private IUserExtendedInfo userExtendedInfo;
@@ -23,31 +23,36 @@ public class SignUpController implements ISignUpController{
 
 	public SignUpController(User user) {
 		this.user = user;
-
-		userExtendedInfo = new UserExtendedInfo();
-		userBasicInfo = new UserBasicInfo();
-		
-		userBasicInfo.setEmail(user.getEmail());
-		userBasicInfo.setPwd(user.getPassword());
-		userExtendedInfo.setCPassword(user.getCpassword());
-		userExtendedInfo.setFullname(user.getFullName());
-		userExtendedInfo.setPhone(user.getPhoneNumber());
 	}
 
 	public ArrayList<Entry<String, String>> authenticateSignUp() {
-		listofValidationErrors = AuthenticateUserForms.instance().signUpUserData(userBasicInfo, userExtendedInfo);
-		// If true connect DB as list has no validations to check.
-		if (listofValidationErrors.size() == 0) {
-			registerUser();
+		try {
+			userExtendedInfo = new UserExtendedInfo();
+			userBasicInfo = new UserBasicInfo();
+			userBasicInfo.setEmail(user.getEmail());
+			userBasicInfo.setPwd(user.getPassword());
+			userExtendedInfo.setCPassword(user.getCpassword());
+			userExtendedInfo.setFullname(user.getFullName());
+			userExtendedInfo.setPhone(user.getPhoneNumber());
+			listofValidationErrors = AuthenticateUserForms.instance().signUpUserData(userBasicInfo, userExtendedInfo);
+			if (listofValidationErrors.size() == 0) {
+				registerUser();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
-
 	}
 
-	private boolean registerUser() {
-		IDAOFactory factory = new DAOFactory();
-		IUserDAO userDAO = factory.makeUserDAO();
-		Boolean isUserRegistered = userDAO.registerUser(user);
+	private boolean registerUser() throws Exception {
+		boolean isUserRegistered = false;
+		try {
+			IDAOFactory factory = new DAOFactory();
+			IUserDAO userDAO = factory.makeUserDAO();
+			isUserRegistered = userDAO.registerUser(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return isUserRegistered;
 	}
 }

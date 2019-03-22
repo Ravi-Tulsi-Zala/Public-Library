@@ -42,9 +42,7 @@ public class SignInController implements ISignInController {
 
 		userBasicInfo.setEmail(user.getEmail());
 		userBasicInfo.setPwd(user.getPassword());
-
 		listofValidationErrors = AuthenticateUserForms.instance().signInUserData(userBasicInfo);
-		// If true add user into session; as list has no validations to check.
 		if (listofValidationErrors.size() == 0) {
 			AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, userBasicInfo.getEmail());
 		}
