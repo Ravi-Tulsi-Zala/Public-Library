@@ -38,19 +38,5 @@ public class UserTest {
 		 assertEquals(true,checkUserRegisteration);
 	} */
 	
-	@Test
-	public void ToogleUserStatusTest() {
-		Boolean userStatusChangeStatus = userDAO.toggleStatus("nr952727@dal.ca");
-		assertEquals(true,userStatusChangeStatus);
-	}
-	
-	
-	@Test 
-	public void isUserActiveTest()
-	{
-		Boolean checkUserStatus = userDAO.isUserActive("nr952727@dal.ca");
-		assertEquals(false,checkUserStatus);
-	}
-	
 	
 }

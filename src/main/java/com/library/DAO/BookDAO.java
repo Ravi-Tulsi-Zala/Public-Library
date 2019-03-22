@@ -56,156 +56,6 @@ public class BookDAO implements IBookDAO {
 		}
 		return null;
 	}
-
-	@Override
-	public Book getBookByISBN(int bookISBN) {
-		
-		try
-		{
-			Book book = new Book();
-			query = "SELECT * FROM books WHERE ISBN = ?"; 
-			preparedStatement  = connection.prepareStatement(query);
-			preparedStatement.setInt(1, bookISBN);
-			ResultSet resultSet = preparedStatement.executeQuery();	
-			if(!resultSet.next())
-			{
-				return null;
-			}
-			
-			book = bookMapper.mapBook(resultSet);
-			return book;
-		}	
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	public List<Book> getBookByTitle(String bookTitle) {
-		try {
-			List<Book> books = new ArrayList<Book>();
-			Book book = new Book();
-			query = "SELECT * FROM books WHERE Title like ?"; 
-			preparedStatement  = connection.prepareStatement(query);
-			preparedStatement.setString(1, "%"+ bookTitle + "%");
-			ResultSet resultSet = preparedStatement.executeQuery();	
-			if(!resultSet.next())
-			{
-				return null;
-			}
-			do
-			{
-				book = bookMapper.mapBook(resultSet);
-				books.add(book);
-			} while(resultSet.next());
-			return books;
-		}	
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	public List<Book> getBooksByAuthor(String bookAuthor) {
-		try {
-			List<Book> books = new ArrayList<Book>();
-			Book book = new Book();
-			query = "SELECT * FROM books WHERE Author like ?"; 
-			preparedStatement  = connection.prepareStatement(query);
-			preparedStatement.setString(1, "%"+bookAuthor+"%");
-			ResultSet resultSet = preparedStatement.executeQuery();
-			if(!resultSet.next())
-			{
-				return null;
-			}
-			do
-			{
-				book = bookMapper.mapBook(resultSet);
-				books.add(book);
-			} while(resultSet.next());
-			return books;
-		}	
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override  
-	public List<Book> getBookByPublisher(String bookPublisher) {
-		try {
-			List<Book> books = new ArrayList<Book>();
-			Book book = new Book();
-			query = "SELECT * FROM books WHERE Publisher like ?"; 
-			preparedStatement  = connection.prepareStatement(query);
-			preparedStatement.setString(1, "%"+bookPublisher + "%");
-			ResultSet resultSet = preparedStatement.executeQuery();	
-			if(!resultSet.next())
-			{
-				return null;
-			}
-			do
-			{
-				book = bookMapper.mapBook(resultSet);
-				books.add(book);
-			} while(resultSet.next());
-			return books;
-		}	
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	public List<Book> getBookByDescription(String bookDescription) {
-		try {
-			ArrayList<Book> books = new ArrayList<Book>();
-			Book book = new Book();
-			query = "SELECT * FROM books WHERE Description like ?"; 
-			preparedStatement  = connection.prepareStatement(query);
-			preparedStatement.setString(1, "%" + bookDescription + "%");
-			ResultSet resultSet = preparedStatement.executeQuery();
-			
-			if(!resultSet.next())
-			{
-				return null;
-			}
-			do
-			{
-				book = bookMapper.mapBook(resultSet);
-				books.add(book);
-			} while(resultSet.next());
-			return books;
-		}	
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	public String getBookTitle(int itemID) {
-		try
-		{
-			query = "SELECT Title FROM books WHERE Item_ID = ?"; 
-			preparedStatement  = connection.prepareStatement(query);
-			preparedStatement.setInt(1, itemID);
-			ResultSet resultSet = preparedStatement.executeQuery();	
-			if(!resultSet.next())
-			{
-				return null;
-			}
-			String title = resultSet.getString("Title");
-			return  title;
-		}	
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 	
 	private void prepareSearchQuery(IBookSearchRequestDetails requestDetails) {
 		
@@ -337,6 +187,32 @@ public class BookDAO implements IBookDAO {
 			 e.printStackTrace();
 		 }
 		 return false;
+	}
+	
+	@Override
+	public List<Book> getBookByCategory(String category) {
+		try {
+			List<Book> books = new ArrayList<Book>();
+			Book book = new Book();
+			query = "SELECT * FROM books WHERE Category=?"; 
+			preparedStatement  = connection.prepareStatement(query);
+			preparedStatement.setString(1,category);
+			ResultSet resultSet = preparedStatement.executeQuery();	
+			if(!resultSet.next())
+			{
+				return null;
+			}
+			do
+			{
+				book = bookMapper.mapBook(resultSet);
+				books.add(book);
+			} while(resultSet.next());
+			return books;
+		}	
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }
 	
