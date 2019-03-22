@@ -52,6 +52,27 @@ public class UserDAO implements IUserDAO {
 	}
 
 	@Override
+	public String getEmailRelatedPassword(String emailAddress) {
+		query = "SELECT Password from user_info WHERE Email = ?";
+		ResultSet result;
+		String databasePassword="";
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, emailAddress);
+			result = preparedStatement.executeQuery();
+			databasePassword = result.getString("Password");
+			return databasePassword;
+		} catch (SQLException e) {
+
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Can not fetch password from user info", e);
+		}
+		return databasePassword;
+	}
+	
+	@Override
 	public Boolean changePassword(String emailAddress, String password) {
 		query = "UPDATE user_info SET Password = ? WHERE Email = ?";
 		try {

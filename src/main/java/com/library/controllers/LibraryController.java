@@ -1,12 +1,9 @@
 package com.library.controllers;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.annotation.ComponentScan;
@@ -15,8 +12,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
+import com.library.ForgotPassword.RecoverPassword;
+import com.library.ForgotPassword.ForgotPasswordController;
+import com.library.ForgotPassword.IForgotPasswordController;
 import com.library.additem.AddBookController;
 import com.library.additem.AddMovieController;
 import com.library.additem.AddMusicController;
@@ -30,7 +30,8 @@ import com.library.search.IDBSearchController;
 import com.library.search.SearchRequestDetails;
 import com.library.search.SearchResults;
 import com.library.signIn.AuthenticatedUsers;
-import com.library.signIn.SignInController;
+import com.library.signIn.ISignInController;
+import com.library.signUp.ISignUpController;
 
 @ComponentScan(basePackages = { "com.library.model" }, basePackageClasses = DBSeachControllerBean.class)
 @Controller
@@ -38,18 +39,19 @@ public class LibraryController implements WebMvcConfigurer {
 	private List<Map.Entry<String, String>> list = null;
 	@Inject
 	private IDBSearchController dbSearchController;
+	private static String securityQuestionValue;
 
 	public LibraryController() {
+		ILibraryFactory factory = new LibraryControllerFactory();
+		LibraryFactorySingleton.instance().build(factory);
 
 	}
 
 	@PostMapping("/signUp")
 	public String processSignUpForm(ModelMap model, User user) {
 		try {
-			ILibraryFactory factory = new LibraryControllerFactory();
-
-			LibraryFactorySingleton.instance().build(factory);
-			list = LibraryFactorySingleton.instance().getFactory().signUp(user).authenticateSignUp();
+			ISignUpController signUpCreate = LibraryFactorySingleton.instance().getFactory().signUp(user);
+			list = signUpCreate.authenticateSignUp();
 			for (int i = 0; i < list.size(); i++) {
 				model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
 			}
@@ -99,11 +101,6 @@ public class LibraryController implements WebMvcConfigurer {
 		return "ItemDetailsPage";
 	}
 
-//	@RequestMapping("/")
-//	String entry() {
-//		return "Home.jsp";
-//	} 	
-
 	@GetMapping("/signIn")
 	public String getSignInForm(User user) {
 		return "SignInForm";
@@ -112,8 +109,6 @@ public class LibraryController implements WebMvcConfigurer {
 	@PostMapping("/signIn")
 	public String processSignInForm(HttpSession httpSession, ModelMap model, User user) {
 		try {
-			ILibraryFactory factory = new LibraryControllerFactory();
-			LibraryFactorySingleton.instance().build(factory);
 			ISignInController signIn = LibraryFactorySingleton.instance().getFactory().signIn(user, httpSession);
 			list = signIn.authenticateSignIn();
 			for (int index = 0; index < list.size(); index++) {
@@ -198,5 +193,26 @@ public class LibraryController implements WebMvcConfigurer {
 			AuthenticatedUsers.instance().removeAuthenticatedUser(httpSession);
 		}
 		return "HomePage";
+	}
+
+	@GetMapping(value = "/forgotPassword")
+	public String getForgotPasswordForm(ModelMap model, RecoverPassword recoverPassword) {
+		IForgotPasswordController fPwdCntrl = LibraryFactorySingleton.instance().getFactory()
+				.forgotPassword(recoverPassword);
+		securityQuestionValue = fPwdCntrl.setQuestion();
+		model.addAttribute("securityQuestion", securityQuestionValue);
+		return "ForgotPassword";
+	}
+
+	@PostMapping(value = "/forgotPassword")
+	public String processForgotPasswordUserForm(ModelMap model, RecoverPassword recoverPassword) {
+		recoverPassword.setSecurityQuestion(securityQuestionValue);
+		IForgotPasswordController fPwdCntrl = LibraryFactorySingleton.instance().getFactory()
+				.forgotPassword(recoverPassword);
+		if (fPwdCntrl.recoverPassword()) {
+			return "Welcome";
+		} else {
+			return "Welcome";
+		}
 	}
 }

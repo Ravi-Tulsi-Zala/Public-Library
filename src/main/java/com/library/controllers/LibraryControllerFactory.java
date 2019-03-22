@@ -2,8 +2,13 @@ package com.library.controllers;
 
 import javax.servlet.http.HttpSession;
 
+import com.library.ForgotPassword.ForgotPasswordController;
+import com.library.ForgotPassword.IForgotPasswordController;
+import com.library.ForgotPassword.RecoverPassword;
 import com.library.businessModels.User;
+import com.library.signIn.ISignInController;
 import com.library.signIn.SignInController;
+import com.library.signUp.ISignUpController;
 import com.library.signUp.SignUpController;
 
 public class LibraryControllerFactory implements ILibraryFactory {
@@ -16,6 +21,11 @@ public class LibraryControllerFactory implements ILibraryFactory {
 	@Override
 	public ISignUpController signUp(User user) {
 		return new SignUpController(user);
+	}
+
+	@Override
+	public IForgotPasswordController forgotPassword(RecoverPassword recoverDetails) {
+		return new ForgotPasswordController(recoverDetails);
 	}
 
 }

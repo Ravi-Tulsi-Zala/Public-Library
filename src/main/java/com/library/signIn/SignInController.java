@@ -7,11 +7,11 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpSession;
 
 import com.library.DAOFactory.DAOFactory;
+import com.library.ForgotPassword.RecoverPassword;
 import com.library.IDAO.IUserDAO;
 import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.User;
 import com.library.businessModels.UserBasicInfo;
-import com.library.controllers.ISignInController;
 
 public class SignInController implements ISignInController {
 
@@ -30,16 +30,15 @@ public class SignInController implements ISignInController {
 		DAOFactory factory = new DAOFactory();
 		IUserDAO userDAO = factory.makeUserDAO();
 		if (userDAO.checkPassword(user.getEmail(), user.getPassword())) {
-			return "MainPage";
+			return "Welcome";
 		} else if (userBasicInfo.getEmail().equals(Authentication.isAdmin)
 				&& userBasicInfo.getPwd().equals(Authentication.isAdminPwd)) {
-			return "AdminMainPage";
+			return "AdminWelcome";
 		}
 		return "SignInForm";
 	}
 
 	public ArrayList<Entry<String, String>> authenticateSignIn() {
-
 		userBasicInfo.setEmail(user.getEmail());
 		userBasicInfo.setPwd(user.getPassword());
 		listofValidationErrors = AuthenticateUserForms.instance().signInUserData(userBasicInfo);
@@ -48,12 +47,4 @@ public class SignInController implements ISignInController {
 		}
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
 	}
-
-	public String isAdmin() {
-		if (userBasicInfo.getEmail().equals(Authentication.isAdmin)) {
-			return "AdminMainPage";
-		}
-		return "MainPage";
-	}
-
 }
