@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.IUserExtendedInfo;
-import com.library.common.XmlParser;
+import com.library.xmlParser.XmlParser;
 
 //Template pattern implemented in this class and in its child class. I have implemented setValidationRules() and setErrorStringRules() that are being used by the child class many times.
 // Abstract functions are also added in this class and that are used by child class, where it changes the flow of action as required.
@@ -16,7 +16,8 @@ public abstract class Authentication {
 	private static final String passwordRegexKeyRoot = "passwordRegex";
 	private static final String emailRegexKeyRoot = "emailRegex";
 	private static final String phoneCheckKeyRoot = "phoneCheck";
-	private static final String adminCheckKeyRoot = "adminId";
+	private static final String adminIDCheckKeyRoot = "adminId";
+	private static final String adminPasswordCheckKeyRoot = "adminPwd";
 	private static final String emailErrorKeyRoot = "emailErrorString";
 	private static final String passwordErrorKeyRoot = "passwordErrorString";
 	private static final String emptyErrorKeyRoot = "emptyErrorString";
@@ -35,6 +36,7 @@ public abstract class Authentication {
 	protected String blankErrorStatement;
 	protected String phoneErrorStatement;
 	protected String cpasswordErrorStatement;
+	protected static String isAdminPwd;
 	protected static String isAdmin;
 
 	private static final String filePathToValidations = "AuthenticationRules.xml";
@@ -60,8 +62,11 @@ public abstract class Authentication {
 				case phoneCheckKeyRoot:
 					this.phoneCheck = Integer.parseInt(list.get(i).getValue());
 					break;
-				case adminCheckKeyRoot:
-					this.isAdmin = list.get(i).getValue();
+				case adminIDCheckKeyRoot:
+					isAdmin = list.get(i).getValue();
+					break;
+				case adminPasswordCheckKeyRoot:
+					isAdminPwd = list.get(i).getValue();
 					break;
 				default:
 					break;

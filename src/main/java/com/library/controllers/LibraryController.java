@@ -24,7 +24,6 @@ import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
-import com.library.email.EmailUtility;
 import com.library.mockDB.WelcomePageMocked;
 import com.library.search.DBSeachControllerBean;
 import com.library.search.IDBSearchController;
@@ -115,20 +114,20 @@ public class LibraryController implements WebMvcConfigurer {
 		try {
 			ILibraryFactory factory = new LibraryControllerFactory();
 			LibraryFactorySingleton.instance().build(factory);
-			SignInController signIn = LibraryFactorySingleton.instance().getFactory().signIn(user, httpSession);
+			ISignInController signIn = LibraryFactorySingleton.instance().getFactory().signIn(user, httpSession);
 			list = signIn.authenticateSignIn();
 			for (int index = 0; index < list.size(); index++) {
 				model.addAttribute(list.get(index).getKey(), list.get(index).getValue());
 			}
-			// model object has by default two values and anytime it gets more than that
-			// signifies a validation violation
+			// ModelMap by default has two values and anytime it gets more than that
+			// signifies validation violation
 			if (model.size() > 2) {
 				return "SignInForm";
 			}
-			return signIn.isAdmin();
+			return signIn.checkUserCredential();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ""; // Something went wrong page.
+			return "ErrorPage"; // Something went wrong page.
 		}
 	}
 
@@ -199,11 +198,5 @@ public class LibraryController implements WebMvcConfigurer {
 			AuthenticatedUsers.instance().removeAuthenticatedUser(httpSession);
 		}
 		return "HomePage";
-	}
-
-	@RequestMapping(value = "/sendemail")
-	public String sendEmail() throws AddressException, MessagingException, IOException {
-		EmailUtility.sendmail("", "", "", "");
-		return "Email sent successfully";
 	}
 }

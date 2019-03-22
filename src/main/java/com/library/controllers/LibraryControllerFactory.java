@@ -9,12 +9,12 @@ import com.library.signUp.SignUpController;
 public class LibraryControllerFactory implements ILibraryFactory {
 
 	@Override
-	public SignInController signIn(User user, HttpSession httpSession) {
+	public ISignInController signIn(User user, HttpSession httpSession) {
 		return new SignInController(user, httpSession);
 	}
 
 	@Override
-	public SignUpController signUp(User user) {
+	public ISignUpController signUp(User user) {
 		return new SignUpController(user);
 	}
 
