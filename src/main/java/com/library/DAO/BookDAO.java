@@ -33,7 +33,6 @@ public class BookDAO implements IBookDAO {
 			DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
 			this.connection = databaseConnection.getConnection();
 		} catch (Exception e) {
-
 			logger.log(Level.ALL, "Unable to connect to database", e);
 		}
 	}
@@ -51,140 +50,11 @@ public class BookDAO implements IBookDAO {
 			}
 			book = bookMapper.mapBook(resultSet);
 			return book;
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+
 		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	public Book getBookByISBN(int bookISBN) {
-
-		try {
-			Book book = new Book();
-			query = "SELECT * FROM books WHERE ISBN = ?";
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, bookISBN);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.next()) {
-				return null;
-			}
-
-			book = bookMapper.mapBook(resultSet);
-			return book;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	public List<Book> getBookByTitle(String bookTitle) {
-		try {
-			List<Book> books = new ArrayList<Book>();
-			Book book = new Book();
-			query = "SELECT * FROM books WHERE Title like ?";
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, "%" + bookTitle + "%");
-			ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.next()) {
-				return null;
-			}
-			do {
-				book = bookMapper.mapBook(resultSet);
-				books.add(book);
-			} while (resultSet.next());
-			return books;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	public List<Book> getBooksByAuthor(String bookAuthor) {
-		try {
-			List<Book> books = new ArrayList<Book>();
-			Book book = new Book();
-			query = "SELECT * FROM books WHERE Author like ?";
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, "%" + bookAuthor + "%");
-			ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.next()) {
-				return null;
-			}
-			do {
-				book = bookMapper.mapBook(resultSet);
-				books.add(book);
-			} while (resultSet.next());
-			return books;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	public List<Book> getBookByPublisher(String bookPublisher) {
-		try {
-			List<Book> books = new ArrayList<Book>();
-			Book book = new Book();
-			query = "SELECT * FROM books WHERE Publisher like ?";
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, "%" + bookPublisher + "%");
-			ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.next()) {
-				return null;
-			}
-			do {
-				book = bookMapper.mapBook(resultSet);
-				books.add(book);
-			} while (resultSet.next());
-			return books;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	public List<Book> getBookByDescription(String bookDescription) {
-		try {
-			ArrayList<Book> books = new ArrayList<Book>();
-			Book book = new Book();
-			query = "SELECT * FROM books WHERE Description like ?";
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, "%" + bookDescription + "%");
-			ResultSet resultSet = preparedStatement.executeQuery();
-
-			if (!resultSet.next()) {
-				return null;
-			}
-			do {
-				book = bookMapper.mapBook(resultSet);
-				books.add(book);
-			} while (resultSet.next());
-			return books;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	@Override
-	public String getBookTitle(int itemID) {
-		try {
-			query = "SELECT Title FROM books WHERE Item_ID = ?";
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, itemID);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.next()) {
-				return null;
-			}
-			String title = resultSet.getString("Title");
-			return title;
-		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL, "Can not fetch book by id from database", e);
 		}
 		return null;
 	}
@@ -236,8 +106,11 @@ public class BookDAO implements IBookDAO {
 			}
 
 			return books;
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL, "Can not fetch book by search term from database", e);
 		}
 		return books;
 	}
@@ -250,8 +123,11 @@ public class BookDAO implements IBookDAO {
 			preparedStatement.setInt(1, itemID);
 			preparedStatement.executeUpdate();
 			return true;
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL, "Can not delete book into database", e);
 		}
 		return false;
 	}
@@ -312,9 +188,38 @@ public class BookDAO implements IBookDAO {
 			preparedStatement.setInt(8, itemID);
 			preparedStatement.executeUpdate();
 			return true;
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL, "Can not update book into database", e);
 		}
 		return false;
+	}
+
+	@Override
+	public List<Book> getBookByCategory(String category) {
+		try {
+			List<Book> books = new ArrayList<Book>();
+			Book book = new Book();
+			query = "SELECT * FROM books WHERE Category=?";
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, category);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (!resultSet.next()) {
+				return null;
+			}
+			do {
+				book = bookMapper.mapBook(resultSet);
+				books.add(book);
+			} while (resultSet.next());
+			return books;
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Can not fecth the list of books by category from database", e);
+		}
+		return null;
 	}
 }
