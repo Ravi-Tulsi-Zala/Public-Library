@@ -40,14 +40,14 @@ public class SignUpTest {
 			if (mapList.containsKey("clean-data")) {
 				arrayList = (ArrayList) mapList.get("clean-data");
 				userBasicInfo = (UserBasicInfo) arrayList.get(0);
-				assertEquals("123456789", userBasicInfo.getPwd());
+				assertEquals("123456789", userBasicInfo.getPassword());
 				assertEquals("devanshu1@gmail.com", userBasicInfo.getEmail());
 				assertTrue(userBasicInfo.getEmail().contains("@"));
 				userExtendInfo = (UserExtendedInfo) arrayList.get(1);
 				assertEquals("deva sriv", userExtendInfo.getFullname());
 				assertEquals("9024031714", userExtendInfo.getPhone());
 				assertEquals("123456789", userExtendInfo.getCPassword());
-				assertTrue(userBasicInfo.getPwd() == userExtendInfo.getCPassword());
+				assertTrue(userBasicInfo.getPassword() == userExtendInfo.getCPassword());
 				assertTrue(userExtendInfo.getPhone().length() == 10);
 			}
 		}
@@ -60,14 +60,14 @@ public class SignUpTest {
 			if (mapList.containsKey("corrupt-data")) {
 				arrayList = (ArrayList) mapList.get("corrupt-data");
 				userBasicInfo = (UserBasicInfo) arrayList.get(0);
-				assertEquals("1qaz!QAZ", userBasicInfo.getPwd());
+				assertEquals("1qaz!QAZ", userBasicInfo.getPassword());
 				assertEquals("devanshu0101@gmail.com", userBasicInfo.getEmail());
 				assertTrue(userBasicInfo.getEmail().contains("@"));
 				userExtendInfo = (UserExtendedInfo) arrayList.get(1);
 				assertEquals("devanshu sriv", userExtendInfo.getFullname());
 				assertEquals("902", userExtendInfo.getPhone());
 				assertEquals("1qazZAQ!", userExtendInfo.getCPassword());
-				assertTrue(userBasicInfo.getPwd() != userExtendInfo.getCPassword());
+				assertTrue(userBasicInfo.getPassword() != userExtendInfo.getCPassword());
 				assertTrue(userExtendInfo.getPhone().length() != 10);
 			}
 		}
