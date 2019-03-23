@@ -37,4 +37,11 @@ public class DatabaseConnection {
 		}
 		return databaseConnectionInstance;
 	}
+	
+	public static Connection getConn()
+	{
+		return getDatabaseConnectionInstance().connection;
+	}
+	
+	
 }

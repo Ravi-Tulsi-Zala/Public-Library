@@ -8,7 +8,7 @@ public class UserBasicInfo implements IUserBasicInfo{
 		return email;
 	}
 
-	public String getPwd() {
+	public String getPassword() {
 		return password;
 	}
 
@@ -17,7 +17,7 @@ public class UserBasicInfo implements IUserBasicInfo{
 		
 	}
 
-	public void setPwd(String password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 

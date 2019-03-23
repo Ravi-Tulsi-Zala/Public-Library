@@ -25,7 +25,7 @@ public class SignInMocked {
 		arrItems = new ArrayList<String>();
 		map = new HashMap<String, ArrayList>();
 		userBasicInfo.setEmail("devanshu0101@gmail.com");
-		userBasicInfo.setPwd("1qaz!QAZ");
+		userBasicInfo.setPassword("1qaz!QAZ");
 		arrItems.add(userBasicInfo);
 		map.put("corrupt-data", arrItems);
 		return map;
@@ -35,7 +35,7 @@ public class SignInMocked {
 		arrItems = new ArrayList<String>();
 		map = new HashMap<String, ArrayList>();
 		userBasicInfo.setEmail("devanshu1@gmail.com");
-		userBasicInfo.setPwd("123456789");
+		userBasicInfo.setPassword("123456789");
 		arrItems.add(userBasicInfo);
 		map.put("clean-data", arrItems);
 		return map;

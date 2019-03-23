@@ -34,7 +34,7 @@ public class SignInTest {
 			if (mapList.containsKey("clean-data")) {
 				arrayList = (ArrayList) mapList.get("clean-data");
 				userBasicInfo = (UserBasicInfo) arrayList.get(0);
-				assertEquals("123456789", userBasicInfo.getPwd());
+				assertEquals("123456789", userBasicInfo.getPassword());
 				assertEquals("devanshu1@gmail.com", userBasicInfo.getEmail());
 				assertTrue(userBasicInfo.getEmail().contains("@"));
 			}
@@ -48,7 +48,7 @@ public class SignInTest {
 			if (mapList.containsKey("corrupt-data")) {
 				arrayList = (ArrayList) mapList.get("corrupt-data");
 				userBasicInfo = (UserBasicInfo) arrayList.get(0);
-				assertEquals("1qaz!QAZ", userBasicInfo.getPwd());
+				assertEquals("1qaz!QAZ", userBasicInfo.getPassword());
 				assertEquals("devanshu0101@gmail.com", userBasicInfo.getEmail());
 			}
 		}

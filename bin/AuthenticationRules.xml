@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<Rules>
+	<passwordRegex>[:?!@#$%^&amp;*()][a-zA-Z0-9]{0,}</passwordRegex>
+	<emailRegex>[@][a-zA-Z0-9]{0,}</emailRegex>
+</Rules>
