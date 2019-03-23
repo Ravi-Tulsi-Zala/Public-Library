@@ -11,7 +11,7 @@ import com.library.xmlParser.XmlParser;
 //Template pattern implemented in this class and in its child class. I have implemented setValidationRules() and setErrorStringRules() that are being used by the child class many times.
 // Abstract functions are also added in this class and that are used by child class, where it changes the flow of action as required.
 // Hence, template patter.
-public abstract class Authentication {
+public abstract class AuthenticationAbstract {
 	// Roots in the authentication xml file are initialized below.
 	private static final String passwordRegexKeyRoot = "passwordRegex";
 	private static final String emailRegexKeyRoot = "emailRegex";
@@ -23,6 +23,7 @@ public abstract class Authentication {
 	private static final String emptyErrorKeyRoot = "emptyErrorString";
 	private static final String phoneErrorKeyRoot = "phoneErrorString";
 	private static final String cpasswordErrorKeyRoot = "cpasswordErrorString";
+	private static final String saltKeyRoot = "salt";
 
 	// Validations that will be checked via externalized file.
 	protected String passwordRegex;
@@ -35,6 +36,7 @@ public abstract class Authentication {
 	protected String cpasswordErrorStatement;
 	protected static String isAdminPwd;
 	protected static String isAdmin;
+	public static String saltValue;
 
 	private static final String filePathToValidations = "AuthenticationRules.xml";
 	private static final String filePathToErrorStatements = "ValidationStatements.xml";
@@ -48,21 +50,26 @@ public abstract class Authentication {
 		try {
 			List<Map.Entry<String, String>> list = XmlParser.parse(filePathToValidations);
 			for (int i = 0; i < list.size(); i++) {
-				switch (list.get(i).getKey()) {
+				String getKeyFromList = list.get(i).getKey();
+				String getValueFromList = list.get(i).getValue();
+				switch (getKeyFromList) {
 				case passwordRegexKeyRoot:
-					this.passwordRegex = list.get(i).getValue();
+					this.passwordRegex = getValueFromList;
 					break;
 				case emailRegexKeyRoot:
-					this.emailRegex = list.get(i).getValue();
+					this.emailRegex = getValueFromList;
 					break;
 				case phoneCheckKeyRoot:
-					this.phoneCheck = Integer.parseInt(list.get(i).getValue());
+					this.phoneCheck = Integer.parseInt(getValueFromList);
 					break;
 				case adminIDCheckKeyRoot:
-					isAdmin = list.get(i).getValue();
+					isAdmin = getValueFromList;
 					break;
 				case adminPasswordCheckKeyRoot:
-					isAdminPwd = list.get(i).getValue();
+					isAdminPwd = getValueFromList;
+					break;
+				case saltKeyRoot:
+					saltValue = getValueFromList;
 					break;
 				default:
 					break;
