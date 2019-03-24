@@ -36,8 +36,17 @@
         
         <div class = "BreadCrumbs" style = "margin-left:5%">
         	<ul class="breadcrumb">
-  				<li><a th:text=${display}></a></li>
+  				<li><a>Books</a></li>
+  				<li>Fantasy</li>
 			</ul>
         </div>
+        
+        <div style="width: 9%;display: inline-block;vertical-align: top;" th:each="movie : ${searchResults.movieSearchResults}">
+        	<a href="">
+			     <img style="width: 100%; height:250px" src="defaultImage.png"/>
+			</a>
+			<p style="text-align: center;">Hello</p>			
+        </div>
+        
 	</body>
 </html>
