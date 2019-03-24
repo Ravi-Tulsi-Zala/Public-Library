@@ -1,19 +1,121 @@
 package com.library.DAO;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.library.BussinessModelSetter.BookSetter;
+import com.library.BussinessModelSetter.MovieSetter;
+import com.library.BussinessModelSetter.MusicSetter;
+import com.library.IBussinessModelSetter.IBookSetter;
+import com.library.IBussinessModelSetter.IMovieSetter;
+import com.library.IBussinessModelSetter.IMusicSetter;
 import com.library.IDAO.ILibraryItemDAO;
+import com.library.businessModels.Book;
+import com.library.businessModels.Movie;
+import com.library.businessModels.Music;
+import com.library.dbConnection.DatabaseConnection;
 
 public class LibraryItemDAO implements ILibraryItemDAO {
+	private PreparedStatement preparedStatement;
+	private String query;
+	private String limitNumber="3";
+	private Connection connection;
+	private IBookSetter bookMapper = null;
+	private IMovieSetter movieMapper = null;
+	private IMusicSetter musicMapper = null;
+	private static final Logger logger = LogManager.getLogger(BookDAO.class);
+
+	public LibraryItemDAO() {
+
+		try {
+			DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
+			this.connection = databaseConnection.getConnection();
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Unable to connect to database", e);
+		}
+
+	}
 
 	@Override
-	public List<Integer> getRecentlyAdded() {
-	
+	public List<Book> getTopBooks() {
+		try {
+			bookMapper = new BookSetter();
+			List<Book> books = new ArrayList<Book>();
+			Book book = new Book();
+			query = "SELECT distinct * FROM books order by books.Item_ID desc limit "+limitNumber;
+			preparedStatement = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (!resultSet.next()) {
+				return null;
+			}
+			do {
+				book = bookMapper.mapBook(resultSet);
+				books.add(book);
+			} while (resultSet.next());
+			return books;
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the list of Book for this category", e);
+		}
 		return null;
 	}
 
 	@Override
-	public List<Integer> getMostPopular() {
-	
+	public List<Movie> getTopMovies() {
+		try {
+			movieMapper = new MovieSetter();
+			List<Movie> movies = new ArrayList<Movie>();
+			Movie movie = new Movie();
+			query = "SELECT distinct * FROM movie order by movie.Item_ID desc limit "+limitNumber;
+			preparedStatement = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (!resultSet.next()) {
+				return null;
+			}
+			do {
+				movie = movieMapper.mapMovie(resultSet);
+				movies.add(movie);
+			} while (resultSet.next());
+			return movies;
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the list of Movies for this category", e);
+		}
+		return null;
+	}
+
+	@Override
+	public List<Music> getTopMusic() {
+		try {
+			musicMapper = new MusicSetter();
+			List<Music> musicList = new ArrayList<Music>();
+			Music music = new Music();
+			query = "SELECT distinct * FROM music order by music.Item_ID desc limit "+limitNumber;
+			preparedStatement = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (!resultSet.next()) {
+				return null;
+			}
+			do {
+				music = musicMapper.mapMusic(resultSet);
+				musicList.add(music);
+			} while (resultSet.next());
+			return musicList;
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the list of Movies for this category", e);
+		}
 		return null;
 	}
 }

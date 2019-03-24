@@ -13,38 +13,44 @@ import com.library.DAOFactory.IDAOFactory;
 import com.library.IDAO.IUserDAO;
 import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.IUserExtendedInfo;
+import com.library.businessModels.Salt;
 import com.library.businessModels.User;
 import com.library.businessModels.UserBasicInfo;
 import com.library.businessModels.UserExtendedInfo;
 import com.library.signIn.AuthenticateUserForms;
+import com.library.signIn.AuthenticationAbstract;
 import com.library.signIn.SignInController;
 
 public class SignUpController implements ISignUpController {
-	private List<Entry<String, String>> listofValidationErrors;
-	private IUserBasicInfo userBasicInfo;
-	private IUserExtendedInfo userExtendedInfo;
-	private User user;
+	private List<Entry<String, String>> listofValidationErrors = null;
+	private IUserBasicInfo userBasicInfo = null;
+	private IUserExtendedInfo userExtendedInfo = null;
+	private User user = null;
+	private Salt salt = null;
 	private static final Logger logger = LogManager.getLogger(SignUpController.class);
+
 	public SignUpController(User user) {
 		this.user = user;
+		this.salt = new Salt();
 	}
 
 	public ArrayList<Entry<String, String>> authenticateSignUp() {
 		try {
+			
 			userExtendedInfo = new UserExtendedInfo();
 			userBasicInfo = new UserBasicInfo();
+			addSaltToPassword();
 			userBasicInfo.setEmail(user.getEmail());
-			userBasicInfo.setPwd(user.getPassword());
+			userBasicInfo.setPassword(salt.getSaltedPassword());
 			userExtendedInfo.setCPassword(user.getCpassword());
 			userExtendedInfo.setFullname(user.getFullName());
 			userExtendedInfo.setPhone(user.getPhoneNumber());
 			listofValidationErrors = AuthenticateUserForms.instance().signUpUserData(userBasicInfo, userExtendedInfo);
 			if (listofValidationErrors.size() == 0) {
 				boolean status = registerUser();
-				if(status) {
-					logger.log(Level.ALL, "User has successfully registered.");	
-				}
-				else {
+				if (status) {
+					logger.log(Level.ALL, "User has successfully registered.");
+				} else {
 					logger.log(Level.ALL, "User has not registered.");
 				}
 			}
@@ -52,6 +58,10 @@ public class SignUpController implements ISignUpController {
 			e.printStackTrace();
 		}
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
+	}
+
+	private void addSaltToPassword() {
+		salt.setSaltedPassword(user.getPassword(), AuthenticationAbstract.saltValue);
 	}
 
 	private boolean registerUser() throws Exception {

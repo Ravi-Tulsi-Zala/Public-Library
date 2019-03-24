@@ -21,6 +21,7 @@ import com.library.additem.AddBookController;
 import com.library.additem.AddMovieController;
 import com.library.additem.AddMusicController;
 import com.library.businessModels.Book;
+import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
@@ -32,6 +33,8 @@ import com.library.search.SearchResults;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.ISignInController;
 import com.library.signUp.ISignUpController;
+import com.library.welcomePage.Manager;
+import com.library.welcomePage.WelcomePageController;
 
 @ComponentScan(basePackages = { "com.library.model" }, basePackageClasses = DBSeachControllerBean.class)
 @Controller
@@ -172,15 +175,20 @@ public class LibraryController implements WebMvcConfigurer {
 	}
 
 	@GetMapping("/welcome")
-	public String welcomeBody(Movie movie) {
-
+	public String welcomeBody(ModelMap model, LibraryItem libraryItem) {
+		model.addAttribute("isAdminAval", true);
+		List<Book> book = new WelcomePageController().getBookItems();
+		List<Movie> movie = new WelcomePageController().getMovieItems();
+		List<Music> music = new WelcomePageController().getMusicItems();
+		model.addAttribute("book", book);
+		model.addAttribute("movie", movie);
+		model.addAttribute("music", music);
 		return "Welcome";
 	}
 
 	@PostMapping("/welcome")
 	public String welcomeProcess(ModelMap model, Movie movie) {
 		model.addAttribute("movie", new WelcomePageMocked().initiateMock());
-
 		return "Welcome";
 	}
 
