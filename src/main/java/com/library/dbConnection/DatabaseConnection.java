@@ -43,5 +43,4 @@ public class DatabaseConnection {
 		return getDatabaseConnectionInstance().connection;
 	}
 	
-	
 }

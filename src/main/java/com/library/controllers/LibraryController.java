@@ -83,7 +83,6 @@ public class LibraryController implements WebMvcConfigurer {
 			searchRequestDetails.setExtendedSearch(true);
 			model.addAttribute("searchRequestDetails", searchRequestDetails);
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
-
 			return "AdvancedSearchPage";
 		}
 		return "NoAccessToNonAuthenticated";

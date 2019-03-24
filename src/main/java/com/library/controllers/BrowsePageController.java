@@ -22,7 +22,7 @@ public class BrowsePageController {
 	
 	private IBrowseDisplayObjects browseDisplayObjects;
 	
-	@RequestMapping("/BrowsePage/{itemType}")
+	@GetMapping("/BrowsePage/{itemType}")
 	public String BrowsePage(@PathVariable String itemType) {
 		
 		IBrowseDisplayFactory browseFactory = BrowseDisplayFactory.getInstance();
