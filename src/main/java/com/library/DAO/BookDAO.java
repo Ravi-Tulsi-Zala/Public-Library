@@ -223,4 +223,30 @@ public class BookDAO implements IBookDAO {
 		}
 		return null;
 	}
+	
+	@Override
+	public List<Book> getTopBooks() {
+		try {
+			List<Book> books = new ArrayList<Book>();
+			Book book = new Book();
+			query = "SELECT * FROM books order by books.Item_ID desc limit 2";
+			preparedStatement = connection.prepareStatement(query);
+//			preparedStatement.setString(1);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (!resultSet.next()) {
+				return null;
+			}
+			do {
+				book = bookMapper.mapBook(resultSet);
+				books.add(book);
+			} while (resultSet.next());
+			return books;
+		}	
+		catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the list of Book for this category", e);
+		}
+		return null;
+	}
 }
