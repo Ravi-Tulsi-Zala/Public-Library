@@ -8,26 +8,25 @@ public class DatabaseConnection {
 	private static DatabaseConnection databaseConnectionInstance = null;
 	private Connection connection = null;
 
-	private DatabaseConnection() {
-
+	public Connection getConnection() {
+		
 		DatabaseCredentials databaseCredentials = new DatabaseCredentials();
 		String databaseName = databaseCredentials.getDatabaseName();
 		String username = databaseCredentials.getUserName();
 		String password = databaseCredentials.getPassword();
 		String serverName = databaseCredentials.getServerName();
 		String databaseURL = "jdbc:mysql://" + serverName + "/" + databaseName;
-
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			this.connection = DriverManager.getConnection(databaseURL, username, password);
+			if(connection.isClosed()==true)
+			{
+				Class.forName("com.mysql.jdbc.Driver");
+				this.connection = DriverManager.getConnection(databaseURL, username, password);
+			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public Connection getConnection() {
 		return this.connection;
 	}
 
