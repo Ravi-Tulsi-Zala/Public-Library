@@ -6,14 +6,14 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import com.library.ForgotPassword.RecoverPassword;
+
 import com.library.ForgotPassword.IForgotPasswordController;
+import com.library.ForgotPassword.RecoverPassword;
 import com.library.additem.AddBookController;
 import com.library.additem.AddMovieController;
 import com.library.additem.AddMusicController;
@@ -22,22 +22,13 @@ import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
-<<<<<<< HEAD
-import com.library.search.DBSeachControllerBean;
-=======
-import com.library.mockDB.WelcomePageMocked;
->>>>>>> a2b0620d22fcf70d28233096bb5f5907c02e8fec
 import com.library.search.IDBSearchController;
 import com.library.search.SearchRequestDetails;
 import com.library.search.SearchResults;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.ISignInController;
 import com.library.signUp.ISignUpController;
-<<<<<<< HEAD
 import com.library.welcomePage.IWelcomeController;
-=======
-import com.library.welcomePage.WelcomePageController;
->>>>>>> a2b0620d22fcf70d28233096bb5f5907c02e8fec
 
 @Controller
 public class LibraryController implements WebMvcConfigurer {
