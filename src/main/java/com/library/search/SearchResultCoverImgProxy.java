@@ -21,6 +21,8 @@ public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 	
 	private final String separator = File.separator;
 	private final String searchResultsPath = separator +"dynamicContent" + separator +"searchResults" + separator;
+	private final String COVER_IMAGE_NOT_AVAILABLE_PATH = 
+			separator + "public" + separator + "img" + separator +"CoverImageNotAvailable.jpg";
 	private static final Logger logger = LogManager.getLogger(SearchResultCoverImgProxy.class);
 	
 	@Inject
@@ -63,7 +65,9 @@ public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 		for(LibraryItem item : items) {
 			String imageName = imageLoader.loadCoverImageByItemIdToDisk(item.getItemID(), basePath);
 			
-			if(null != imageName) {
+			if(null == imageName) {
+				item.setCoverImageUrl(COVER_IMAGE_NOT_AVAILABLE_PATH);
+			} else {
 				item.setCoverImageUrl(urlForRequestedPageNumber + separator + imageName);
 			}
 		}

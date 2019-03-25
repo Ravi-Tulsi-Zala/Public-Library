@@ -40,7 +40,7 @@
 	   	  <span style="float:right;margin-right: 20px;line-height: 3em;" th:text="${userEmail}">Test</span>
 	   	  <h1 style="text-align: center;">Welcome To The Library!</h1>
 	   	</div>
-		<div>
+		<div th:if="${not #lists.isEmpty(searchResults.books)}">
 		  <span style="color: blue;display:block;width: 100%;">Books</span>
 		  <div style="width: 9%;display: inline-block;vertical-align: top;" th:each="book : ${searchResults.books}">
 			<a href="">
@@ -51,7 +51,7 @@
 			</a>	  
 		  </div>
 		</div>
-		<div>
+		<div th:if="${not #lists.isEmpty(searchResults.music)}">
 		  <span style="color: blue;display:block;width: 100%;">Music</span>
 			  <div style="width: 9%;display: inline-block;vertical-align: top;" th:each="music : ${searchResults.music}">
 			  	<a href="">
@@ -60,7 +60,7 @@
 			    </a>		  
 			  </div>
 		</div>		
-		<div>
+		<div th:if="${not #lists.isEmpty(searchResults.movies)}">
 		  <span style="color: blue;display:block;width: 100%;">Movies</span>
 			  <div style="width: 9%;display: inline-block;vertical-align: top;" th:each="movie : ${searchResults.movies}">
 			  	<a href="">
