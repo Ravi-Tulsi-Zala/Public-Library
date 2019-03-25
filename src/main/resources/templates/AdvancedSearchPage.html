@@ -22,7 +22,7 @@
    	</div>
 
       <h2>Advanced Search</h2>      
-      <form id="advancedSearchForm" onsubmit="return validateSearchForm()" method="post" action="/search" th:action="@{/search}">
+      <form id="advancedSearchForm" onsubmit="return validateSearchForm()" method="post" th:action="@{/advancedSearch}">
       	<div style="margin-bottom: 20px">
       		<p>Search Terms <input id="searchTerms" type="text" th:field="${searchRequestDetails.searchTerms}" style="width:330px;"/></p>
       	</div>   	

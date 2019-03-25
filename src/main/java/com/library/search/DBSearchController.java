@@ -1,16 +1,12 @@
 package com.library.search;
 
 import java.util.HashMap;
-
 import java.util.Iterator;
 import java.util.Map;
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import com.library.DAO.BookDAO;
-import com.library.DAO.MovieDAO;
-import com.library.DAO.MusicDAO;
+import com.library.DAOFactory.DAOFactory;
 import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
@@ -23,9 +19,11 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 	private Map<String, SearchRequestsAndResults> searchesPerSessionId = new HashMap<>();
 	@Inject
 	private ISearchResultCoverImgProxy coverImageProxy;
+	private DAOFactory daoFactory = null;
 	
 	public DBSearchController() {
 		SignOutController.instance().registerAsSignOutObserver(this);
+		daoFactory = new DAOFactory();
 	}
 		
 	private class SearchRequestsAndResults {
@@ -80,24 +78,24 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 		return searchRAndR;
 	}
 
-	private SearchResults searchInDb(SearchRequestDetails searchRequestDetails) {
-		SearchResults searchResults = new SearchResults();
-		if(searchRequestDetails.isExtendedSearch()) {
-			if(searchRequestDetails.isSearchInBooks()) {
-				searchResults.setBooks(new BookDAO().getBooksBySearchTerms(searchRequestDetails));
+	private SearchResults searchInDb(SearchRequestDetails requestDetails) {
+		SearchResults results = new SearchResults();
+		if(requestDetails.isExtendedSearch()) {
+			if(requestDetails.isSearchInBooks()) {
+				results.setBooks(daoFactory.makeBookDAO().getBooksBySearchTerms(requestDetails));
 			}
-			if(searchRequestDetails.isSearchInMusic()) {
-				searchResults.setMusic(new MusicDAO().getMusicBySearchTerms(searchRequestDetails));
+			if(requestDetails.isSearchInMusic()) {
+				results.setMusic(daoFactory.makeMusicDAO().getMusicBySearchTerms(requestDetails));
 			}
-			if(searchRequestDetails.isSearchInMovies()) {
-				searchResults.setMovies(new MovieDAO().getMoviesBySearchTerms(searchRequestDetails));
+			if(requestDetails.isSearchInMovies()) {
+				results.setMovies(daoFactory.makeMovieDAO().getMoviesBySearchTerms(requestDetails));
 			}
 		} else {
-			searchResults.setBooks(new BookDAO().getBooksBySearchTerms(searchRequestDetails));
-			searchResults.setMusic(new MusicDAO().getMusicBySearchTerms(searchRequestDetails));
-			searchResults.setMovies(new MovieDAO().getMoviesBySearchTerms(searchRequestDetails));
+			results.setBooks(daoFactory.makeBookDAO().getBooksBySearchTerms(requestDetails));
+			results.setMusic(daoFactory.makeMusicDAO().getMusicBySearchTerms(requestDetails));
+			results.setMovies(daoFactory.makeMovieDAO().getMoviesBySearchTerms(requestDetails));
 		}
-		return searchResults;
+		return results;
 	}
 	
 	protected SearchResults getResultSetForRequestedPageNumber(SearchRequestsAndResults searchRAndR) {

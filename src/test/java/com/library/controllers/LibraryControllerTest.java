@@ -103,7 +103,7 @@ public class LibraryControllerTest {
     	
     	searchResult.setMusic(null);
         
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/search");
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/advancedSearch");
         // "searchRequestDetails" is a bean --> method in the Controller should expect argument of type SearchRequestDetails with whatever name.
         request.flashAttr("searchRequestDetails", searchRqstDetails); 
         request.session(mockHttpSession);
@@ -113,7 +113,7 @@ public class LibraryControllerTest {
         
 		this.mockMvc.perform(request)
 			.andExpect(status().isOk())
-			.andExpect(view().name("SearchResultsPage"))
+			.andExpect(view().name("AdvancedSearchResultsPage"))
 
 			.andExpect(model().attribute("searchResults", hasProperty("books", hasSize(2))))
 			.andExpect(model().attribute("searchResults",

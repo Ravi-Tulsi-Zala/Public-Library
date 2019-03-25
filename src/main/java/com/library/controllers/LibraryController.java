@@ -26,6 +26,7 @@ import com.library.mockDB.WelcomePageMocked;
 import com.library.search.IDBSearchController;
 import com.library.search.SearchRequestDetails;
 import com.library.search.SearchResults;
+import com.library.search.SimpleSearchRequestDetails;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.ISignInController;
 import com.library.signUp.ISignUpController;
@@ -82,13 +83,37 @@ public class LibraryController implements WebMvcConfigurer {
 		return "NoAccessToNonAuthenticated";
 	}
 
-	@PostMapping("/search")
-	public String getSearchResults(HttpSession httpSession, ModelMap model, SearchRequestDetails srchRequestDetails) {
+	@PostMapping("/advancedSearch")
+	public String executeAdvancedSearch(HttpSession httpSession, ModelMap model, SearchRequestDetails srchRequestDetails) {
+		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
+			SearchResults searchResults = dbSearchController.search(srchRequestDetails, httpSession);
+			model.addAttribute("searchRequestDetails", srchRequestDetails);
+			model.addAttribute("searchResults", searchResults);
+			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
+			return "AdvancedSearchResultsPage";
+		}
+		return "NoAccessToNonAuthenticated";
+	}
+	
+	@GetMapping("/simpleSearch")
+	public String getSimpleSearchPage(ModelMap model) {
+		SimpleSearchRequestDetails requestDetails = new SimpleSearchRequestDetails();
+		model.addAttribute("simpleSearchRequestDetails", requestDetails);
+		return "SimpleSearchPage";
+
+	}
+	
+	@PostMapping("/simpleSearch")
+	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, SimpleSearchRequestDetails requestDetails) {
+		SearchRequestDetails srchRequestDetails = new SearchRequestDetails();
+		srchRequestDetails.setExtendedSearch(true);
+		srchRequestDetails.setSearchTerms(requestDetails.getSearchTerms());
+		srchRequestDetails.setRequestedResultsPageNumber(requestDetails.getRequestedResultsPageNumber());
 		SearchResults searchResults = dbSearchController.search(srchRequestDetails, httpSession);
-		model.addAttribute("searchRequestDetails", srchRequestDetails);
+		model.addAttribute("simpleSearchRequestDetails", requestDetails);
 		model.addAttribute("searchResults", searchResults);
-		model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
-		return "SearchResultsPage";
+		return "SimpleSearchResultsPage";
+
 	}
 
 	@GetMapping("/")
