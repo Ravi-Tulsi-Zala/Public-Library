@@ -8,14 +8,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-import java.util.Enumeration;
 import java.util.LinkedList;
-
 import javax.inject.Inject;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionContext;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
