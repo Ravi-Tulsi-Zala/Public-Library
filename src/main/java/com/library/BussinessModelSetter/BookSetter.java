@@ -1,14 +1,11 @@
 package com.library.BussinessModelSetter;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.library.IBussinessModelSetter.IBookSetter;
-import com.library.businessModels.Book;;
+import com.library.businessModels.Book;
 
 public class BookSetter implements IBookSetter {
-	
+
 	public Book mapBook(ResultSet resultSet) 
 	{
 		try {
@@ -27,15 +24,5 @@ public class BookSetter implements IBookSetter {
 			e.printStackTrace();
 		}
 		return null;
-	}
-
-	@Override
-	public List<Integer> getItemIDFromBook(List<Book> books) {
-		List<Integer> items = new ArrayList<Integer>();
-		for(int i=0;i<books.size();i++)
-		{
-			items.add(books.get(i).getItemID());
-		}
-		return items;
 	}
 }

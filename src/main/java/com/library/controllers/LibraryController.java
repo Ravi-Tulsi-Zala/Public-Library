@@ -22,16 +22,23 @@ import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
+<<<<<<< HEAD
 import com.library.search.DBSeachControllerBean;
+=======
+import com.library.mockDB.WelcomePageMocked;
+>>>>>>> a2b0620d22fcf70d28233096bb5f5907c02e8fec
 import com.library.search.IDBSearchController;
 import com.library.search.SearchRequestDetails;
 import com.library.search.SearchResults;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.ISignInController;
 import com.library.signUp.ISignUpController;
+<<<<<<< HEAD
 import com.library.welcomePage.IWelcomeController;
+=======
+import com.library.welcomePage.WelcomePageController;
+>>>>>>> a2b0620d22fcf70d28233096bb5f5907c02e8fec
 
-@ComponentScan(basePackages = { "com.library.model" }, basePackageClasses = DBSeachControllerBean.class)
 @Controller
 public class LibraryController implements WebMvcConfigurer {
 	private List<Map.Entry<String, String>> list = null;
@@ -78,14 +85,12 @@ public class LibraryController implements WebMvcConfigurer {
 			searchRequestDetails.setExtendedSearch(true);
 			model.addAttribute("searchRequestDetails", searchRequestDetails);
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
-
 			return "AdvancedSearchPage";
 		}
 		return "NoAccessToNonAuthenticated";
 	}
 
 	@PostMapping("/search")
-
 	public String getSearchResults(HttpSession httpSession, ModelMap model, SearchRequestDetails srchRequestDetails) {
 		SearchResults searchResults = dbSearchController.search(srchRequestDetails, httpSession);
 		model.addAttribute("searchRequestDetails", srchRequestDetails);
