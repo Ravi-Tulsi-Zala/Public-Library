@@ -1,14 +1,11 @@
 package com.library.BussinessModelSetter;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.library.IBussinessModelSetter.IBookSetter;
-import com.library.businessModels.Book;;
+import com.library.businessModels.Book;
 
 public class BookSetter implements IBookSetter {
-	
+
 	public Book mapBook(ResultSet resultSet) 
 	{
 		try {

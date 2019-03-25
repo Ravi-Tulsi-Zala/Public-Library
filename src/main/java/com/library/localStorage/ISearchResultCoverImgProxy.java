@@ -4,7 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import com.library.search.SearchResults;
 
-public interface ICoverImageProxy {
-	void deleteCoverImages(HttpSession httpSession);
+public interface ISearchResultCoverImgProxy {
+	void deleteCoverImagesForSearchResults(HttpSession httpSession);
 	void loadCoverImages(SearchResults searchResults, String requestedPageNumber, HttpSession httpSession);
 }

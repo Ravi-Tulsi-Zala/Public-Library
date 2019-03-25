@@ -11,11 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.library.ForgotPassword.RecoverPassword;
-import com.library.ForgotPassword.ForgotPasswordController;
 import com.library.ForgotPassword.IForgotPasswordController;
 import com.library.additem.AddBookController;
 import com.library.additem.AddMovieController;
@@ -26,17 +23,14 @@ import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
 import com.library.mockDB.WelcomePageMocked;
-import com.library.search.DBSeachControllerBean;
 import com.library.search.IDBSearchController;
 import com.library.search.SearchRequestDetails;
 import com.library.search.SearchResults;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.ISignInController;
 import com.library.signUp.ISignUpController;
-import com.library.welcomePage.Manager;
 import com.library.welcomePage.WelcomePageController;
 
-@ComponentScan(basePackages = { "com.library.model" }, basePackageClasses = DBSeachControllerBean.class)
 @Controller
 public class LibraryController implements WebMvcConfigurer {
 	private List<Map.Entry<String, String>> list = null;
@@ -89,7 +83,6 @@ public class LibraryController implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/search")
-
 	public String getSearchResults(HttpSession httpSession, ModelMap model, SearchRequestDetails srchRequestDetails) {
 		SearchResults searchResults = dbSearchController.search(srchRequestDetails, httpSession);
 		model.addAttribute("searchRequestDetails", srchRequestDetails);
