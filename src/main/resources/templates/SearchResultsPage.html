@@ -42,7 +42,7 @@
 	   	</div>
 		<div>
 		  <span style="color: blue;display:block;width: 100%;">Books</span>
-		  <div style="width: 9%;display: inline-block;vertical-align: top;" th:each="book : ${searchResults.bookSearchResults}">
+		  <div style="width: 9%;display: inline-block;vertical-align: top;" th:each="book : ${searchResults.books}">
 			<a href="">
 <!-- 			  <img style="width: 100%;" src="\searchResults\100001.jpg"/>
  -->						  
@@ -53,7 +53,7 @@
 		</div>
 		<div>
 		  <span style="color: blue;display:block;width: 100%;">Music</span>
-			  <div style="width: 9%;display: inline-block;vertical-align: top;" th:each="music : ${searchResults.musicSearchResults}">
+			  <div style="width: 9%;display: inline-block;vertical-align: top;" th:each="music : ${searchResults.music}">
 			  	<a href="">
 			      <img style="width: 100%;" th:src="${music.coverImageUrl}"/>
 			      <p th:text=${music.title} style="text-align: center;"></p>
@@ -62,7 +62,7 @@
 		</div>		
 		<div>
 		  <span style="color: blue;display:block;width: 100%;">Movies</span>
-			  <div style="width: 9%;display: inline-block;vertical-align: top;" th:each="movie : ${searchResults.movieSearchResults}">
+			  <div style="width: 9%;display: inline-block;vertical-align: top;" th:each="movie : ${searchResults.movies}">
 			  	<a href="">
 			      <img style="width: 100%;" th:src="${movie.coverImageUrl}"/>
 			      <p th:text=${movie.title} style="text-align: center;"></p>	

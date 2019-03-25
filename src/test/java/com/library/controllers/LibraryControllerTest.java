@@ -86,7 +86,7 @@ public class LibraryControllerTest {
     	LinkedList<Book> booksFoundInSearch = new LinkedList<Book>();
     	booksFoundInSearch.add(book1);
     	booksFoundInSearch.add(book2);
-    	searchResult.setBookSearchResults(booksFoundInSearch);
+    	searchResult.setBooks(booksFoundInSearch);
     	
 		Movie movie = new Movie();
 	
@@ -99,9 +99,9 @@ public class LibraryControllerTest {
     	
     	LinkedList<Movie> moviesFoundInSearch = new LinkedList<Movie>();
     	moviesFoundInSearch.add(movie);
-    	searchResult.setMovieSearchResults(moviesFoundInSearch);
+    	searchResult.setMovies(moviesFoundInSearch);
     	
-    	searchResult.setMusicSearchResults(null);
+    	searchResult.setMusic(null);
         
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/search");
         // "searchRequestDetails" is a bean --> method in the Controller should expect argument of type SearchRequestDetails with whatever name.
@@ -115,9 +115,9 @@ public class LibraryControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(view().name("SearchResultsPage"))
 
-			.andExpect(model().attribute("searchResults", hasProperty("bookSearchResults", hasSize(2))))
+			.andExpect(model().attribute("searchResults", hasProperty("books", hasSize(2))))
 			.andExpect(model().attribute("searchResults",
-				allOf(hasProperty("bookSearchResults", 
+				allOf(hasProperty("books", 
 						hasItems(
 								allOf(
 										hasProperty("description", is("Good Story!")), 
@@ -143,9 +143,9 @@ public class LibraryControllerTest {
 									  )
 								)))))
 			
-			.andExpect(model().attribute("searchResults", hasProperty("movieSearchResults", hasSize(1))))
+			.andExpect(model().attribute("searchResults", hasProperty("movies", hasSize(1))))
 			.andExpect(model().attribute("searchResults",
-				allOf(hasProperty("movieSearchResults", 
+				allOf(hasProperty("movies", 
 						hasItem(
 								allOf(
 										hasProperty("director", is("David Lean")),
@@ -157,7 +157,7 @@ public class LibraryControllerTest {
 									  )
 							   )))))
 			
-			.andExpect(model().attribute("searchResults", hasProperty("musicSearchResults", is(nullValue()))))
+			.andExpect(model().attribute("searchResults", hasProperty("music", is(nullValue()))))
 			;
     }
     

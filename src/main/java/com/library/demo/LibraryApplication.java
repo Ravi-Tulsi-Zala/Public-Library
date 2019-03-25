@@ -9,8 +9,8 @@ import org.springframework.context.annotation.ComponentScan;
 
 import com.library.controllers.LibraryController;
 import com.library.localStorage.CoverImageLoaderBean;
-import com.library.localStorage.SearchResultCoverImgProxyBean;
 import com.library.search.DBSeachControllerBean;
+import com.library.search.SearchResultCoverImgProxyBean;
 
 @SpringBootApplication
 @ComponentScan(basePackageClasses = {LibraryController.class, 

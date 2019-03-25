@@ -6,7 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 public class AuthenticatedUsers {
-	private static AuthenticatedUsers authenticatedUsers = null;
+	private static AuthenticatedUsers instance = null;
 	private Map<String, String> authenticatedUsersMap = null;
 	
 	private AuthenticatedUsers() {
@@ -14,10 +14,10 @@ public class AuthenticatedUsers {
 	}
 	
 	synchronized public static AuthenticatedUsers instance() {
-		if(null == authenticatedUsers) {
-			authenticatedUsers = new AuthenticatedUsers();
+		if(null == instance) {
+			instance = new AuthenticatedUsers();
 		}
-		return authenticatedUsers;
+		return instance;
 	}
 	
 	public String getUserEmail(HttpSession httpSession) {

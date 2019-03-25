@@ -8,23 +8,26 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.context.annotation.ComponentScan;
-
 import com.library.DAO.BookDAO;
 import com.library.DAO.MovieDAO;
 import com.library.DAO.MusicDAO;
 import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
-import com.library.localStorage.ISearchResultCoverImgProxy;
+import com.library.signOut.ISignOutObserver;
+import com.library.signOut.SignOutController;
 
-public class DBSearchController implements IDBSearchController {
+public class DBSearchController implements IDBSearchController, ISignOutObserver {
 		
 	private final int DESPLAY_ROW_SIZE = 10; // should move to the configuration file
 	private Map<String, SearchRequestsAndResults> searchesPerSessionId = new HashMap<>();
 	@Inject
 	private ISearchResultCoverImgProxy coverImageProxy;
 	
+	public DBSearchController() {
+		SignOutController.instance().registerAsSignOutObserver(this);
+	}
+		
 	private class SearchRequestsAndResults {
 		SearchRequestDetails requestDetails;
 		SearchResults results;
@@ -63,8 +66,10 @@ public class DBSearchController implements IDBSearchController {
 		}
 		
 		SearchResults resultSet = getResultSetForRequestedPageNumber(searchRAndR);
-		int requestedPageNumber = searchRAndR.requestDetails.getRequestedResultsPageNumber();
-		coverImageProxy.loadCoverImages(resultSet, Integer.toString(requestedPageNumber), httpSession);
+		if(resultSet.isNotEmpty()) {
+			int requestedPageNumber = searchRAndR.requestDetails.getRequestedResultsPageNumber();
+			coverImageProxy.loadCoverImages(resultSet, Integer.toString(requestedPageNumber), httpSession);
+		}
 		return resultSet;
 	}
 
@@ -79,18 +84,18 @@ public class DBSearchController implements IDBSearchController {
 		SearchResults searchResults = new SearchResults();
 		if(searchRequestDetails.isExtendedSearch()) {
 			if(searchRequestDetails.isSearchInBooks()) {
-				searchResults.setBookSearchResults(new BookDAO().getBooksBySearchTerms(searchRequestDetails));
+				searchResults.setBooks(new BookDAO().getBooksBySearchTerms(searchRequestDetails));
 			}
 			if(searchRequestDetails.isSearchInMusic()) {
-				searchResults.setMusicSearchResults(new MusicDAO().getMusicBySearchTerms(searchRequestDetails));
+				searchResults.setMusic(new MusicDAO().getMusicBySearchTerms(searchRequestDetails));
 			}
 			if(searchRequestDetails.isSearchInMovies()) {
-				searchResults.setMovieSearchResults(new MovieDAO().getMoviesBySearchTerms(searchRequestDetails));
+				searchResults.setMovies(new MovieDAO().getMoviesBySearchTerms(searchRequestDetails));
 			}
 		} else {
-			searchResults.setBookSearchResults(new BookDAO().getBooksBySearchTerms(searchRequestDetails));
-			searchResults.setMusicSearchResults(new MusicDAO().getMusicBySearchTerms(searchRequestDetails));
-			searchResults.setMovieSearchResults(new MovieDAO().getMoviesBySearchTerms(searchRequestDetails));
+			searchResults.setBooks(new BookDAO().getBooksBySearchTerms(searchRequestDetails));
+			searchResults.setMusic(new MusicDAO().getMusicBySearchTerms(searchRequestDetails));
+			searchResults.setMovies(new MovieDAO().getMoviesBySearchTerms(searchRequestDetails));
 		}
 		return searchResults;
 	}
@@ -99,36 +104,45 @@ public class DBSearchController implements IDBSearchController {
 		int requestedPageNumber = searchRAndR.requestDetails.getRequestedResultsPageNumber();
 		SearchResults results = new SearchResults();
 		
-		if(null != searchRAndR.results.getBookSearchResults()) {
-			Iterator<Book> iterator = searchRAndR.results.getBookSearchResults().iterator();
+		if(null != searchRAndR.results.getBooks()) {
+			Iterator<Book> iterator = searchRAndR.results.getBooks().iterator();
 			for(int i=0; i < (requestedPageNumber -1)*DESPLAY_ROW_SIZE && iterator.hasNext(); i++) {
 				iterator.next();
 			}
 			for(int i=0; i < DESPLAY_ROW_SIZE && iterator.hasNext(); i++) {
-				results.getBookSearchResults().add(iterator.next()); 
+				results.getBooks().add(iterator.next()); 
 			}
 		}
 		
-		if(null != searchRAndR.results.getMusicSearchResults()) {
-			Iterator<Music> iterator = searchRAndR.results.getMusicSearchResults().iterator();
+		if(null != searchRAndR.results.getMusic()) {
+			Iterator<Music> iterator = searchRAndR.results.getMusic().iterator();
 			for(int i=0; i < (requestedPageNumber -1)*DESPLAY_ROW_SIZE && iterator.hasNext(); i++) {
 				iterator.next();
 			}
 			for(int i=0; i < DESPLAY_ROW_SIZE && iterator.hasNext(); i++) {
-				results.getMusicSearchResults().add(iterator.next()); 
+				results.getMusic().add(iterator.next()); 
 			}
 		}
 		
-		if(null != searchRAndR.results.getMovieSearchResults()) {
-			Iterator<Movie> iterator = searchRAndR.results.getMovieSearchResults().iterator();
+		if(null != searchRAndR.results.getMovies()) {
+			Iterator<Movie> iterator = searchRAndR.results.getMovies().iterator();
 			for(int i=0; i < (requestedPageNumber -1)*DESPLAY_ROW_SIZE && iterator.hasNext(); i++) {
 				iterator.next();
 			}
 			for(int i=0; i < DESPLAY_ROW_SIZE && iterator.hasNext(); i++) {
-				results.getMovieSearchResults().add(iterator.next()); 
+				results.getMovies().add(iterator.next()); 
 			}
 		}
 				
 		return results;
+	}
+
+	@Override
+	public void notifyUserSignOut(HttpSession httpSession) {
+		String sessionId = httpSession.getId();
+		if(searchesPerSessionId.containsKey(sessionId)) {
+			searchesPerSessionId.remove(sessionId);
+			coverImageProxy.deleteCoverImagesForSearchResults(httpSession);
+		}
 	}
 }

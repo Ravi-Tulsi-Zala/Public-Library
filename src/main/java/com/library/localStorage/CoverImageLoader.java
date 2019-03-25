@@ -16,7 +16,7 @@ import com.library.DAO.CoverDAO;
 import com.library.businessModels.Cover;
 
 public class CoverImageLoader implements ICoverImageLoader {
-	private static final Logger logger = LogManager.getLogger(BookDAO.class);
+	private static final Logger logger = LogManager.getLogger(CoverImageLoader.class);
 	
 	@Override
 	public String loadCoverImageByItemIdToDisk(int itemId, String pathToDirToSaveInto) {

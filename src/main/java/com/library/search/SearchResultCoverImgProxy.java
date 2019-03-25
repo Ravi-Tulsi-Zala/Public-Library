@@ -1,4 +1,4 @@
-package com.library.localStorage;
+package com.library.search;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,46 +8,45 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
+
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 import com.library.businessModels.LibraryItem;
-import com.library.search.SearchResults;
+import com.library.localStorage.ICoverImageLoader;
+import com.library.signOut.ISignOutObserver;
 
-public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy{
+public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 	
 	private final String separator = File.separator;
 	private final String searchResultsPath = separator +"dynamicContent" + separator +"searchResults" + separator;
+	private static final Logger logger = LogManager.getLogger(SearchResultCoverImgProxy.class);
 	
 	@Inject
 	private ICoverImageLoader imageLoader;
-	private HashMap<String, HashMap<String, LinkedList<String>>> sessionIdToRequestedPageResults = 
-															new HashMap<String, HashMap<String, LinkedList<String>>>();
+	private HashMap<String, LinkedList<String>> sessionIdToRequestedPageResults = 
+															new HashMap<String, LinkedList<String>>();
 
 	@Override
 	public void loadCoverImages(SearchResults searchResults, String requestedPageNumber, HttpSession httpSession) {
 		
 		String sessionResultsDir = searchResultsPath + httpSession.getId() + separator;
 		
-		List<LibraryItem> items = new LinkedList<>();
-		items.addAll(searchResults.getBookSearchResults());
-		items.addAll(searchResults.getMusicSearchResults());
-		items.addAll(searchResults.getMovieSearchResults());
+		List<LibraryItem> items = new LinkedList<>(); // memory leak?
+		items.addAll(searchResults.getBooks());
+		items.addAll(searchResults.getMusic());
+		items.addAll(searchResults.getMovies());
 		
-		if(items.isEmpty()) {
-			return;
-		}
-		
-		HashMap<String, LinkedList<String>> resultsForSession = sessionIdToRequestedPageResults.get(httpSession.getId());
-		if(null == resultsForSession) {
-			resultsForSession = new HashMap<String, LinkedList<String>>();
-			sessionIdToRequestedPageResults.put(httpSession.getId(), resultsForSession);
+		LinkedList<String> resultPagesForSession = sessionIdToRequestedPageResults.get(httpSession.getId());
+		if(null == resultPagesForSession) {
+			resultPagesForSession = new LinkedList<String>();
+			sessionIdToRequestedPageResults.put(httpSession.getId(), resultPagesForSession);
 		} else {
-			if(resultsForSession.containsKey(requestedPageNumber)) {
+			for(String previouslyRequestedPageNumber : resultPagesForSession) {
+				if(requestedPageNumber.equals(previouslyRequestedPageNumber));
 				return;
 			}
-		}
-		
-		if(!resultsForSession.containsKey(requestedPageNumber)) {
-			resultsForSession.put(requestedPageNumber, new LinkedList<String>());
 		}
 		
 		String urlForRequestedPageNumber = sessionResultsDir + requestedPageNumber;
@@ -66,7 +65,6 @@ public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy{
 			
 			if(null != imageName) {
 				item.setCoverImageUrl(urlForRequestedPageNumber + separator + imageName);
-				resultsForSession.get(requestedPageNumber).add(urlForRequestedPageNumber + separator + imageName);
 			}
 		}
 	}

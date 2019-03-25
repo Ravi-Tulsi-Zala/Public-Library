@@ -1,8 +1,6 @@
-package com.library.localStorage;
+package com.library.search;
 
 import javax.servlet.http.HttpSession;
-
-import com.library.search.SearchResults;
 
 public interface ISearchResultCoverImgProxy {
 	void deleteCoverImagesForSearchResults(HttpSession httpSession);
