@@ -22,14 +22,22 @@ import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
+<<<<<<< HEAD
+import com.library.search.DBSeachControllerBean;
+=======
 import com.library.mockDB.WelcomePageMocked;
+>>>>>>> a2b0620d22fcf70d28233096bb5f5907c02e8fec
 import com.library.search.IDBSearchController;
 import com.library.search.SearchRequestDetails;
 import com.library.search.SearchResults;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.ISignInController;
 import com.library.signUp.ISignUpController;
+<<<<<<< HEAD
+import com.library.welcomePage.IWelcomeController;
+=======
 import com.library.welcomePage.WelcomePageController;
+>>>>>>> a2b0620d22fcf70d28233096bb5f5907c02e8fec
 
 @Controller
 public class LibraryController implements WebMvcConfigurer {
@@ -170,18 +178,14 @@ public class LibraryController implements WebMvcConfigurer {
 	@GetMapping("/welcome")
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem) {
 		model.addAttribute("isAdminAval", true);
-		List<Book> book = new WelcomePageController().getBookItems();
-		List<Movie> movie = new WelcomePageController().getMovieItems();
-		List<Music> music = new WelcomePageController().getMusicItems();
+		IWelcomeController welcomeCtrl = LibraryFactorySingleton.instance().getFactory().welcomePage();
+		List<Book> book = welcomeCtrl.getBookItems();
+		List<Movie> movie = welcomeCtrl.getMovieItems();
+		List<Music> music = welcomeCtrl.getMusicItems();
 		model.addAttribute("book", book);
 		model.addAttribute("movie", movie);
 		model.addAttribute("music", music);
-		return "Welcome";
-	}
-
-	@PostMapping("/welcome")
-	public String welcomeProcess(ModelMap model, Movie movie) {
-		model.addAttribute("movie", new WelcomePageMocked().initiateMock());
+		model.addAttribute("isAdminAval", welcomeCtrl.isAdminAvailable());
 		return "Welcome";
 	}
 

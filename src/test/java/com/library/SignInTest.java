@@ -1,4 +1,4 @@
-package com.library.demo;
+package com.library;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -10,7 +10,6 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.library.Logger;
 import com.library.businessModels.UserBasicInfo;
 import com.library.mockDB.SignInMocked;
 import com.library.mockDB.SignUpMocked;

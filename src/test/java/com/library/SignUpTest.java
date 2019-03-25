@@ -1,4 +1,4 @@
-package com.library.demo;
+package com.library;
 
 import static org.junit.Assert.assertTrue;
 
@@ -13,13 +13,11 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.library.Logger;
 import com.library.businessModels.UserBasicInfo;
 import com.library.businessModels.UserExtendedInfo;
 import com.library.mockDB.SignUpMocked;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
 public class SignUpTest {
 	private static SignUpMocked signUpMocked;
 	private static Map mapList;
@@ -71,11 +69,5 @@ public class SignUpTest {
 				assertTrue(userExtendInfo.getPhone().length() != 10);
 			}
 		}
-	}
-
-	@Test
-	public void testLogger() {
-		Logger logger = Logger.loggerInstance();
-		logger.writeLog("Test message!");
 	}
 }
