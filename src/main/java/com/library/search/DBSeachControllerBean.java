@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DBSeachControllerBean {
 	@Bean
-	public DBSeachController getDBSeachControllerInstance() {
-		return new DBSeachController();
+	public IDBSearchController getDBSeachControllerInstance() {
+		return new DBSearchController();
 	}
 }
