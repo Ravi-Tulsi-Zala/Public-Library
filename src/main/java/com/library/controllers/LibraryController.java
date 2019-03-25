@@ -11,11 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.library.ForgotPassword.RecoverPassword;
-import com.library.ForgotPassword.ForgotPasswordController;
 import com.library.ForgotPassword.IForgotPasswordController;
 import com.library.additem.AddBookController;
 import com.library.additem.AddMovieController;
@@ -25,7 +22,6 @@ import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
-import com.library.mockDB.WelcomePageMocked;
 import com.library.search.DBSeachControllerBean;
 import com.library.search.IDBSearchController;
 import com.library.search.SearchRequestDetails;
@@ -33,8 +29,7 @@ import com.library.search.SearchResults;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.ISignInController;
 import com.library.signUp.ISignUpController;
-import com.library.welcomePage.Manager;
-import com.library.welcomePage.WelcomePageController;
+import com.library.welcomePage.IWelcomeController;
 
 @ComponentScan(basePackages = { "com.library.model" }, basePackageClasses = DBSeachControllerBean.class)
 @Controller
@@ -178,18 +173,14 @@ public class LibraryController implements WebMvcConfigurer {
 	@GetMapping("/welcome")
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem) {
 		model.addAttribute("isAdminAval", true);
-		List<Book> book = new WelcomePageController().getBookItems();
-		List<Movie> movie = new WelcomePageController().getMovieItems();
-		List<Music> music = new WelcomePageController().getMusicItems();
+		IWelcomeController welcomeCtrl = LibraryFactorySingleton.instance().getFactory().welcomePage();
+		List<Book> book = welcomeCtrl.getBookItems();
+		List<Movie> movie = welcomeCtrl.getMovieItems();
+		List<Music> music = welcomeCtrl.getMusicItems();
 		model.addAttribute("book", book);
 		model.addAttribute("movie", movie);
 		model.addAttribute("music", music);
-		return "Welcome";
-	}
-
-	@PostMapping("/welcome")
-	public String welcomeProcess(ModelMap model, Movie movie) {
-		model.addAttribute("movie", new WelcomePageMocked().initiateMock());
+		model.addAttribute("isAdminAval", welcomeCtrl.isAdminAvailable());
 		return "Welcome";
 	}
 

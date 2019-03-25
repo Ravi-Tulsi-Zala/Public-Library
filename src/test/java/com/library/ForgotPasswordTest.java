@@ -1,4 +1,4 @@
-package com.library.demo;
+package com.library;
 
 public class ForgotPasswordTest {
 
