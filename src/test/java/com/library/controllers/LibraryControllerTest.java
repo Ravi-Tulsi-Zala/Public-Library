@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.LinkedList;
 import javax.inject.Inject;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -27,7 +28,7 @@ import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.demo.LibraryApplication;
 import com.library.search.IDBSearchController;
-import com.library.search.SearchRequestDetails;
+import com.library.search.AdvancedSearchRequest;
 import com.library.search.SearchResults;
 import com.library.signIn.AuthenticatedUsers;
 
@@ -45,23 +46,24 @@ public class LibraryControllerTest {
     @MockBean
     private IDBSearchController dataBaseMock;
     
-    private MockHttpSession mockHttpSession;
+    private MockHttpSession mockHttpSessionAuthenticated;
+    private MockHttpSession mockHttpSessionNotAuthenticated;
     
     @Before
     public void setUp() {
         Mockito.reset(dataBaseMock);
-        mockHttpSession = new MockHttpSession();
-        AuthenticatedUsers.instance().addAuthenticatedUser(mockHttpSession, "asd@mail.com");
+        mockHttpSessionNotAuthenticated = new MockHttpSession();
+        mockHttpSessionAuthenticated = new MockHttpSession();
+        AuthenticatedUsers.instance().addAuthenticatedUser(mockHttpSessionAuthenticated, "asd@mail.com");
      }
 
     @SuppressWarnings("unchecked")
 	@Test
-    public void executeSearch() throws Exception {
+    public void executeAdvancedSearchWithAuthenticatedUser() throws Exception {
     	
     	SearchResults searchResult = new SearchResults();
-    	SearchRequestDetails searchRqstDetails = new SearchRequestDetails();
+    	AdvancedSearchRequest searchRqstDetails = new AdvancedSearchRequest();
     	searchRqstDetails.setSearchTerms("Jack London");
-    	searchRqstDetails.setExtendedSearch(true);
     	
 		Book book1 = new Book();
 		book1.setIsbn(111);
@@ -86,7 +88,7 @@ public class LibraryControllerTest {
     	LinkedList<Book> booksFoundInSearch = new LinkedList<Book>();
     	booksFoundInSearch.add(book1);
     	booksFoundInSearch.add(book2);
-    	searchResult.setBookSearchResults(booksFoundInSearch);
+    	searchResult.setBooks(booksFoundInSearch);
     	
 		Movie movie = new Movie();
 	
@@ -99,25 +101,25 @@ public class LibraryControllerTest {
     	
     	LinkedList<Movie> moviesFoundInSearch = new LinkedList<Movie>();
     	moviesFoundInSearch.add(movie);
-    	searchResult.setMovieSearchResults(moviesFoundInSearch);
+    	searchResult.setMovies(moviesFoundInSearch);
     	
-    	searchResult.setMusicSearchResults(null);
+    	searchResult.setMusic(null);
         
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/search");
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/advancedSearch");
         // "searchRequestDetails" is a bean --> method in the Controller should expect argument of type SearchRequestDetails with whatever name.
-        request.flashAttr("searchRequestDetails", searchRqstDetails); 
-        request.session(mockHttpSession);
+        request.flashAttr("advancedSearchRequest", searchRqstDetails); 
+        request.session(mockHttpSessionAuthenticated);
         
-        when(dataBaseMock.search(searchRqstDetails, mockHttpSession)).thenReturn(searchResult);
+        when(dataBaseMock.search(searchRqstDetails, mockHttpSessionAuthenticated)).thenReturn(searchResult);
        
         
 		this.mockMvc.perform(request)
 			.andExpect(status().isOk())
-			.andExpect(view().name("SearchResultsPage"))
+			.andExpect(view().name("AdvancedSearchResultsPage"))
 
-			.andExpect(model().attribute("searchResults", hasProperty("bookSearchResults", hasSize(2))))
+			.andExpect(model().attribute("searchResults", hasProperty("books", hasSize(2))))
 			.andExpect(model().attribute("searchResults",
-				allOf(hasProperty("bookSearchResults", 
+				allOf(hasProperty("books", 
 						hasItems(
 								allOf(
 										hasProperty("description", is("Good Story!")), 
@@ -143,9 +145,9 @@ public class LibraryControllerTest {
 									  )
 								)))))
 			
-			.andExpect(model().attribute("searchResults", hasProperty("movieSearchResults", hasSize(1))))
+			.andExpect(model().attribute("searchResults", hasProperty("movies", hasSize(1))))
 			.andExpect(model().attribute("searchResults",
-				allOf(hasProperty("movieSearchResults", 
+				allOf(hasProperty("movies", 
 						hasItem(
 								allOf(
 										hasProperty("director", is("David Lean")),
@@ -157,16 +159,28 @@ public class LibraryControllerTest {
 									  )
 							   )))))
 			
-			.andExpect(model().attribute("searchResults", hasProperty("musicSearchResults", is(nullValue()))))
+			.andExpect(model().attribute("searchResults", hasProperty("music", is(nullValue()))))
 			;
     }
     
+    @Ignore // remove @Ignore once we will remove the dummy authenticated user in LibraryController 
+    		// getAdvancedSearchPage() method.
+	@Test
+    public void executeAdvancedSearchWithNotAuthenticatedUser() throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/advancedSearch");
+        request.session(mockHttpSessionNotAuthenticated);
+        
+		this.mockMvc.perform(request)
+			.andExpect(status().isOk())
+			.andExpect(view().name("NoAccessToNonAuthenticated"))
+			;
+	}
     
 	@Test
     public void browseAdvancedSearchPage() throws Exception {
         
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/advancedSearch");
-        request.session(mockHttpSession);
+        request.session(mockHttpSessionAuthenticated);
         
 		this.mockMvc.perform(request)
 			.andExpect(status().isOk())

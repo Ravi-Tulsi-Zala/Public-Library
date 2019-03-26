@@ -16,6 +16,7 @@ import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.Salt;
 import com.library.businessModels.User;
 import com.library.businessModels.UserBasicInfo;
+import com.library.welcomePage.AdminPage;
 
 public class SignInController implements ISignInController {
 
@@ -39,11 +40,13 @@ public class SignInController implements ISignInController {
 		addSaltToPassword();
 		if (userDAO.checkPassword(user.getEmail(), salt.getSaltedPassword())) {
 			logger.log(Level.ALL, "User has successfully logged in.");
+			AdminPage.setAdminAvailable(false);
 			return "Welcome";
 
 		} else if (userBasicInfo.getEmail().equals(AuthenticationAbstract.isAdmin)
 				&& userBasicInfo.getPassword().equals(AuthenticationAbstract.isAdminPwd)) {
-			return "AdminWelcome";
+			AdminPage.setAdminAvailable(true);
+			return "Welcome";
 		}
 		return "SignInForm";
 	}
