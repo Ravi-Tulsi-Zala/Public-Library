@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <title>Spring MVC Form Handling</title>
+      <style>
+      td {
+      	padding-bottom: 20px;
+      	padding-right:50px
+      }
+      
+      h5 {
+      	margin: 0;
+      	font-weight:400;
+      }
+      </style>
+   </head>
+   <body id="pageBody">
+	   	<div>	   	  
+	      <form id="simpleSearchForm" onsubmit="return validateSearchForm()" method="post" th:action="@{/basicSearch}"
+	      			style="float:left;line-height: 3em;">
+	      	<input id="searchTerms" type="text" th:field="${basicSearchRequest.searchTerms}" style="width:100px;"/>
+	      	<input type="submit">   	
+	      </form>
+	      <h1 style="text-align: center;">Welcome To The Library!</h1>
+	    </div>       
+   </body>
+   
+   	<script src="js/SimpleSearchCreteriaInputValidation.js"></script>
+   
+</html>

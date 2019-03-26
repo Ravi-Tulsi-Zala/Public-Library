@@ -27,10 +27,10 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 	}
 		
 	private class SearchRequestsAndResults {
-		SearchRequestDetails requestDetails;
+		AdvancedSearchRequest requestDetails;
 		SearchResults results;
 		
-		public SearchRequestsAndResults(SearchRequestDetails requestDetails, SearchResults results) {
+		public SearchRequestsAndResults(AdvancedSearchRequest requestDetails, SearchResults results) {
 			this.requestDetails = requestDetails;
 			this.results = results;
 		}
@@ -38,7 +38,7 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 
 	
 	@Override
-	public SearchResults search(SearchRequestDetails requestDetails, HttpSession httpSession) {
+	public SearchResults search(AdvancedSearchRequest requestDetails, HttpSession httpSession) {
 		SearchRequestsAndResults searchRAndR = null;
 		String sessionId = httpSession.getId();
 		
@@ -71,28 +71,22 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 		return resultSet;
 	}
 
-	private SearchRequestsAndResults executeSearchInDb(SearchRequestDetails searchRequestDetails, HttpSession httpSession) {
+	private SearchRequestsAndResults executeSearchInDb(AdvancedSearchRequest searchRequestDetails, HttpSession httpSession) {
 		SearchResults searchResults = searchInDb(searchRequestDetails);
 		SearchRequestsAndResults searchRAndR = new SearchRequestsAndResults(searchRequestDetails, searchResults);
 		searchesPerSessionId.put(httpSession.getId(), searchRAndR);
 		return searchRAndR;
 	}
 
-	private SearchResults searchInDb(SearchRequestDetails requestDetails) {
+	private SearchResults searchInDb(AdvancedSearchRequest requestDetails) {
 		SearchResults results = new SearchResults();
-		if(requestDetails.isExtendedSearch()) {
-			if(requestDetails.isSearchInBooks()) {
-				results.setBooks(daoFactory.makeBookDAO().getBooksBySearchTerms(requestDetails));
-			}
-			if(requestDetails.isSearchInMusic()) {
-				results.setMusic(daoFactory.makeMusicDAO().getMusicBySearchTerms(requestDetails));
-			}
-			if(requestDetails.isSearchInMovies()) {
-				results.setMovies(daoFactory.makeMovieDAO().getMoviesBySearchTerms(requestDetails));
-			}
-		} else {
+		if(requestDetails.isSearchInBooks()) {
 			results.setBooks(daoFactory.makeBookDAO().getBooksBySearchTerms(requestDetails));
+		}
+		if(requestDetails.isSearchInMusic()) {
 			results.setMusic(daoFactory.makeMusicDAO().getMusicBySearchTerms(requestDetails));
+		}
+		if(requestDetails.isSearchInMovies()) {
 			results.setMovies(daoFactory.makeMovieDAO().getMoviesBySearchTerms(requestDetails));
 		}
 		return results;

@@ -1,6 +1,6 @@
 package com.library.search;
 
-public class SimpleSearchRequestDetails {
+public class BasicSearchRequest {
 	private String searchTerms = null;
 	private int requestedResultsPageNumber = 1;
 	

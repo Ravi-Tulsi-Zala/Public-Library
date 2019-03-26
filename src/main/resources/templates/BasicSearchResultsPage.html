@@ -18,7 +18,7 @@
 	   	<div>
 		  <form method="post"  onsubmit="return validateSearchForm()" th:action="@{/simpleSearch}" 
 		  			style="float:left;line-height: 3em;">
-      		<input type="text" th:field="${simpleSearchRequestDetails.searchTerms}">
+      		<input type="text" th:field="${basicSearchRequest.searchTerms}">
       		<input type="submit">		      									
 		  </form>		    
 	   	  <h1 style="text-align: center;">Welcome To The Library!</h1>
@@ -56,9 +56,9 @@
 		  <div style="margin-left: 40%">
 		    <div style="display:inline-block;">
 				<form method="post" th:action="@{/simpleSearch}">
-		      		<input type="text" th:field="${simpleSearchRequestDetails.requestedResultsPageNumber}" 
+		      		<input type="text" th:field="${basicSearchRequest.requestedResultsPageNumber}" 
 		      						maxlength="3" style="font-size:2em;margin: 0 0.5em; width:50px;padding: 0 2%;"/>
-		      		<input type="text" th:field="${simpleSearchRequestDetails.searchTerms}" style="display:none">
+		      		<input type="text" th:field="${basicSearchRequest.searchTerms}" style="display:none">
 		      		<input type="submit" style="display:none">		      										
 				</form>		    
 		    </div>

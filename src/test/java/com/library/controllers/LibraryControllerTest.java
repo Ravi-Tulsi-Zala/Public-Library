@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.LinkedList;
 import javax.inject.Inject;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -27,7 +28,7 @@ import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.demo.LibraryApplication;
 import com.library.search.IDBSearchController;
-import com.library.search.SearchRequestDetails;
+import com.library.search.AdvancedSearchRequest;
 import com.library.search.SearchResults;
 import com.library.signIn.AuthenticatedUsers;
 
@@ -45,23 +46,24 @@ public class LibraryControllerTest {
     @MockBean
     private IDBSearchController dataBaseMock;
     
-    private MockHttpSession mockHttpSession;
+    private MockHttpSession mockHttpSessionAuthenticated;
+    private MockHttpSession mockHttpSessionNotAuthenticated;
     
     @Before
     public void setUp() {
         Mockito.reset(dataBaseMock);
-        mockHttpSession = new MockHttpSession();
-        AuthenticatedUsers.instance().addAuthenticatedUser(mockHttpSession, "asd@mail.com");
+        mockHttpSessionNotAuthenticated = new MockHttpSession();
+        mockHttpSessionAuthenticated = new MockHttpSession();
+        AuthenticatedUsers.instance().addAuthenticatedUser(mockHttpSessionAuthenticated, "asd@mail.com");
      }
 
     @SuppressWarnings("unchecked")
 	@Test
-    public void executeSearch() throws Exception {
+    public void executeAdvancedSearchWithAuthenticatedUser() throws Exception {
     	
     	SearchResults searchResult = new SearchResults();
-    	SearchRequestDetails searchRqstDetails = new SearchRequestDetails();
+    	AdvancedSearchRequest searchRqstDetails = new AdvancedSearchRequest();
     	searchRqstDetails.setSearchTerms("Jack London");
-    	searchRqstDetails.setExtendedSearch(true);
     	
 		Book book1 = new Book();
 		book1.setIsbn(111);
@@ -105,10 +107,10 @@ public class LibraryControllerTest {
         
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/advancedSearch");
         // "searchRequestDetails" is a bean --> method in the Controller should expect argument of type SearchRequestDetails with whatever name.
-        request.flashAttr("searchRequestDetails", searchRqstDetails); 
-        request.session(mockHttpSession);
+        request.flashAttr("advancedSearchRequest", searchRqstDetails); 
+        request.session(mockHttpSessionAuthenticated);
         
-        when(dataBaseMock.search(searchRqstDetails, mockHttpSession)).thenReturn(searchResult);
+        when(dataBaseMock.search(searchRqstDetails, mockHttpSessionAuthenticated)).thenReturn(searchResult);
        
         
 		this.mockMvc.perform(request)
@@ -161,12 +163,24 @@ public class LibraryControllerTest {
 			;
     }
     
+    @Ignore // remove @Ignore once we will remove the dummy authenticated user in LibraryController 
+    		// getAdvancedSearchPage() method.
+	@Test
+    public void executeAdvancedSearchWithNotAuthenticatedUser() throws Exception {
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/advancedSearch");
+        request.session(mockHttpSessionNotAuthenticated);
+        
+		this.mockMvc.perform(request)
+			.andExpect(status().isOk())
+			.andExpect(view().name("NoAccessToNonAuthenticated"))
+			;
+	}
     
 	@Test
     public void browseAdvancedSearchPage() throws Exception {
         
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/advancedSearch");
-        request.session(mockHttpSession);
+        request.session(mockHttpSessionAuthenticated);
         
 		this.mockMvc.perform(request)
 			.andExpect(status().isOk())

@@ -24,9 +24,9 @@ import com.library.businessModels.Music;
 import com.library.businessModels.User;
 import com.library.mockDB.WelcomePageMocked;
 import com.library.search.IDBSearchController;
-import com.library.search.SearchRequestDetails;
+import com.library.search.AdvancedSearchRequest;
 import com.library.search.SearchResults;
-import com.library.search.SimpleSearchRequestDetails;
+import com.library.search.BasicSearchRequest;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.ISignInController;
 import com.library.signUp.ISignUpController;
@@ -74,9 +74,8 @@ public class LibraryController implements WebMvcConfigurer {
 	public String getAdvancedSearchPage(HttpSession httpSession, ModelMap model) {
 		AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, "removeMeFromTheController@mail.com");
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
-			SearchRequestDetails searchRequestDetails = new SearchRequestDetails();
-			searchRequestDetails.setExtendedSearch(true);
-			model.addAttribute("searchRequestDetails", searchRequestDetails);
+			AdvancedSearchRequest searchRequestDetails = new AdvancedSearchRequest();
+			model.addAttribute("advancedSearchRequest", searchRequestDetails);
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 			return "AdvancedSearchPage";
 		}
@@ -84,10 +83,9 @@ public class LibraryController implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/advancedSearch")
-	public String executeAdvancedSearch(HttpSession httpSession, ModelMap model, SearchRequestDetails srchRequestDetails) {
+	public String executeAdvancedSearch(HttpSession httpSession, ModelMap model, AdvancedSearchRequest srchRequestDetails) {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			SearchResults searchResults = dbSearchController.search(srchRequestDetails, httpSession);
-			model.addAttribute("searchRequestDetails", srchRequestDetails);
 			model.addAttribute("searchResults", searchResults);
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 			return "AdvancedSearchResultsPage";
@@ -95,24 +93,22 @@ public class LibraryController implements WebMvcConfigurer {
 		return "NoAccessToNonAuthenticated";
 	}
 	
-	@GetMapping("/simpleSearch")
+	@GetMapping("/basicSearch")
 	public String getSimpleSearchPage(ModelMap model) {
-		SimpleSearchRequestDetails requestDetails = new SimpleSearchRequestDetails();
-		model.addAttribute("simpleSearchRequestDetails", requestDetails);
-		return "SimpleSearchPage";
+		BasicSearchRequest basic = new BasicSearchRequest();
+		model.addAttribute("basicSearchRequest", basic);
+		return "BasicSearchPage";
 
 	}
 	
-	@PostMapping("/simpleSearch")
-	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, SimpleSearchRequestDetails requestDetails) {
-		SearchRequestDetails srchRequestDetails = new SearchRequestDetails();
-		srchRequestDetails.setExtendedSearch(true);
-		srchRequestDetails.setSearchTerms(requestDetails.getSearchTerms());
-		srchRequestDetails.setRequestedResultsPageNumber(requestDetails.getRequestedResultsPageNumber());
-		SearchResults searchResults = dbSearchController.search(srchRequestDetails, httpSession);
-		model.addAttribute("simpleSearchRequestDetails", requestDetails);
+	@PostMapping("/basicSearch")
+	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, BasicSearchRequest basic) {
+		AdvancedSearchRequest advanced = new AdvancedSearchRequest();
+		advanced.setSearchTerms(basic.getSearchTerms());
+		advanced.setRequestedResultsPageNumber(basic.getRequestedResultsPageNumber());
+		SearchResults searchResults = dbSearchController.search(advanced, httpSession);
 		model.addAttribute("searchResults", searchResults);
-		return "SimpleSearchResultsPage";
+		return "BasicSearchResultsPage";
 
 	}
 

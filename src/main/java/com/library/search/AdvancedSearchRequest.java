@@ -1,15 +1,13 @@
 package com.library.search;
 
 
-public class SearchRequestDetails implements IBookSearchRequestDetails, 
+public class AdvancedSearchRequest implements IBookSearchRequestDetails, 
 											 IMovieSearchRequestDetails, 
 											 IMusicSearchRequestDetails {
 	
 	private String searchTerms = null;
 	private int requestedResultsPageNumber = 1;
-	
-	private boolean extendedSearch = true;
-	
+		
 	private boolean searchInBooks = true;
 	private boolean searchBookTitle = true;
 	private boolean searchBookAuthor = true;
@@ -28,12 +26,6 @@ public class SearchRequestDetails implements IBookSearchRequestDetails,
 	private boolean searchMovieDirector = true;
 	private boolean searchMovieDescription = true;
 	
-	public boolean isExtendedSearch() {
-		return extendedSearch;
-	}
-	public void setExtendedSearch(boolean extendedSearch) {
-		this.extendedSearch = extendedSearch;
-	}
 	
 	@Override
 	public String getSearchTerms() {
@@ -151,9 +143,9 @@ public class SearchRequestDetails implements IBookSearchRequestDetails,
 		this.searchMovieDescription = searchMovieDescription;
 	}
 	
-	public boolean onlyRequestedPageDiffers(SearchRequestDetails otherSearchRequestDetails) {
-		if(this.searchTerms.equals(otherSearchRequestDetails.searchTerms) &&
-			this.extendedSearch == otherSearchRequestDetails.extendedSearch &&
+	public boolean onlyRequestedPageDiffers(AdvancedSearchRequest otherSearchRequestDetails) {
+		if(
+			this.searchTerms.equals(otherSearchRequestDetails.searchTerms) &&
 				
 			this.searchInBooks == otherSearchRequestDetails.searchInBooks &&
 			this.searchBookAuthor == otherSearchRequestDetails.searchBookAuthor &&
