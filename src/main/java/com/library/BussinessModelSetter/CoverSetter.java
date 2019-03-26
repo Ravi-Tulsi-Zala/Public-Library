@@ -5,10 +5,10 @@ import java.sql.ResultSet;
 import com.library.IBussinessModelSetter.ICoverMapper;
 import com.library.businessModels.Cover;
 
-public class CoverMapper implements ICoverMapper {
+public class CoverSetter implements ICoverMapper {
 	
 	@Override
-	public Cover mapCover(ResultSet resultSet) {
+	public Cover setCover(ResultSet resultSet) {
 		try {
 			Cover cover = new Cover();
 			cover.setItemID(resultSet.getInt("Item_ID"));
