@@ -1,7 +1,6 @@
 package com.library.search;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,21 +8,12 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import com.library.businessModels.LibraryItem;
 import com.library.localStorage.ICoverImageLoader;
-import com.library.signOut.ISignOutObserver;
 
 public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 	
-	private final String separator = File.separator;
-	private final String searchResultsPath = separator +"dynamicContent" + separator +"searchResults" + separator;
-	private final String COVER_IMAGE_NOT_AVAILABLE_PATH = 
-			separator + "public" + separator + "img" + separator +"CoverImageNotAvailable.jpg";
-	private static final Logger logger = LogManager.getLogger(SearchResultCoverImgProxy.class);
+	private static final String SEPARATOR = File.separator;
 	
 	@Inject
 	private ICoverImageLoader imageLoader;
@@ -33,7 +23,7 @@ public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 	@Override
 	public void loadCoverImages(SearchResults searchResults, String requestedPageNumber, HttpSession httpSession) {
 		
-		String sessionResultsDir = searchResultsPath + httpSession.getId() + separator;
+		String sessionResultsPath = "searchResults" + SEPARATOR + httpSession.getId() + SEPARATOR;
 		
 		List<LibraryItem> items = new LinkedList<>(); // memory leak?
 		items.addAll(searchResults.getBooks());
@@ -46,45 +36,25 @@ public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 			sessionIdToRequestedPageResults.put(httpSession.getId(), resultPagesForSession);
 		} else {
 			for(String previouslyRequestedPageNumber : resultPagesForSession) {
-				if(requestedPageNumber.equals(previouslyRequestedPageNumber));
-				return;
+				if(requestedPageNumber.equals(previouslyRequestedPageNumber)) {;
+					return;
+				}
 			}
 		}
+		resultPagesForSession.add(requestedPageNumber);
 		
-		String urlForRequestedPageNumber = sessionResultsDir + requestedPageNumber;
-		String basePath = System.getProperty("user.dir") + urlForRequestedPageNumber;
-		
-		File dir = new File(basePath);
-		if (!dir.exists()) {
-			dir.mkdirs();
-		} else {
-			// log that directory exists, but it should not.
-			return;
-		}
+		String urlForRequestedPageNumber = sessionResultsPath + requestedPageNumber;
 		
 		for(LibraryItem item : items) {
-			String imageName = imageLoader.loadCoverImageByItemIdToDisk(item.getItemID(), basePath);
-			
-			if(null == imageName) {
-				item.setCoverImageUrl(COVER_IMAGE_NOT_AVAILABLE_PATH);
-			} else {
-				item.setCoverImageUrl(urlForRequestedPageNumber + separator + imageName);
-			}
+			String imageUrl = imageLoader.loadCoverImageByItemIdToDisk(item.getItemID(), urlForRequestedPageNumber);
+			item.setCoverImageUrl(imageUrl);
 		}
 	}
 
 	@Override
 	public void deleteCoverImagesForSearchResults(HttpSession httpSession) {
-		String sessionResultsDir = searchResultsPath + httpSession.getId() + separator;
-		try {
-			sessionIdToRequestedPageResults.remove(httpSession.getId());
-			FileUtils.deleteDirectory(new File(System.getProperty("user.dir") + sessionResultsDir));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e){
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
+		String sessionResultsDir = "searchResults" + SEPARATOR + httpSession.getId() + SEPARATOR;
+		sessionIdToRequestedPageResults.remove(httpSession.getId());
+		imageLoader.deleteDynamicContent(sessionResultsDir);	
 	}
 }

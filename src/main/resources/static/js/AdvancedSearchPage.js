@@ -26,11 +26,6 @@ function enableDetailsCheckboxesIfCategorySelected() {
 	}	
 }
 
-disableOrEnableDetailCheckboxes("#allDetailCheckboxes > td > div > div > input", true);
-disableOrEnableDetailCheckboxes("#serchCategories > div > input", false);
-makeDetailsCheckboxesDesableEnableDependingOnSelectedCategory();
-enableDetailsCheckboxesIfCategorySelected();
-
 function uncheckAllCheckBoxes() {
 	var arr=document.querySelectorAll("input[type=checkbox]");
 	for (let i = 0; i < arr.length; ++i) {
@@ -39,6 +34,11 @@ function uncheckAllCheckBoxes() {
 }
 
 uncheckAllCheckBoxes();
+
+disableOrEnableDetailCheckboxes("#allDetailCheckboxes > td > div > div > input", true);
+disableOrEnableDetailCheckboxes("#serchCategories > div > input", false);
+makeDetailsCheckboxesDesableEnableDependingOnSelectedCategory();
+enableDetailsCheckboxesIfCategorySelected();
 
 document.getElementById("pageBody").style.display="block";
 
