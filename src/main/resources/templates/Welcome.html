@@ -58,7 +58,7 @@ a, a label {
 	}
 </script>
 </head>
-<body style="margin: 0 auto;">
+<body style="margin: 0 auto;" action="post">
 	<div style="float: left;">
 		<p>
 			Search Terms <input id="searchTerms" type="text"
@@ -75,6 +75,7 @@ a, a label {
 	<div style="width: 9%; display: inline-block; vertical-align: top;"
 		th:each="books:${book}">
 		<a href="">
+			<img th:src="${'data:image/png;base64,'+books.icon}" width="100px" height="100px"/>
 			<p th:text="${books.title}" style="text-align: center;"></p>
 			<p th:text="${books.Category}" style="text-align: center;"></p>
 		</a>
