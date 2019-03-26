@@ -23,8 +23,9 @@ import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
 import com.library.search.IDBSearchController;
-import com.library.search.SearchRequestDetails;
+import com.library.search.AdvancedSearchRequest;
 import com.library.search.SearchResults;
+import com.library.search.BasicSearchRequest;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.ISignInController;
 import com.library.signUp.ISignUpController;
@@ -72,22 +73,42 @@ public class LibraryController implements WebMvcConfigurer {
 	public String getAdvancedSearchPage(HttpSession httpSession, ModelMap model) {
 		AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, "removeMeFromTheController@mail.com");
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
-			SearchRequestDetails searchRequestDetails = new SearchRequestDetails();
-			searchRequestDetails.setExtendedSearch(true);
-			model.addAttribute("searchRequestDetails", searchRequestDetails);
+			AdvancedSearchRequest searchRequestDetails = new AdvancedSearchRequest();
+			model.addAttribute("advancedSearchRequest", searchRequestDetails);
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 			return "AdvancedSearchPage";
 		}
 		return "NoAccessToNonAuthenticated";
 	}
 
-	@PostMapping("/search")
-	public String getSearchResults(HttpSession httpSession, ModelMap model, SearchRequestDetails srchRequestDetails) {
-		SearchResults searchResults = dbSearchController.search(srchRequestDetails, httpSession);
-		model.addAttribute("searchRequestDetails", srchRequestDetails);
+	@PostMapping("/advancedSearch")
+	public String executeAdvancedSearch(HttpSession httpSession, ModelMap model, AdvancedSearchRequest srchRequestDetails) {
+		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
+			SearchResults searchResults = dbSearchController.search(srchRequestDetails, httpSession);
+			model.addAttribute("searchResults", searchResults);
+			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
+			return "AdvancedSearchResultsPage";
+		}
+		return "NoAccessToNonAuthenticated";
+	}
+	
+	@GetMapping("/basicSearch")
+	public String getSimpleSearchPage(ModelMap model) {
+		BasicSearchRequest basic = new BasicSearchRequest();
+		model.addAttribute("basicSearchRequest", basic);
+		return "BasicSearchPage";
+
+	}
+	
+	@PostMapping("/basicSearch")
+	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, BasicSearchRequest basic) {
+		AdvancedSearchRequest advanced = new AdvancedSearchRequest();
+		advanced.setSearchTerms(basic.getSearchTerms());
+		advanced.setRequestedResultsPageNumber(basic.getRequestedResultsPageNumber());
+		SearchResults searchResults = dbSearchController.search(advanced, httpSession);
 		model.addAttribute("searchResults", searchResults);
-		model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
-		return "SearchResultsPage";
+		return "BasicSearchResultsPage";
+
 	}
 
 	@GetMapping("/")

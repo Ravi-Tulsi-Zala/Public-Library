@@ -153,13 +153,14 @@ public class MusicDAO implements IMusicDAO {
 		return false;
 	}
 
-	private void prepareSearchQuery(IMusicSearchRequestDetails requestDetails) {
+	private String prepareSearchQuery(IMusicSearchRequestDetails requestDetails) {
 
 		if (0 == requestDetails.getSearchTerms().length()) {
-			// logger.log("ERROR: Search terms length is zero.");
+			logger.log(Level.ALL, "No search terms are supplied");
+			return null;
 		}
 
-		query = "SELECT DISTINCT * FROM music WHERE ";
+		String query = "SELECT DISTINCT * FROM music WHERE ";
 		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
 		for (String term : searchterms) {
 			if (requestDetails.isSearchMusicAlbumName()) {
@@ -174,26 +175,30 @@ public class MusicDAO implements IMusicDAO {
 		}
 
 		query = query.substring(0, query.length() - 4);
+		return query;
 	}
 
 	@Override
 	public LinkedList<Music> getMusicBySearchTerms(IMusicSearchRequestDetails searchRequestDetails) {
 		LinkedList<Music> musics = new LinkedList<Music>();
 		Music music;
-		prepareSearchQuery(searchRequestDetails);
+		String query = prepareSearchQuery(searchRequestDetails);
+		
+		if(null ==query) {
+			return musics;
+		}
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();
-
 			while (resultSet.next()) {
 				music = musicMapper.mapMusic(resultSet);
 				musics.add(music);
 			}
 
 			return musics;
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
 		}
 
 		return musics;

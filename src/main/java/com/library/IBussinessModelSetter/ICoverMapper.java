@@ -3,5 +3,5 @@ package com.library.IBussinessModelSetter;
 	import com.library.businessModels.Cover;
 
 public interface ICoverMapper {
-	public Cover mapCover(ResultSet resultSet);
+	public Cover setCover(ResultSet resultSet);
 }
