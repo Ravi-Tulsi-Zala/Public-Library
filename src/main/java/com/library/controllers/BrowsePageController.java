@@ -2,30 +2,25 @@ package com.library.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.library.browsePage.BrowseDisplayFactory;
 import com.library.browsePage.IBrowseDisplayFactory;
 import com.library.browsePage.IBrowseDisplayObjects;
-import com.library.businessModels.Display;
 
-@Controller
+@Controller	
 public class BrowsePageController {
-	
-	
+
 	private IBrowseDisplayObjects browseDisplayObjects;
 	
 	@GetMapping("/BrowsePage/{itemType}")
-	public String BrowsePage(@PathVariable String itemType) {
+	public String BrowsePage(@PathVariable String itemType, ModelMap model) {
 		
 		IBrowseDisplayFactory browseFactory = BrowseDisplayFactory.getInstance();
+		List<String> categories;
 		if(itemType=="Book")
 		{
 			browseDisplayObjects = browseFactory.makeBookDisplay();
@@ -38,9 +33,9 @@ public class BrowsePageController {
 		{
 			browseDisplayObjects = browseFactory.makeMusicDisplay();
 		}
+		categories = browseDisplayObjects.getCategories();
+		model.addAttribute(categories);
+		model.addAttribute(itemType);
 		return "BrowsePage";
 	}
 }
-
-
-

@@ -32,10 +32,7 @@ public class DisplaySetter implements IDisplaySetter{
 			display.setItemID(book.getItemID());
 			display.setItemType("Book");
 			Cover cover =  coverDAO.getCoverByID(display.getItemID());
-			if(cover!=null)
-			{
-				display.setImage((Blob) cover.getCoverBlob());
-			}
+			display.setImage((Blob) cover.getCoverBlob());
 			displayObjects.add(display);
 		}
 		return displayObjects;

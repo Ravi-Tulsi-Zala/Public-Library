@@ -15,4 +15,5 @@ public interface IBookDAO {
 	public LinkedList<Book> getBooksBySearchTerms(IBookSearchRequestDetails searchRequestDetails);
 	public List<Book> getBookByCategory(String category);
 	public List<Book> getTopBooks();
+	public List<String> getBookCategories();
 }

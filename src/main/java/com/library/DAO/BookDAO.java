@@ -249,4 +249,27 @@ public class BookDAO implements IBookDAO {
 		}
 		return null;
 	}
+	
+	@Override
+	public List<String> getBookCategories()
+	{
+		List<String> categories = new ArrayList<String>();
+		query = "SELECT Category from books";
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (!resultSet.next()) {
+				return null;
+			}
+			do {
+				categories.add(resultSet.getString("Category"));
+			} while (resultSet.next());
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the list of Book Categories", e);
+		}
+		
+		return categories;
+	}
 }
