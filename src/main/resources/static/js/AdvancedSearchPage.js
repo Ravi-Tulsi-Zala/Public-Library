@@ -3,7 +3,6 @@ function disableOrEnableDetailCheckboxes(selectionQuery, isToDisable) {
 	var elements = document.querySelectorAll(selectionQuery);
 	  for (let i = 0; i < elements.length; i++) {
 	      elements[i].disabled = isToDisable;
-	      console.log(elements[i] + ":::::" + elements[i].disabled);
 	  }
 }
 
@@ -27,11 +26,19 @@ function enableDetailsCheckboxesIfCategorySelected() {
 	}	
 }
 
+function uncheckAllCheckBoxes() {
+	var arr=document.querySelectorAll("input[type=checkbox]");
+	for (let i = 0; i < arr.length; ++i) {
+		arr[i].checked = false;
+	}
+}
+
+uncheckAllCheckBoxes();
+
 disableOrEnableDetailCheckboxes("#allDetailCheckboxes > td > div > div > input", true);
 disableOrEnableDetailCheckboxes("#serchCategories > div > input", false);
 makeDetailsCheckboxesDesableEnableDependingOnSelectedCategory();
 enableDetailsCheckboxesIfCategorySelected();
-
 
 document.getElementById("pageBody").style.display="block";
 

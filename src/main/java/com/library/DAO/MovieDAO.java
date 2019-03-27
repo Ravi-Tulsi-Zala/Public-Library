@@ -155,13 +155,14 @@ public class MovieDAO implements IMovieDAO {
 		return false;
 	}
 
-	private void prepareSearchQuery(IMovieSearchRequestDetails requestDetails) {
+	private String prepareSearchQuery(IMovieSearchRequestDetails requestDetails) {
 
 		if (0 == requestDetails.getSearchTerms().length()) {
-			// logger.log("ERROR: Search terms length is zero.");
+			logger.log(Level.ALL, "No search terms are supplied");
+			return null;
 		}
 
-		query = "SELECT DISTINCT * FROM movie WHERE ";
+		String query = "SELECT DISTINCT * FROM movie WHERE ";
 		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
 		for (String term : searchterms) {
 			if (requestDetails.isSearchMovieTitle()) {
@@ -176,21 +177,22 @@ public class MovieDAO implements IMovieDAO {
 		}
 
 		query = query.substring(0, query.length() - 4);
+		return query;
 	}
 
 	@Override
 	public LinkedList<Movie> getMoviesBySearchTerms(IMovieSearchRequestDetails searchRequestDetails) {
 		LinkedList<Movie> movies = new LinkedList<Movie>();
 		Movie movie;
-		prepareSearchQuery(searchRequestDetails);
+		String query = prepareSearchQuery(searchRequestDetails);
+		
+		if(null ==query) {
+			return movies;
+		}
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.next()) {
-				return null;
-			}
-
 			while (resultSet.next()) {
 				movie = movieSetter.mapMovie(resultSet);
 				movie = movieSetter.mapMovie(resultSet);
@@ -198,8 +200,8 @@ public class MovieDAO implements IMovieDAO {
 			}
 
 			return movies;
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
 		}
 
 		return movies;

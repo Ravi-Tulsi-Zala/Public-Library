@@ -60,13 +60,14 @@ public class BookDAO implements IBookDAO {
 		return null;
 	}
 
-	private void prepareSearchQuery(IBookSearchRequestDetails requestDetails) {
+	private String prepareSearchQuery(IBookSearchRequestDetails requestDetails) {
 
 		if (0 == requestDetails.getSearchTerms().length()) {
-			// logger.log("ERROR: Search terms length is zero.");
+			logger.log(Level.ALL, "No search terms are supplied");
+			return null;
 		}
 
-		query = "SELECT DISTINCT * FROM books WHERE ";
+		String query = "SELECT DISTINCT * FROM books WHERE ";
 		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
 		for (String term : searchterms) {
 			if (requestDetails.isSearchBookAuthor()) {
@@ -90,14 +91,19 @@ public class BookDAO implements IBookDAO {
 		}
 
 		query = query.substring(0, query.length() - 4);
+		return query;
 	}
 
 	@Override
 	public LinkedList<Book> getBooksBySearchTerms(IBookSearchRequestDetails searchRequestDetails) {
 		LinkedList<Book> books = new LinkedList<Book>();
 		Book book;
-		prepareSearchQuery(searchRequestDetails);
+		String query = prepareSearchQuery(searchRequestDetails);
 
+		if(null ==query) {
+			return books;
+		}
+		
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -108,11 +114,9 @@ public class BookDAO implements IBookDAO {
 
 			return books;
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
-
-		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not fetch book by search term from database", e);
+			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
 		}
+		
 		return books;
 	}
 
@@ -248,5 +252,28 @@ public class BookDAO implements IBookDAO {
 			logger.log(Level.ALL, "Error fetching the list of Book for this category", e);
 		}
 		return null;
+	}
+	
+	@Override
+	public List<String> getBookCategories()
+	{
+		List<String> categories = new ArrayList<String>();
+		query = "SELECT Category from books";
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (!resultSet.next()) {
+				return null;
+			}
+			do {
+				categories.add(resultSet.getString("Category"));
+			} while (resultSet.next());
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the list of Book Categories", e);
+		}
+		
+		return categories;
 	}
 }

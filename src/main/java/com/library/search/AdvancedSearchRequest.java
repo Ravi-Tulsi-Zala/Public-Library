@@ -1,39 +1,31 @@
 package com.library.search;
 
 
-public class SearchRequestDetails implements IBookSearchRequestDetails, 
+public class AdvancedSearchRequest implements IBookSearchRequestDetails, 
 											 IMovieSearchRequestDetails, 
 											 IMusicSearchRequestDetails {
 	
 	private String searchTerms = null;
 	private int requestedResultsPageNumber = 1;
+		
+	private boolean searchInBooks = true;
+	private boolean searchBookTitle = true;
+	private boolean searchBookAuthor = true;
+	private boolean searchBookCategory = true;
+	private boolean searchBookPublisher = true;
+	private boolean searchBookDescription = true;
+	private boolean searchBookISBN = true;
 	
-	private boolean extendedSearch = false;
+	private boolean searchInMusic = true;
+	private boolean searchMusicAlbumName = true;
+	private boolean searchMusicArtist = true;
+	private boolean searchMusicRecordLabel = true;
 	
-	private boolean searchInBooks = false;
-	private boolean searchBookTitle = false;
-	private boolean searchBookAuthor = false;
-	private boolean searchBookCategory = false;
-	private boolean searchBookPublisher = false;
-	private boolean searchBookDescription = false;
-	private boolean searchBookISBN = false;
+	private boolean searchInMovies = true;
+	private boolean searchMovieTitle = true;
+	private boolean searchMovieDirector = true;
+	private boolean searchMovieDescription = true;
 	
-	private boolean searchInMusic = false;
-	private boolean searchMusicAlbumName = false;
-	private boolean searchMusicArtist = false;
-	private boolean searchMusicRecordLabel = false;
-	
-	private boolean searchInMovies = false;
-	private boolean searchMovieTitle = false;
-	private boolean searchMovieDirector = false;
-	private boolean searchMovieDescription = false;
-	
-	public boolean isExtendedSearch() {
-		return extendedSearch;
-	}
-	public void setExtendedSearch(boolean extendedSearch) {
-		this.extendedSearch = extendedSearch;
-	}
 	
 	@Override
 	public String getSearchTerms() {
@@ -151,9 +143,9 @@ public class SearchRequestDetails implements IBookSearchRequestDetails,
 		this.searchMovieDescription = searchMovieDescription;
 	}
 	
-	public boolean onlyRequestedPageDiffers(SearchRequestDetails otherSearchRequestDetails) {
-		if(this.searchTerms.equals(otherSearchRequestDetails.searchTerms) &&
-			this.extendedSearch == otherSearchRequestDetails.extendedSearch &&
+	public boolean onlyRequestedPageDiffers(AdvancedSearchRequest otherSearchRequestDetails) {
+		if(
+			this.searchTerms.equals(otherSearchRequestDetails.searchTerms) &&
 				
 			this.searchInBooks == otherSearchRequestDetails.searchInBooks &&
 			this.searchBookAuthor == otherSearchRequestDetails.searchBookAuthor &&
