@@ -58,7 +58,7 @@ a, a label {
 	}
 </script>
 </head>
-<body style="margin: 0 auto;">
+<body style="margin: 0 auto;" action="post">
 	<div style="float: left;">
 		<p>
 			Search Terms <input id="searchTerms" type="text"
@@ -71,28 +71,60 @@ a, a label {
 		th:text="${userEmail}">Test</span>
 	<h1 style="text-align: center;">Welcome To The Library!</h1>
 	<div style="margin-top: 50px;"></div>
-	<span style="color: blue; display: block; width: 100%;">New arrivals</span>
+	<span style="color: blue; display: block; width: 100%;">New
+		arrivals</span>
 	<div style="width: 9%; display: inline-block; vertical-align: top;"
 		th:each="books:${book}">
-		<a href="">
+		<a href=""> <img
+			th:src="${'data:image/png;base64,'+books.coverImageUrl}"
+			width="100px" height="100px" />
 			<p th:text="${books.title}" style="text-align: center;"></p>
-			<p th:text="${books.Category}" style="text-align: center;"></p>
 		</a>
 	</div>
 	<div style="width: 9%; display: inline-block; vertical-align: top;"
 		th:each="movies:${movie}">
-		<a href="">
+		<a href=""> <img
+			th:src="${'data:image/png;base64,'+movies.coverImageUrl}"
+			width="100px" height="100px" />
 			<p th:text="${movies.title}" style="text-align: center;"></p>
-			<p th:text="${movies.Category}" style="text-align: center;"></p>
 		</a>
 	</div>
 	<div style="width: 9%; display: inline-block; vertical-align: top;"
 		th:each="musics:${music}">
-		<a href="">
+		<a href=""> <img
+			th:src="${'data:image/png;base64,'+musics.coverImageUrl}"
+			width="100px" height="100px" />
 			<p th:text="${musics.title}" style="text-align: center;"></p>
-			<p th:text="${musics.Category}" style="text-align: center;"></p>
 		</a>
 	</div>
+	<div style="margin-top: 50px;"></div>
+	<span style="color: blue; display: block; width: 100%;">Most
+		purchased</span>
+	<div style="width: 9%; display: inline-block; vertical-align: top;"
+		th:each="favbooks:${favBooks}">
+		<a href=""> <img
+			th:src="${'data:image/png;base64,'+favbooks.coverImageUrl}"
+			width="100px" height="100px" />
+			<p th:text="${favbooks.title}" style="text-align: center;"></p>
+		</a>
+	</div>
+	<div style="width: 9%; display: inline-block; vertical-align: top;"
+		th:each="favmovies:${favMovies}">
+		<a href=""> <img
+			th:src="${'data:image/png;base64,'+favmovies.coverImageUrl}"
+			width="100px" height="100px" />
+			<p th:text="${favmovies.title}" style="text-align: center;"></p>
+		</a>
+	</div>
+	<div style="width: 9%; display: inline-block; vertical-align: top;"
+		th:each="favmusic:${favMusic}">
+		<a href=""> <img
+			th:src="${'data:image/png;base64,'+favmusic.coverImageUrl}"
+			width="100px" height="100px" />
+			<p th:text="${favmusic.title}" style="text-align: center;"></p>
+		</a>
+	</div>
+
 	<div>
 		<table>
 			<tr th:if="*{isAdminAval}">

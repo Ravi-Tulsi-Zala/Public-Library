@@ -7,13 +7,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-import com.library.controllers.LibraryController;
 import com.library.localStorage.CoverImageLoaderBean;
+import com.library.routes.LibraryRoutes;
 import com.library.search.DBSeachControllerBean;
 import com.library.search.SearchResultCoverImgProxyBean;
 
 @SpringBootApplication
-@ComponentScan(basePackageClasses = {LibraryController.class, 
+@ComponentScan(basePackageClasses = {LibraryRoutes.class, 
 										DynamicResourcesConfiguration.class, 
 										SearchResultCoverImgProxyBean.class,
 										DBSeachControllerBean.class,
