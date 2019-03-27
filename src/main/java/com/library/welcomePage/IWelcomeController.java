@@ -13,6 +13,12 @@ public interface IWelcomeController {
 	public List<Movie> getMovieItems() throws SQLException;
 
 	public List<Music> getMusicItems() throws SQLException;
-	
+
+	public List<Book> getFavouriteBooks() throws SQLException;
+
+	public List<Movie> getFavouriteMovies() throws SQLException;
+
+	public List<Music> getFavouriteMusic() throws SQLException;
+
 	public boolean isAdminAvailable();
 }

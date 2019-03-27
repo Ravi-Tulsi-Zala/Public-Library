@@ -1,4 +1,4 @@
-package com.library.controllers;
+package com.library.routes;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -37,13 +37,13 @@ import com.library.welcomePage.IWelcomeController;
 import com.library.welcomePage.WelcomePageController;
 
 @Controller
-public class LibraryController implements WebMvcConfigurer {
+public class LibraryRoutes implements WebMvcConfigurer {
 	private List<Map.Entry<String, String>> list = null;
 	@Inject
 	private IDBSearchController dbSearchController;
 	private static String securityQuestionValue;
 
-	public LibraryController() {
+	public LibraryRoutes() {
 		ILibraryFactory factory = new LibraryControllerFactory();
 		LibraryFactorySingleton.instance().build(factory);
 
@@ -197,13 +197,16 @@ public class LibraryController implements WebMvcConfigurer {
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem) {
 		Logger logger = LogManager.getLogger(WelcomePageController.class);
 		IWelcomeController welcomeCtrl = LibraryFactorySingleton.instance().getFactory().welcomePage();
-		List<Book> book;
-		List<Movie> movie;
-		List<Music> music;
+		List<Book> book,favBooks;
+		List<Movie> movie,favMovies;
+		List<Music> music,favMusic;
 		try {
 			book = welcomeCtrl.getBookItems();
 			movie = welcomeCtrl.getMovieItems();
 			music = welcomeCtrl.getMusicItems();
+			favBooks = welcomeCtrl.getFavouriteBooks();
+			favMovies = welcomeCtrl.getFavouriteMovies();
+			favMusic = welcomeCtrl.getFavouriteMusic();
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Some problem occured while connection with Database in welcome controller.", e);
 			return "redirect:ErrorPage";
@@ -212,8 +215,11 @@ public class LibraryController implements WebMvcConfigurer {
 			return "redirect:ErrorPage";
 		}
 		model.addAttribute("book", book);
+		model.addAttribute("favBooks", favBooks);
 		model.addAttribute("movie", movie);
+		model.addAttribute("favMovies", favMovies);
 		model.addAttribute("music", music);
+		model.addAttribute("favMusic", favMusic);
 		model.addAttribute("isAdminAval", welcomeCtrl.isAdminAvailable());
 		return "Welcome";
 	}

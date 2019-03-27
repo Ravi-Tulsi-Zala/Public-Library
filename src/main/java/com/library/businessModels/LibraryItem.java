@@ -8,15 +8,6 @@ public class LibraryItem {
 	private String title;
 	private String category;
 	private String coverImageUrl;
-	private String errorPageUrl;
-
-	public String getErrorPageUrl() {
-		return errorPageUrl;
-	}
-
-	public void setErrorPageUrl(String errorPageUrl) {
-		this.errorPageUrl = errorPageUrl;
-	}
 
 	public String getDescription() {
 		return description;

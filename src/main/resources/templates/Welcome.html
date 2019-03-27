@@ -97,6 +97,34 @@ a, a label {
 			<p th:text="${musics.title}" style="text-align: center;"></p>
 		</a>
 	</div>
+	<div style="margin-top: 50px;"></div>
+	<span style="color: blue; display: block; width: 100%;">Most
+		purchased</span>
+	<div style="width: 9%; display: inline-block; vertical-align: top;"
+		th:each="favbooks:${favBooks}">
+		<a href=""> <img
+			th:src="${'data:image/png;base64,'+favbooks.coverImageUrl}"
+			width="100px" height="100px" />
+			<p th:text="${favbooks.title}" style="text-align: center;"></p>
+		</a>
+	</div>
+	<div style="width: 9%; display: inline-block; vertical-align: top;"
+		th:each="favmovies:${favMovies}">
+		<a href=""> <img
+			th:src="${'data:image/png;base64,'+favmovies.coverImageUrl}"
+			width="100px" height="100px" />
+			<p th:text="${favmovies.title}" style="text-align: center;"></p>
+		</a>
+	</div>
+	<div style="width: 9%; display: inline-block; vertical-align: top;"
+		th:each="favmusic:${favMusic}">
+		<a href=""> <img
+			th:src="${'data:image/png;base64,'+favmusic.coverImageUrl}"
+			width="100px" height="100px" />
+			<p th:text="${favmusic.title}" style="text-align: center;"></p>
+		</a>
+	</div>
+
 	<div>
 		<table>
 			<tr th:if="*{isAdminAval}">

@@ -8,7 +8,15 @@ import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 
 public interface ILibraryItemDAO {
-	public List<Book> getTopBooks() throws SQLException;
-	public List<Movie> getTopMovies() throws SQLException;
-	public List<Music> getTopMusic() throws SQLException;
+	public List<Book> getLatestBooks() throws SQLException;
+
+	public List<Movie> getLatestMovies() throws SQLException;
+
+	public List<Music> getLatestMusic() throws SQLException;
+
+	public List<Book> getFavouriteBooks() throws SQLException;
+
+	public List<Movie> getFavouriteMovies() throws SQLException;
+
+	public List<Music> getFavouriteMusic() throws SQLException;
 }

@@ -1,4 +1,4 @@
-package com.library.controllers;
+package com.library.routes;
 
 public class LibraryFactorySingleton {
 	private static LibraryFactorySingleton singletonLibraryFactory;
