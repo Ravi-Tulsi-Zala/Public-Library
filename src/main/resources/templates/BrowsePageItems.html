@@ -37,15 +37,15 @@
         
         <div class = "BreadCrumbs" style = "margin-left:5%">
         	<ul class="breadcrumb">
-  				<li th:text=${itemType}></li>
+  				<a><b><li th:text=${itemType}></li></b><a>
+			</ul>
+			<ul class="breadcrumb">
+				<b><li th:text=${category}></li></b>
 			</ul>
         </div>
         
-        
-        <div style="width: 9%; display: inline-block; vertical-align: top;" 
-        th:each="category:${categories}">
-			<a th:text="{category.category}">
-			</a>
+  
+        <div style="width: 9%; display: inline-block; vertical-align: top;">
 		</div>
         
 	</body>

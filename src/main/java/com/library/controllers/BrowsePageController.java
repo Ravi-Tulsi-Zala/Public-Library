@@ -10,32 +10,49 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.library.browsePage.BrowseDisplayFactory;
 import com.library.browsePage.IBrowseDisplayFactory;
 import com.library.browsePage.IBrowseDisplayObjects;
+import com.library.businessModels.Display;
 
-@Controller	
+@Controller
 public class BrowsePageController {
 
-	private IBrowseDisplayObjects browseDisplayObjects;
 	
+	private IBrowseDisplayObjects browseDisplayObjects;
+
 	@GetMapping("/BrowsePage/{itemType}")
-	public String BrowsePage(@PathVariable String itemType, ModelMap model) {
-		
+	public String BrowsePageCategory(@PathVariable String itemType, ModelMap model) {
+
 		IBrowseDisplayFactory browseFactory = BrowseDisplayFactory.getInstance();
 		List<String> categories;
-		if(itemType=="Book")
-		{
+		if (itemType.equals("Book")) {
 			browseDisplayObjects = browseFactory.makeBookDisplay();
-		}
-		else if(itemType=="Music")
-		{
+		} else if (itemType.equals("Movie")) {
 			browseDisplayObjects = browseFactory.makeMusicDisplay();
-		}
-		else if(itemType=="Movie")
-		{
+		} else if (itemType.equals("Music")) {
 			browseDisplayObjects = browseFactory.makeMusicDisplay();
 		}
 		categories = browseDisplayObjects.getCategories();
-		model.addAttribute(categories);
+		model.addAttribute("categories", categories);
 		model.addAttribute(itemType);
 		return "BrowsePage";
+	}
+	
+	@GetMapping("/BrowsePage/{itemType}/{category}")
+	public String BrowsePageItems(@PathVariable(value="itemType") String itemType, @PathVariable(value="category") String category, ModelMap model)
+	{
+		IBrowseDisplayFactory browseFactory = BrowseDisplayFactory.getInstance();
+		List<Display> displayItems;
+		if (itemType.equals("Book")) {
+			browseDisplayObjects = browseFactory.makeBookDisplay();
+		} else if (itemType.equals("Movie")) {
+			browseDisplayObjects = browseFactory.makeMusicDisplay();
+		} else if (itemType.equals("Music")) {
+			browseDisplayObjects = browseFactory.makeMusicDisplay();
+		}
+		
+		displayItems = browseDisplayObjects.itemsByCategory(category);
+		model.addAttribute("displayItems",displayItems);
+		model.addAttribute(itemType);
+		model.addAttribute(category);
+		return "BrowsePageItems";
 	}
 }

@@ -16,9 +16,8 @@ import com.mysql.jdbc.Blob;
 
 public class DisplaySetter implements IDisplaySetter{
 
-	List<Display> displayObjects;;
-	IDAOFactory factory = new DAOFactory();
-	ICoverDAO coverDAO = factory.makeCoverDAO();
+	List<Display> displayObjects;
+	DetailsSetter detailsSetter = new DetailsSetter();
 	
 	@Override
 	public List<Display> getBookDisplayObjects(List<Book> books) {
@@ -31,8 +30,8 @@ public class DisplaySetter implements IDisplaySetter{
 			display.setTitle(book.getTitle());
 			display.setItemID(book.getItemID());
 			display.setItemType("Book");
-			Cover cover =  coverDAO.getCoverByID(display.getItemID());
-			display.setImage((Blob) cover.getCoverBlob());
+			String details = detailsSetter.getBookDetails(book);
+			display.setDetails(details);
 			displayObjects.add(display);
 		}
 		return displayObjects;
@@ -49,11 +48,8 @@ public class DisplaySetter implements IDisplaySetter{
 			display.setTitle(movie.getTitle());
 			display.setItemID(movie.getItemID());
 			display.setItemType("Movie");
-			Cover cover = coverDAO.getCoverByID(display.getItemID());
-			if(cover!=null)
-			{
-				display.setImage((Blob) cover.getCoverBlob());
-			}
+			String details = detailsSetter.getMovieDetails(movie);
+			display.setDetails(details);
 			displayObjects.add(display);
 		}
 		return displayObjects;
@@ -70,11 +66,8 @@ public class DisplaySetter implements IDisplaySetter{
 			display.setTitle(music.getTitle());
 			display.setItemID(music.getItemID());
 			display.setItemType("Music");
-			Cover cover = coverDAO.getCoverByID(display.getItemID());
-			if(cover!=null)
-			{
-				display.setImage((Blob) cover.getCoverBlob());
-			}
+			String details = detailsSetter.getMusicDetails(music);
+			display.setDetails(details);
 			displayObjects.add(display);
 		}
 		return displayObjects;

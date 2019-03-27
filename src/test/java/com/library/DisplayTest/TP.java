@@ -1,23 +1,26 @@
 package com.library.DisplayTest;
 
-import java.sql.Blob;
+import java.util.List;
 
 import org.junit.Test;
 
-import com.library.DAO.CoverDAO;
-import com.library.businessModels.Cover;
+import com.library.browsePage.BrowseBooks;
 import com.library.businessModels.Display;
 
 public class TP {
 
 	@Test
 	public void checkDisplayImage()
-	{
-		CoverDAO coverDAO = new CoverDAO();
-		Cover cover = coverDAO.getCoverByID(3001); 
-		Blob blob = cover.getCoverBlob();
+	{	
 		Display display = new Display();
-		display.setImage((com.mysql.jdbc.Blob) blob);
-		System.out.print(display.getImage());
+		display.setItemID(100001);
+	}
+	
+	@Test
+	public void checkBookCategories()
+	{
+		BrowseBooks browseBooks = new BrowseBooks();
+		List<String> categories = browseBooks.getCategories();
+		System.out.print(categories.get(1));
 	}
 }

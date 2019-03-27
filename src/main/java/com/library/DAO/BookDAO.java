@@ -258,7 +258,7 @@ public class BookDAO implements IBookDAO {
 	public List<String> getBookCategories()
 	{
 		List<String> categories = new ArrayList<String>();
-		query = "SELECT Category from books";
+		query = "SELECT Distinct Category from books";
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();

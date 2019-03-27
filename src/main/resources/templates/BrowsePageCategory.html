@@ -1,0 +1,52 @@
+<html>
+	<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<style type="text/css" media="screen">
+
+			ul.breadcrumb {
+			  padding: 10px 16px;
+			  list-style: none;
+			}
+			
+			ul.breadcrumb li {
+			  display: inline;
+			  font-size: 18px;
+			}
+			
+			ul.breadcrumb li+li:before {
+			  padding: 8px;
+			  color: black;
+			  content: ">\00a0";
+			}
+			
+			ul.breadcrumb li a {
+			  color: #0275d8;
+			  text-decoration: none;
+			}
+		</style>
+			
+	</head>
+	<body>
+		<div style="text-align:center;margin-top:1%">
+        	<span style="font-size: 2em;font-weight: bolder">Library Management System</span>
+        	<div style="float:right; margin-right:2%; margin-top:1%;">
+		       <label style="margin-right:4px;">ravizala420@gmail.com</label>
+		       <label>logout</label>
+    		</div>
+        </div>
+        
+        <div class = "BreadCrumbs" style = "margin-left:5%">
+        	<ul class="breadcrumb">
+  				<B><li th:text=${itemType}></li></B>
+			</ul>
+        </div>
+        
+        
+        <div style="width: 9%; display: inline-block; vertical-align: top;" 
+        th:each="category:${categories}">
+			<a href="/BrowsePage/Book/Horror" th:text="${category}">
+			</a>
+		</div>
+        
+	</body>
+</html>
