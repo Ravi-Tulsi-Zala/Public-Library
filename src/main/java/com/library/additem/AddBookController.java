@@ -5,9 +5,9 @@ import com.library.DAOFactory.DAOFactory;
 import com.library.DAOFactory.IDAOFactory;
 import com.library.IDAO.IBookDAO;
 import com.library.businessModels.Book;
-import com.library.controllers.ILibraryFactory;
-import com.library.controllers.LibraryControllerFactory;
-import com.library.controllers.LibraryFactorySingleton;
+import com.library.routes.ILibraryFactory;
+import com.library.routes.LibraryControllerFactory;
+import com.library.routes.LibraryFactorySingleton;
 
 public class AddBookController implements IAddBookController {
 	IDAOFactory iDAOfactory;

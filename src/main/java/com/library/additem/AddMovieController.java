@@ -5,7 +5,9 @@ import com.library.DAOFactory.DAOFactory;
 import com.library.DAOFactory.IDAOFactory;
 import com.library.IDAO.IMovieDAO;
 import com.library.businessModels.Movie;
-import com.library.controllers.LibraryFactorySingleton;
+import com.library.routes.ILibraryFactory;
+import com.library.routes.LibraryControllerFactory;
+import com.library.routes.LibraryFactorySingleton;
 
 public class AddMovieController implements IAddMovieController {
 
@@ -18,6 +20,8 @@ public class AddMovieController implements IAddMovieController {
 
 		factory = new DAOFactory();
 		iMovieDAO = factory.makeMovieDAO();
+		ILibraryFactory iLibraryfactory = new LibraryControllerFactory();
+		LibraryFactorySingleton.instance().build(iLibraryfactory);
 	}
 
 	public boolean addMovieRecordInDatabase(Movie movie, MultipartFile movieCoverImage) {

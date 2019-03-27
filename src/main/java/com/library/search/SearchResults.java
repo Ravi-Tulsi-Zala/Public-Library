@@ -1,34 +1,36 @@
 package com.library.search;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 
 public class SearchResults {
-	private LinkedList<Book> bookSearchResults = new LinkedList<Book>();
-	private LinkedList<Music> musicSearchResults = new LinkedList<Music>();
-	private LinkedList<Movie> movieSearchResults = new LinkedList<Movie>();
+	private LinkedList<Book> books = new LinkedList<Book>();
+	private LinkedList<Music> music = new LinkedList<Music>();
+	private LinkedList<Movie> movies = new LinkedList<Movie>();
 
-	public LinkedList<Book> getBookSearchResults() {
-		return bookSearchResults;
+	public LinkedList<Book> getBooks() {
+		return books;
 	}
-	public void setBookSearchResults(LinkedList<Book> bookSearchResults) {
-		this.bookSearchResults = bookSearchResults;
+	public void setBooks(LinkedList<Book> books) {
+		this.books = books;
 	}
-	public List<Music> getMusicSearchResults() {
-		return musicSearchResults;
+	public LinkedList<Music> getMusic() {
+		return music;
 	}
-	public void setMusicSearchResults(LinkedList<Music> musicSearchResults) {
-		this.musicSearchResults = musicSearchResults;
+	public void setMusic(LinkedList<Music> music) {
+		this.music = music;
 	}
-	public List<Movie> getMovieSearchResults() {
-		return movieSearchResults;
+	public LinkedList<Movie> getMovies() {
+		return movies;
 	}
-	public void setMovieSearchResults(LinkedList<Movie> movieSearchResults) {
-		this.movieSearchResults = movieSearchResults;
+	public void setMovies(LinkedList<Movie> movies) {
+		this.movies = movies;
 	}
-
+	public boolean isNotEmpty() {
+		boolean resultSetIsNotEmpty = !(books.isEmpty() && music.isEmpty() & movies.isEmpty());
+		return resultSetIsNotEmpty;
+	}
 }

@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.IUserExtendedInfo;
 
-public class AuthenticateUserForms extends Authentication {
+public class AuthenticateUserForms extends AuthenticationAbstract {
 
 	private static List<Entry<String, String>> listofValidationErrors = null;
 	private static Map.Entry<String, String> entryMap = null;
@@ -45,8 +45,8 @@ public class AuthenticateUserForms extends Authentication {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(email, emailErrorStatement);
 				listofValidationErrors.add(entryMap);
 			}
-			if (userBasicInfo.getPwd().equals("")
-					|| !Pattern.compile(passwordRegex).matcher(userBasicInfo.getPwd()).find()) {
+			if (userBasicInfo.getPassword().equals("")
+					|| !Pattern.compile(passwordRegex).matcher(userBasicInfo.getPassword()).find()) {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(password, passwordErrorStatement);
 				listofValidationErrors.add(entryMap);
 			}
@@ -55,7 +55,7 @@ public class AuthenticateUserForms extends Authentication {
 
 				entryMap = new AbstractMap.SimpleEntry<String, String>(cpassword, passwordErrorStatement);
 				listofValidationErrors.add(entryMap);
-			} else if (!userExtendedInfo.getCPassword().equals(userBasicInfo.getPwd())) {
+			} else if (!userExtendedInfo.getCPassword().equals(userBasicInfo.getPassword())) {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(cpassword, cpasswordErrorStatement);
 				listofValidationErrors.add(entryMap);
 			}
@@ -82,8 +82,8 @@ public class AuthenticateUserForms extends Authentication {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(email, emailErrorStatement);
 				listofValidationErrors.add(entryMap);
 			}
-			if (userBasicInfo.getPwd().equals("")
-					|| !Pattern.compile(passwordRegex).matcher(userBasicInfo.getPwd()).find()) {
+			if (userBasicInfo.getPassword().equals("")
+					|| !Pattern.compile(passwordRegex).matcher(userBasicInfo.getPassword()).find()) {
 				entryMap = new AbstractMap.SimpleEntry<String, String>(password, passwordErrorStatement);
 				listofValidationErrors.add(entryMap);
 			}

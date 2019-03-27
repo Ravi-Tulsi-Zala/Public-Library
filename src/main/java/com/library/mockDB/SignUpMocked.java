@@ -30,7 +30,7 @@ public class SignUpMocked {
 		arrItems = new ArrayList<String>();
 		map = new HashMap<String, ArrayList>();
 		userBasicInfo.setEmail("devanshu0101@gmail.com");
-		userBasicInfo.setPwd("1qaz!QAZ");
+		userBasicInfo.setPassword("1qaz!QAZ");
 		userExtendedInfo.setCPassword("1qazZAQ!");
 		userExtendedInfo.setFullname("devanshu sriv");
 		userExtendedInfo.setPhone("902");
@@ -44,7 +44,7 @@ public class SignUpMocked {
 		arrItems = new ArrayList<String>();
 		map = new HashMap<String, ArrayList>();
 		userBasicInfo.setEmail("devanshu1@gmail.com");
-		userBasicInfo.setPwd("123456789");
+		userBasicInfo.setPassword("123456789");
 		userExtendedInfo.setCPassword("123456789");
 		userExtendedInfo.setFullname("deva sriv");
 		userExtendedInfo.setPhone("9024031714");

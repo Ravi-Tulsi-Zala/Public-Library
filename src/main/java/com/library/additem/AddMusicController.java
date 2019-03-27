@@ -6,7 +6,9 @@ import com.library.DAOFactory.DAOFactory;
 import com.library.DAOFactory.IDAOFactory;
 import com.library.IDAO.IMusicDAO;
 import com.library.businessModels.Music;
-import com.library.controllers.LibraryFactorySingleton;
+import com.library.routes.LibraryFactorySingleton;
+import com.library.routes.ILibraryFactory;
+import com.library.routes.LibraryControllerFactory;
 
 public class AddMusicController implements IAddMusicController {
 
@@ -15,10 +17,11 @@ public class AddMusicController implements IAddMusicController {
 	IMusicDAO iMusicDAO;
 	boolean isMusicCreated, isMusicCoverCreated;
 
-
 	public AddMusicController() {
 		factory = new DAOFactory();
 		iMusicDAO = factory.makeMusicDAO();
+		ILibraryFactory iLibraryfactory = new LibraryControllerFactory();
+		LibraryFactorySingleton.instance().build(iLibraryfactory);
 	}
 
 	public boolean addMusicRecordInDatabase(Music music, MultipartFile musicCoverImage) {

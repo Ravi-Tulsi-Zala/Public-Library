@@ -1,4 +1,5 @@
 <html>
+	<html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<style type="text/css" media="screen">
 
@@ -36,8 +37,16 @@
         
         <div class = "BreadCrumbs" style = "margin-left:5%">
         	<ul class="breadcrumb">
-  				<li><a th:text=${display}></a></li>
+  				<li th:text=${itemType}></li>
 			</ul>
         </div>
+        
+        
+        <div style="width: 9%; display: inline-block; vertical-align: top;" 
+        th:each="category:${categories}">
+			<a th:text="{category.category}">
+			</a>
+		</div>
+        
 	</body>
 </html>
