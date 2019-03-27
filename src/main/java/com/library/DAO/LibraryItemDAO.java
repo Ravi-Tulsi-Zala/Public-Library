@@ -26,7 +26,7 @@ import com.library.dbConnection.DatabaseConnection;
 public class LibraryItemDAO implements ILibraryItemDAO {
 	private PreparedStatement preparedStatement;
 	private String query;
-	private String limitNumber="3";
+	private String limitNumber = "3";
 	private Connection connection;
 	private IBookSetter bookMapper = null;
 	private IMovieSetter movieMapper = null;
@@ -45,77 +45,56 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 	}
 
 	@Override
-	public List<Book> getTopBooks() {
-		try {
-			bookMapper = new BookSetter();
-			List<Book> books = new ArrayList<Book>();
-			Book book = new Book();
-			query = "SELECT distinct * FROM books order by books.Item_ID desc limit "+limitNumber;
-			preparedStatement = connection.prepareStatement(query);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.next()) {
-				return null;
-			}
-			do {
-				book = bookMapper.mapBook(resultSet);
-				books.add(book);
-			} while (resultSet.next());
-			return books;
-		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
-		} catch (Exception e) {
-			logger.log(Level.ALL, "Error fetching the list of Book for this category", e);
+	public List<Book> getTopBooks() throws SQLException {
+		bookMapper = new BookSetter();
+		List<Book> books = new ArrayList<Book>();
+		Book book = new Book();
+		query = "SELECT distinct * FROM books order by books.Item_ID desc limit " + limitNumber;
+		preparedStatement = connection.prepareStatement(query);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		if (!resultSet.next()) {
+			return null;
 		}
-		return null;
+		do {
+			book = bookMapper.mapBook(resultSet);
+			books.add(book);
+		} while (resultSet.next());
+		return books;
 	}
 
 	@Override
-	public List<Movie> getTopMovies() {
-		try {
-			movieMapper = new MovieSetter();
-			List<Movie> movies = new ArrayList<Movie>();
-			Movie movie = new Movie();
-			query = "SELECT distinct * FROM movie order by movie.Item_ID desc limit "+limitNumber;
-			preparedStatement = connection.prepareStatement(query);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.next()) {
-				return null;
-			}
-			do {
-				movie = movieMapper.mapMovie(resultSet);
-				movies.add(movie);
-			} while (resultSet.next());
-			return movies;
-		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
-		} catch (Exception e) {
-			logger.log(Level.ALL, "Error fetching the list of Movies for this category", e);
+	public List<Movie> getTopMovies() throws SQLException {
+		movieMapper = new MovieSetter();
+		List<Movie> movies = new ArrayList<Movie>();
+		Movie movie = new Movie();
+		query = "SELECT distinct * FROM movie order by movie.Item_ID desc limit " + limitNumber;
+		preparedStatement = connection.prepareStatement(query);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		if (!resultSet.next()) {
+			return null;
 		}
-		return null;
+		do {
+			movie = movieMapper.mapMovie(resultSet);
+			movies.add(movie);
+		} while (resultSet.next());
+		return movies;
 	}
 
 	@Override
-	public List<Music> getTopMusic() {
-		try {
-			musicMapper = new MusicSetter();
-			List<Music> musicList = new ArrayList<Music>();
-			Music music = new Music();
-			query = "SELECT distinct * FROM music order by music.Item_ID desc limit "+limitNumber;
-			preparedStatement = connection.prepareStatement(query);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.next()) {
-				return null;
-			}
-			do {
-				music = musicMapper.mapMusic(resultSet);
-				musicList.add(music);
-			} while (resultSet.next());
-			return musicList;
-		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
-		} catch (Exception e) {
-			logger.log(Level.ALL, "Error fetching the list of Movies for this category", e);
+	public List<Music> getTopMusic() throws SQLException {
+		musicMapper = new MusicSetter();
+		List<Music> musicList = new ArrayList<Music>();
+		Music music = new Music();
+		query = "SELECT distinct * FROM music order by music.Item_ID desc limit " + limitNumber;
+		preparedStatement = connection.prepareStatement(query);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		if (!resultSet.next()) {
+			return null;
 		}
-		return null;
+		do {
+			music = musicMapper.mapMusic(resultSet);
+			musicList.add(music);
+		} while (resultSet.next());
+		return musicList;
 	}
 }

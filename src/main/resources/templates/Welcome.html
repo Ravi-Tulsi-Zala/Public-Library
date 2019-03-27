@@ -71,27 +71,30 @@ a, a label {
 		th:text="${userEmail}">Test</span>
 	<h1 style="text-align: center;">Welcome To The Library!</h1>
 	<div style="margin-top: 50px;"></div>
-	<span style="color: blue; display: block; width: 100%;">New arrivals</span>
+	<span style="color: blue; display: block; width: 100%;">New
+		arrivals</span>
 	<div style="width: 9%; display: inline-block; vertical-align: top;"
 		th:each="books:${book}">
-		<a href="">
-			<img th:src="${'data:image/png;base64,'+books.icon}" width="100px" height="100px"/>
+		<a href=""> <img
+			th:src="${'data:image/png;base64,'+books.coverImageUrl}"
+			width="100px" height="100px" />
 			<p th:text="${books.title}" style="text-align: center;"></p>
-			<p th:text="${books.Category}" style="text-align: center;"></p>
 		</a>
 	</div>
 	<div style="width: 9%; display: inline-block; vertical-align: top;"
 		th:each="movies:${movie}">
-		<a href="">
+		<a href=""> <img
+			th:src="${'data:image/png;base64,'+movies.coverImageUrl}"
+			width="100px" height="100px" />
 			<p th:text="${movies.title}" style="text-align: center;"></p>
-			<p th:text="${movies.Category}" style="text-align: center;"></p>
 		</a>
 	</div>
 	<div style="width: 9%; display: inline-block; vertical-align: top;"
 		th:each="musics:${music}">
-		<a href="">
+		<a href=""> <img
+			th:src="${'data:image/png;base64,'+musics.coverImageUrl}"
+			width="100px" height="100px" />
 			<p th:text="${musics.title}" style="text-align: center;"></p>
-			<p th:text="${musics.Category}" style="text-align: center;"></p>
 		</a>
 	</div>
 	<div>
