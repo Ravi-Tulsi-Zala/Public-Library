@@ -12,15 +12,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.library.ForgotPassword.RecoverPassword;
-import com.library.ForgotPassword.ForgotPasswordController;
 import com.library.ForgotPassword.IForgotPasswordController;
-import com.library.additem.AddBookController;
-import com.library.additem.AddMovieController;
-import com.library.additem.AddMusicController;
+import com.library.additem.IAddBookController;
+import com.library.additem.IAddMovieController;
+import com.library.additem.IAddMusicController;
 import com.library.businessModels.Book;
+import com.library.businessModels.CoverImage;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
@@ -44,7 +43,6 @@ public class LibraryController implements WebMvcConfigurer {
 	public LibraryController() {
 		ILibraryFactory factory = new LibraryControllerFactory();
 		LibraryFactorySingleton.instance().build(factory);
-
 	}
 
 	@PostMapping("/signUp")
@@ -132,44 +130,65 @@ public class LibraryController implements WebMvcConfigurer {
 		model.addAttribute("book", new Book());
 		model.addAttribute("movie", new Movie());
 		model.addAttribute("music", new Music());
+		model.addAttribute("coverBook", new CoverImage());
+		model.addAttribute("coverMovie", new CoverImage());
+		model.addAttribute("coverMusic", new CoverImage());
 
 		return "AddItemPage";
 	}
 
-	@PostMapping("/addBook")
-	public String addBookToDatabase(ModelMap model, Book book) {
+	@RequestMapping("/addBook")
+	public String addBookToDatabase(ModelMap model, Book book, CoverImage coverBook) {
 
-		AddBookController addBookController = new AddBookController();
-		Boolean isBookCreated = addBookController.addBookRecordInDatabase(book);
+		String error, errorBookRoutePage;
+		IAddBookController iAddBookController = LibraryFactorySingleton.instance().getFactory().makeAddBookController();
+		boolean isBookCreated = iAddBookController.addBookRecordInDatabase(book, coverBook.getCoverImage());
 
 		if (isBookCreated) {
 			return "ResponseBook";
 		} else {
-			String error = "Error : Book can not be created! Please try again!";
-			model.addAttribute("movie", new Movie());
-			model.addAttribute("music", new Music());
+			error = "Error : Book can not be created! Please try again!";
 			model.addAttribute("error", error);
-			return "AddItemPage";
+			errorBookRoutePage = mappingsForAddItem(model);
+			return errorBookRoutePage;
 		}
 
 	}
 
 	@PostMapping("/addMovie")
-	public String addMovieToDatabase(ModelMap model, Movie movie) {
+	public String addMovieToDatabase(ModelMap model, Movie movie, CoverImage coverMovie) {
 
-		AddMovieController addMovieController = new AddMovieController();
-		addMovieController.addMovieRecordInDatabase(movie);
+		String error, errorMovieRoutePage;
+		IAddMovieController iAddMovieController = LibraryFactorySingleton.instance().getFactory()
+				.makeAddMovieController();
+		boolean isMovieCreated = iAddMovieController.addMovieRecordInDatabase(movie, coverMovie.getCoverImage());
 
-		return "ResponseMovie";
+		if (isMovieCreated) {
+			return "ResponseMovie";
+		} else {
+			error = "Error : Movie can not be created! Please try again!";
+			model.addAttribute("error", error);
+			errorMovieRoutePage = mappingsForAddItem(model);
+			return errorMovieRoutePage;
+		}
 	}
 
 	@PostMapping("/addMusic")
-	public String addMusicToDatabase(ModelMap model, Music music) {
+	public String addMusicToDatabase(ModelMap model, Music music, CoverImage coverMusic) {
 
-		AddMusicController addMusicController = new AddMusicController();
-		addMusicController.addMusicRecordInDatabase(music);
+		String error, errorMusicRoutePage;
+		IAddMusicController iAddMusicController = LibraryFactorySingleton.instance().getFactory()
+				.makeAddMusicController();
+		boolean isMusicCreated = iAddMusicController.addMusicRecordInDatabase(music, coverMusic.getCoverImage());
 
-		return "ResponseMusic";
+		if (isMusicCreated) {
+			return "ResponseMusic";
+		} else {
+			error = "Error : Music can not be created! Please try again!";
+			model.addAttribute("error", error);
+			errorMusicRoutePage = mappingsForAddItem(model);
+			return errorMusicRoutePage;
+		}
 	}
 
 	@GetMapping("/welcome")

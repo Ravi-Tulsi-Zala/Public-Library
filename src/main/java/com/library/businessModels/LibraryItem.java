@@ -1,5 +1,7 @@
 package com.library.businessModels;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class LibraryItem {
 
 	private String description;
@@ -56,4 +58,7 @@ public class LibraryItem {
 	public void setCoverImageUrl(String coverImageUrl) {
 		this.coverImageUrl = coverImageUrl;
 	}
+
+	
+
 }
