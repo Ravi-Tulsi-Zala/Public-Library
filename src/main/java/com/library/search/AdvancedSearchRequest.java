@@ -143,28 +143,28 @@ public class AdvancedSearchRequest implements IBookSearchRequestDetails,
 		this.searchMovieDescription = searchMovieDescription;
 	}
 	
-	public boolean onlyRequestedPageDiffers(AdvancedSearchRequest otherSearchRequestDetails) {
-		if(
-			this.searchTerms.equals(otherSearchRequestDetails.searchTerms) &&
-				
-			this.searchInBooks == otherSearchRequestDetails.searchInBooks &&
-			this.searchBookAuthor == otherSearchRequestDetails.searchBookAuthor &&
-			this.searchBookPublisher == otherSearchRequestDetails.searchBookPublisher &&
-			this.searchBookDescription == otherSearchRequestDetails.searchBookDescription &&
-			this.searchBookISBN == otherSearchRequestDetails.searchBookISBN &&
-				
-			this.searchInMusic == otherSearchRequestDetails.searchInMusic &&
-			this.searchMusicAlbumName == otherSearchRequestDetails.searchMusicAlbumName &&
-			this.searchMusicArtist == otherSearchRequestDetails.searchMusicArtist &&
-			this.searchMusicRecordLabel == otherSearchRequestDetails.searchMusicRecordLabel &&
-				
-			this.searchInMovies == otherSearchRequestDetails.searchInMovies &&
-			this.searchMovieTitle == otherSearchRequestDetails.searchMovieTitle &&
-			this.searchMovieDirector == otherSearchRequestDetails.searchMovieDirector &&
-			this.searchMovieDescription == otherSearchRequestDetails.searchMovieDescription) {
-			
-			return true;
-		}
+	public boolean onlyRequestedPageDiffers(SearchRequest otherSearchRequestDetails) {
+//		if(
+//			this.searchTerms.equals(otherSearchRequestDetails.searchTerms) &&
+//				
+//			this.searchInBooks == otherSearchRequestDetails.searchInBooks &&
+//			this.searchBookAuthor == otherSearchRequestDetails.searchBookAuthor &&
+//			this.searchBookPublisher == otherSearchRequestDetails.searchBookPublisher &&
+//			this.searchBookDescription == otherSearchRequestDetails.searchBookDescription &&
+//			this.searchBookISBN == otherSearchRequestDetails.searchBookISBN &&
+//				
+//			this.searchInMusic == otherSearchRequestDetails.searchInMusic &&
+//			this.searchMusicAlbumName == otherSearchRequestDetails.searchMusicAlbumName &&
+//			this.searchMusicArtist == otherSearchRequestDetails.searchMusicArtist &&
+//			this.searchMusicRecordLabel == otherSearchRequestDetails.searchMusicRecordLabel &&
+//				
+//			this.searchInMovies == otherSearchRequestDetails.searchInMovies &&
+//			this.searchMovieTitle == otherSearchRequestDetails.searchMovieTitle &&
+//			this.searchMovieDirector == otherSearchRequestDetails.searchMovieDirector &&
+//			this.searchMovieDescription == otherSearchRequestDetails.searchMovieDescription) {
+//			
+//			return true;
+//		}
 		return false;
 	}
 }

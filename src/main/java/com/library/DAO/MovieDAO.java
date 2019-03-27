@@ -14,9 +14,12 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.library.IDAO.IMovieDAO;
+import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.dbConnection.DatabaseConnection;
+import com.library.search.BookSearch;
 import com.library.search.IMovieSearchRequestDetails;
+import com.library.search.MoviesSearch;
 
 public class MovieDAO implements IMovieDAO {
 
@@ -155,15 +158,15 @@ public class MovieDAO implements IMovieDAO {
 		return false;
 	}
 
-	private String prepareSearchQuery(IMovieSearchRequestDetails requestDetails) {
+	private String prepareSearchQuery(MoviesSearch requestDetails, String searchTerms) {
 
-		if (0 == requestDetails.getSearchTerms().length()) {
+		if (0 == searchTerms.length()) {
 			logger.log(Level.ALL, "No search terms are supplied");
 			return null;
 		}
 
 		String query = "SELECT DISTINCT * FROM movie WHERE ";
-		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
+		String[] searchterms = searchTerms.split("\\s");
 		for (String term : searchterms) {
 			if (requestDetails.isSearchMovieTitle()) {
 				query += "Title like \"%" + term + "%\" or ";
@@ -181,10 +184,14 @@ public class MovieDAO implements IMovieDAO {
 	}
 
 	@Override
-	public LinkedList<Movie> getMoviesBySearchTerms(IMovieSearchRequestDetails searchRequestDetails) {
-		LinkedList<Movie> movies = new LinkedList<Movie>();
+	public List<LibraryItem> getMoviesBySearchTerms(MoviesSearch requestDetails, String searchTerms) {
+		List<LibraryItem> movies = new LinkedList<LibraryItem>();
+		if(!requestDetails.isSearchInMovies()) {
+			return movies;
+		}
+		
 		Movie movie;
-		String query = prepareSearchQuery(searchRequestDetails);
+		String query = prepareSearchQuery(requestDetails, searchTerms);
 		
 		if(null ==query) {
 			return movies;

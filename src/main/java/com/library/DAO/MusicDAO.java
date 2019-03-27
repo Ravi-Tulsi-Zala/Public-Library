@@ -15,9 +15,12 @@ import org.apache.logging.log4j.Logger;
 import com.library.BussinessModelSetter.MusicSetter;
 import com.library.IBussinessModelSetter.IMusicSetter;
 import com.library.IDAO.IMusicDAO;
+import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Music;
 import com.library.dbConnection.DatabaseConnection;
+import com.library.search.BookSearch;
 import com.library.search.IMusicSearchRequestDetails;
+import com.library.search.MusicSearch;
 
 public class MusicDAO implements IMusicDAO {
 
@@ -153,15 +156,15 @@ public class MusicDAO implements IMusicDAO {
 		return false;
 	}
 
-	private String prepareSearchQuery(IMusicSearchRequestDetails requestDetails) {
+	private String prepareSearchQuery(MusicSearch requestDetails, String searchTerms) {
 
-		if (0 == requestDetails.getSearchTerms().length()) {
+		if (0 == searchTerms.length()) {
 			logger.log(Level.ALL, "No search terms are supplied");
 			return null;
 		}
 
 		String query = "SELECT DISTINCT * FROM music WHERE ";
-		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
+		String[] searchterms = searchTerms.split("\\s");
 		for (String term : searchterms) {
 			if (requestDetails.isSearchMusicAlbumName()) {
 				query += "Title like \"%" + term + "%\" or ";
@@ -179,10 +182,14 @@ public class MusicDAO implements IMusicDAO {
 	}
 
 	@Override
-	public LinkedList<Music> getMusicBySearchTerms(IMusicSearchRequestDetails searchRequestDetails) {
-		LinkedList<Music> musics = new LinkedList<Music>();
+	public List<LibraryItem> getMusicBySearchTerms(MusicSearch requestDetails, String searchTerms) {
+		List<LibraryItem> musics = new LinkedList<LibraryItem>();
+		if(!requestDetails.isSearchInMusic()) {
+			return musics;
+		}
+		
 		Music music;
-		String query = prepareSearchQuery(searchRequestDetails);
+		String query = prepareSearchQuery(requestDetails, searchTerms);
 		
 		if(null ==query) {
 			return musics;

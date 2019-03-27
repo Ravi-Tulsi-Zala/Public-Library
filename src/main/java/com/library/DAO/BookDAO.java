@@ -14,10 +14,11 @@ import org.apache.logging.log4j.Logger;
 
 import com.library.IDAO.IBookDAO;
 import com.library.businessModels.Book;
+import com.library.businessModels.LibraryItem;
 import com.library.BussinessModelSetter.BookSetter;
 import com.library.IBussinessModelSetter.IBookSetter;
 import com.library.dbConnection.*;
-import com.library.search.IBookSearchRequestDetails;
+import com.library.search.BookSearch;
 
 public class BookDAO implements IBookDAO {
 
@@ -60,15 +61,15 @@ public class BookDAO implements IBookDAO {
 		return null;
 	}
 
-	private String prepareSearchQuery(IBookSearchRequestDetails requestDetails) {
+	private String prepareSearchQuery(BookSearch requestDetails, String searchTerms) {
 
-		if (0 == requestDetails.getSearchTerms().length()) {
+		if (0 == searchTerms.length()) {
 			logger.log(Level.ALL, "No search terms are supplied");
 			return null;
 		}
 
 		String query = "SELECT DISTINCT * FROM books WHERE ";
-		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
+		String[] searchterms = searchTerms.split("\\s");
 		for (String term : searchterms) {
 			if (requestDetails.isSearchBookAuthor()) {
 				query += "Author like \"%" + term + "%\" or ";
@@ -95,10 +96,14 @@ public class BookDAO implements IBookDAO {
 	}
 
 	@Override
-	public LinkedList<Book> getBooksBySearchTerms(IBookSearchRequestDetails searchRequestDetails) {
-		LinkedList<Book> books = new LinkedList<Book>();
+	public List<LibraryItem> getBooksBySearchTerms(BookSearch requestDetails, String searchTerms) {
+		List<LibraryItem> books = new LinkedList<LibraryItem>();
+		if(!requestDetails.isSearchInBooks()) {
+			return books;
+		}
+		
 		Book book;
-		String query = prepareSearchQuery(searchRequestDetails);
+		String query = prepareSearchQuery(requestDetails, searchTerms);
 
 		if(null ==query) {
 			return books;

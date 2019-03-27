@@ -19,18 +19,16 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 	private Map<String, SearchRequestsAndResults> searchesPerSessionId = new HashMap<>();
 	@Inject
 	private ISearchResultCoverImgProxy coverImageProxy;
-	private DAOFactory daoFactory = null;
 	
 	public DBSearchController() {
 		SignOutController.instance().registerAsSignOutObserver(this);
-		daoFactory = new DAOFactory();
 	}
 		
 	private class SearchRequestsAndResults {
-		AdvancedSearchRequest requestDetails;
+		SearchRequest requestDetails;
 		SearchResults results;
 		
-		public SearchRequestsAndResults(AdvancedSearchRequest requestDetails, SearchResults results) {
+		public SearchRequestsAndResults(SearchRequest requestDetails, SearchResults results) {
 			this.requestDetails = requestDetails;
 			this.results = results;
 		}
@@ -38,7 +36,7 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 
 	
 	@Override
-	public SearchResults search(AdvancedSearchRequest requestDetails, HttpSession httpSession) {
+	public SearchResults search(SearchRequest requestDetails, HttpSession httpSession) {
 		SearchRequestsAndResults searchRAndR = null;
 		String sessionId = httpSession.getId();
 		
@@ -63,70 +61,19 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 			searchRAndR = executeSearchInDb(requestDetails, httpSession);
 		}
 		
-		SearchResults resultSet = getResultSetForRequestedPageNumber(searchRAndR);
+		int requestedPageNumber = searchRAndR.requestDetails.getRequestedResultsPageNumber(); 
+		SearchResults resultSet = searchRAndR.results.getResultSetForPageNumber(requestedPageNumber);
 		if(resultSet.isNotEmpty()) {
-			int requestedPageNumber = searchRAndR.requestDetails.getRequestedResultsPageNumber();
 			coverImageProxy.loadCoverImages(resultSet, Integer.toString(requestedPageNumber), httpSession);
 		}
 		return resultSet;
 	}
 
-	private SearchRequestsAndResults executeSearchInDb(AdvancedSearchRequest searchRequestDetails, HttpSession httpSession) {
-		SearchResults searchResults = searchInDb(searchRequestDetails);
-		SearchRequestsAndResults searchRAndR = new SearchRequestsAndResults(searchRequestDetails, searchResults);
+	private SearchRequestsAndResults executeSearchInDb(SearchRequest requestDetails, HttpSession httpSession) {
+		SearchResults searchResults = requestDetails.searchInDb();
+		SearchRequestsAndResults searchRAndR = new SearchRequestsAndResults(requestDetails, searchResults);
 		searchesPerSessionId.put(httpSession.getId(), searchRAndR);
 		return searchRAndR;
-	}
-
-	private SearchResults searchInDb(AdvancedSearchRequest requestDetails) {
-		SearchResults results = new SearchResults();
-		if(requestDetails.isSearchInBooks()) {
-			results.setBooks(daoFactory.makeBookDAO().getBooksBySearchTerms(requestDetails));
-		}
-		if(requestDetails.isSearchInMusic()) {
-			results.setMusic(daoFactory.makeMusicDAO().getMusicBySearchTerms(requestDetails));
-		}
-		if(requestDetails.isSearchInMovies()) {
-			results.setMovies(daoFactory.makeMovieDAO().getMoviesBySearchTerms(requestDetails));
-		}
-		return results;
-	}
-	
-	protected SearchResults getResultSetForRequestedPageNumber(SearchRequestsAndResults searchRAndR) {
-		int requestedPageNumber = searchRAndR.requestDetails.getRequestedResultsPageNumber();
-		SearchResults results = new SearchResults();
-		
-		if(null != searchRAndR.results.getBooks()) {
-			Iterator<Book> iterator = searchRAndR.results.getBooks().iterator();
-			for(int i=0; i < (requestedPageNumber -1)*DESPLAY_ROW_SIZE && iterator.hasNext(); i++) {
-				iterator.next();
-			}
-			for(int i=0; i < DESPLAY_ROW_SIZE && iterator.hasNext(); i++) {
-				results.getBooks().add(iterator.next()); 
-			}
-		}
-		
-		if(null != searchRAndR.results.getMusic()) {
-			Iterator<Music> iterator = searchRAndR.results.getMusic().iterator();
-			for(int i=0; i < (requestedPageNumber -1)*DESPLAY_ROW_SIZE && iterator.hasNext(); i++) {
-				iterator.next();
-			}
-			for(int i=0; i < DESPLAY_ROW_SIZE && iterator.hasNext(); i++) {
-				results.getMusic().add(iterator.next()); 
-			}
-		}
-		
-		if(null != searchRAndR.results.getMovies()) {
-			Iterator<Movie> iterator = searchRAndR.results.getMovies().iterator();
-			for(int i=0; i < (requestedPageNumber -1)*DESPLAY_ROW_SIZE && iterator.hasNext(); i++) {
-				iterator.next();
-			}
-			for(int i=0; i < DESPLAY_ROW_SIZE && iterator.hasNext(); i++) {
-				results.getMovies().add(iterator.next()); 
-			}
-		}
-				
-		return results;
 	}
 
 	@Override
