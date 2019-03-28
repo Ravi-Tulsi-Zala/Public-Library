@@ -20,6 +20,18 @@ public class BookSearch implements ISearchCategory {
 		return daoFactory.makeBookDAO().getBooksBySearchTerms(this, searchterms);
 	}
 	
+	public boolean equals(ISearchCategory previousBookSearch) {
+		BookSearch prev = (BookSearch) previousBookSearch;
+		boolean isEqual = 
+				this.searchInBooks == prev.searchInBooks &&
+				this.searchBookAuthor == prev.searchBookAuthor &&
+				this.searchBookPublisher == prev.searchBookPublisher &&
+				this.searchBookDescription == prev.searchBookDescription &&
+				this.searchBookISBN == prev.searchBookISBN ;
+		
+		return isEqual;
+	}
+	
 	public boolean isSearchInBooks() {
 		return searchInBooks;
 	}
@@ -74,17 +86,5 @@ public class BookSearch implements ISearchCategory {
 
 	public void setSearchBookISBN(boolean searchBookISBN) {
 		this.searchBookISBN = searchBookISBN;
-	}
-
-	public boolean equals(ISearchCategory previousBookSearch) {
-		BookSearch prev = (BookSearch) previousBookSearch;
-		boolean isEqual = 
-				this.searchInBooks == prev.searchInBooks &&
-				this.searchBookAuthor == prev.searchBookAuthor &&
-				this.searchBookPublisher == prev.searchBookPublisher &&
-				this.searchBookDescription == prev.searchBookDescription &&
-				this.searchBookISBN == prev.searchBookISBN ;
-		
-		return isEqual;
 	}
 }

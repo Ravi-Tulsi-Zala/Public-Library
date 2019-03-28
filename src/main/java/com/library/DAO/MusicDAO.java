@@ -18,8 +18,6 @@ import com.library.IDAO.IMusicDAO;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Music;
 import com.library.dbConnection.DatabaseConnection;
-import com.library.search.BookSearch;
-import com.library.search.IMusicSearchRequestDetails;
 import com.library.search.MusicSearch;
 
 public class MusicDAO implements IMusicDAO {

@@ -14,8 +14,7 @@ import com.library.signOut.ISignOutObserver;
 import com.library.signOut.SignOutController;
 
 public class DBSearchController implements IDBSearchController, ISignOutObserver {
-		
-	private final int DESPLAY_ROW_SIZE = 10; // should move to the configuration file
+	
 	private Map<String, SearchRequestsAndResults> searchesPerSessionId = new HashMap<>();
 	@Inject
 	private ISearchResultCoverImgProxy coverImageProxy;

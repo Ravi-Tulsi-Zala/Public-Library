@@ -22,7 +22,6 @@ public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 
 	@Override
 	public void loadCoverImages(SearchResults searchResults, String requestedPageNumber, HttpSession httpSession) {
-		
 		String sessionResultsPath = "searchResults" + SEPARATOR + httpSession.getId() + SEPARATOR;
 		
 		List<LibraryItem> items = searchResults.getAllFoundItems();

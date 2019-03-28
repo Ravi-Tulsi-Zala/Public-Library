@@ -6,8 +6,6 @@ import java.util.List;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
-import com.library.search.IMovieSearchRequestDetails;
-import com.library.search.IMusicSearchRequestDetails;
 import com.library.search.MusicSearch;
 
 public interface IMusicDAO {

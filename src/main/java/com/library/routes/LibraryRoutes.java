@@ -26,11 +26,8 @@ import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
-import com.library.search.AdvancedSearchRequest;
-import com.library.search.BasicSearchRequest;
 import com.library.search.BookSearch;
 import com.library.search.IDBSearchController;
-import com.library.search.ISearchRequest;
 import com.library.search.MoviesSearch;
 import com.library.search.MusicSearch;
 import com.library.search.SearchResults;
@@ -48,7 +45,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@Inject
 	private IDBSearchController dbSearchController;
 	private static String securityQuestionValue;
-
+	
 	public LibraryRoutes() {
 		ILibraryFactory factory = new LibraryControllerFactory();
 		LibraryFactorySingleton.instance().build(factory);
@@ -95,8 +92,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/advancedSearch")
-	public String executeAdvancedSearch(HttpSession httpSession, ModelMap model,
-			SearchTermsAndPage termsAndPage, BookSearch bookSearch, MusicSearch musicSearch, MoviesSearch moviesSearch) {
+	public String executeAdvancedSearch(HttpSession httpSession, ModelMap model,SearchTermsAndPage termsAndPage,
+			BookSearch bookSearch, MusicSearch musicSearch, MoviesSearch moviesSearch) {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			SearchRequest sr = new SearchRequest();
 			sr.addSearchTermsAndResultsPage(termsAndPage);
@@ -104,31 +101,34 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			sr.addCategoryToSearchIn(musicSearch);
 			sr.addCategoryToSearchIn(moviesSearch);
 			SearchResults searchResults = dbSearchController.search(sr, httpSession);
-//			model.addAttribute("searchResults", searchResults);
+			model.addAttribute("searchResults", searchResults);
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 			return "AdvancedSearchResultsPage";
 		}
 		return "NoAccessToNonAuthenticated";
 	}
 
-//	@GetMapping("/basicSearch")
-//	public String getSimpleSearchPage(ModelMap model) {
-//		BasicSearchRequest basic = new BasicSearchRequest();
-//		model.addAttribute("basicSearchRequest", basic);
-//		return "BasicSearchPage";
-//
-//	}
-//
-//	@PostMapping("/basicSearch")
-//	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, BasicSearchRequest basic) {
-//		AdvancedSearchRequest advanced = new AdvancedSearchRequest();
-//		advanced.setSearchTerms(basic.getSearchTerms());
-//		advanced.setRequestedResultsPageNumber(basic.getRequestedResultsPageNumber());
-//		SearchResults searchResults = dbSearchController.search(advanced, httpSession);
-//		model.addAttribute("searchResults", searchResults);
-//		return "BasicSearchResultsPage";
-//
-//	}
+	@GetMapping("/basicSearch")
+	public String getSimpleSearchPage(ModelMap model) {
+		model.addAttribute("searchTermsAndPage", new SearchTermsAndPage());
+		return "BasicSearchPage";
+
+	}
+
+	@PostMapping("/basicSearch")
+	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage, 
+			BookSearch bookSearch, MusicSearch musicSearch, MoviesSearch moviesSearch) {
+		SearchRequest sr = new SearchRequest();
+		sr.addSearchTermsAndResultsPage(termsAndPage);
+		sr.addCategoryToSearchIn(bookSearch);
+		sr.addCategoryToSearchIn(musicSearch);
+		sr.addCategoryToSearchIn(moviesSearch);
+		SearchResults searchResults = dbSearchController.search(sr, httpSession);
+		model.addAttribute("searchResults", searchResults);
+		model.addAttribute("searchResults", searchResults);
+		return "BasicSearchResultsPage";
+
+	}
 
 	@GetMapping("/")
 	public String getItemDetailsById() {

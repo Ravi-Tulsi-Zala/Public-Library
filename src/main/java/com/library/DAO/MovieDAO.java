@@ -17,8 +17,6 @@ import com.library.IDAO.IMovieDAO;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.dbConnection.DatabaseConnection;
-import com.library.search.BookSearch;
-import com.library.search.IMovieSearchRequestDetails;
 import com.library.search.MoviesSearch;
 
 public class MovieDAO implements IMovieDAO {

@@ -6,7 +6,6 @@ import java.util.List;
 import com.library.businessModels.Book;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
-import com.library.search.IMovieSearchRequestDetails;
 import com.library.search.MoviesSearch;
 
 public interface IMovieDAO {

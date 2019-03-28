@@ -49,4 +49,8 @@ public class SearchResults {
 		}
 		return results;
 	}
+	
+	public ArrayList<List<LibraryItem>> getSearchResultsPerCategory() {
+		return searchResultsPerCategory;
+	}
 }
