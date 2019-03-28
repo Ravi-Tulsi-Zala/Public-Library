@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,16 +16,17 @@ import org.apache.logging.log4j.Logger;
 import com.library.BussinessModelSetter.MusicSetter;
 import com.library.IBussinessModelSetter.IMusicSetter;
 import com.library.IDAO.IMusicDAO;
+import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Music;
 import com.library.dbConnection.DatabaseConnection;
-import com.library.search.IMusicSearchRequestDetails;
+import com.library.search.MusicSearch;
 
 public class MusicDAO implements IMusicDAO {
 
 	private PreparedStatement preparedStatement;
 	String query;
 	Connection connection;
-	IMusicSetter musicMapper = new MusicSetter();
+	IMusicSetter musicSetter = new MusicSetter();
 	private static final Logger logger = LogManager.getLogger(MusicDAO.class);
 
 	public MusicDAO() {
@@ -49,7 +51,7 @@ public class MusicDAO implements IMusicDAO {
 			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				music = musicMapper.mapMusic(resultSet);
+				music = musicSetter.mapMusic(resultSet);
 			}
 		} catch (SQLException e) {
 
@@ -74,7 +76,7 @@ public class MusicDAO implements IMusicDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				music = new Music();
-				music = musicMapper.mapMusic(resultSet);
+				music = musicSetter.mapMusic(resultSet);
 				musicsByCategory.add(music);
 			}
 		} catch (SQLException e) {
@@ -89,18 +91,33 @@ public class MusicDAO implements IMusicDAO {
 	}
 
 	@Override
-	public Boolean createMusic(Music music) {
+	public int createMusic(Music music) {
 
+
+		String musicCategory= music.getCategory();
+		String musicTitle = music.getTitle();
+		String musicArtist = music.getArtist();
+		String musicRecordLabel = music.getRecordLabel();
+		int musicAvailability = music.getAvailability();
+		int recentlyAddedMusicId = 0;
+		
 		try {
 			query = "INSERT INTO music (Category,Title,Artist,Record_Label,Availability) VALUES ( ?, ?, ?, ?, ?)";
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, music.getCategory());
-			preparedStatement.setString(2, music.getTitle());
-			preparedStatement.setString(3, music.getArtist());
-			preparedStatement.setString(4, music.getRecordLabel());
-			preparedStatement.setInt(5, music.getAvailability());
+			preparedStatement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setString(1, musicCategory);
+			preparedStatement.setString(2, musicTitle);
+			preparedStatement.setString(3, musicArtist);
+			preparedStatement.setString(4, musicRecordLabel);
+			preparedStatement.setInt(5, musicAvailability);
 			preparedStatement.executeUpdate();
-			return true;
+			ResultSet rs = preparedStatement.getGeneratedKeys();
+			
+			if (rs.next()) {
+			    recentlyAddedMusicId = rs.getInt(1);
+			}
+			
+			return recentlyAddedMusicId ;
+			
 		} catch (SQLException e) {
 
 			logger.log(Level.ALL, "Check the SQL syntax", e);
@@ -108,21 +125,29 @@ public class MusicDAO implements IMusicDAO {
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not create music entry in database", e);
 		}
-		return false;
+		return recentlyAddedMusicId;
 	}
 
 	@Override
 	public Boolean updateMusic(Music music) {
 
+		String musicCategory= music.getCategory();
+		String musicTitle = music.getTitle();
+		String musicArtist = music.getArtist();
+		String musicRecordLabel = music.getRecordLabel();
+		int musicAvailability = music.getAvailability();
+		int musicItemId = music.getItemID();
+		
+		
 		try {
 			query = "UPDATE music SET Category=?,Title=?,Artist=?,Record_Label=?,Availability=? WHERE Item_ID=? ";
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, music.getCategory());
-			preparedStatement.setString(2, music.getTitle());
-			preparedStatement.setString(3, music.getArtist());
-			preparedStatement.setString(4, music.getRecordLabel());
-			preparedStatement.setInt(5, music.getAvailability());
-			preparedStatement.setInt(6, music.getItemID());
+			preparedStatement.setString(1, musicCategory);
+			preparedStatement.setString(2,musicTitle);
+			preparedStatement.setString(3, musicArtist);
+			preparedStatement.setString(4, musicRecordLabel);
+			preparedStatement.setInt(5, musicAvailability);
+			preparedStatement.setInt(6, musicItemId);
 			preparedStatement.executeUpdate();
 			return true;
 		} catch (SQLException e) {
@@ -130,7 +155,7 @@ public class MusicDAO implements IMusicDAO {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not update movie into database", e);
+			logger.log(Level.ALL, "Can not update music into database", e);
 		}
 		return false;
 	}
@@ -153,15 +178,15 @@ public class MusicDAO implements IMusicDAO {
 		return false;
 	}
 
-	private String prepareSearchQuery(IMusicSearchRequestDetails requestDetails) {
+	private String prepareSearchQuery(MusicSearch requestDetails, String searchTerms) {
 
-		if (0 == requestDetails.getSearchTerms().length()) {
+		if (0 == searchTerms.length()) {
 			logger.log(Level.ALL, "No search terms are supplied");
 			return null;
 		}
 
 		String query = "SELECT DISTINCT * FROM music WHERE ";
-		String[] searchterms = requestDetails.getSearchTerms().split("\\s");
+		String[] searchterms = searchTerms.split("\\s");
 		for (String term : searchterms) {
 			if (requestDetails.isSearchMusicAlbumName()) {
 				query += "Title like \"%" + term + "%\" or ";
@@ -179,10 +204,14 @@ public class MusicDAO implements IMusicDAO {
 	}
 
 	@Override
-	public LinkedList<Music> getMusicBySearchTerms(IMusicSearchRequestDetails searchRequestDetails) {
-		LinkedList<Music> musics = new LinkedList<Music>();
+	public List<LibraryItem> getMusicBySearchTerms(MusicSearch requestDetails, String searchTerms) {
+		List<LibraryItem> musics = new LinkedList<LibraryItem>();
+		if(!requestDetails.isSearchInMusic()) {
+			return musics;
+		}
+		
 		Music music;
-		String query = prepareSearchQuery(searchRequestDetails);
+		String query = prepareSearchQuery(requestDetails, searchTerms);
 		
 		if(null ==query) {
 			return musics;
@@ -192,7 +221,7 @@ public class MusicDAO implements IMusicDAO {
 			preparedStatement = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				music = musicMapper.mapMusic(resultSet);
+				music = musicSetter.mapMusic(resultSet);
 				musics.add(music);
 			}
 

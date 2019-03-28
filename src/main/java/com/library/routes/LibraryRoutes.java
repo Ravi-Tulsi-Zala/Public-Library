@@ -1,51 +1,56 @@
-package com.library.controllers;
+package com.library.routes;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.library.ForgotPassword.IForgotPasswordController;
 import com.library.ForgotPassword.RecoverPassword;
-import com.library.additem.AddBookController;
-import com.library.additem.AddMovieController;
-import com.library.additem.AddMusicController;
-import com.library.browsePage.BrowseDisplayFactory;
-import com.library.browsePage.IBrowseDisplayFactory;
-import com.library.browsePage.IBrowseDisplayObjects;
+import com.library.additem.IAddBookController;
+import com.library.additem.IAddMovieController;
+import com.library.additem.IAddMusicController;
 import com.library.businessModels.Book;
+import com.library.businessModels.CoverImage;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
+import com.library.search.BookSearch;
 import com.library.search.IDBSearchController;
-import com.library.search.AdvancedSearchRequest;
+import com.library.search.MoviesSearch;
+import com.library.search.MusicSearch;
 import com.library.search.SearchResults;
-import com.library.search.BasicSearchRequest;
+import com.library.search.SearchTermsAndPage;
+import com.library.search.SearchRequest;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.ISignInController;
 import com.library.signUp.ISignUpController;
 import com.library.welcomePage.IWelcomeController;
+import com.library.welcomePage.WelcomePageController;
 
 @Controller
-public class LibraryController implements WebMvcConfigurer {
+public class LibraryRoutes implements WebMvcConfigurer {
 	private List<Map.Entry<String, String>> list = null;
 	@Inject
 	private IDBSearchController dbSearchController;
 	private static String securityQuestionValue;
-
-	public LibraryController() {
+	
+	public LibraryRoutes() {
 		ILibraryFactory factory = new LibraryControllerFactory();
 		LibraryFactorySingleton.instance().build(factory);
-
 	}
 
 	@PostMapping("/signUp")
@@ -77,8 +82,10 @@ public class LibraryController implements WebMvcConfigurer {
 	public String getAdvancedSearchPage(HttpSession httpSession, ModelMap model) {
 		AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, "removeMeFromTheController@mail.com");
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
-			AdvancedSearchRequest searchRequestDetails = new AdvancedSearchRequest();
-			model.addAttribute("advancedSearchRequest", searchRequestDetails);
+			model.addAttribute("searchTermsAndPage", new SearchTermsAndPage());
+			model.addAttribute("bookSearch", new BookSearch());
+			model.addAttribute("musicSearch", new MusicSearch());
+			model.addAttribute("moviesSearch", new MoviesSearch());
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 			return "AdvancedSearchPage";
 		}
@@ -86,33 +93,44 @@ public class LibraryController implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/advancedSearch")
-	public String executeAdvancedSearch(HttpSession httpSession, ModelMap model, AdvancedSearchRequest srchRequestDetails) {
+	public String executeAdvancedSearch(HttpSession httpSession, ModelMap model,SearchTermsAndPage termsAndPage,
+			BookSearch bookSearch, MusicSearch musicSearch, MoviesSearch moviesSearch) {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
-			SearchResults searchResults = dbSearchController.search(srchRequestDetails, httpSession);
+			SearchResults searchResults = 
+					executeSearch(httpSession, termsAndPage, bookSearch, musicSearch, moviesSearch);
 			model.addAttribute("searchResults", searchResults);
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 			return "AdvancedSearchResultsPage";
 		}
 		return "NoAccessToNonAuthenticated";
 	}
-	
+
 	@GetMapping("/basicSearch")
 	public String getSimpleSearchPage(ModelMap model) {
-		BasicSearchRequest basic = new BasicSearchRequest();
-		model.addAttribute("basicSearchRequest", basic);
+		model.addAttribute("searchTermsAndPage", new SearchTermsAndPage());
 		return "BasicSearchPage";
 
 	}
-	
+
 	@PostMapping("/basicSearch")
-	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, BasicSearchRequest basic) {
-		AdvancedSearchRequest advanced = new AdvancedSearchRequest();
-		advanced.setSearchTerms(basic.getSearchTerms());
-		advanced.setRequestedResultsPageNumber(basic.getRequestedResultsPageNumber());
-		SearchResults searchResults = dbSearchController.search(advanced, httpSession);
+	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage, 
+			BookSearch bookSearch, MusicSearch musicSearch, MoviesSearch moviesSearch) {
+		SearchResults searchResults = 
+				executeSearch(httpSession, termsAndPage, bookSearch, musicSearch, moviesSearch);
+		model.addAttribute("searchResults", searchResults);
 		model.addAttribute("searchResults", searchResults);
 		return "BasicSearchResultsPage";
 
+	}
+	
+	private SearchResults executeSearch(HttpSession httpSession, SearchTermsAndPage termsAndPage, BookSearch bookSearch, 
+			MusicSearch musicSearch, MoviesSearch moviesSearch) {
+		SearchRequest sr = new SearchRequest();
+		sr.addSearchTermsAndResultsPage(termsAndPage);
+		sr.addCategoryToSearchIn(bookSearch);
+		sr.addCategoryToSearchIn(musicSearch);
+		sr.addCategoryToSearchIn(moviesSearch);
+		return dbSearchController.search(sr, httpSession);
 	}
 
 	@GetMapping("/")
@@ -151,58 +169,101 @@ public class LibraryController implements WebMvcConfigurer {
 		model.addAttribute("book", new Book());
 		model.addAttribute("movie", new Movie());
 		model.addAttribute("music", new Music());
+		model.addAttribute("coverBook", new CoverImage());
+		model.addAttribute("coverMovie", new CoverImage());
+		model.addAttribute("coverMusic", new CoverImage());
 
 		return "AddItemPage";
 	}
 
-	@PostMapping("/addBook")
-	public String addBookToDatabase(ModelMap model, Book book) {
+	@RequestMapping("/addBook")
+	public String addBookToDatabase(ModelMap model, Book book, CoverImage coverBook) {
 
-		AddBookController addBookController = new AddBookController();
-		Boolean isBookCreated = addBookController.addBookRecordInDatabase(book);
+		String error, errorBookRoutePage;
+		IAddBookController iAddBookController = LibraryFactorySingleton.instance().getFactory().makeAddBookController();
+		boolean isBookCreated = iAddBookController.addBookRecordInDatabase(book, coverBook.getCoverImage());
 
 		if (isBookCreated) {
 			return "ResponseBook";
 		} else {
-			String error = "Error : Book can not be created! Please try again!";
-			model.addAttribute("movie", new Movie());
-			model.addAttribute("music", new Music());
+			error = "Error : Book can not be created! Please try again!";
 			model.addAttribute("error", error);
-			return "AddItemPage";
+			errorBookRoutePage = mappingsForAddItem(model);
+			return errorBookRoutePage;
 		}
 
 	}
 
 	@PostMapping("/addMovie")
-	public String addMovieToDatabase(ModelMap model, Movie movie) {
+	public String addMovieToDatabase(ModelMap model, Movie movie, CoverImage coverMovie) {
 
-		AddMovieController addMovieController = new AddMovieController();
-		addMovieController.addMovieRecordInDatabase(movie);
+		String error, errorMovieRoutePage;
+		IAddMovieController iAddMovieController = LibraryFactorySingleton.instance().getFactory()
+				.makeAddMovieController();
+		boolean isMovieCreated = iAddMovieController.addMovieRecordInDatabase(movie, coverMovie.getCoverImage());
 
-		return "ResponseMovie";
+		if (isMovieCreated) {
+			return "ResponseMovie";
+		} else {
+			error = "Error : Movie can not be created! Please try again!";
+			model.addAttribute("error", error);
+			errorMovieRoutePage = mappingsForAddItem(model);
+			return errorMovieRoutePage;
+		}
 	}
 
 	@PostMapping("/addMusic")
-	public String addMusicToDatabase(ModelMap model, Music music) {
+	public String addMusicToDatabase(ModelMap model, Music music, CoverImage coverMusic) {
 
-		AddMusicController addMusicController = new AddMusicController();
-		addMusicController.addMusicRecordInDatabase(music);
+		String error, errorMusicRoutePage;
+		IAddMusicController iAddMusicController = LibraryFactorySingleton.instance().getFactory()
+				.makeAddMusicController();
+		boolean isMusicCreated = iAddMusicController.addMusicRecordInDatabase(music, coverMusic.getCoverImage());
 
-		return "ResponseMusic";
+		if (isMusicCreated) {
+			return "ResponseMusic";
+		} else {
+			error = "Error : Music can not be created! Please try again!";
+			model.addAttribute("error", error);
+			errorMusicRoutePage = mappingsForAddItem(model);
+			return errorMusicRoutePage;
+		}
 	}
 
 	@GetMapping("/welcome")
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem) {
-		model.addAttribute("isAdminAval", true);
+		Logger logger = LogManager.getLogger(WelcomePageController.class);
 		IWelcomeController welcomeCtrl = LibraryFactorySingleton.instance().getFactory().welcomePage();
-		List<Book> book = welcomeCtrl.getBookItems();
-		List<Movie> movie = welcomeCtrl.getMovieItems();
-		List<Music> music = welcomeCtrl.getMusicItems();
+		List<Book> book,favBooks;
+		List<Movie> movie,favMovies;
+		List<Music> music,favMusic;
+		try {
+			book = welcomeCtrl.getBookItems();
+			movie = welcomeCtrl.getMovieItems();
+			music = welcomeCtrl.getMusicItems();
+			favBooks = welcomeCtrl.getFavouriteBooks();
+			favMovies = welcomeCtrl.getFavouriteMovies();
+			favMusic = welcomeCtrl.getFavouriteMusic();
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Some problem occured while connection with Database in welcome controller.", e);
+			return "redirect:ErrorPage";
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Some problem occured, check logs.", e);
+			return "redirect:ErrorPage";
+		}
 		model.addAttribute("book", book);
+		model.addAttribute("favBooks", favBooks);
 		model.addAttribute("movie", movie);
+		model.addAttribute("favMovies", favMovies);
 		model.addAttribute("music", music);
+		model.addAttribute("favMusic", favMusic);
 		model.addAttribute("isAdminAval", welcomeCtrl.isAdminAvailable());
 		return "Welcome";
+	}
+
+	@GetMapping("/ErrorPage")
+	public String errorPage() {
+		return "ErrorPage";
 	}
 
 	@GetMapping("/logOut")
@@ -235,6 +296,5 @@ public class LibraryController implements WebMvcConfigurer {
 			return "Welcome";
 		}
 	}
-	
-	
+
 }
