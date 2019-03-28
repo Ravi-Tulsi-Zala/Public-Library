@@ -95,12 +95,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	public String executeAdvancedSearch(HttpSession httpSession, ModelMap model,SearchTermsAndPage termsAndPage,
 			BookSearch bookSearch, MusicSearch musicSearch, MoviesSearch moviesSearch) {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
-			SearchRequest sr = new SearchRequest();
-			sr.addSearchTermsAndResultsPage(termsAndPage);
-			sr.addCategoryToSearchIn(bookSearch);
-			sr.addCategoryToSearchIn(musicSearch);
-			sr.addCategoryToSearchIn(moviesSearch);
-			SearchResults searchResults = dbSearchController.search(sr, httpSession);
+			SearchResults searchResults = 
+					executeSearch(httpSession, termsAndPage, bookSearch, musicSearch, moviesSearch);
 			model.addAttribute("searchResults", searchResults);
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 			return "AdvancedSearchResultsPage";
@@ -118,16 +114,22 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@PostMapping("/basicSearch")
 	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage, 
 			BookSearch bookSearch, MusicSearch musicSearch, MoviesSearch moviesSearch) {
+		SearchResults searchResults = 
+				executeSearch(httpSession, termsAndPage, bookSearch, musicSearch, moviesSearch);
+		model.addAttribute("searchResults", searchResults);
+		model.addAttribute("searchResults", searchResults);
+		return "BasicSearchResultsPage";
+
+	}
+	
+	private SearchResults executeSearch(HttpSession httpSession, SearchTermsAndPage termsAndPage, BookSearch bookSearch, 
+			MusicSearch musicSearch, MoviesSearch moviesSearch) {
 		SearchRequest sr = new SearchRequest();
 		sr.addSearchTermsAndResultsPage(termsAndPage);
 		sr.addCategoryToSearchIn(bookSearch);
 		sr.addCategoryToSearchIn(musicSearch);
 		sr.addCategoryToSearchIn(moviesSearch);
-		SearchResults searchResults = dbSearchController.search(sr, httpSession);
-		model.addAttribute("searchResults", searchResults);
-		model.addAttribute("searchResults", searchResults);
-		return "BasicSearchResultsPage";
-
+		return dbSearchController.search(sr, httpSession);
 	}
 
 	@GetMapping("/")
