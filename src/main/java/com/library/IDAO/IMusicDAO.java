@@ -1,12 +1,10 @@
 package com.library.IDAO;
 
-import java.util.LinkedList;
 import java.util.List;
 
-import com.library.businessModels.Movie;
+import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Music;
-import com.library.search.IMovieSearchRequestDetails;
-import com.library.search.IMusicSearchRequestDetails;
+import com.library.search.MusicSearch;
 
 public interface IMusicDAO {
 	public Music getMusicById(int itemID);
@@ -14,6 +12,5 @@ public interface IMusicDAO {
 	public int createMusic(Music music);
 	public Boolean updateMusic(Music music);
 	public Boolean deleteMusic(Music music); 
-	public LinkedList<Music> getMusicBySearchTerms(IMusicSearchRequestDetails searchRequestDetails);
-	
+	public List<LibraryItem> getMusicBySearchTerms(MusicSearch requestDetails, String searchTerms); 
 }

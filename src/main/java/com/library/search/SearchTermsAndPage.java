@@ -1,9 +1,8 @@
 package com.library.search;
 
-public class BasicSearchRequest {
+public class SearchTermsAndPage {
 	private String searchTerms = null;
 	private int requestedResultsPageNumber = 1;
-	
 	public String getSearchTerms() {
 		return searchTerms;
 	}

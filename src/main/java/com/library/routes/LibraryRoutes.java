@@ -28,10 +28,13 @@ import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
-import com.library.search.AdvancedSearchRequest;
-import com.library.search.BasicSearchRequest;
+import com.library.search.BookSearch;
 import com.library.search.IDBSearchController;
+import com.library.search.MoviesSearch;
+import com.library.search.MusicSearch;
 import com.library.search.SearchResults;
+import com.library.search.SearchTermsAndPage;
+import com.library.search.SearchRequest;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.ISignInController;
 import com.library.signUp.ISignUpController;
@@ -44,7 +47,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@Inject
 	private IDBSearchController dbSearchController;
 	private static String securityQuestionValue;
-
+	
 	public LibraryRoutes() {
 		ILibraryFactory factory = new LibraryControllerFactory();
 		LibraryFactorySingleton.instance().build(factory);
@@ -79,8 +82,10 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	public String getAdvancedSearchPage(HttpSession httpSession, ModelMap model) {
 		AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, "removeMeFromTheController@mail.com");
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
-			AdvancedSearchRequest searchRequestDetails = new AdvancedSearchRequest();
-			model.addAttribute("advancedSearchRequest", searchRequestDetails);
+			model.addAttribute("searchTermsAndPage", new SearchTermsAndPage());
+			model.addAttribute("bookSearch", new BookSearch());
+			model.addAttribute("musicSearch", new MusicSearch());
+			model.addAttribute("moviesSearch", new MoviesSearch());
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 			return "AdvancedSearchPage";
 		}
@@ -88,10 +93,11 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/advancedSearch")
-	public String executeAdvancedSearch(HttpSession httpSession, ModelMap model,
-			AdvancedSearchRequest srchRequestDetails) {
+	public String executeAdvancedSearch(HttpSession httpSession, ModelMap model,SearchTermsAndPage termsAndPage,
+			BookSearch bookSearch, MusicSearch musicSearch, MoviesSearch moviesSearch) {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
-			SearchResults searchResults = dbSearchController.search(srchRequestDetails, httpSession);
+			SearchResults searchResults = 
+					executeSearch(httpSession, termsAndPage, bookSearch, musicSearch, moviesSearch);
 			model.addAttribute("searchResults", searchResults);
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 			return "AdvancedSearchResultsPage";
@@ -101,21 +107,30 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@GetMapping("/basicSearch")
 	public String getSimpleSearchPage(ModelMap model) {
-		BasicSearchRequest basic = new BasicSearchRequest();
-		model.addAttribute("basicSearchRequest", basic);
+		model.addAttribute("searchTermsAndPage", new SearchTermsAndPage());
 		return "BasicSearchPage";
 
 	}
 
 	@PostMapping("/basicSearch")
-	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, BasicSearchRequest basic) {
-		AdvancedSearchRequest advanced = new AdvancedSearchRequest();
-		advanced.setSearchTerms(basic.getSearchTerms());
-		advanced.setRequestedResultsPageNumber(basic.getRequestedResultsPageNumber());
-		SearchResults searchResults = dbSearchController.search(advanced, httpSession);
+	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage, 
+			BookSearch bookSearch, MusicSearch musicSearch, MoviesSearch moviesSearch) {
+		SearchResults searchResults = 
+				executeSearch(httpSession, termsAndPage, bookSearch, musicSearch, moviesSearch);
+		model.addAttribute("searchResults", searchResults);
 		model.addAttribute("searchResults", searchResults);
 		return "BasicSearchResultsPage";
 
+	}
+	
+	private SearchResults executeSearch(HttpSession httpSession, SearchTermsAndPage termsAndPage, BookSearch bookSearch, 
+			MusicSearch musicSearch, MoviesSearch moviesSearch) {
+		SearchRequest sr = new SearchRequest();
+		sr.addSearchTermsAndResultsPage(termsAndPage);
+		sr.addCategoryToSearchIn(bookSearch);
+		sr.addCategoryToSearchIn(musicSearch);
+		sr.addCategoryToSearchIn(moviesSearch);
+		return dbSearchController.search(sr, httpSession);
 	}
 
 	@GetMapping("/")
