@@ -13,10 +13,10 @@
 			  font-size: 18px;
 			}
 			
-			ul.breadcrumb li+li:before {
+			.breadcrumb li+li:before {
 			  padding: 8px;
 			  color: black;
-			  content: ">\00a0";
+			  content: "/\00a0";
 			}
 			
 			ul.breadcrumb li a {
@@ -37,15 +37,15 @@
         
         <div class = "BreadCrumbs" style = "margin-left:5%">
         	<ul class="breadcrumb">
-  				<a><b><li th:text=${itemType}></li></b><a>
-			</ul>
-			<ul class="breadcrumb">
-				<b><li th:text=${category}></li></b>
+  				<a href=""><b><li th:text=${itemType}> </li></b></a>
+  				/
+  				<b><li th:text=${category}></li></b>
 			</ul>
         </div>
         
   
-        <div style="width: 9%; display: inline-block; vertical-align: top;">
+        <div style="width: 9%; display: inline-block; vertical-align: top;" th:each="displayItem:${displayItems}">
+        	<img th:src="${'data:image/png;base64,'+displayItem.image}" />
 		</div>
         
 	</body>

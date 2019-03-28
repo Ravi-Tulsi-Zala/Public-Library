@@ -33,7 +33,7 @@ public class BrowsePageController {
 		categories = browseDisplayObjects.getCategories();
 		model.addAttribute("categories", categories);
 		model.addAttribute(itemType);
-		return "BrowsePage";
+		return "BrowsePageCategory";
 	}
 	
 	@GetMapping("/BrowsePage/{itemType}/{category}")
