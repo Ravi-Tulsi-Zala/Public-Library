@@ -2,7 +2,7 @@ package com.library.businessModels;
 
 import java.util.Date;
 
-public class UserItem {
+public class UserItem implements IUserItem {
 	
 	
 	private String email;

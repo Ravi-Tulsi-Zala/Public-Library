@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -88,18 +89,32 @@ public class MovieDAO implements IMovieDAO {
 	}
 
 	@Override
-	public Boolean createMovie(Movie movie) {
+	public int createMovie(Movie movie) {
 
+		int recentlyAddedMovieId = 0;
+		String movieCategory = movie.getCategory();
+		String movieTitle = movie.getTitle();
+		String movieDirector = movie.getDirector();
+		String movieDescription = movie.getDescription();
+		int movieAvailability = movie.getAvailability();
+		
 		try {
 			query = "INSERT INTO movie (Category,Title,Director,Description,Availability) VALUES (?, ?, ?, ?, ?)";
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, movie.getCategory());
-			preparedStatement.setString(2, movie.getTitle());
-			preparedStatement.setString(3, movie.getDirector());
-			preparedStatement.setString(4, movie.getDescription());
-			preparedStatement.setInt(5, movie.getAvailability());
+			preparedStatement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setString(1, movieCategory);
+			preparedStatement.setString(2, movieTitle);
+			preparedStatement.setString(3, movieDirector);
+			preparedStatement.setString(4, movieDescription);
+			preparedStatement.setInt(5, movieAvailability);
 			preparedStatement.executeUpdate();
-			return true;
+			
+			ResultSet rs = preparedStatement.getGeneratedKeys();
+			if (rs.next()) {
+			    recentlyAddedMovieId = rs.getInt(1);
+			}
+			
+			return recentlyAddedMovieId ;
+			
 
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
@@ -107,21 +122,28 @@ public class MovieDAO implements IMovieDAO {
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not insert movie into database", e);
 		}
-		return false;
+		return recentlyAddedMovieId;
 	}
 
 	@Override
 	public Boolean updateMovie(Movie movie) {
 
+		String movieCategory = movie.getCategory();
+		String movieTitle = movie.getTitle();
+		String movieDirector = movie.getDirector();
+		String movieDescription = movie.getDescription();
+		int movieAvailability = movie.getAvailability();
+		int movieItemId = movie.getItemID();
+		
 		try {
 			query = "UPDATE movie SET Category=?,Title=?,Director=?,Description=?,Availability=? WHERE Item_ID=? ";
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, movie.getCategory());
-			preparedStatement.setString(2, movie.getTitle());
-			preparedStatement.setString(3, movie.getDirector());
-			preparedStatement.setString(4, movie.getDescription());
-			preparedStatement.setInt(5, movie.getAvailability());
-			preparedStatement.setInt(6, movie.getItemID());
+			preparedStatement.setString(1, movieCategory);
+			preparedStatement.setString(2, movieTitle);
+			preparedStatement.setString(3, movieDirector);
+			preparedStatement.setString(4, movieDescription);
+			preparedStatement.setInt(5, movieAvailability);
+			preparedStatement.setInt(6, movieItemId);
 			preparedStatement.executeUpdate();
 			return true;
 
@@ -137,11 +159,13 @@ public class MovieDAO implements IMovieDAO {
 
 	@Override
 	public Boolean deleteMovie(Movie movie) {
-
+		
+		int movieItemId = movie.getItemID();
+		
 		try {
 			query = "DELETE from movie WHERE Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, movie.getItemID());
+			preparedStatement.setInt(1, movieItemId);
 			preparedStatement.executeUpdate();
 			return true;
 

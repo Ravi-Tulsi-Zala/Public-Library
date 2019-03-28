@@ -11,8 +11,9 @@ import com.library.search.IMusicSearchRequestDetails;
 public interface IMusicDAO {
 	public Music getMusicById(int itemID);
 	public List<Music> getMusicByCategory(String category);
-	public Boolean createMusic(Music music);
+	public int createMusic(Music music);
 	public Boolean updateMusic(Music music);
 	public Boolean deleteMusic(Music music); 
-	public LinkedList<Music> getMusicBySearchTerms(IMusicSearchRequestDetails searchRequestDetails); 
+	public LinkedList<Music> getMusicBySearchTerms(IMusicSearchRequestDetails searchRequestDetails);
+	
 }
