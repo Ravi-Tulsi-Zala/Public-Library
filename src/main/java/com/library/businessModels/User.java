@@ -1,6 +1,6 @@
 package com.library.businessModels;
 
-public class User {
+public class User{
 
 	private String fullName;
 	private String phoneNumber;

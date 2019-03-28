@@ -1,6 +1,6 @@
 package com.library.businessModels;
 
-public class Movie extends LibraryItem{
+public class Movie extends LibraryItem {
 	
 	private String director;
 	

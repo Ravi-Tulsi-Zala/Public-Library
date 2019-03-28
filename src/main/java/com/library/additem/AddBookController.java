@@ -1,24 +1,40 @@
 package com.library.additem;
 
+import org.springframework.web.multipart.MultipartFile;
 import com.library.DAOFactory.DAOFactory;
 import com.library.DAOFactory.IDAOFactory;
 import com.library.IDAO.IBookDAO;
 import com.library.businessModels.Book;
+import com.library.routes.ILibraryFactory;
+import com.library.routes.LibraryControllerFactory;
+import com.library.routes.LibraryFactorySingleton;
 
-public class AddBookController {
-	IDAOFactory factory;
+public class AddBookController implements IAddBookController {
+	IDAOFactory iDAOfactory;
+	int itemIdOfBook;
+	IBookDAO bookDAO;
+	boolean isBookCreated, isBookCoverCreated;
 
 	public AddBookController() {
-		factory = new DAOFactory();
+		iDAOfactory = new DAOFactory();
+		bookDAO = iDAOfactory.makeBookDAO();
+		ILibraryFactory iLibraryfactory = new LibraryControllerFactory();
+		LibraryFactorySingleton.instance().build(iLibraryfactory);
 	}
 
-	public boolean addBookRecordInDatabase(Book book) {
-		
-		IBookDAO bookDAO = factory.makeBookDAO();
-		boolean isBookCreated = bookDAO.createBook(book);
-		
-		return  isBookCreated;
-		
+	public boolean addBookRecordInDatabase(Book book, MultipartFile bookCoverImage) {
+
+		itemIdOfBook = bookDAO.createBook(book);
+
+		if (itemIdOfBook == 0) {
+			isBookCreated = false;
+		} else {
+			isBookCoverCreated = LibraryFactorySingleton.instance().getFactory().makeItemCoverSetter()
+					.isCoverAddedToDatabase(itemIdOfBook, bookCoverImage);
+			isBookCreated = true;
+		}
+		return (isBookCreated && isBookCoverCreated);
+
 	}
 
 }

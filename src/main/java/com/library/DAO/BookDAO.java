@@ -1,16 +1,22 @@
 package com.library.DAO;
 
+import java.io.IOException;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.sql.rowset.serial.SerialException;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.library.IDAO.IBookDAO;
 import com.library.businessModels.Book;
@@ -27,7 +33,7 @@ public class BookDAO implements IBookDAO {
 	private Connection connection;
 	private IBookSetter bookMapper = new BookSetter();
 	private static final Logger logger = LogManager.getLogger(BookDAO.class);
-	
+
 	public BookDAO() {
 
 		try {
@@ -36,8 +42,7 @@ public class BookDAO implements IBookDAO {
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Unable to connect to database", e);
 		}
-	 }
-	
+	}
 
 	@Override
 	public Book getBookByID(int itemID) {
@@ -52,8 +57,7 @@ public class BookDAO implements IBookDAO {
 			}
 			book = bookMapper.mapBook(resultSet);
 			return book;
-		}	
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Book not found for the specific Itemid", e);
@@ -133,8 +137,7 @@ public class BookDAO implements IBookDAO {
 			preparedStatement.setInt(1, itemID);
 			preparedStatement.executeUpdate();
 			return true;
-		}	
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not delete Book into database", e);
@@ -142,8 +145,29 @@ public class BookDAO implements IBookDAO {
 		return false;
 	}
 
+	public Blob getCoverBlob(MultipartFile coverImage) {
+		Blob coverBlob = null;
+		try {
+			byte[] bytes = coverImage.getBytes();
+			coverBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
+		} catch (IOException e) {
+
+			logger.log(Level.ALL, "IO Exception while converting Multipart into Blob", e);
+
+		} catch (SerialException e) {
+
+			logger.log(Level.ALL, "Serial Exception while converting Multipart into Blob", e);
+
+		} catch (SQLException e) {
+
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		}
+
+		return coverBlob;
+	}
+
 	@Override
-	public Boolean createBook(Book book) {
+	public int createBook(Book book) {
 		String category = book.getCategory();
 		String title = book.getTitle();
 		String author = book.getAuthor();
@@ -151,27 +175,35 @@ public class BookDAO implements IBookDAO {
 		String publisher = book.getPublisher();
 		String description = book.getDescription();
 		int availablity = book.getAvailability();
-		try {
+		int recentlyAddedBookId = 0;
 
-			query = "Inser into books (Category,Title,Author,ISBN,Publisher,Description,Availability) Values "
+		try {
+			query = "Insert into books (Category,Title,Author,ISBN,Publisher,Description,Availability) Values "
 					+ "(?,?,?,?,?,?,?)";
-			 preparedStatement = connection.prepareStatement(query);
-			 preparedStatement.setString(1, category);
-			 preparedStatement.setString(2, title);
-			 preparedStatement.setString(3, author);
-			 preparedStatement.setInt(4, isbn);
-			 preparedStatement.setString(5, publisher);
-			 preparedStatement.setString(6, description);
-			 preparedStatement.setInt(7, availablity);
-			 preparedStatement.executeUpdate();
-			 return true;
-		 }
-		catch (SQLException e) {
+			preparedStatement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+			preparedStatement.setString(1, category);
+			preparedStatement.setString(2, title);
+			preparedStatement.setString(3, author);
+			preparedStatement.setInt(4, isbn);
+			preparedStatement.setString(5, publisher);
+			preparedStatement.setString(6, description);
+			preparedStatement.setInt(7, availablity);
+			preparedStatement.executeUpdate();
+			
+			ResultSet rs = preparedStatement.getGeneratedKeys();
+			
+			if (rs.next()) {
+			    recentlyAddedBookId = rs.getInt(1);
+			}
+			
+			return recentlyAddedBookId ;
+			
+		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not insert Book into database", e);
 		}
-		return false;
+		return recentlyAddedBookId;
 	}
 
 	@Override
@@ -187,19 +219,18 @@ public class BookDAO implements IBookDAO {
 		try {
 			query = "Update books  set Category = ?, Title = ?, Author = ?, ISBN =  ?,"
 					+ "Publisher = ?, Description = ?, Availability = ? WHERE Item_ID = ?";
-			 preparedStatement = connection.prepareStatement(query);
-			 preparedStatement.setString(1,category);
-			 preparedStatement.setString(2,title);
-			 preparedStatement.setString(3, author);
-			 preparedStatement.setInt(4, isbn);
-			 preparedStatement.setString(5, publisher);
-			 preparedStatement.setString(6, description);
-			 preparedStatement.setInt(7, availablity);
-			 preparedStatement.setInt(8, itemID);
-			 preparedStatement.executeUpdate();
-			 return true;
-		 }
-		catch (SQLException e) {
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, category);
+			preparedStatement.setString(2, title);
+			preparedStatement.setString(3, author);
+			preparedStatement.setInt(4, isbn);
+			preparedStatement.setString(5, publisher);
+			preparedStatement.setString(6, description);
+			preparedStatement.setInt(7, availablity);
+			preparedStatement.setInt(8, itemID);
+			preparedStatement.executeUpdate();
+			return true;
+		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not update Book into database", e);
@@ -224,8 +255,7 @@ public class BookDAO implements IBookDAO {
 				books.add(book);
 			} while (resultSet.next());
 			return books;
-		}	
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Error fetching the list of Book for this category", e);
