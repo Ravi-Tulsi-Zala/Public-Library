@@ -14,5 +14,6 @@ public interface IBookDAO {
 	public List<Book> getBookByCategory(String category);
 	public List<Book> getTopBooks();
 	public List<String> getBookCategories();
+	public boolean checkBookDuplicacy(Book book);
 }
 
