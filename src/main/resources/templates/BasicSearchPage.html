@@ -18,7 +18,7 @@
 	   	<div>	   	  
 	      <form id="simpleSearchForm" onsubmit="return validateSearchForm()" method="post" th:action="@{/basicSearch}"
 	      			style="float:left;line-height: 3em;">
-	      	<input id="searchTerms" type="text" th:field="${basicSearchRequest.searchTerms}" style="width:100px;"/>
+	      	<input id="searchTerms" type="text" th:field="${searchTermsAndPage.searchTerms}" style="width:100px;"/>
 	      	<input type="submit">   	
 	      </form>
 	      <h1 style="text-align: center;">Welcome To The Library!</h1>

@@ -34,7 +34,4 @@ public class UserItem implements IUserItem {
 	public void setStatus(short status) {
 		this.status = status;
 	}
-	
-	
-
 }

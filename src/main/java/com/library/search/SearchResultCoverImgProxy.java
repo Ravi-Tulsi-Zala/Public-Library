@@ -22,13 +22,9 @@ public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 
 	@Override
 	public void loadCoverImages(SearchResults searchResults, String requestedPageNumber, HttpSession httpSession) {
-		
 		String sessionResultsPath = "searchResults" + SEPARATOR + httpSession.getId() + SEPARATOR;
 		
-		List<LibraryItem> items = new LinkedList<>(); // memory leak?
-		items.addAll(searchResults.getBooks());
-		items.addAll(searchResults.getMusic());
-		items.addAll(searchResults.getMovies());
+		List<LibraryItem> items = searchResults.getAllFoundItems();
 		
 		LinkedList<String> resultPagesForSession = sessionIdToRequestedPageResults.get(httpSession.getId());
 		if(null == resultPagesForSession) {
