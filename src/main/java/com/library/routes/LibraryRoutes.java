@@ -183,37 +183,44 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		return "AddItemPage";
 	}
 
-	public String redirectToMainPage(Messages message, ModelMap model) {
+	@RequestMapping("/addBook")
+	public String addBookToDatabase(ModelMap model, Book book, Cover coverBook) {
+
+		IAddBookController iAddBookController = LibraryFactorySingleton.instance().getFactory().makeAddBookController();
+		message = iAddBookController.addBookRecordInDatabase(book, coverBook.getCoverImage());
+		displayMessage = message.getMessage();
+		model.addAttribute("message", displayMessage);
+		redirectPage = mappingsForAddItem(model);
+		return redirectPage;
+		
+
+	}
+
+	@PostMapping("/addMovie")
+	public String addMovieToDatabase(ModelMap model, Movie movie, Cover coverMovie) {
+
+		IAddMovieController iAddMovieController = LibraryFactorySingleton.instance().getFactory()
+				.makeAddMovieController();
+		message = iAddMovieController.addMovieRecordInDatabase(movie, coverMovie.getCoverImage());
+		displayMessage = message.getMessage();
+		model.addAttribute("message", displayMessage);
+		redirectPage = mappingsForAddItem(model);
+		return redirectPage;
 	
+	}
+
+	@PostMapping("/addMusic")
+	public String addMusicToDatabase(ModelMap model, Music music, Cover coverMusic) {
+
+		IAddMusicController iAddMusicController = LibraryFactorySingleton.instance().getFactory()
+				.makeAddMusicController();
+		message = iAddMusicController.addMusicRecordInDatabase(music, coverMusic.getCoverImage());
 		displayMessage = message.getMessage();
 		model.addAttribute("message", displayMessage);
 		redirectPage = mappingsForAddItem(model);
 		return redirectPage;
 	}
 
-	@RequestMapping("/addBook")
-	public void addBookToDatabase(ModelMap model, Book book, Cover coverBook) {
-
-		IAddBookController iAddBookController = factory.makeAddBookController();
-		message = iAddBookController.addBookRecordInDatabase(book, coverBook.getCoverImage());
-		redirectToMainPage(message, model);
-	}
-
-	@PostMapping("/addMovie")
-	public void addMovieToDatabase(ModelMap model, Movie movie, Cover coverMovie) {
-
-		IAddMovieController iAddMovieController = factory.makeAddMovieController();
-		message = iAddMovieController.addMovieRecordInDatabase(movie, coverMovie.getCoverImage());
-		redirectToMainPage(message, model);
-	}
-
-	@PostMapping("/addMusic")
-	public void addMusicToDatabase(ModelMap model, Music music, Cover coverMusic) {
-
-		IAddMusicController iAddMusicController = factory.makeAddMusicController();
-		message = iAddMusicController.addMusicRecordInDatabase(music, coverMusic.getCoverImage());
-		redirectToMainPage(message, model);
-	}
 
 	@GetMapping("/welcome")
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem) {
