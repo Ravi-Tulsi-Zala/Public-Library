@@ -1,34 +1,56 @@
 package com.library.search;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.library.businessModels.Book;
-import com.library.businessModels.Movie;
-import com.library.businessModels.Music;
+import com.library.businessModels.LibraryItem;
 
 public class SearchResults {
-	private LinkedList<Book> bookSearchResults = new LinkedList<Book>();
-	private LinkedList<Music> musicSearchResults = new LinkedList<Music>();
-	private LinkedList<Movie> movieSearchResults = new LinkedList<Movie>();
+	private final int DESPLAY_ROW_SIZE = 10; // should move to the configuration file
+	private ArrayList<List<LibraryItem>> searchResultsPerCategory = new ArrayList<List<LibraryItem>>();
 
-	public LinkedList<Book> getBookSearchResults() {
-		return bookSearchResults;
-	}
-	public void setBookSearchResults(LinkedList<Book> bookSearchResults) {
-		this.bookSearchResults = bookSearchResults;
-	}
-	public List<Music> getMusicSearchResults() {
-		return musicSearchResults;
-	}
-	public void setMusicSearchResults(LinkedList<Music> musicSearchResults) {
-		this.musicSearchResults = musicSearchResults;
-	}
-	public List<Movie> getMovieSearchResults() {
-		return movieSearchResults;
-	}
-	public void setMovieSearchResults(LinkedList<Movie> movieSearchResults) {
-		this.movieSearchResults = movieSearchResults;
+	public boolean isNotEmpty() {
+		for(List<LibraryItem> categoryResult : searchResultsPerCategory) {
+			if(!categoryResult.isEmpty()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
+	public List<LibraryItem> getAllFoundItems() {
+		List<LibraryItem> allItems = new LinkedList<LibraryItem>();
+		for(List<LibraryItem> categoryResult : searchResultsPerCategory) {
+			allItems.addAll(categoryResult);
+		}
+		return allItems;
+	}
+	
+
+	
+	public void addSearchResultsForCategory(List<LibraryItem> resultsPerCategory) {
+		searchResultsPerCategory.add(resultsPerCategory);
+	}
+
+	public SearchResults getResultSetForPageNumber(int requestedPageNumber) {
+		SearchResults results = new SearchResults();
+		for(List<LibraryItem> categoryResult : searchResultsPerCategory) {
+			List<LibraryItem> resultsForCurrentCategory = new LinkedList<LibraryItem>();
+			Iterator<LibraryItem> iterator = categoryResult.iterator();
+			for(int i=0; i < (requestedPageNumber -1)*DESPLAY_ROW_SIZE && iterator.hasNext(); i++) {
+				iterator.next();
+			}
+			for(int i=0; i < DESPLAY_ROW_SIZE && iterator.hasNext(); i++) {
+				resultsForCurrentCategory.add(iterator.next()); 
+			}
+			results.addSearchResultsForCategory(resultsForCurrentCategory);
+		}
+		return results;
+	}
+	
+	public ArrayList<List<LibraryItem>> getSearchResultsPerCategory() {
+		return searchResultsPerCategory;
+	}
 }

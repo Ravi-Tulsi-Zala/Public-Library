@@ -1,9 +1,10 @@
 package com.library.IBussinessModelSetter;
 
 import java.sql.ResultSet;
+import java.util.List;
 
 import com.library.businessModels.Movie;
 
 public interface IMovieSetter {
-	public Movie mapMovie(ResultSet resultSet);
+	public List<Movie> mapMovie(ResultSet resultSet);
 }

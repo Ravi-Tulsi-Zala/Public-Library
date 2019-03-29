@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.library.BussinessModelSetter.CoverMapper;
+import com.library.BussinessModelSetter.CoverSetter;
 import com.library.IDAO.ICoverDAO;
 import com.library.businessModels.Cover;
 import com.library.dbConnection.DatabaseConnection;
@@ -19,7 +19,7 @@ public class CoverDAO implements ICoverDAO {
 	private final String DELETE_COVER_BY_ITEM_ID_QUERY = "DELETE FROM covers WHERE Item_ID = ?";
 	private PreparedStatement preparedStatement;
 	private Connection dbConnection;
-	private CoverMapper coverMapper = new CoverMapper();
+	private CoverSetter coverMapper = new CoverSetter();
 	
 	public CoverDAO() {
 			DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
@@ -33,7 +33,7 @@ public class CoverDAO implements ICoverDAO {
 			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
-				return coverMapper.mapCover(resultSet);
+				return coverMapper.setCover(resultSet);
 			}
 			return null;
 		} catch (SQLException e) {
@@ -71,7 +71,6 @@ public class CoverDAO implements ICoverDAO {
 				}
 			}
 		}
-		
 		return false;
 	}
 

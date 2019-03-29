@@ -1,7 +1,6 @@
 package com.library.browsePage;
 
 import java.util.List;
-
 import com.library.DAOFactory.DAOFactory;
 import com.library.DAOFactory.IDAOFactory;
 import com.library.IBussinessModelSetter.IDisplaySetter;
@@ -32,8 +31,8 @@ public class BrowseBooks implements IBrowseDisplayObjects{
 
 	@Override
 	public List<String> getCategories() {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> categories = bookDAO.getBookCategories();
+		return categories;
 	}
 
 	@Override
