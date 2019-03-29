@@ -203,8 +203,6 @@ public class MusicDAO implements IMusicDAO {
 		if(!requestDetails.isSearchInMusic()) {
 			return musics;
 		}
-		
-		Music music;
 		String query = prepareSearchQuery(requestDetails, searchTerms);
 		
 		if(null ==query) {
@@ -222,5 +220,50 @@ public class MusicDAO implements IMusicDAO {
 		}
 
 		return musics;
+	}
+	
+	@Override
+	public List<String> getMusicCategories()
+	{
+		List<String> categories = new ArrayList<String>();
+		query = "SELECT Distinct Category from music";
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next())
+			{
+				categories.add(resultSet.getString("Category"));
+			} 
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the list of Music Categories", e);
+		}
+		return categories;
+	}
+	
+	@Override
+	public Boolean getAvailability(int itemID)
+	{
+		Boolean availability = false;
+		int musicsAvailable = 0; 
+		try {
+			query = "Select Availability from music where Item_ID = ?";
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(0,itemID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			musicsAvailable = resultSet.getInt(0);
+		}	
+		catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the availability of Music", e);
+		}
+		
+		if(musicsAvailable>0)
+		{
+			availability = true;
+		}
+		return availability;
 	}
 }

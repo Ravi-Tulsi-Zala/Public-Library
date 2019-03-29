@@ -207,8 +207,6 @@ public class MovieDAO implements IMovieDAO {
 		if(!requestDetails.isSearchInMovies()) {
 			return movies;
 		}
-		
-		Movie movie;
 		String query = prepareSearchQuery(requestDetails, searchTerms);
 		
 		if(null ==query) {
@@ -226,5 +224,50 @@ public class MovieDAO implements IMovieDAO {
 		}
 
 		return movies;
+	}
+	
+	@Override
+	public List<String> getMovieCategories()
+	{
+		List<String> categories = new ArrayList<String>();
+		query = "SELECT Distinct Category from movie";
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next())
+			{
+				categories.add(resultSet.getString("Category"));
+			}
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the list of Movie Categories", e);
+		}
+		return categories;
+	}
+	
+	@Override
+	public Boolean getAvailability(int itemID)
+	{
+		Boolean availability = false;
+		int moviesAvailable = 0; 
+		try {
+			query = "Select Availability from movie where Item_ID = ?";
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(0,itemID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			moviesAvailable = resultSet.getInt(0);
+		}	
+		catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the availability of Movie", e);
+		}
+		
+		if(moviesAvailable>0)
+		{
+			availability = true;
+		}
+		return availability;
 	}
 }

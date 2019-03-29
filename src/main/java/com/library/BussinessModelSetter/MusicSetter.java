@@ -14,7 +14,7 @@ public class MusicSetter implements IMusicSetter{
 	public List<Music> mapMusic(ResultSet resultSet) {
 		List<Music> musics = new ArrayList<Music>();
 		try {
-			if(resultSet.next())
+			while(resultSet.next())
 			{
 				Music music = new Music();
 				music.setTitle(resultSet.getString("Title"));

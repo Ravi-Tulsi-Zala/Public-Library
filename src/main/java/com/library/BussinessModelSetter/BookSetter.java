@@ -14,7 +14,7 @@ public class BookSetter implements IBookSetter {
 		List<Book> books = new ArrayList<Book>();
 		
 		try {
-			if(resultSet.next())
+			while(resultSet.next())
 			{
 				Book book = new Book();
 				book.setIsbn(resultSet.getInt("ISBN"));

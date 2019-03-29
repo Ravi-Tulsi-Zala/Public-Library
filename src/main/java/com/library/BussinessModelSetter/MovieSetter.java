@@ -15,7 +15,7 @@ public class MovieSetter implements IMovieSetter {
 		
 		List<Movie> movies = new ArrayList<Movie>();
 		try {
-			if(resultSet.next())
+			while(resultSet.next())
 			{
 				Movie movie = new Movie();
 				movie.setCategory(resultSet.getString("Category"));
