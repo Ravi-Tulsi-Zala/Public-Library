@@ -37,7 +37,9 @@ import com.library.search.SearchTermsAndPage;
 import com.library.search.SearchRequest;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.ISignInController;
+import com.library.signIn.SignInController;
 import com.library.signUp.ISignUpController;
+import com.library.validatations.ValidateUserForms;
 import com.library.welcomePage.IWelcomeController;
 import com.library.welcomePage.WelcomePageController;
 
@@ -145,9 +147,10 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@PostMapping("/signIn")
 	public String processSignInForm(HttpSession httpSession, ModelMap model, User user) {
+		Logger logger = LogManager.getLogger(SignInController.class);
 		try {
 			ISignInController signIn = LibraryFactorySingleton.instance().getFactory().signIn(user, httpSession);
-			list = signIn.authenticateSignIn();
+			list = signIn.validateSignIn();
 			for (int index = 0; index < list.size(); index++) {
 				model.addAttribute(list.get(index).getKey(), list.get(index).getValue());
 			}
@@ -158,7 +161,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			}
 			return signIn.checkUserCredential();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL, "Something went wrong while signing in the User, please check detailed logs.", e);
 			return "ErrorPage"; // Something went wrong page.
 		}
 	}
@@ -234,9 +237,9 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem) {
 		Logger logger = LogManager.getLogger(WelcomePageController.class);
 		IWelcomeController welcomeCtrl = LibraryFactorySingleton.instance().getFactory().welcomePage();
-		List<Book> book,favBooks;
-		List<Movie> movie,favMovies;
-		List<Music> music,favMusic;
+		List<Book> book, favBooks;
+		List<Movie> movie, favMovies;
+		List<Music> music, favMusic;
 		try {
 			book = welcomeCtrl.getBookItems();
 			movie = welcomeCtrl.getMovieItems();
