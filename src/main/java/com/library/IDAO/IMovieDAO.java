@@ -14,7 +14,7 @@ public interface IMovieDAO {
 	public Boolean updateMovie(Movie movie);
 	public Boolean deleteMovie(Movie movie);
 	public LinkedList<Movie> getMoviesBySearchTerms(IMovieSearchRequestDetails searchRequestDetails);
-
+	public boolean checkMovieDuplicacy(Movie movie);
 	
 	
 }

@@ -5,6 +5,7 @@ import com.library.DAOFactory.DAOFactory;
 import com.library.DAOFactory.IDAOFactory;
 import com.library.IDAO.IMovieDAO;
 import com.library.businessModels.Movie;
+import com.library.messages.Messages;
 import com.library.routes.ILibraryFactory;
 import com.library.routes.LibraryControllerFactory;
 import com.library.routes.LibraryFactorySingleton;
@@ -14,7 +15,7 @@ public class AddMovieController implements IAddMovieController {
 	IDAOFactory factory;
 	int itemIdOfMovie;
 	IMovieDAO iMovieDAO;
-	boolean isMovieCreated, isMovieCoverCreated;
+	boolean isMovieCreated, isMovieCoverCreated, isDuplicateMovie;
 
 	public AddMovieController() {
 
@@ -24,18 +25,25 @@ public class AddMovieController implements IAddMovieController {
 		LibraryFactorySingleton.instance().build(iLibraryfactory);
 	}
 
-	public boolean addMovieRecordInDatabase(Movie movie, MultipartFile movieCoverImage) {
+	public Messages addMovieRecordInDatabase(Movie movie, MultipartFile movieCoverImage) {
+
+		isDuplicateMovie = iMovieDAO.checkMovieDuplicacy(movie);
+		if (isDuplicateMovie) {
+			return Messages.ERROR_DUPLICATE_MOVIE;
+		}
 
 		itemIdOfMovie = iMovieDAO.createMovie(movie);
 		if (itemIdOfMovie == 0) {
-			isMovieCreated = false;
+
+			return Messages.ERROR_MOVIE_CAN_NOT_BE_CREATED;
+
 		} else {
 			isMovieCoverCreated = LibraryFactorySingleton.instance().getFactory().makeItemCoverSetter()
 					.isCoverAddedToDatabase(itemIdOfMovie, movieCoverImage);
-			isMovieCreated = true;
+			return Messages.SUCCESS_MOVIE;
 
 		}
-		return (isMovieCreated && isMovieCoverCreated);
+	
 	}
 
 }

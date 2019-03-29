@@ -1,4 +1,4 @@
-  package com.library.DAO;
+package com.library.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -97,24 +97,23 @@ public class MovieDAO implements IMovieDAO {
 		String movieDirector = movie.getDirector();
 		String movieDescription = movie.getDescription();
 		int movieAvailability = movie.getAvailability();
-		
+
 		try {
 			query = "INSERT INTO movie (Category,Title,Director,Description,Availability) VALUES (?, ?, ?, ?, ?)";
-			preparedStatement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+			preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, movieCategory);
 			preparedStatement.setString(2, movieTitle);
 			preparedStatement.setString(3, movieDirector);
 			preparedStatement.setString(4, movieDescription);
 			preparedStatement.setInt(5, movieAvailability);
 			preparedStatement.executeUpdate();
-			
+
 			ResultSet rs = preparedStatement.getGeneratedKeys();
 			if (rs.next()) {
-			    recentlyAddedMovieId = rs.getInt(1);
+				recentlyAddedMovieId = rs.getInt(1);
 			}
-			
-			return recentlyAddedMovieId ;
-			
+
+			return recentlyAddedMovieId;
 
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
@@ -134,7 +133,7 @@ public class MovieDAO implements IMovieDAO {
 		String movieDescription = movie.getDescription();
 		int movieAvailability = movie.getAvailability();
 		int movieItemId = movie.getItemID();
-		
+
 		try {
 			query = "UPDATE movie SET Category=?,Title=?,Director=?,Description=?,Availability=? WHERE Item_ID=? ";
 			preparedStatement = connection.prepareStatement(query);
@@ -159,9 +158,9 @@ public class MovieDAO implements IMovieDAO {
 
 	@Override
 	public Boolean deleteMovie(Movie movie) {
-		
+
 		int movieItemId = movie.getItemID();
-		
+
 		try {
 			query = "DELETE from movie WHERE Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
@@ -209,8 +208,8 @@ public class MovieDAO implements IMovieDAO {
 		LinkedList<Movie> movies = new LinkedList<Movie>();
 		Movie movie;
 		String query = prepareSearchQuery(searchRequestDetails);
-		
-		if(null ==query) {
+
+		if (null == query) {
 			return movies;
 		}
 
@@ -230,4 +229,32 @@ public class MovieDAO implements IMovieDAO {
 
 		return movies;
 	}
+
+	public boolean checkMovieDuplicacy(Movie movie) {
+		String directorToBeAdded = movie.getDirector();
+		String titleToBeAdded = movie.getTitle();
+		boolean isMovieAvailable = false;
+
+		query = "SELECT * FROM movie where Title=? and Director=?";
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, titleToBeAdded);
+			preparedStatement.setString(2, directorToBeAdded);
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				isMovieAvailable = true;
+			} else {
+				isMovieAvailable = false;
+			}
+
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the list of Movies", e);
+		}
+
+		return isMovieAvailable;
+	}
+
 }
