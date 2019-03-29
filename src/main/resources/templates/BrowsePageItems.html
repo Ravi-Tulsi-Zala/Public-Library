@@ -37,7 +37,7 @@
         
         <div class = "BreadCrumbs" style = "margin-left:5%">
         	<ul class="breadcrumb">
-  				<a href=""><b><li th:text=${itemType}> </li></b></a>
+  				<a th:href="@{'/BrowsePage/'+${itemType}}"><b><li th:text=${itemType}> </li></b></a>
   				/
   				<b><li th:text=${category}></li></b>
 			</ul>

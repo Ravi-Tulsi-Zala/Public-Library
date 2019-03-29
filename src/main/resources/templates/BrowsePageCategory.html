@@ -38,14 +38,15 @@
         
         <div class = "BreadCrumbs" style = "margin-left:5%">
         	<ul class="breadcrumb">
-  				<B><li th:text=${itemType}></li></B>
+  				<B><li th:text=${itemType} ></li></B>
 			</ul>
         </div>
         
         
         <div style="width: 9%; display: inline-block; vertical-align: top;" 
         th:each="category:${categories}">
-			<a href="/BrowsePage/Book/Horror" th:text="${category}">
+        <li th:text=${itemType} ></li>
+			<a th:href="@{'/BrowsePage/' + ${itemType} + '/' + ${category}}" th:text="${category}">
 			</a>
 		</div>
         

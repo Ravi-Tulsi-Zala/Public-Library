@@ -26,13 +26,14 @@ public class BrowsePageController {
 		if (itemType.equals("Book")) {
 			browseDisplayObjects = browseFactory.makeBookDisplay();
 		} else if (itemType.equals("Movie")) {
-			browseDisplayObjects = browseFactory.makeMusicDisplay();
+			browseDisplayObjects = browseFactory.makeMovieDisplay();
 		} else if (itemType.equals("Music")) {
 			browseDisplayObjects = browseFactory.makeMusicDisplay();
 		}
 		categories = browseDisplayObjects.getCategories();
 		model.addAttribute("categories", categories);
-		model.addAttribute(itemType);
+		model.addAttribute("itemType", itemType);
+//		model.addAttribute(itemType);
 		return "BrowsePageCategory";
 	}
 	
@@ -51,6 +52,7 @@ public class BrowsePageController {
 		
 		displayItems = browseDisplayObjects.itemsByCategory(category);
 		model.addAttribute("displayItems",displayItems);
+
 		model.addAttribute(itemType);
 		model.addAttribute(category);
 		return "BrowsePageItems";
