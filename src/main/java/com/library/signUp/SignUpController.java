@@ -17,9 +17,9 @@ import com.library.businessModels.Salt;
 import com.library.businessModels.User;
 import com.library.businessModels.UserBasicInfo;
 import com.library.businessModels.UserExtendedInfo;
-import com.library.signIn.AuthenticateUserForms;
-import com.library.signIn.AuthenticationAbstract;
 import com.library.signIn.SignInController;
+import com.library.validatations.ValidateUserForms;
+import com.library.validatations.ValidateUserFormsAbstract;
 
 public class SignUpController implements ISignUpController {
 	private List<Entry<String, String>> listofValidationErrors = null;
@@ -32,6 +32,9 @@ public class SignUpController implements ISignUpController {
 	public SignUpController(User user) {
 		this.user = user;
 		this.salt = new Salt();
+		ValidateUserForms vforms = new ValidateUserForms();
+		vforms.setErrorStringToHTML();
+		vforms.setValidationRules();
 	}
 
 	public ArrayList<Entry<String, String>> authenticateSignUp() {
@@ -45,7 +48,7 @@ public class SignUpController implements ISignUpController {
 			userExtendedInfo.setCPassword(user.getCpassword());
 			userExtendedInfo.setFullname(user.getFullName());
 			userExtendedInfo.setPhone(user.getPhoneNumber());
-			listofValidationErrors = AuthenticateUserForms.instance().signUpUserData(userBasicInfo, userExtendedInfo);
+			listofValidationErrors = ValidateUserForms.instance().signUpUserData(userBasicInfo, userExtendedInfo);
 			if (listofValidationErrors.size() == 0) {
 				boolean status = registerUser();
 				if (status) {
@@ -61,7 +64,7 @@ public class SignUpController implements ISignUpController {
 	}
 
 	private void addSaltToPassword() {
-		salt.setSaltedPassword(user.getPassword(), AuthenticationAbstract.saltValue);
+		salt.setSaltedPassword(user.getPassword(), ValidateUserFormsAbstract.saltValue);
 	}
 
 	private boolean registerUser() throws Exception {

@@ -5,8 +5,8 @@ import java.util.Map.Entry;
 
 public interface ISignInController {
 
-	public List<Entry<String, String>> authenticateSignIn();
+	public List<Entry<String, String>> validateSignIn() throws Exception;
 
-	public String checkUserCredential();
+	public String checkUserCredential() throws Exception;
 
 }
