@@ -49,16 +49,19 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@Inject
 	private IDBSearchController dbSearchController;
 	private static String securityQuestionValue;
-	
+	private ILibraryFactory factory = null;
+	private LibraryFactorySingleton libraryInstance = null;
+
 	public LibraryRoutes() {
-		ILibraryFactory factory = new LibraryControllerFactory();
-		LibraryFactorySingleton.instance().build(factory);
+//		LibraryFactorySingleton.instance().build(factory);
+		libraryInstance = LibraryFactorySingleton.instance();
+		factory = libraryInstance.getFactory();
 	}
 
 	@PostMapping("/signUp")
 	public String processSignUpForm(ModelMap model, User user) {
 		try {
-			ISignUpController signUpCreate = LibraryFactorySingleton.instance().getFactory().signUp(user);
+			ISignUpController signUpCreate = factory.signUp(user);
 			list = signUpCreate.authenticateSignUp();
 			for (int i = 0; i < list.size(); i++) {
 				model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
@@ -95,11 +98,11 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/advancedSearch")
-	public String executeAdvancedSearch(HttpSession httpSession, ModelMap model,SearchTermsAndPage termsAndPage,
+	public String executeAdvancedSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage,
 			BookSearch bookSearch, MusicSearch musicSearch, MoviesSearch moviesSearch) {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
-			SearchResults searchResults = 
-					executeSearch(httpSession, termsAndPage, bookSearch, musicSearch, moviesSearch);
+			SearchResults searchResults = executeSearch(httpSession, termsAndPage, bookSearch, musicSearch,
+					moviesSearch);
 			model.addAttribute("searchResults", searchResults);
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 			return "AdvancedSearchResultsPage";
@@ -115,17 +118,16 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/basicSearch")
-	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage, 
+	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage,
 			BookSearch bookSearch, MusicSearch musicSearch, MoviesSearch moviesSearch) {
-		SearchResults searchResults = 
-				executeSearch(httpSession, termsAndPage, bookSearch, musicSearch, moviesSearch);
+		SearchResults searchResults = executeSearch(httpSession, termsAndPage, bookSearch, musicSearch, moviesSearch);
 		model.addAttribute("searchResults", searchResults);
 		model.addAttribute("searchResults", searchResults);
 		return "BasicSearchResultsPage";
 
 	}
-	
-	private SearchResults executeSearch(HttpSession httpSession, SearchTermsAndPage termsAndPage, BookSearch bookSearch, 
+
+	private SearchResults executeSearch(HttpSession httpSession, SearchTermsAndPage termsAndPage, BookSearch bookSearch,
 			MusicSearch musicSearch, MoviesSearch moviesSearch) {
 		SearchRequest sr = new SearchRequest();
 		sr.addSearchTermsAndResultsPage(termsAndPage);
@@ -149,7 +151,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	public String processSignInForm(HttpSession httpSession, ModelMap model, User user) {
 		Logger logger = LogManager.getLogger(SignInController.class);
 		try {
-			ISignInController signIn = LibraryFactorySingleton.instance().getFactory().signIn(user, httpSession);
+			ISignInController signIn = factory.signIn(user, httpSession);
 			list = signIn.validateSignIn();
 			for (int index = 0; index < list.size(); index++) {
 				model.addAttribute(list.get(index).getKey(), list.get(index).getValue());
@@ -236,7 +238,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@GetMapping("/welcome")
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem) {
 		Logger logger = LogManager.getLogger(WelcomePageController.class);
-		IWelcomeController welcomeCtrl = LibraryFactorySingleton.instance().getFactory().welcomePage();
+		IWelcomeController welcomeCtrl = factory.welcomePage();
 		List<Book> book, favBooks;
 		List<Movie> movie, favMovies;
 		List<Music> music, favMusic;
@@ -281,8 +283,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@GetMapping(value = "/forgotPassword")
 	public String getForgotPasswordForm(ModelMap model, RecoverPassword recoverPassword) {
-		IForgotPasswordController fPwdCntrl = LibraryFactorySingleton.instance().getFactory()
-				.forgotPassword(recoverPassword);
+		IForgotPasswordController fPwdCntrl = factory.forgotPassword(recoverPassword);
 		securityQuestionValue = fPwdCntrl.setQuestion();
 		model.addAttribute("securityQuestion", securityQuestionValue);
 		return "ForgotPassword";
@@ -291,8 +292,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@PostMapping(value = "/forgotPassword")
 	public String processForgotPasswordUserForm(ModelMap model, RecoverPassword recoverPassword) {
 		recoverPassword.setSecurityQuestion(securityQuestionValue);
-		IForgotPasswordController fPwdCntrl = LibraryFactorySingleton.instance().getFactory()
-				.forgotPassword(recoverPassword);
+		IForgotPasswordController fPwdCntrl = factory.forgotPassword(recoverPassword);
 		if (fPwdCntrl.recoverPassword()) {
 			return "Welcome";
 		} else {
