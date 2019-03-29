@@ -2,6 +2,15 @@
 	<html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<style type="text/css" media="screen">
+		
+			img {
+				border: 5px solid #fff;
+				border-radius: 5px;
+				padding: 7px;
+				width: 100px;
+				height: 100px;
+				float: right;
+			}
 
 			ul.breadcrumb {
 			  padding: 10px 16px;
@@ -43,9 +52,9 @@
 			</ul>
         </div>
         
-  
         <div style="width: 9%; display: inline-block; vertical-align: top;" th:each="displayItem:${displayItems}">
         	<img th:src="${'data:image/png;base64,'+displayItem.image}" />
+        	<a th:text=${displayItem.title}></a>
 		</div>
         
 	</body>
