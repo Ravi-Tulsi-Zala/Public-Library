@@ -29,12 +29,11 @@ public class SignUpController implements ISignUpController {
 	private Salt salt = null;
 	private static final Logger logger = LogManager.getLogger(SignUpController.class);
 
-	public SignUpController(User user) {
+	public SignUpController(User user) throws Exception {
 		this.user = user;
 		this.salt = new Salt();
-		ValidateUserForms vforms = new ValidateUserForms();
-		vforms.setErrorStringToHTML();
-		vforms.setValidationRules();
+		ValidateUserForms.instance().setErrorStringToHTML();
+		ValidateUserForms.instance().setValidationRules();
 	}
 
 	public ArrayList<Entry<String, String>> authenticateSignUp() {
