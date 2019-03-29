@@ -29,7 +29,7 @@ public class LibraryControllerFactory implements ILibraryFactory {
 	}
 
 	@Override
-	public ISignUpController signUp(User user) {
+	public ISignUpController signUp(User user) throws Exception {
 		return new SignUpController(user);
 	}
 
