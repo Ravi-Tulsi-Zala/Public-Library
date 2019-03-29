@@ -24,7 +24,7 @@ import com.library.welcomePage.WelcomePageController;
 public class LibraryControllerFactory implements ILibraryFactory {
 
 	@Override
-	public ISignInController signIn(User user, HttpSession httpSession) {
+	public ISignInController signIn(User user, HttpSession httpSession) throws Exception {
 		return new SignInController(user, httpSession);
 	}
 

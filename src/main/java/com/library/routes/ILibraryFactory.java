@@ -14,7 +14,7 @@ import com.library.signUp.ISignUpController;
 import com.library.welcomePage.IWelcomeController;
 
 public interface ILibraryFactory{
-	public ISignInController signIn(User user,HttpSession httpSession);
+	public ISignInController signIn(User user,HttpSession httpSession) throws Exception;
 	public ISignUpController signUp(User user);
 	public IForgotPasswordController forgotPassword(RecoverPassword recoverDetails);
 	public IAddBookController makeAddBookController();
