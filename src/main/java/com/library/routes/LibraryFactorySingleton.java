@@ -12,11 +12,7 @@ public class LibraryFactorySingleton {
 	}
 
 	public ILibraryFactory getFactory() {
-		return factory;
+		return new LibraryControllerFactory();
 	}
-
-//	public void build(ILibraryFactory factory) {
-//		this.factory = factory;
-//	}
 
 }
