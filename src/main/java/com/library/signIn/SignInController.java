@@ -16,9 +16,11 @@ import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.Salt;
 import com.library.businessModels.User;
 import com.library.businessModels.UserBasicInfo;
+import com.library.validatations.ValidateUserForms;
+import com.library.validatations.ValidateUserFormsAbstract;
 import com.library.welcomePage.AdminPage;
 
-public class SignInController implements ISignInController {
+public class SignInController implements ISignInController{
 
 	private IUserBasicInfo userBasicInfo = null;
 	private User user = null;
@@ -27,14 +29,16 @@ public class SignInController implements ISignInController {
 	private List<Entry<String, String>> listofValidationErrors = null;
 	private static final Logger logger = LogManager.getLogger(SignInController.class);
 
-	public SignInController(User user, HttpSession httpSession) {
+	public SignInController(User user, HttpSession httpSession) throws Exception {
 		this.user = user;
-		salt = new Salt();
-		userBasicInfo = new UserBasicInfo();
+		this.salt = new Salt();
+		this.userBasicInfo = new UserBasicInfo();
 		this.httpSession = httpSession;
+		ValidateUserForms.instance().setErrorStringToHTML();
+		ValidateUserForms.instance().setValidationRules();
 	}
 
-	public String checkUserCredential() {
+	public String checkUserCredential() throws Exception{
 		DAOFactory factory = new DAOFactory();
 		IUserDAO userDAO = factory.makeUserDAO();
 		addSaltToPassword();
@@ -43,26 +47,28 @@ public class SignInController implements ISignInController {
 			AdminPage.setAdminAvailable(false);
 			return "Welcome";
 
-		} else if (userBasicInfo.getEmail().equals(AuthenticationAbstract.isAdmin)
-				&& userBasicInfo.getPassword().equals(AuthenticationAbstract.isAdminPwd)) {
+		} else if (userBasicInfo.getEmail().equals(ValidateUserFormsAbstract.isAdmin)
+				&& userBasicInfo.getPassword().equals(ValidateUserFormsAbstract.isAdminPwd)) {
 			AdminPage.setAdminAvailable(true);
 			return "Welcome";
 		}
-		return "SignInForm";
+		logger.log(Level.ALL, "checkUserCredential method implemented successfully.");
+		return "Welcome";
 	}
 
 	private void addSaltToPassword() {
-		salt.setSaltedPassword(user.getPassword(), AuthenticationAbstract.saltValue);
+		salt.setSaltedPassword(user.getPassword(), ValidateUserFormsAbstract.saltValue);
 	}
 
-	public ArrayList<Entry<String, String>> authenticateSignIn() {
+	public ArrayList<Entry<String, String>> validateSignIn() throws Exception {
 		userBasicInfo.setEmail(user.getEmail());
 		userBasicInfo.setPassword(user.getPassword());
-		listofValidationErrors = AuthenticateUserForms.instance().signInUserData(userBasicInfo);
+		listofValidationErrors = ValidateUserForms.instance().signInUserData(userBasicInfo);
 		if (listofValidationErrors.size() == 0) {
 			AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, userBasicInfo.getEmail());
 
 		}
+		logger.log(Level.ALL, "validateSignIn method implemented successfully.");
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
 	}
 }
