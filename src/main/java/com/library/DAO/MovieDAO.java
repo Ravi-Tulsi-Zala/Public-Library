@@ -224,7 +224,6 @@ public class MovieDAO implements IMovieDAO {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				movie = movieSetter.mapMovie(resultSet);
-				movie = movieSetter.mapMovie(resultSet);
 				movies.add(movie);
 			}
 

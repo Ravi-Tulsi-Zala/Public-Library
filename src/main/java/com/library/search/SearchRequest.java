@@ -7,11 +7,11 @@ import com.library.businessModels.LibraryItem;
 
 public class SearchRequest implements ISearchRequest {
 	private SearchTermsAndPage termsAndPage = null;
-	private List<ISearchCategory> categoriesToSearch = new ArrayList<>();
+	private List<SearchCategory> categoriesToSearch = new ArrayList<>();
 
 	public SearchResults searchInDb() {
 		SearchResults searchResults = new SearchResults();
-		for(ISearchCategory category : categoriesToSearch) {
+		for(SearchCategory category : categoriesToSearch) {
 			List<LibraryItem> items = category.search(termsAndPage.getSearchTerms());
 			searchResults.addSearchResultsForCategory(items);
 		}
@@ -33,7 +33,7 @@ public class SearchRequest implements ISearchRequest {
 	}
 	
 	@Override
-	public void addCategoryToSearchIn(ISearchCategory categoryToSearch) {
+	public void addCategoryToSearchIn(SearchCategory categoryToSearch) {
 		categoriesToSearch.add(categoryToSearch);
 	}
 
