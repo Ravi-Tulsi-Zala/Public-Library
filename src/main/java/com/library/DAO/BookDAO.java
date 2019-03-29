@@ -100,6 +100,7 @@ public class BookDAO implements IBookDAO {
 	@Override
 	public List<LibraryItem> getBooksBySearchTerms(BookSearch requestDetails, String searchTerms) {
 		List<LibraryItem> books = new LinkedList<LibraryItem>();
+		List<Book> tempBooks = new ArrayList<>();
 		if(!requestDetails.isSearchInBooks()) {
 			return books;
 		}
@@ -114,7 +115,8 @@ public class BookDAO implements IBookDAO {
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			books = bookMapper.mapBook(resultSet);
+			tempBooks = bookMapper.mapBook(resultSet);
+			books.addAll(tempBooks);
 			return books;
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);

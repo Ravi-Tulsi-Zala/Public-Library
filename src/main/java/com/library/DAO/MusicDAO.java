@@ -199,6 +199,7 @@ public class MusicDAO implements IMusicDAO {
 	@Override
 	public List<LibraryItem> getMusicBySearchTerms(MusicSearch requestDetails, String searchTerms) {
 		List<LibraryItem> musics = new LinkedList<LibraryItem>();
+		List<Music> tempMusics = new ArrayList<>();
 		if(!requestDetails.isSearchInMusic()) {
 			return musics;
 		}
@@ -213,11 +214,8 @@ public class MusicDAO implements IMusicDAO {
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				music = musicSetter.mapMusic(resultSet);
-				musics.add(music);
-			}
-
+			tempMusics = musicSetter.mapMusic(resultSet);
+			musics.addAll(tempMusics);
 			return musics;
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);

@@ -202,6 +202,7 @@ public class MovieDAO implements IMovieDAO {
 
 	@Override
 	public List<LibraryItem> getMoviesBySearchTerms(MoviesSearch requestDetails, String searchTerms) {
+		List<Movie> tempMovie = new ArrayList<>();
 		List<LibraryItem> movies = new LinkedList<LibraryItem>();
 		if(!requestDetails.isSearchInMovies()) {
 			return movies;
@@ -217,11 +218,8 @@ public class MovieDAO implements IMovieDAO {
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				movie = movieSetter.mapMovie(resultSet);
-				movies.add(movie);
-			}
-
+			tempMovie = movieSetter.mapMovie(resultSet);
+			movies.addAll(tempMovie);
 			return movies;
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
