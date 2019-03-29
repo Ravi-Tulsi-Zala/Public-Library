@@ -53,7 +53,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	private LibraryFactorySingleton libraryInstance = null;
 
 	public LibraryRoutes() {
-//		LibraryFactorySingleton.instance().build(factory);
 		libraryInstance = LibraryFactorySingleton.instance();
 		factory = libraryInstance.getFactory();
 	}
