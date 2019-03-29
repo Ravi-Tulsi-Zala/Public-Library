@@ -42,15 +42,15 @@ public class MovieDAO implements IMovieDAO {
 	@Override
 	public Movie getMovieById(int itemID) {
 
+		List<Movie> movies = new ArrayList<Movie>();
 		Movie movie = new Movie();
 		query = "SELECT * from movie WHERE Item_ID = ?";
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				movie = movieSetter.mapMovie(resultSet);
-			}
+			movies = movieSetter.mapMovie(resultSet);
+			movie = movies.get(0);
 		} catch (SQLException e) {
 
 			logger.log(Level.ALL, "Check the SQL syntax", e);
@@ -65,7 +65,6 @@ public class MovieDAO implements IMovieDAO {
 	@Override
 	public List<Movie> getMoviesByCategory(String category) {
 
-		Movie movie = new Movie();
 		query = "SELECT * from movie WHERE Category LIKE ?";
 		List<Movie> moviesByCategory = new ArrayList<Movie>();
 
@@ -73,11 +72,7 @@ public class MovieDAO implements IMovieDAO {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, "%" + category + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				movie = new Movie();
-				movie = movieSetter.mapMovie(resultSet);
-				moviesByCategory.add(movie);
-			}
+			moviesByCategory = movieSetter.mapMovie(resultSet);
 
 		} catch (SQLException e) {
 
@@ -223,7 +218,6 @@ public class MovieDAO implements IMovieDAO {
 			preparedStatement = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				movie = movieSetter.mapMovie(resultSet);
 				movie = movieSetter.mapMovie(resultSet);
 				movies.add(movie);
 			}

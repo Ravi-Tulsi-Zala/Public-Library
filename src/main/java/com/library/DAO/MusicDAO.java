@@ -44,15 +44,14 @@ public class MusicDAO implements IMusicDAO {
 	public Music getMusicById(int itemID) {
 
 		Music music = new Music();
-
+		List<Music> musics = new ArrayList<>();
 		query = "SELECT * from music WHERE Item_ID = ?";
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				music = musicSetter.mapMusic(resultSet);
-			}
+			musics = musicSetter.mapMusic(resultSet);
+			music = musics.get(0);
 		} catch (SQLException e) {
 
 			logger.log(Level.ALL, "Check the SQL syntax", e);
@@ -65,8 +64,6 @@ public class MusicDAO implements IMusicDAO {
 
 	@Override
 	public List<Music> getMusicByCategory(String category) {
-
-		Music music = new Music();
 		query = "SELECT * from music WHERE Category LIKE ?";
 		List<Music> musicsByCategory = new ArrayList<Music>();
 
@@ -74,11 +71,7 @@ public class MusicDAO implements IMusicDAO {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, "%" + category + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				music = new Music();
-				music = musicSetter.mapMusic(resultSet);
-				musicsByCategory.add(music);
-			}
+			musicsByCategory = musicSetter.mapMusic(resultSet);
 		} catch (SQLException e) {
 
 			logger.log(Level.ALL, "Check the SQL syntax", e);

@@ -52,10 +52,8 @@ public class BookDAO implements IBookDAO {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.next()) {
-				return null;
-			}
-			book = bookMapper.mapBook(resultSet);
+			List<Book> books = bookMapper.mapBook(resultSet);
+			book = books.get(0);
 			return book;
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
@@ -116,11 +114,7 @@ public class BookDAO implements IBookDAO {
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				book = bookMapper.mapBook(resultSet);
-				books.add(book);
-			}
-
+			books = bookMapper.mapBook(resultSet);
 			return books;
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
@@ -242,18 +236,11 @@ public class BookDAO implements IBookDAO {
 	public List<Book> getBookByCategory(String category) {
 		try {
 			List<Book> books = new ArrayList<Book>();
-			Book book = new Book();
 			query = "SELECT * FROM books WHERE Category=?";
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, category);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.next()) {
-				return null;
-			}
-			do {
-				book = bookMapper.mapBook(resultSet);
-				books.add(book);
-			} while (resultSet.next());
+			books = bookMapper.mapBook(resultSet);
 			return books;
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
@@ -267,18 +254,11 @@ public class BookDAO implements IBookDAO {
 	public List<Book> getTopBooks() {
 		try {
 			List<Book> books = new ArrayList<Book>();
-			Book book = new Book();
 			query = "SELECT * FROM books order by books.Item_ID desc limit 2";
 			preparedStatement = connection.prepareStatement(query);
 //			preparedStatement.setString(1);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.next()) {
-				return null;
-			}
-			do {
-				book = bookMapper.mapBook(resultSet);
-				books.add(book);
-			} while (resultSet.next());
+			books = bookMapper.mapBook(resultSet);
 			return books;
 		}	
 		catch (SQLException e) {
@@ -297,9 +277,6 @@ public class BookDAO implements IBookDAO {
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.next()) {
-				return null;
-			}
 			do {
 				categories.add(resultSet.getString("Category"));
 			} while (resultSet.next());
