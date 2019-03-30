@@ -93,6 +93,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	public String getAdvancedSearchPage(HttpSession httpSession, ModelMap model) {
 		AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, "removeMeFromTheController@mail.com");
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
+			dbSearchController.clearPreviousSearch(httpSession);
 			model.addAttribute("searchTermsAndPage", new SearchTermsAndPage());
 			model.addAttribute("bookSearch", new BookSearch());
 			model.addAttribute("musicSearch", new MusicSearch());
@@ -117,7 +118,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@GetMapping("/basicSearch")
-	public String getSimpleSearchPage(ModelMap model) {
+	public String getSimpleSearchPage(ModelMap model, HttpSession httpSession) {
+		dbSearchController.clearPreviousSearch(httpSession);
 		model.addAttribute("searchTermsAndPage", new SearchTermsAndPage());
 		return "BasicSearchPage";
 
@@ -136,7 +138,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	private SearchResults executeSearch(HttpSession httpSession, SearchTermsAndPage termsAndPage, BookSearch bookSearch,
 			MusicSearch musicSearch, MoviesSearch moviesSearch) {
 		SearchRequest sr = new SearchRequest();
-		sr.addSearchTermsAndResultsPage(termsAndPage);
+		sr.setTermsAndPage(termsAndPage);
 		sr.addCategoryToSearchIn(bookSearch);
 		sr.addCategoryToSearchIn(musicSearch);
 		sr.addCategoryToSearchIn(moviesSearch);
