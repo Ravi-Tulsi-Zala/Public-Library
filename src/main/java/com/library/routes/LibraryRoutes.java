@@ -40,6 +40,7 @@ import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.ISignInController;
 import com.library.signIn.SignInController;
 import com.library.signUp.ISignUpController;
+import com.library.signUp.SignUpController;
 import com.library.welcomePage.IWelcomeController;
 import com.library.welcomePage.WelcomePageController;
 
@@ -62,9 +63,10 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@PostMapping("/signUp")
 	public String processSignUpForm(ModelMap model, User user) {
+		Logger logger = LogManager.getLogger(SignUpController.class);
 		try {
 			ISignUpController signUpCreate = factory.signUp(user);
-			list = signUpCreate.authenticateSignUp();
+			list = signUpCreate.validateSignUp();
 			for (int i = 0; i < list.size(); i++) {
 				model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
 			}
@@ -73,11 +75,13 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			if (model.size() > 2) {
 				return "SignUpForm";
 			}
+			else {
+				return "redirect:welcome";
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL, "Something went wrong while registering the User, please check detailed logs.", e);
+			return "redirect:ErrorPage";
 		}
-		return "Results";
-
 	}
 
 	@GetMapping("/signUp")
@@ -166,7 +170,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			return signIn.checkUserCredential();
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Something went wrong while signing in the User, please check detailed logs.", e);
-			return "ErrorPage"; // Something went wrong page.
+			return "redirect:ErrorPage"; // Something went wrong page.
 		}
 	}
 
@@ -192,7 +196,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("message", displayMessage);
 		redirectPage = mappingsForAddItem(model);
 		return redirectPage;
-		
 
 	}
 
@@ -206,7 +209,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("message", displayMessage);
 		redirectPage = mappingsForAddItem(model);
 		return redirectPage;
-	
+
 	}
 
 	@PostMapping("/addMusic")
@@ -220,7 +223,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		redirectPage = mappingsForAddItem(model);
 		return redirectPage;
 	}
-
 
 	@GetMapping("/welcome")
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem) {
