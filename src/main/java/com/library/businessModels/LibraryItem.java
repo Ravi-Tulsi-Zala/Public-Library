@@ -1,7 +1,5 @@
 package com.library.businessModels;
 
-import org.springframework.web.multipart.MultipartFile;
-
 public class LibraryItem {
 
 	private String description;

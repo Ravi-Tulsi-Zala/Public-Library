@@ -14,8 +14,7 @@ public class SearchRequest implements ISearchRequest {
 		for(SearchCategory category : categoriesToSearch) {
 			List<LibraryItem> items = category.search(termsAndPage.getSearchTerms());
 			searchResults.addSearchResultsForCategory(items);
-		}
-		
+		}	
 		return searchResults;
 	}
 	
