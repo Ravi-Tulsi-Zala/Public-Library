@@ -109,10 +109,10 @@ public class BookDAO implements IBookDAO {
 		Book book;
 		String query = prepareSearchQuery(requestDetails, searchTerms);
 
-		if(null ==query) {
+		if (null == query) {
 			return books;
 		}
-		
+
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();
@@ -125,7 +125,7 @@ public class BookDAO implements IBookDAO {
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
 		}
-		
+
 		return books;
 	}
 
@@ -180,7 +180,7 @@ public class BookDAO implements IBookDAO {
 		try {
 			query = "Insert into books (Category,Title,Author,ISBN,Publisher,Description,Availability) Values "
 					+ "(?,?,?,?,?,?,?)";
-			preparedStatement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+			preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, category);
 			preparedStatement.setString(2, title);
 			preparedStatement.setString(3, author);
@@ -189,15 +189,15 @@ public class BookDAO implements IBookDAO {
 			preparedStatement.setString(6, description);
 			preparedStatement.setInt(7, availablity);
 			preparedStatement.executeUpdate();
-			
+
 			ResultSet rs = preparedStatement.getGeneratedKeys();
-			
+
 			if (rs.next()) {
-			    recentlyAddedBookId = rs.getInt(1);
+				recentlyAddedBookId = rs.getInt(1);
 			}
-			
-			return recentlyAddedBookId ;
-			
+
+			return recentlyAddedBookId;
+
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
@@ -262,7 +262,7 @@ public class BookDAO implements IBookDAO {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public List<Book> getTopBooks() {
 		try {
@@ -280,18 +280,16 @@ public class BookDAO implements IBookDAO {
 				books.add(book);
 			} while (resultSet.next());
 			return books;
-		}	
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Error fetching the list of Book for this category", e);
 		}
 		return null;
 	}
-	
+
 	@Override
-	public List<String> getBookCategories()
-	{
+	public List<String> getBookCategories() {
 		List<String> categories = new ArrayList<String>();
 		query = "SELECT Category from books";
 		try {
@@ -308,7 +306,34 @@ public class BookDAO implements IBookDAO {
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Error fetching the list of Book Categories", e);
 		}
-		
+
 		return categories;
+	}
+
+	public boolean checkBookDuplicacy(Book book) {
+		String authorToBeAdded = book.getAuthor();
+		String titleToBeAdded = book.getTitle();
+		boolean isBookAvailable = false;
+		
+		query = "SELECT * FROM books where Title=? and Author=?";
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, titleToBeAdded);
+			preparedStatement.setString(2, authorToBeAdded);
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				isBookAvailable = true;
+			} else {
+				isBookAvailable = false;
+			}
+
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the list of Books", e);
+		}
+		
+		return isBookAvailable;
 	}
 }

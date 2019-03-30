@@ -12,5 +12,6 @@ public interface IMusicDAO {
 	public int createMusic(Music music);
 	public Boolean updateMusic(Music music);
 	public Boolean deleteMusic(Music music); 
+	public boolean checkMusicDuplicacy(Music music);
 	public List<LibraryItem> getMusicBySearchTerms(MusicSearch requestDetails, String searchTerms); 
 }
