@@ -60,6 +60,7 @@ public class UserDAO implements IUserDAO {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, emailAddress);
 			result = preparedStatement.executeQuery();
+			result.next();
 			databasePassword = result.getString("Password");
 			return databasePassword;
 		} catch (SQLException e) {

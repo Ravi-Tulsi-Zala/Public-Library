@@ -1,10 +1,12 @@
 package com.library.routes;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.Level;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.library.ForgotPassword.ForgotPasswordController;
 import com.library.ForgotPassword.IForgotPasswordController;
 import com.library.ForgotPassword.RecoverPassword;
 import com.library.additem.IAddBookController;
@@ -74,8 +77,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			// signifies a validation violation
 			if (model.size() > 2) {
 				return "SignUpForm";
-			}
-			else {
+			} else {
 				return "redirect:welcome";
 			}
 		} catch (Exception e) {
@@ -278,20 +280,34 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@GetMapping(value = "/forgotPassword")
 	public String getForgotPasswordForm(ModelMap model, RecoverPassword recoverPassword) {
-		IForgotPasswordController fPwdCntrl = factory.forgotPassword(recoverPassword);
-		securityQuestionValue = fPwdCntrl.setQuestion();
-		model.addAttribute("securityQuestion", securityQuestionValue);
+		Logger logger = LogManager.getLogger(ForgotPasswordController.class);
+		try {
+			IForgotPasswordController fPwdCntrl = factory.forgotPassword(recoverPassword);
+			securityQuestionValue = fPwdCntrl.setQuestion();
+			model.addAttribute("securityQuestion", securityQuestionValue);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Some generic error occured while in forgotPassword controller.", e);
+		}
 		return "ForgotPassword";
 	}
 
 	@PostMapping(value = "/forgotPassword")
 	public String processForgotPasswordUserForm(ModelMap model, RecoverPassword recoverPassword) {
-		recoverPassword.setSecurityQuestion(securityQuestionValue);
-		IForgotPasswordController fPwdCntrl = factory.forgotPassword(recoverPassword);
-		if (fPwdCntrl.recoverPassword()) {
-			return "Welcome";
-		} else {
-			return "Welcome";
+		Logger logger = LogManager.getLogger(ForgotPasswordController.class);
+		try {
+			recoverPassword.setSecurityQuestion(securityQuestionValue);
+			IForgotPasswordController fPwdCntrl = factory.forgotPassword(recoverPassword);
+			if (fPwdCntrl.recoverPassword()) {
+				return "redirect:signIn";
+			} else {
+				return "redirect:forgotPassword";
+			}
+		} catch (MessagingException | IOException em) {
+			logger.log(Level.ALL, "Some problem occured while sending a email.", em);
+			return "redirect:forgotPassword";
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Some generic error occured while in forgotPassword controller.", e);
+			return "redirect:forgotPassword";
 		}
 	}
 
