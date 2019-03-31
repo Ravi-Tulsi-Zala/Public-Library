@@ -6,5 +6,5 @@ import java.util.List;
 import com.library.businessModels.Book;
 
 public interface IBookSetter {
-	public Book mapBook(ResultSet resultSet);
+	public List<Book> mapBook(ResultSet resultSet);
 }

@@ -32,7 +32,8 @@ public class BrowseMusic implements IBrowseDisplayObjects{
 
 	@Override
 	public List<String> getCategories() {
-		return null;
+		List<String> categories = musicDAO.getMusicCategories();
+		return categories;
 	}
 
 	@Override

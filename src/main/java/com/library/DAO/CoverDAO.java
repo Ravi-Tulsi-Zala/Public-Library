@@ -71,7 +71,6 @@ public class CoverDAO implements ICoverDAO {
 				}
 			}
 		}
-		
 		return false;
 	}
 
