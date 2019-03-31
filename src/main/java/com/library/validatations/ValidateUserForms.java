@@ -116,15 +116,15 @@ public class ValidateUserForms extends ValidateUserFormsAbstract {
 		listofValidationErrors = new ArrayList<Map.Entry<String, String>>();
 		listofValidationErrors.clear();
 
-		if (userBasicInfo.getEmail().isBlank() || !emailPhoneValidations(userBasicInfo.getEmail())) {
+		if (userBasicInfo.getEmail().isEmpty() || !emailPhoneValidations(userBasicInfo.getEmail())) {
 			entryMap = new AbstractMap.SimpleEntry<String, String>(email, emailErrorStatement);
 			listofValidationErrors.add(entryMap);
 		}
-		if (userBasicInfo.getPassword().isBlank() || !passwordValidations(userBasicInfo.getPassword())) {
+		if (userBasicInfo.getPassword().isEmpty() || !passwordValidations(userBasicInfo.getPassword())) {
 			entryMap = new AbstractMap.SimpleEntry<String, String>(password, passwordErrorStatement);
 			listofValidationErrors.add(entryMap);
 		}
-		if (userExtendedInfo.getCPassword().isBlank() || !passwordValidations(userBasicInfo.getPassword())) {
+		if (userExtendedInfo.getCPassword().isEmpty() || !passwordValidations(userBasicInfo.getPassword())) {
 
 			entryMap = new AbstractMap.SimpleEntry<String, String>(cpassword, passwordErrorStatement);
 			listofValidationErrors.add(entryMap);
@@ -132,11 +132,11 @@ public class ValidateUserForms extends ValidateUserFormsAbstract {
 			entryMap = new AbstractMap.SimpleEntry<String, String>(cpassword, cpasswordErrorStatement);
 			listofValidationErrors.add(entryMap);
 		}
-		if (userExtendedInfo.getFullname().isBlank()) {
+		if (userExtendedInfo.getFullname().isEmpty()) {
 			entryMap = new AbstractMap.SimpleEntry<String, String>(fullName, blankErrorStatement);
 			listofValidationErrors.add(entryMap);
 		}
-		if (userExtendedInfo.getPhone().isBlank() || !emailPhoneValidations(userExtendedInfo.getPhone())) {
+		if (userExtendedInfo.getPhone().isEmpty() || !emailPhoneValidations(userExtendedInfo.getPhone())) {
 			entryMap = new AbstractMap.SimpleEntry<String, String>(phoneNumber, phoneErrorStatement);
 			listofValidationErrors.add(entryMap);
 		}
@@ -147,11 +147,11 @@ public class ValidateUserForms extends ValidateUserFormsAbstract {
 	public ArrayList<Map.Entry<String, String>> signInUserData(IUserBasicInfo userBasicInfo) throws Exception {
 		listofValidationErrors = new ArrayList<Map.Entry<String, String>>();
 		listofValidationErrors.clear();
-		if (userBasicInfo.getEmail().isBlank() || !emailPhoneValidations(userBasicInfo.getEmail())) {
+		if (userBasicInfo.getEmail().isEmpty() || !emailPhoneValidations(userBasicInfo.getEmail())) {
 			entryMap = new AbstractMap.SimpleEntry<String, String>(email, emailErrorStatement);
 			listofValidationErrors.add(entryMap);
 		}
-		if (userBasicInfo.getPassword().isBlank() || !passwordValidations(userBasicInfo.getPassword())) {
+		if (userBasicInfo.getPassword().isEmpty() || !passwordValidations(userBasicInfo.getPassword())) {
 			entryMap = new AbstractMap.SimpleEntry<String, String>(password, passwordErrorStatement);
 			listofValidationErrors.add(entryMap);
 		}
