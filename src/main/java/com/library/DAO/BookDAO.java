@@ -52,10 +52,8 @@ public class BookDAO implements IBookDAO {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.next()) {
-				return null;
-			}
-			book = bookMapper.mapBook(resultSet);
+			List<Book> books = bookMapper.mapBook(resultSet);
+			book = books.get(0);
 			return book;
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
@@ -63,6 +61,45 @@ public class BookDAO implements IBookDAO {
 			logger.log(Level.ALL, "Book not found for the specific Itemid", e);
 		}
 		return null;
+	}
+	
+	@Override
+	public List<Book> getBookByCategory(String category) {
+		try {
+			List<Book> books = new ArrayList<Book>();
+			query = "SELECT * FROM books WHERE Category=?";
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, category);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			books = bookMapper.mapBook(resultSet);
+			return books;
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the list of Book for this category", e);
+		}
+		return null;
+	}
+	
+	@Override
+	public List<String> getBookCategories()
+	{
+		List<String> categories = new ArrayList<String>();
+		query = "SELECT Distinct Category from books";
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next())
+			{
+				categories.add(resultSet.getString("Category"));
+			} 
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the list of Book Categories", e);
+		}
+		
+		return categories;
 	}
 
 	private String prepareSearchQuery(BookSearch requestDetails, String searchTerms) {
@@ -102,11 +139,10 @@ public class BookDAO implements IBookDAO {
 	@Override
 	public List<LibraryItem> getBooksBySearchTerms(BookSearch requestDetails, String searchTerms) {
 		List<LibraryItem> books = new LinkedList<LibraryItem>();
+		List<Book> tempBooks = new ArrayList<>();
 		if(!requestDetails.isSearchInBooks()) {
 			return books;
 		}
-		
-		Book book;
 		String query = prepareSearchQuery(requestDetails, searchTerms);
 
 		if (null == query) {
@@ -116,11 +152,8 @@ public class BookDAO implements IBookDAO {
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				book = bookMapper.mapBook(resultSet);
-				books.add(book);
-			}
-
+			tempBooks = bookMapper.mapBook(resultSet);
+			books.addAll(tempBooks);
 			return books;
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
@@ -239,46 +272,14 @@ public class BookDAO implements IBookDAO {
 	}
 
 	@Override
-	public List<Book> getBookByCategory(String category) {
-		try {
-			List<Book> books = new ArrayList<Book>();
-			Book book = new Book();
-			query = "SELECT * FROM books WHERE Category=?";
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, category);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.next()) {
-				return null;
-			}
-			do {
-				book = bookMapper.mapBook(resultSet);
-				books.add(book);
-			} while (resultSet.next());
-			return books;
-		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
-		} catch (Exception e) {
-			logger.log(Level.ALL, "Error fetching the list of Book for this category", e);
-		}
-		return null;
-	}
-
-	@Override
 	public List<Book> getTopBooks() {
 		try {
 			List<Book> books = new ArrayList<Book>();
-			Book book = new Book();
 			query = "SELECT * FROM books order by books.Item_ID desc limit 2";
 			preparedStatement = connection.prepareStatement(query);
 //			preparedStatement.setString(1);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.next()) {
-				return null;
-			}
-			do {
-				book = bookMapper.mapBook(resultSet);
-				books.add(book);
-			} while (resultSet.next());
+			books = bookMapper.mapBook(resultSet);
 			return books;
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
@@ -288,28 +289,31 @@ public class BookDAO implements IBookDAO {
 		return null;
 	}
 
+	
 	@Override
-	public List<String> getBookCategories() {
-		List<String> categories = new ArrayList<String>();
-		query = "SELECT Category from books";
+	public Boolean getAvailability(int itemID)
+	{
+		Boolean availability = false;
+		int booksAvailable = 0; 	
 		try {
+			query = "Select Availability from books where Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(0,itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			if (!resultSet.next()) {
-				return null;
+			booksAvailable = resultSet.getInt(0);
+			if(booksAvailable>0)
+			{
+				availability = true;
 			}
-			do {
-				categories.add(resultSet.getString("Category"));
-			} while (resultSet.next());
-		} catch (SQLException e) {
+		}	
+		catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Error fetching the list of Book Categories", e);
+			logger.log(Level.ALL, "Error fetching the availability of Book", e);
 		}
-
-		return categories;
-	}
-
+		return availability;
+	}	
+		
 	public boolean checkBookDuplicacy(Book book) {
 		String authorToBeAdded = book.getAuthor();
 		String titleToBeAdded = book.getTitle();

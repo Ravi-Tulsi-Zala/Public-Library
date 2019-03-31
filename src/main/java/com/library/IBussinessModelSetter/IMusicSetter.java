@@ -1,9 +1,10 @@
 package com.library.IBussinessModelSetter;
 
 import java.sql.ResultSet;
+import java.util.List;
 
 import com.library.businessModels.Music;
 
 public interface IMusicSetter {
-	public Music mapMusic(ResultSet resultSet);
+	public List<Music> mapMusic(ResultSet resultSet);
 }

@@ -18,7 +18,6 @@ import com.library.IBussinessModelSetter.IMusicSetter;
 import com.library.IDAO.IMusicDAO;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Music;
-import com.library.businessModels.Music;
 import com.library.dbConnection.DatabaseConnection;
 import com.library.search.MusicSearch;
 
@@ -45,15 +44,14 @@ public class MusicDAO implements IMusicDAO {
 	public Music getMusicById(int itemID) {
 
 		Music music = new Music();
-
+		List<Music> musics = new ArrayList<>();
 		query = "SELECT * from music WHERE Item_ID = ?";
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				music = musicSetter.mapMusic(resultSet);
-			}
+			musics = musicSetter.mapMusic(resultSet);
+			music = musics.get(0);
 		} catch (SQLException e) {
 
 			logger.log(Level.ALL, "Check the SQL syntax", e);
@@ -66,8 +64,6 @@ public class MusicDAO implements IMusicDAO {
 
 	@Override
 	public List<Music> getMusicByCategory(String category) {
-
-		Music music = new Music();
 		query = "SELECT * from music WHERE Category LIKE ?";
 		List<Music> musicsByCategory = new ArrayList<Music>();
 
@@ -75,11 +71,7 @@ public class MusicDAO implements IMusicDAO {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, "%" + category + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				music = new Music();
-				music = musicSetter.mapMusic(resultSet);
-				musicsByCategory.add(music);
-			}
+			musicsByCategory = musicSetter.mapMusic(resultSet);
 		} catch (SQLException e) {
 
 			logger.log(Level.ALL, "Check the SQL syntax", e);
@@ -207,11 +199,10 @@ public class MusicDAO implements IMusicDAO {
 	@Override
 	public List<LibraryItem> getMusicBySearchTerms(MusicSearch requestDetails, String searchTerms) {
 		List<LibraryItem> musics = new LinkedList<LibraryItem>();
+		List<Music> tempMusics = new ArrayList<>();
 		if(!requestDetails.isSearchInMusic()) {
 			return musics;
 		}
-		
-		Music music;
 		String query = prepareSearchQuery(requestDetails, searchTerms);
 		
 		if(null ==query) {
@@ -221,17 +212,59 @@ public class MusicDAO implements IMusicDAO {
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				music = musicSetter.mapMusic(resultSet);
-				musics.add(music);
-			}
-
+			tempMusics = musicSetter.mapMusic(resultSet);
+			musics.addAll(tempMusics);
 			return musics;
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
 		}
 
 		return musics;
+	}
+	
+	@Override
+	public List<String> getMusicCategories()
+	{
+		List<String> categories = new ArrayList<String>();
+		query = "SELECT Distinct Category from music";
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next())
+			{
+				categories.add(resultSet.getString("Category"));
+			} 
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the list of Music Categories", e);
+		}
+		return categories;
+	}
+	
+	@Override
+	public Boolean getAvailability(int itemID)
+	{
+		Boolean availability = false;
+		int musicsAvailable = 0; 
+		try {
+			query = "Select Availability from music where Item_ID = ?";
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(0,itemID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			musicsAvailable = resultSet.getInt(0);
+		}	
+		catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the availability of Music", e);
+		}
+		
+		if(musicsAvailable>0)
+		{
+			availability = true;
+		}
+		return availability;
 	}
 	
 	public boolean checkMusicDuplicacy(Music music) {
@@ -259,5 +292,4 @@ public class MusicDAO implements IMusicDAO {
 		}
 		return isMusicAvailable;
 	}
-
 }
