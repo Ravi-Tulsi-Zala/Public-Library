@@ -23,23 +23,24 @@ import com.library.additem.IAddBookController;
 import com.library.additem.IAddMovieController;
 import com.library.additem.IAddMusicController;
 import com.library.businessModels.Book;
-import com.library.businessModels.CoverImage;
+import com.library.businessModels.Cover;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
+import com.library.messages.Messages;
 import com.library.search.BookSearch;
 import com.library.search.IDBSearchController;
 import com.library.search.MoviesSearch;
 import com.library.search.MusicSearch;
+import com.library.search.SearchRequest;
 import com.library.search.SearchResults;
 import com.library.search.SearchTermsAndPage;
-import com.library.search.SearchRequest;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.ISignInController;
 import com.library.signIn.SignInController;
 import com.library.signUp.ISignUpController;
-import com.library.validatations.ValidateUserForms;
+import com.library.signUp.SignUpController;
 import com.library.welcomePage.IWelcomeController;
 import com.library.welcomePage.WelcomePageController;
 
@@ -49,20 +50,23 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@Inject
 	private IDBSearchController dbSearchController;
 	private static String securityQuestionValue;
+
+	private Messages message;
+	private String displayMessage, redirectPage;
 	private ILibraryFactory factory = null;
 	private LibraryFactorySingleton libraryInstance = null;
 
 	public LibraryRoutes() {
-//		LibraryFactorySingleton.instance().build(factory);
 		libraryInstance = LibraryFactorySingleton.instance();
 		factory = libraryInstance.getFactory();
 	}
 
 	@PostMapping("/signUp")
 	public String processSignUpForm(ModelMap model, User user) {
+		Logger logger = LogManager.getLogger(SignUpController.class);
 		try {
 			ISignUpController signUpCreate = factory.signUp(user);
-			list = signUpCreate.authenticateSignUp();
+			list = signUpCreate.validateSignUp();
 			for (int i = 0; i < list.size(); i++) {
 				model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
 			}
@@ -71,11 +75,13 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			if (model.size() > 2) {
 				return "SignUpForm";
 			}
+			else {
+				return "redirect:welcome";
+			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.log(Level.ALL, "Something went wrong while registering the User, please check detailed logs.", e);
+			return "redirect:ErrorPage";
 		}
-		return "Results";
-
 	}
 
 	@GetMapping("/signUp")
@@ -164,7 +170,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			return signIn.checkUserCredential();
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Something went wrong while signing in the User, please check detailed logs.", e);
-			return "ErrorPage"; // Something went wrong page.
+			return "redirect:ErrorPage"; // Something went wrong page.
 		}
 	}
 
@@ -174,70 +180,54 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("book", new Book());
 		model.addAttribute("movie", new Movie());
 		model.addAttribute("music", new Music());
-		model.addAttribute("coverBook", new CoverImage());
-		model.addAttribute("coverMovie", new CoverImage());
-		model.addAttribute("coverMusic", new CoverImage());
+		model.addAttribute("coverBook", new Cover());
+		model.addAttribute("coverMovie", new Cover());
+		model.addAttribute("coverMusic", new Cover());
 
 		return "AddItemPage";
 	}
 
 	@RequestMapping("/addBook")
-	public String addBookToDatabase(ModelMap model, Book book, CoverImage coverBook) {
+	public String addBookToDatabase(ModelMap model, Book book, Cover coverBook) {
 
-		String error, errorBookRoutePage;
 		IAddBookController iAddBookController = LibraryFactorySingleton.instance().getFactory().makeAddBookController();
-		boolean isBookCreated = iAddBookController.addBookRecordInDatabase(book, coverBook.getCoverImage());
-
-		if (isBookCreated) {
-			return "ResponseBook";
-		} else {
-			error = "Error : Book can not be created! Please try again!";
-			model.addAttribute("error", error);
-			errorBookRoutePage = mappingsForAddItem(model);
-			return errorBookRoutePage;
-		}
+		message = iAddBookController.addBookRecordInDatabase(book, coverBook.getCoverImage());
+		displayMessage = message.getMessage();
+		model.addAttribute("message", displayMessage);
+		redirectPage = mappingsForAddItem(model);
+		return redirectPage;
 
 	}
 
 	@PostMapping("/addMovie")
-	public String addMovieToDatabase(ModelMap model, Movie movie, CoverImage coverMovie) {
+	public String addMovieToDatabase(ModelMap model, Movie movie, Cover coverMovie) {
 
-		String error, errorMovieRoutePage;
 		IAddMovieController iAddMovieController = LibraryFactorySingleton.instance().getFactory()
 				.makeAddMovieController();
-		boolean isMovieCreated = iAddMovieController.addMovieRecordInDatabase(movie, coverMovie.getCoverImage());
+		message = iAddMovieController.addMovieRecordInDatabase(movie, coverMovie.getCoverImage());
+		displayMessage = message.getMessage();
+		model.addAttribute("message", displayMessage);
+		redirectPage = mappingsForAddItem(model);
+		return redirectPage;
 
-		if (isMovieCreated) {
-			return "ResponseMovie";
-		} else {
-			error = "Error : Movie can not be created! Please try again!";
-			model.addAttribute("error", error);
-			errorMovieRoutePage = mappingsForAddItem(model);
-			return errorMovieRoutePage;
-		}
 	}
 
 	@PostMapping("/addMusic")
-	public String addMusicToDatabase(ModelMap model, Music music, CoverImage coverMusic) {
+	public String addMusicToDatabase(ModelMap model, Music music, Cover coverMusic) {
 
-		String error, errorMusicRoutePage;
 		IAddMusicController iAddMusicController = LibraryFactorySingleton.instance().getFactory()
 				.makeAddMusicController();
-		boolean isMusicCreated = iAddMusicController.addMusicRecordInDatabase(music, coverMusic.getCoverImage());
-
-		if (isMusicCreated) {
-			return "ResponseMusic";
-		} else {
-			error = "Error : Music can not be created! Please try again!";
-			model.addAttribute("error", error);
-			errorMusicRoutePage = mappingsForAddItem(model);
-			return errorMusicRoutePage;
-		}
+		message = iAddMusicController.addMusicRecordInDatabase(music, coverMusic.getCoverImage());
+		displayMessage = message.getMessage();
+		model.addAttribute("message", displayMessage);
+		redirectPage = mappingsForAddItem(model);
+		return redirectPage;
 	}
 
 	@GetMapping("/welcome")
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem) {
 		Logger logger = LogManager.getLogger(WelcomePageController.class);
+
 		IWelcomeController welcomeCtrl = factory.welcomePage();
 		List<Book> book, favBooks;
 		List<Movie> movie, favMovies;

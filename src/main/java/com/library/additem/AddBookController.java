@@ -5,35 +5,51 @@ import com.library.DAOFactory.DAOFactory;
 import com.library.DAOFactory.IDAOFactory;
 import com.library.IDAO.IBookDAO;
 import com.library.businessModels.Book;
+import com.library.messages.Messages;
 import com.library.routes.ILibraryFactory;
-import com.library.routes.LibraryControllerFactory;
 import com.library.routes.LibraryFactorySingleton;
 
 public class AddBookController implements IAddBookController {
 	IDAOFactory iDAOfactory;
 	int itemIdOfBook;
 	IBookDAO bookDAO;
-	boolean isBookCreated, isBookCoverCreated;
+	ILibraryFactory iLibraryfactory;
+	LibraryFactorySingleton factorySingleton;
+	IItemCoverSetter coverSetter;
+	boolean isBookCreated, isBookCoverCreated, isDuplicateBook;
 
 	public AddBookController() {
 		iDAOfactory = new DAOFactory();
 		bookDAO = iDAOfactory.makeBookDAO();
-		ILibraryFactory iLibraryfactory = new LibraryControllerFactory();
-		LibraryFactorySingleton.instance().build(iLibraryfactory);
+		factorySingleton = LibraryFactorySingleton.instance();
+		iLibraryfactory = factorySingleton.getFactory();
+
 	}
 
-	public boolean addBookRecordInDatabase(Book book, MultipartFile bookCoverImage) {
+	public Messages addBookRecordInDatabase(Book book, MultipartFile bookCoverImage) {
+
+		isDuplicateBook = bookDAO.checkBookDuplicacy(book);
+
+		if (isDuplicateBook) {
+			return Messages.ERROR_DUPLICATE_BOOK;
+		}
 
 		itemIdOfBook = bookDAO.createBook(book);
 
 		if (itemIdOfBook == 0) {
-			isBookCreated = false;
+
+			return Messages.ERROR_BOOK_CAN_NOT_BE_CREATED;
+
 		} else {
-			isBookCoverCreated = LibraryFactorySingleton.instance().getFactory().makeItemCoverSetter()
-					.isCoverAddedToDatabase(itemIdOfBook, bookCoverImage);
-			isBookCreated = true;
+
+			coverSetter = iLibraryfactory.makeItemCoverSetter();
+			isBookCoverCreated = coverSetter.isCoverAddedToDatabase(itemIdOfBook, bookCoverImage);
+			if (isBookCoverCreated) {
+				return Messages.SUCCESS_BOOK;
+			} else {
+				return Messages.ERROR_BOOK_CAN_NOT_BE_CREATED;
+			}
 		}
-		return (isBookCreated && isBookCoverCreated);
 
 	}
 

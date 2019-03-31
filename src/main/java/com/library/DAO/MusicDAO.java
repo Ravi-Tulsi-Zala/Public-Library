@@ -166,7 +166,7 @@ public class MusicDAO implements IMusicDAO {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not delete movie from database", e);
+			logger.log(Level.ALL, "Can not delete music from database", e);
 		}
 		return false;
 	}
@@ -265,5 +265,31 @@ public class MusicDAO implements IMusicDAO {
 			availability = true;
 		}
 		return availability;
+	}
+	
+	public boolean checkMusicDuplicacy(Music music) {
+		String artistToBeAdded = music.getArtist();
+		String titleToBeAdded = music.getTitle();
+		boolean isMusicAvailable = false;
+
+		query = "SELECT * FROM music where Title=? and Artist=?";
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, titleToBeAdded);
+			preparedStatement.setString(2, artistToBeAdded);
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				isMusicAvailable = true;
+			} else {
+				isMusicAvailable = false;
+			}
+
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the list of Musics", e);
+		}
+		return isMusicAvailable;
 	}
 }

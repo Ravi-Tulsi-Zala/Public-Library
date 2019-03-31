@@ -55,7 +55,7 @@ public class UserDAO implements IUserDAO {
 	public String getEmailRelatedPassword(String emailAddress) {
 		query = "SELECT Password from user_info WHERE Email = ?";
 		ResultSet result;
-		String databasePassword="";
+		String databasePassword = "";
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, emailAddress);
@@ -71,7 +71,7 @@ public class UserDAO implements IUserDAO {
 		}
 		return databasePassword;
 	}
-	
+
 	@Override
 	public Boolean changePassword(String emailAddress, String password) {
 		query = "UPDATE user_info SET Password = ? WHERE Email = ?";
@@ -110,5 +110,33 @@ public class UserDAO implements IUserDAO {
 			logger.log(Level.ALL, "Can not insert a record in user info table", e);
 		}
 		return false;
+	}
+
+	@Override
+	public Boolean checkEmailIdExist(String emailID) {
+		boolean result = false;
+		query = "SELECT Email from user_info WHERE Email = ? LIMIT 1";
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, emailID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			System.out.println(resultSet);
+			if (!resultSet.next() ) {
+				result = false;
+			    System.out.println("no data");
+			} 
+			else {
+				result = true;
+			}
+			
+		} catch (SQLException e) {
+			result = false;
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+
+		} catch (Exception e) {
+			result = false;
+			logger.log(Level.ALL, "Can not fetch a record from user info table", e);
+		}
+		return result;
 	}
 }
