@@ -1,8 +1,6 @@
 package com.library.search;
 
 import java.util.List;
-
-import com.library.DAOFactory.DAOFactory;
 import com.library.businessModels.LibraryItem;
 
 public class BookSearch extends SearchCategory {
