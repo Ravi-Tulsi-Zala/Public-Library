@@ -1,121 +1,153 @@
 package com.library;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.isA;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import java.sql.SQLException;
+import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.library.DAOFactory.DAOFactory;
 import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.mockDB.WelcomePageMocked;
+import com.library.routes.ILibraryFactory;
+import com.library.routes.LibraryFactorySingleton;
 import com.library.welcomePage.AdminPage;
+import com.library.welcomePage.IWelcomeController;
 
 @RunWith(SpringRunner.class)
 public class WelcomePageTest {
-	public static WelcomePageMocked welcomePageMocked;
+	private static WelcomePageMocked welcomePageMocked;
+	private static ILibraryFactory factory = null;
+	private static IWelcomeController wlcmCntrl = null;
 
 	@BeforeClass
 	public static void initializer() {
+
 		welcomePageMocked = new WelcomePageMocked();
-	}
-
-	@Test
-	public void TestBookAuthor() {
-		Book bookList = welcomePageMocked.initiateBookMock();
-		assertEquals("Ptrick Ruthfus", bookList.getAuthor());
-	}
-
-	@Test
-	public void TestBookTitle() {
-		Book bookList = welcomePageMocked.initiateBookMock();
-		assertEquals("The girl who played with fire", bookList.getTitle());
-	}
-
-	@Test
-	public void TestBookISBN() {
-		Book bookList = welcomePageMocked.initiateBookMock();
-		assertEquals(269, bookList.getIsbn());
-	}
-
-	@Test
-	public void TestBookPublisher() {
-		Book bookList = welcomePageMocked.initiateBookMock();
-		assertEquals("Shrivastav Pubilication", bookList.getPublisher());
-	}
-
-	@Test
-	public void TestBookDescription() {
-		Book bookList = welcomePageMocked.initiateBookMock();
-		assertEquals("Based on horroe movie", bookList.getDescription());
-	}
-
-	@Test
-	public void TestBookAvailibity() {
-		Book bookList = welcomePageMocked.initiateBookMock();
-		assertTrue(bookList.getAvailability() > 0);
-	}
-
-	@Test
-	public void TestMusicCategory() {
-		Music musicList = welcomePageMocked.initiateMusicMock();
-		assertEquals("Pop", musicList.getCategory());
-	}
-
-	@Test
-	public void TestMusicTitle() {
-		Music musicList = welcomePageMocked.initiateMusicMock();
-		assertEquals("Despacito", musicList.getTitle());
-	}
-
-	@Test
-	public void TestMusicArtist() {
-		Music musicList = welcomePageMocked.initiateMusicMock();
-		assertEquals("Luis Fonsi", musicList.getArtist());
-	}
-
-	@Test
-	public void TestMovieCategory() {
-		Movie movieList = welcomePageMocked.initiateMovieMock();
-		assertEquals("Sci-Fi", movieList.getCategory());
-	}
-
-	@Test
-	public void TestMovieTitle() {
-		Movie movieList = welcomePageMocked.initiateMovieMock();
-		assertEquals("Interstellar", movieList.getTitle());
-	}
-
-	@Test
-	public void TestMovieDescription() {
-		Movie movieList = welcomePageMocked.initiateMovieMock();
-		assertEquals(
-				"A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
-				movieList.getDescription());
-	}
-
-	@Test
-	public void TestMovieAvailibility() {
-		Movie movieList = welcomePageMocked.initiateMovieMock();
-		assertTrue(movieList.getAvailability() > 0);
+		factory = LibraryFactorySingleton.instance().getFactory();
+		wlcmCntrl = factory.welcomePage();
 	}
 
 	@Test
 	public void TestAdminAvailable() {
 		boolean isAdmin = AdminPage.getAdminAvailable();
-		if (isAdmin) {
-			assertTrue(isAdmin);
-		} else {
-			assertFalse(isAdmin);
-		}
+		assertTrue(isAdmin);
+	}
 
+	@Test
+	public void TestgetBookItems() {
+		List<Book> book = welcomePageMocked.initiateLatestBookMock();
+		assertNotNull(book);
+		try {
+			List<Book> listOfBooks = wlcmCntrl.getBookItems();
+			for (int i = 0; i < wlcmCntrl.getBookItems().size(); i++) {
+				assertEquals(listOfBooks.get(i).getTitle(), book.get(i).getTitle());
+				assertEquals(listOfBooks.get(i).getAuthor(), book.get(i).getAuthor());
+				assertEquals(listOfBooks.get(i).getCategory(), book.get(i).getCategory());
+				assertEquals(listOfBooks.get(i).getDescription(), book.get(i).getDescription());
+				assertEquals(listOfBooks.get(i).getItemID(), book.get(i).getItemID());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		assertNotNull(wlcmCntrl);
+	}
+
+	@Test
+	public void TestgetMoviesItems() {
+		List<Movie> movies = welcomePageMocked.initiateLatestMovieMock();
+		assertNotNull(movies);
+		try {
+			List<Movie> listOfMovies = wlcmCntrl.getMovieItems();
+			for (int i = 0; i < listOfMovies.size(); i++) {
+				assertEquals(listOfMovies.get(i).getTitle(), movies.get(i).getTitle());
+				assertEquals(listOfMovies.get(i).getCategory(), movies.get(i).getCategory());
+				assertEquals(listOfMovies.get(i).getDescription(), movies.get(i).getDescription());
+				assertEquals(listOfMovies.get(i).getItemID(), movies.get(i).getItemID());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		assertNotNull(wlcmCntrl);
+	}
+
+	@Test
+	public void TestgetMusicItems() {
+		List<Music> music = welcomePageMocked.initiateLatestMusicMock();
+		assertNotNull(music);
+		try {
+			List<Music> listOfMovies = wlcmCntrl.getMusicItems();
+			for (int i = 0; i < listOfMovies.size(); i++) {
+				assertEquals(listOfMovies.get(i).getTitle(), music.get(i).getTitle());
+				assertEquals(listOfMovies.get(i).getCategory(), music.get(i).getCategory());
+				assertEquals(listOfMovies.get(i).getDescription(), music.get(i).getDescription());
+				assertEquals(listOfMovies.get(i).getItemID(), music.get(i).getItemID());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		assertNotNull(wlcmCntrl);
+	}
+	@Test
+	public void TestgetFavBookItems() {
+		List<Book> book = welcomePageMocked.initiateFavBookMock();
+		assertNotNull(book);//if this case fails that means that there are no favourite yet in the database.
+		try {
+			List<Book> listOfBooks = wlcmCntrl.getFavouriteBooks();
+			for (int i = 0; i < wlcmCntrl.getBookItems().size(); i++) {
+				assertEquals(listOfBooks.get(i).getTitle(), book.get(i).getTitle());
+				assertEquals(listOfBooks.get(i).getAuthor(), book.get(i).getAuthor());
+				assertEquals(listOfBooks.get(i).getCategory(), book.get(i).getCategory());
+				assertEquals(listOfBooks.get(i).getDescription(), book.get(i).getDescription());
+				assertEquals(listOfBooks.get(i).getItemID(), book.get(i).getItemID());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		assertNotNull(wlcmCntrl);
+	}
+	@Test
+	public void TestgetFavMovieItems() {
+		List<Movie> movies = welcomePageMocked.initiateFavMoviesMock();
+		assertNotNull(movies); //if this case fails that means that there are no favourite yet in the database.
+		try {
+			List<Movie> listOfMovies = wlcmCntrl.getFavouriteMovies();
+			for (int i = 0; i < listOfMovies.size(); i++) {
+				assertEquals(listOfMovies.get(i).getTitle(), movies.get(i).getTitle());
+				assertEquals(listOfMovies.get(i).getCategory(), movies.get(i).getCategory());
+				assertEquals(listOfMovies.get(i).getDescription(), movies.get(i).getDescription());
+				assertEquals(listOfMovies.get(i).getItemID(), movies.get(i).getItemID());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		assertNotNull(wlcmCntrl);
+	}
+	@Test
+	public void TestgetFavMusicItems() {
+		List<Music> music = welcomePageMocked.initiatefavMusicMock();
+		assertNotNull(music); //if this case fails that means that there are no favourite yet in the database.
+		try {
+			List<Music> listOfMovies = wlcmCntrl.getFavouriteMusic();
+			for (int i = 0; i < listOfMovies.size(); i++) {
+				assertEquals(listOfMovies.get(i).getTitle(), music.get(i).getTitle());
+				assertEquals(listOfMovies.get(i).getCategory(), music.get(i).getCategory());
+				assertEquals(listOfMovies.get(i).getDescription(), music.get(i).getDescription());
+				assertEquals(listOfMovies.get(i).getItemID(), music.get(i).getItemID());
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		assertNotNull(wlcmCntrl);
 	}
 }
