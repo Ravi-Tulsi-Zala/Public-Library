@@ -1,6 +1,9 @@
 package com.library.search;
 
 import static org.junit.Assert.*;
+
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,6 +15,10 @@ public class MovieSearchTest {
 		ms = new MoviesSearch();
 	}
 
+	@Test
+	public void searchReturnsList() {
+		assertTrue(ms.search("") instanceof List<?>);
+	}
 	@Test
 	public void allDataMembersDefaultValuesAreTrue() {
 		assertTrue(ms.isSearchInMovies());
