@@ -132,7 +132,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("searchResults", searchResults);
 		model.addAttribute("searchResults", searchResults);
 		return "BasicSearchResultsPage";
-
 	}
 
 	private SearchResults executeSearch(HttpSession httpSession, SearchTermsAndPage termsAndPage, BookSearch bookSearch,
