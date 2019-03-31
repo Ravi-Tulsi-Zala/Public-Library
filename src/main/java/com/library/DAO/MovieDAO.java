@@ -208,7 +208,7 @@ public class MovieDAO implements IMovieDAO {
 		}
 		String query = prepareSearchQuery(requestDetails, searchTerms);
 		
-		if(null ==query) {
+		if(null == query) {
 			return movies;
 		}
 

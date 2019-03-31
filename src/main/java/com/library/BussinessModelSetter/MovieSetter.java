@@ -24,6 +24,7 @@ public class MovieSetter implements IMovieSetter {
 				movie.setAvailability(resultSet.getInt("Availability"));
 				movie.setTitle(resultSet.getString("Title"));
 				movie.setItemID(resultSet.getInt("Item_ID"));
+				movies.add(movie);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
