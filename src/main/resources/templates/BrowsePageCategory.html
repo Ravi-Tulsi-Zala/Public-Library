@@ -45,7 +45,6 @@
         
         <div style="width: 9%; display: inline-block; vertical-align: top;" 
         th:each="category:${categories}">
-        <li th:text=${itemType} ></li>
 			<a th:href="@{'/BrowsePage/' + ${itemType} + '/' + ${category}}" th:text="${category}">
 			</a>
 		</div>

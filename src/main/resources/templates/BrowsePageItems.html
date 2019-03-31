@@ -54,7 +54,9 @@
         
         <div style="width: 9%; display: inline-block; vertical-align: top;" th:each="displayItem:${displayItems}">
         	<img th:src="${'data:image/png;base64,'+displayItem.image}" />
-        	<a th:text=${displayItem.title}></a>
+        	<a th:href="@{'/itemDetail/' + ${itemType} + '/' + ${displayItem.itemID}}"  th:text="${displayItem.title}">
+        		<table>
+        	</a>
 		</div>
         
 	</body>

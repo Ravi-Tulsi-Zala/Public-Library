@@ -1,10 +1,11 @@
 package com.library.BussinessModelSetter;
 
+import com.library.IBussinessModelSetter.IDetailsSetter;
 import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 
-public class DetailsSetter {
+public class DetailsSetter implements IDetailsSetter {
 	
 	public String getBookDetails(Book book)
 	{
