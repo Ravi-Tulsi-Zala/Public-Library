@@ -2,9 +2,13 @@ package com.library.ForgotPassword;
 
 import java.io.IOException;
 import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.library.validatations.ValidateUserForms;
 
 public class ForgotPasswordController implements IForgotPasswordController {
 
@@ -12,28 +16,25 @@ public class ForgotPasswordController implements IForgotPasswordController {
 	private static final Logger logger = LogManager.getLogger(ForgotPasswordController.class);
 	private RecoverPassword recoverDetails = null;
 
-	public ForgotPasswordController(RecoverPassword recoverDetails) {
+	public ForgotPasswordController(RecoverPassword recoverDetails) throws Exception {
 		this.recoverDetails = recoverDetails;
+		ValidateUserForms.instance().setValidationRules();
 	}
 
-	public boolean recoverPassword(){
-		try {
-			if (isAnswerCorrect()) {
-				RecoverPassword recoverPassword = new RecoverPassword();
-				recoverPassword.setEmail(recoverDetails.getEmail());
-				recoverPassword.setSecurityQuestionAnswer(recoverDetails.getSecurityQuestionAnswer());
-				recoverPassword.setSecurityQuestion(recoverDetails.getSecurityQuestion());
-				status = recoverPassword.sendEmailToUser();
-				logger.log(Level.ALL, "Email sent successfully! => ",status);
-			}
-		} catch (MessagingException | IOException e) {
-			logger.log(Level.ALL, "Unable to send email.", e);
+	public boolean recoverPassword() throws AddressException, MessagingException, IOException {
+		if (isAnswerCorrect()) {
+			RecoverPassword recoverPassword = new RecoverPassword();
+			recoverPassword.setEmail(recoverDetails.getEmail());
+			recoverPassword.setSecurityQuestionAnswer(recoverDetails.getSecurityQuestionAnswer());
+			recoverPassword.setSecurityQuestion(recoverDetails.getSecurityQuestion());
+			status = recoverPassword.sendEmailToUser();
+			logger.log(Level.ALL, "Email sent successfully! => ", status);
 		}
 		return status;
 	}
 
 	public String setQuestion() {
-	    double x = (int)(Math.random()*10)+0;
+		double x = (int) (Math.random() * 10) + 0;
 		recoverDetails.setSecurityQuestion(Double.toString(x));
 		return recoverDetails.getSecurityQuestion();
 	}

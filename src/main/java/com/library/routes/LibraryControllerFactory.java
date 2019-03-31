@@ -34,7 +34,7 @@ public class LibraryControllerFactory implements ILibraryFactory {
 	}
 
 	@Override
-	public IForgotPasswordController forgotPassword(RecoverPassword recoverDetails) {
+	public IForgotPasswordController forgotPassword(RecoverPassword recoverDetails) throws Exception {
 		return new ForgotPasswordController(recoverDetails);
 	}
 
