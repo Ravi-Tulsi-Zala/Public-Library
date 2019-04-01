@@ -1,52 +1,3 @@
-<!-- <html>
-<style>
-td {
-	padding-bottom: 20px;
-	padding-right: 50px
-}
-
-h5 {
-	margin: 0;
-	font-weight: 400;
-}
-</style>
-<body>
-	<script>
-		function showPassword() {
-			var password = document.getElementById("upass");
-			if (password.type === "password") {
-				password.type = "text";
-			} else {
-				password.type = "password";
-			}
-		}
-	</script>
-	<form th:action="@{/signIn}" th:object="${user}" method="post">
-		<table id="table">
-			<tr>
-				<td>Email:</td>
-				<td><input name="uemail" type="text" id="uemail"
-					th:field="*{email}" /></td>
-				<td th:text="${email}">email error</td>
-			</tr>
-			<tr>
-				<td>Password:</td>
-				<td><input name="upass" type="password" id="upass"
-					th:field="*{password}" /></td>
-				<td th:text="${password}">Password error</td>
-			</tr>
-			<td><input type="checkbox" onclick="showPassword()">Show
-				Password</td>
-			<tr>
-				<td><button type="submit">SignIn</button></td>
-			</tr>
-			<tr>	
-				<td><a href="/forgotPassword">Forgot Password</a></td>
-			</tr>
-		</table>
-	</form>
-</body>
-</html> -->
 <html>
 <head>
 <meta charset="utf-8">
@@ -124,11 +75,11 @@ body {
 							<div class="form-group">
 								<input type="submit" name="submit" class="btn btn-info btn-md"
 									value="submit">
-							<div class="form-group" style="float:right">
-								<a href="/signUp">Register</a>
+								<div class="form-group" style="float: right">
+									<a href="/signUp">Register</a>
+								</div>
 							</div>
-							</div>
-							
+
 						</form>
 					</div>
 				</div>
