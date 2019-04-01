@@ -87,6 +87,6 @@ public class WelcomePageMocked {
 	}
 
 	public void adminInitiated() {
-		AdminPage.setAdminAvailable(true);
+		AdminPage.setAvailableAdmin(true);
 	}
 }

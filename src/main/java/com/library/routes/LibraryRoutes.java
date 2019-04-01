@@ -44,6 +44,7 @@ import com.library.signIn.ISignInController;
 import com.library.signIn.SignInController;
 import com.library.signUp.ISignUpController;
 import com.library.signUp.SignUpController;
+import com.library.welcomePage.AdminPage;
 import com.library.welcomePage.IWelcomeController;
 import com.library.welcomePage.WelcomePageController;
 
@@ -236,7 +237,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@GetMapping("/welcome")
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem) {
 		Logger logger = LogManager.getLogger(WelcomePageController.class);
-
 		IWelcomeController welcomeCtrl = factory.welcomePage();
 		List<Book> book, favBooks;
 		List<Movie> movie, favMovies;
@@ -262,6 +262,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("music", music);
 		model.addAttribute("favMusic", favMusic);
 		model.addAttribute("isAdminAval", welcomeCtrl.isAdminAvailable());
+		model.addAttribute("loggingStatus", AdminPage.getLoggingStatus());
+		model.addAttribute("sessionClient", AdminPage.getAvailableUserID());
 		return "Welcome";
 	}
 
