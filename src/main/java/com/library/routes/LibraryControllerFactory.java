@@ -14,6 +14,8 @@ import com.library.additem.IAddMusicController;
 import com.library.additem.IItemCoverSetter;
 import com.library.additem.ItemCoverSetter;
 import com.library.businessModels.User;
+import com.library.loanmanagement.ILoanManagementController;
+import com.library.loanmanagement.LoanManagentController;
 import com.library.signIn.ISignInController;
 import com.library.signIn.SignInController;
 import com.library.signUp.ISignUpController;
@@ -66,5 +68,10 @@ public class LibraryControllerFactory implements ILibraryFactory {
 	public IWelcomeController welcomePage() {
 		return new WelcomePageController();
 	}
-
+	
+	public ILoanManagementController makeLoanManagementController()
+	{
+		return new LoanManagentController();
+	}
+	
 }
