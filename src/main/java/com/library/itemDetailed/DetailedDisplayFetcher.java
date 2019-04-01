@@ -38,7 +38,7 @@ public class DetailedDisplayFetcher implements IDetailedDisplayFetcher{
 			Movie movie = movieDAO.getMovieById(itemID);
 			displayDetailed = detailedDisplaySetter.makeDetailedMovie(movie);
 		}
-		else if(itemType=="Music")
+		else if(itemType.equals("Music"))
 		{
 			IMusicDAO musicDAO = factory.makeMusicDAO();
 			Music music = musicDAO.getMusicById(itemID);

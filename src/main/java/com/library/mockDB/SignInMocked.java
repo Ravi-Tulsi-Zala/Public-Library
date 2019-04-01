@@ -1,5 +1,6 @@
 package com.library.mockDB;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,17 +9,17 @@ import java.util.Map;
 import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.UserBasicInfo;
 
-
 public class SignInMocked {
 	private String email;
 	private String password;
-	
+	private String salt = "-LMS";
 	List arrItems;
 	private IUserBasicInfo userBasicInfo;
 	Map map;
-	
+
 	public SignInMocked() {
 		userBasicInfo = new UserBasicInfo();
+		addSaltToMockData();
 	}
 
 	public Map getCorruptMockData() {
@@ -28,6 +29,7 @@ public class SignInMocked {
 		userBasicInfo.setPassword("1qaz!QAZ");
 		arrItems.add(userBasicInfo);
 		map.put("corrupt-data", arrItems);
+
 		return map;
 	}
 
@@ -38,6 +40,20 @@ public class SignInMocked {
 		userBasicInfo.setPassword("123456789");
 		arrItems.add(userBasicInfo);
 		map.put("clean-data", arrItems);
+
 		return map;
 	}
+
+	public IUserBasicInfo addSaltToMockData() {
+		Map mapList = getMockData();
+		for (int i = 0; i < mapList.size(); i++) {
+			if (mapList.containsKey("clean-data")) {
+				ArrayList arrayList = (ArrayList) mapList.get("clean-data");
+				userBasicInfo = (UserBasicInfo) arrayList.get(0);
+				userBasicInfo.setPassword(userBasicInfo.getPassword().concat(salt));
+			}
+		}
+		return userBasicInfo;
+	}
+
 }

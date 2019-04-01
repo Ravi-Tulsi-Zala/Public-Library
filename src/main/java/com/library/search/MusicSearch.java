@@ -5,13 +5,12 @@ import java.util.List;
 import com.library.DAOFactory.DAOFactory;
 import com.library.businessModels.LibraryItem;
 
-public class MusicSearch implements ISearchCategory {
+public class MusicSearch extends SearchCategory {
 
 	private boolean searchInMusic = true;
 	private boolean searchMusicAlbumName = true;
 	private boolean searchMusicArtist = true;
 	private boolean searchMusicRecordLabel = true;
-	private DAOFactory daoFactory = new DAOFactory();
 	
 	@Override
 	public List<LibraryItem> search(String searchterms) {
@@ -49,17 +48,4 @@ public class MusicSearch implements ISearchCategory {
 	public void setSearchMusicRecordLabel(boolean searchMusicRecordLabel) {
 		this.searchMusicRecordLabel = searchMusicRecordLabel;
 	}
-
-	@Override
-	public boolean equals(ISearchCategory previousMusicSearch) {
-		MusicSearch prev = (MusicSearch) previousMusicSearch;
-		boolean isEqual = 
-				this.searchInMusic == prev.searchInMusic &&
-				this.searchMusicAlbumName == prev.searchMusicAlbumName &&
-				this.searchMusicArtist == prev.searchMusicArtist &&
-				this.searchMusicRecordLabel == prev.searchMusicRecordLabel;
-		
-		return isEqual;
-	}
-
 }

@@ -25,23 +25,23 @@ public class CoverDAO implements ICoverDAO {
 	
 	public CoverDAO() {
 			databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
-			this.dbConnection = databaseConnection.getConnection();
 	}
 	
 	@Override
 	public Cover getCoverByID(int itemID) {		
 		try {
+			dbConnection = databaseConnection.getConnection();
 			preparedStatement = dbConnection.prepareStatement(SELECT_COVER_BY_ITEM_ID_QUERY);
 			preparedStatement.setInt(1, itemID);
 			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				return coverMapper.setCover(resultSet);
 			}
-			return null;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-				databaseConnection.closeConnection(resultSet, preparedStatement);
+				
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return null;
 	}
@@ -49,6 +49,7 @@ public class CoverDAO implements ICoverDAO {
 	@Override
 	public boolean createCoverByID(int itemID, Blob coverBlob, String fileExtension) {
 		try {
+			dbConnection = databaseConnection.getConnection();
 			preparedStatement = dbConnection.prepareStatement(INSERT_COVER_BY_ITEM_ID_QUERY);
 			preparedStatement.setInt(1, itemID);
 			preparedStatement.setBlob(2, coverBlob);
@@ -67,6 +68,7 @@ public class CoverDAO implements ICoverDAO {
 	@Override
 	public boolean deleteBlobByID(int itemID) {
 		try {
+			dbConnection = databaseConnection.getConnection();
 			preparedStatement = dbConnection.prepareStatement(DELETE_COVER_BY_ITEM_ID_QUERY);
 			preparedStatement.setInt(1, itemID);
 			preparedStatement.executeUpdate();

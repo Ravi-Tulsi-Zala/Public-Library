@@ -84,4 +84,28 @@ public class DatabaseConnection {
 			e.printStackTrace();
 		}
 	}
+	
+	public void closeConnection()
+	{
+		try {
+			if(!connection.isClosed())
+			{
+				connection.close();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void closeConnection(PreparedStatement preparedStatement)
+	{
+		if(null != preparedStatement) {
+			try {
+				preparedStatement.close();
+			} catch (SQLException e) {
+				
+			}
+		}
+	}
 }

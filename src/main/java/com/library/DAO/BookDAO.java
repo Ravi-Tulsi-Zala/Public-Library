@@ -29,10 +29,10 @@ import com.library.search.BookSearch;
 public class BookDAO implements IBookDAO {
 
 	private PreparedStatement preparedStatement;
+	private ResultSet resultSet = null;
 	private String query;
 	private Connection connection;
 	private IBookSetter bookMapper = new BookSetter();
-	ResultSet resultSet;
 	private static final Logger logger = LogManager.getLogger(BookDAO.class);
 	DatabaseConnection databaseConnection;
 	
@@ -50,6 +50,7 @@ public class BookDAO implements IBookDAO {
 	public Book getBookByID(int itemID) {
 		try {
 			Book book = new Book();
+			this.connection = databaseConnection.getConnection();
 			query = "SELECT * FROM books WHERE Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
@@ -73,6 +74,7 @@ public class BookDAO implements IBookDAO {
 	public List<Book> getBookByCategory(String category) {
 		try {
 			List<Book> books = new ArrayList<Book>();
+			this.connection = databaseConnection.getConnection();
 			query = "SELECT * FROM books WHERE Category=?";
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, category);
@@ -95,6 +97,7 @@ public class BookDAO implements IBookDAO {
 	public List<String> getBookCategories()
 	{
 		List<String> categories = new ArrayList<String>();
+		this.connection = databaseConnection.getConnection();
 		query = "SELECT Distinct Category from books";
 		try {
 			preparedStatement = connection.prepareStatement(query);
@@ -153,6 +156,7 @@ public class BookDAO implements IBookDAO {
 	public List<LibraryItem> getBooksBySearchTerms(BookSearch requestDetails, String searchTerms) {
 		List<LibraryItem> books = new LinkedList<LibraryItem>();
 		List<Book> tempBooks = new ArrayList<>();
+		this.connection = databaseConnection.getConnection();
 		if(!requestDetails.isSearchInBooks()) {
 			return books;
 		}
@@ -181,6 +185,7 @@ public class BookDAO implements IBookDAO {
 	@Override
 	public Boolean deleteBookByID(int itemID) {
 		try {
+			this.connection = databaseConnection.getConnection();
 			query = "Delete FROM books WHERE Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
@@ -193,7 +198,7 @@ public class BookDAO implements IBookDAO {
 		}
 		finally
 		{
-			databaseConnection.closeConnection(resultSet, preparedStatement);
+			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
 		}
 		return false;
 	}
@@ -230,6 +235,7 @@ public class BookDAO implements IBookDAO {
 		int recentlyAddedBookId = 0;
 
 		try {
+			this.connection = databaseConnection.getConnection();
 			query = "Insert into books (Category,Title,Author,ISBN,Publisher,Description,Availability) Values "
 					+ "(?,?,?,?,?,?,?)";
 			preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -273,6 +279,7 @@ public class BookDAO implements IBookDAO {
 		int itemID = book.getItemID();
 		int availablity = book.getAvailability();
 		try {
+			this.connection = databaseConnection.getConnection();
 			query = "Update books  set Category = ?, Title = ?, Author = ?, ISBN =  ?,"
 					+ "Publisher = ?, Description = ?, Availability = ? WHERE Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
@@ -292,34 +299,10 @@ public class BookDAO implements IBookDAO {
 			logger.log(Level.ALL, "Can not update Book into database", e);
 		}
 		finally {
-			databaseConnection.closeConnection(resultSet, preparedStatement);
+			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
 		}
 		return false;
 	}
-
-	@Override
-	public List<Book> getTopBooks() {
-		try {
-			List<Book> books = new ArrayList<Book>();
-			query = "SELECT * FROM books order by books.Item_ID desc limit 2";
-			preparedStatement = connection.prepareStatement(query);
-//			preparedStatement.setString(1);
-			resultSet = preparedStatement.executeQuery();
-			books = bookMapper.mapBook(resultSet);
-			return books;
-		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
-		} catch (Exception e) {
-			logger.log(Level.ALL, "Error fetching the list of Book for this category", e);
-		}
-		finally
-		{
-			DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
-			databaseConnection.closeConnection(resultSet , preparedStatement);
-		}
-		return null;
-	}
-
 	
 	@Override
 	public Boolean getAvailability(int itemID)
@@ -327,6 +310,7 @@ public class BookDAO implements IBookDAO {
 		Boolean availability = false;
 		int booksAvailable = 0; 	
 		try {
+			this.connection = databaseConnection.getConnection();
 			query = "Select Availability from books where Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(0,itemID);
@@ -356,6 +340,7 @@ public class BookDAO implements IBookDAO {
 		
 		query = "SELECT * FROM books where Title=? and Author=?";
 		try {
+			this.connection = databaseConnection.getConnection();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, titleToBeAdded);
 			preparedStatement.setString(2, authorToBeAdded);
@@ -378,4 +363,28 @@ public class BookDAO implements IBookDAO {
 		}
 		return isBookAvailable;
 	}
+	
+	public Boolean increaseCount(int itemID)
+	{
+		Boolean countIncrease = false;
+		try {
+			this.connection = databaseConnection.getConnection();
+			query = "update books set count = count + 1 where Item_ID = ?";
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, itemID);
+			preparedStatement.execute();
+			countIncrease = true;
+		}
+		catch (SQLException e)
+		{
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		}
+		catch (Exception e)
+		{
+			logger.log(Level.ALL, "Error increasing count of book", e);
+		}
+		return countIncrease;
+	}
+	
+	
 }

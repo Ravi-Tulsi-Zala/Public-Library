@@ -98,7 +98,7 @@ public class UserDAO implements IUserDAO {
 		}
 		finally
 		{
-			databaseConnection.closeConnection(resultSet, preparedStatement);
+			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
 		}
 		return false;
 	}
@@ -123,7 +123,7 @@ public class UserDAO implements IUserDAO {
 		}
 		finally
 		{
-			databaseConnection.closeConnection(resultSet, preparedStatement);
+			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
 		}
 		return false;
 	}

@@ -15,12 +15,18 @@
       </style>
    </head>
    <body id="pageBody">
+   	<div style="clear:both;">
+   	</div>
 	   	<div>	   	  
-	      <form id="simpleSearchForm" onsubmit="return validateSearchForm()" method="post" th:action="@{/basicSearch}"
+	      <form onsubmit="return validateSearchForm()" method="post" th:action="@{/basicSearch}"
 	      			style="float:left;line-height: 3em;">
 	      	<input id="searchTerms" type="text" th:field="${searchTermsAndPage.searchTerms}" style="width:100px;"/>
 	      	<input type="submit">   	
 	      </form>
+	      <div th:if="${userEmail != null}">
+			  <a style="float:right;line-height: 3em;" href="/logOut">Logout</a>
+	   	  	  <span style="float:right;margin-right: 20px;line-height: 3em;" th:text="${userEmail}">Test</span>
+   	  	  </div>
 	      <h1 style="text-align: center;">Welcome To The Library!</h1>
 	    </div>       
    </body>

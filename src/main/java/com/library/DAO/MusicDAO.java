@@ -130,7 +130,7 @@ public class MusicDAO implements IMusicDAO {
 		}
 		finally
 		{
-			databaseConnection.closeConnection(resultSet, preparedStatement);
+			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
 		}
 		return recentlyAddedMusicId;
 	}
@@ -166,7 +166,7 @@ public class MusicDAO implements IMusicDAO {
 		}
 		finally
 		{
-			databaseConnection.closeConnection(resultSet, preparedStatement);
+			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
 		}
 		return false;
 	}
@@ -188,7 +188,7 @@ public class MusicDAO implements IMusicDAO {
 		}
 		finally
 		{
-			databaseConnection.closeConnection(resultSet, preparedStatement);
+			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
 		}
 		return false;
 	}

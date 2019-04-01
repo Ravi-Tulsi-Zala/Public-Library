@@ -10,8 +10,16 @@ public enum Messages {
 	ERROR_MOVIE_CAN_NOT_BE_CREATED("Movie can not be created! Please try again!"),
 	SUCCESS_MUSIC("Music Successfully added!"),
 	ERROR_DUPLICATE_MUSIC("Music exists in Library! Please add new Music!"),
-	ERROR_MUSIC_CAN_NOT_BE_CREATED("Music can not be created! Please try again!");
-
+	ERROR_MUSIC_CAN_NOT_BE_CREATED("Music can not be created! Please try again!"),
+	RegisterLogin("Register / Login"),
+	AdminEmailID("Administrator"),
+	Logout("Logout"),
+	WelcomePageRedirect("redirect:welcome"),
+	SignInPageRedirect("redirect:signIn"),
+	SignUpPageRedirect("redirect:signUp"),
+	ForgotPassPageRedirect("redirect:forgotPassword"),
+	ErrorPageRedirect("redirect:ErrorPage");
+	
 	private String message;
 	
 	Messages(String message) {

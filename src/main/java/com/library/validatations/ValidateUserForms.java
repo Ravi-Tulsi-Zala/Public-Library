@@ -5,19 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.regex.Pattern;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.library.DAO.BookDAO;
 import com.library.DAOFactory.DAOFactory;
 import com.library.DAOFactory.IDAOFactory;
 import com.library.IDAO.IUserDAO;
 import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.IUserExtendedInfo;
-import com.library.businessModels.UserBasicInfo;
 
 public class ValidateUserForms extends ValidateUserFormsAbstract {
 
@@ -126,36 +121,30 @@ public class ValidateUserForms extends ValidateUserFormsAbstract {
 			IUserExtendedInfo userExtendedInfo) throws Exception {
 		listofValidationErrors = new ArrayList<Map.Entry<String, String>>();
 		listofValidationErrors.clear();
-
-		if (userBasicInfo.getEmail().isBlank() || !emailPhoneValidations(userBasicInfo.getEmail(), false)) {
-			entryMap = new AbstractMap.SimpleEntry<String, String>(email, emailErrorStatement);
-			listofValidationErrors.add(entryMap);
-		}
-		else if (userDAO.checkEmailIdExist(userBasicInfo.getEmail())) {
+		String userEmail = userBasicInfo.getEmail();
+		String userPwd = userBasicInfo.getPassword();
+		String userCPwd = userExtendedInfo.getCPassword();
+		String userPhone = userExtendedInfo.getPhone();
+		String userName = userExtendedInfo.getFullname();
+		if (userEmail.isEmpty() || isWhitespace(userEmail) || !emailPhoneValidations(userEmail, false)) {
+			mapperEntry(email, emailErrorStatement);
+		} else if (userDAO.checkEmailIdExist(userEmail)) {
 			emailErrorStatement = "Email already exists. Please register with different email";
-			entryMap = new AbstractMap.SimpleEntry<String, String>(email, emailErrorStatement);
-			listofValidationErrors.add(entryMap);
+			mapperEntry(email, emailErrorStatement);
 		}
-		
-		if (userBasicInfo.getPassword().isBlank() || !passwordValidations(userBasicInfo.getPassword())) {
-			entryMap = new AbstractMap.SimpleEntry<String, String>(password, passwordErrorStatement);
-			listofValidationErrors.add(entryMap);
+		if (userPwd.isEmpty() || isWhitespace(userPwd) || !passwordValidations(userPwd)) {
+			mapperEntry(password, passwordErrorStatement);
 		}
-		if (userExtendedInfo.getCPassword().isBlank() || !passwordValidations(userBasicInfo.getPassword())) {
-
-			entryMap = new AbstractMap.SimpleEntry<String, String>(cpassword, passwordErrorStatement);
-			listofValidationErrors.add(entryMap);
-		} else if (!userExtendedInfo.getCPassword().equals(userBasicInfo.getPassword())) {
-			entryMap = new AbstractMap.SimpleEntry<String, String>(cpassword, cpasswordErrorStatement);
-			listofValidationErrors.add(entryMap);
+		if (userCPwd.isEmpty() || isWhitespace(userCPwd) || !passwordValidations(userCPwd)) {
+			mapperEntry(cpassword, cpasswordErrorStatement);
+		} else if (!userCPwd.equals(userPwd)) {
+			mapperEntry(cpassword, cpasswordErrorStatement);
 		}
-		if (userExtendedInfo.getFullname().isBlank()) {
-			entryMap = new AbstractMap.SimpleEntry<String, String>(fullName, blankErrorStatement);
-			listofValidationErrors.add(entryMap);
+		if (userName.isEmpty() || isWhitespace(userName)) {
+			mapperEntry(fullName, blankErrorStatement);
 		}
-		if (userExtendedInfo.getPhone().isBlank() || !emailPhoneValidations(userExtendedInfo.getPhone(), true)) {
-			entryMap = new AbstractMap.SimpleEntry<String, String>(phoneNumber, phoneErrorStatement);
-			listofValidationErrors.add(entryMap);
+		if (userPhone.isEmpty() || isWhitespace(userPhone) || !emailPhoneValidations(userPhone, true)) {
+			mapperEntry(phoneNumber, phoneErrorStatement);
 		}
 		logger.log(Level.ALL, "signUpUserData method implemented completely");
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
@@ -164,16 +153,35 @@ public class ValidateUserForms extends ValidateUserFormsAbstract {
 	public ArrayList<Map.Entry<String, String>> signInUserData(IUserBasicInfo userBasicInfo) throws Exception {
 		listofValidationErrors = new ArrayList<Map.Entry<String, String>>();
 		listofValidationErrors.clear();
-		if (userBasicInfo.getEmail().isBlank() || !emailPhoneValidations(userBasicInfo.getEmail(), false)) {
-			entryMap = new AbstractMap.SimpleEntry<String, String>(email, emailErrorStatement);
-			listofValidationErrors.add(entryMap);
+		String userEmail = userBasicInfo.getEmail();
+		String userPwd = userBasicInfo.getPassword();
+
+		if (userEmail.isEmpty() || isWhitespace(userEmail) || !emailPhoneValidations(userEmail, false)) {
+			mapperEntry(email, emailErrorStatement);
 		}
-		if (userBasicInfo.getPassword().isBlank() || !passwordValidations(userBasicInfo.getPassword())) {
-			entryMap = new AbstractMap.SimpleEntry<String, String>(password, passwordErrorStatement);
-			listofValidationErrors.add(entryMap);
+		if (userPwd.isEmpty() || isWhitespace(userPwd) || !passwordValidations(userPwd)) {
+			mapperEntry(password, passwordErrorStatement);
 		}
 		logger.log(Level.ALL, "signInIserData method implemented completely.");
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
 	}
 
+	// http://www.java2s.com/Code/Java/Data-Type/ChecksiftheStringcontainsonlywhitespace.htm
+	private boolean isWhitespace(String str) {
+		if (str == null) {
+			return false;
+		}
+		int sz = str.length();
+		for (int i = 0; i < sz; i++) {
+			if ((Character.isWhitespace(str.charAt(i)) == false)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private void mapperEntry(String key, String val) {
+		entryMap = new AbstractMap.SimpleEntry<String, String>(key, val);
+		listofValidationErrors.add(entryMap);
+	}
 }
