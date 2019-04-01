@@ -19,31 +19,16 @@
 		  <form method="post"  onsubmit="return validateSearchForm()" th:action="@{/advancedSearch}" 
 		  			style="float:left;line-height: 3em;">
       		<input type="text" th:field="${searchTermsAndPage.searchTerms}">
-			<input type="checkbox" id="searchInBooks" th:field="${bookSearch.searchInBooks}" style="display:none"/>
-			<input type="checkbox" id ="searchInMovies" th:field="${moviesSearch.searchInMovies}" style="display:none"/>
-			<input type="checkbox" id ="searchInMusic" th:field="${musicSearch.searchInMusic}" style="display:none"/>
-			<input type="checkbox" id="bookTitle" th:field="${bookSearch.searchBookTitle}" style="display:none"/>
-			<input type="checkbox" id="bookAuthor" th:field="${bookSearch.searchBookAuthor}" style="display:none"/>
-			<input type="checkbox" id="bookCategory" th:field="${bookSearch.searchBookCategory}" style="display:none"/>
-			<input type="checkbox" id="bookPublisher" th:field="${bookSearch.searchBookPublisher}" style="display:none"/>
-			<input type="checkbox" id="bookDescription" th:field="${bookSearch.searchBookDescription}" style="display:none"/>
-			<input type="checkbox" id="bookISBN" th:field="${bookSearch.searchBookISBN}" style="display:none"/>
-			<input type="checkbox" id="musicAlbumName" th:field="${musicSearch.searchMusicAlbumName}" style="display:none"/>
-			<input type="checkbox" id="musicArtist" th:field="${musicSearch.searchMusicArtist}" style="display:none"/>
-			<input type="checkbox" id="musicRecordLabel" th:field="${musicSearch.searchMusicRecordLabel}" style="display:none"/>
-			<input type="checkbox" id="movieTitle" th:field="${moviesSearch.searchMovieTitle}" style="display:none"/>
-			<input type="checkbox" id="movieDirector" th:field="${moviesSearch.searchMovieDirector}" style="display:none"/>
-			<input type="checkbox" id="movieDescription" th:field="${moviesSearch.searchMovieDescription}" style="display:none"/>
       		<input type="submit">		      									
 		  </form>		    
-	   	  <a style="float:right;line-height: 3em;" href="logOut">Logout</a>
+	   	  <a style="float:right;line-height: 3em;" href="/logOut">Logout</a>
 	   	  <span style="float:right;margin-right: 20px;line-height: 3em;" th:text="${userEmail}">Test</span>
 	   	  <h1 style="text-align: center;">Welcome To The Library!</h1>
 	   	</div>
 		<div th:if="${not #lists.isEmpty(searchResults.searchResultsPerCategory[0])}">
 		  <span style="color: blue;display:block;width: 100%;">Books</span>
 		  <div style="width: 9%;display: inline-block;vertical-align: top;" th:each="book : ${searchResults.searchResultsPerCategory[0]}">
-			<a href="">
+			<a th:href="@{'/itemDetail/Book/' + ${book.itemID}}">
 <!-- 			  <img style="width: 100%;" src="\searchResults\100001.jpg"/>
  -->						  
  				<img style="width: 100%;" th:src="${book.coverImageUrl}"/>
@@ -54,7 +39,7 @@
 		<div th:if="${not #lists.isEmpty(searchResults.searchResultsPerCategory[1])}">
 		  <span style="color: blue;display:block;width: 100%;">Music</span>
 			  <div style="width: 9%;display: inline-block;vertical-align: top;" th:each="music : ${searchResults.searchResultsPerCategory[1]}">
-			  	<a href="">
+			  	<a th:href="@{'/itemDetail/Music/' + ${music.itemID}}">
 			      <img style="width: 100%;" th:src="${music.coverImageUrl}"/>
 			      <p th:text=${music.title} style="text-align: center;"></p>
 			    </a>		  
@@ -63,7 +48,7 @@
 		<div th:if="${not #lists.isEmpty(searchResults.searchResultsPerCategory[2])}">
 		  <span style="color: blue;display:block;width: 100%;">Movies</span>
 			  <div style="width: 9%;display: inline-block;vertical-align: top;" th:each="movie : ${searchResults.searchResultsPerCategory[2]}">
-			  	<a href="">
+			  	<a th:href="@{'/itemDetail/Movie/' + ${movie.itemID}}">
 			      <img style="width: 100%;" th:src="${movie.coverImageUrl}"/>
 			      <p th:text=${movie.title} style="text-align: center;"></p>	
 			    </a>	  
@@ -76,22 +61,7 @@
 		      		<input type="text" th:field="${searchTermsAndPage.requestedResultsPageNumber}" 
 		      						maxlength="3" style="font-size:2em;margin: 0 0.5em; width:50px;padding: 0 2%;"/>
 		      		<input type="text" th:field="${searchTermsAndPage.searchTerms}" style="display:none">
-		      		<input type="submit" style="display:none">		      						
-					<input type="checkbox" id="searchInBooks" th:field="${bookSearch.searchInBooks}" style="display:none"/>
-					<input type="checkbox" id ="searchInMovies" th:field="${moviesSearch.searchInMovies}" style="display:none"/>
-					<input type="checkbox" id ="searchInMusic" th:field="${musicSearch.searchInMusic}" style="display:none"/>
-					<input type="checkbox" id="bookTitle" th:field="${bookSearch.searchBookTitle}" style="display:none"/>
-					<input type="checkbox" id="bookAuthor" th:field="${bookSearch.searchBookAuthor}" style="display:none"/>
-					<input type="checkbox" id="bookCategory" th:field="${bookSearch.searchBookCategory}" style="display:none"/>
-					<input type="checkbox" id="bookPublisher" th:field="${bookSearch.searchBookPublisher}" style="display:none"/>
-					<input type="checkbox" id="bookDescription" th:field="${bookSearch.searchBookDescription}" style="display:none"/>
-					<input type="checkbox" id="bookISBN" th:field="${bookSearch.searchBookISBN}" style="display:none"/>
-					<input type="checkbox" id="musicAlbumName" th:field="${musicSearch.searchMusicAlbumName}" style="display:none"/>
-					<input type="checkbox" id="musicArtist" th:field="${musicSearch.searchMusicArtist}" style="display:none"/>
-					<input type="checkbox" id="musicRecordLabel" th:field="${musicSearch.searchMusicRecordLabel}" style="display:none"/>
-					<input type="checkbox" id="movieTitle" th:field="${moviesSearch.searchMovieTitle}" style="display:none"/>
-					<input type="checkbox" id="movieDirector" th:field="${moviesSearch.searchMovieDirector}" style="display:none"/>
-					<input type="checkbox" id="movieDescription" th:field="${moviesSearch.searchMovieDescription}" style="display:none"/>				
+		      		<input type="submit" style="display:none">		      										
 				</form>		    
 		    </div>
 		  </div>

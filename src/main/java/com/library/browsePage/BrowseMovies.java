@@ -32,8 +32,8 @@ public class BrowseMovies implements IBrowseDisplayObjects{
 
 	@Override
 	public List<String> getCategories() {
-		// TODO Auto-generated method stub
-		return null;
+		List<String> categories = movieDAO.getMovieCategories();
+		return categories;
 	}
 
 	@Override

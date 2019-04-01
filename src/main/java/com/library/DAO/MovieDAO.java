@@ -18,7 +18,7 @@ import com.library.IDAO.IMovieDAO;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.dbConnection.DatabaseConnection;
-import com.library.search.MoviesSearch;
+import com.library.search.MovieSearch;
 
 public class MovieDAO implements IMovieDAO {
 
@@ -42,15 +42,15 @@ public class MovieDAO implements IMovieDAO {
 	@Override
 	public Movie getMovieById(int itemID) {
 
+		List<Movie> movies = new ArrayList<Movie>();
 		Movie movie = new Movie();
 		query = "SELECT * from movie WHERE Item_ID = ?";
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				movie = movieSetter.mapMovie(resultSet);
-			}
+			movies = movieSetter.mapMovie(resultSet);
+			movie = movies.get(0);
 		} catch (SQLException e) {
 
 			logger.log(Level.ALL, "Check the SQL syntax", e);
@@ -65,7 +65,6 @@ public class MovieDAO implements IMovieDAO {
 	@Override
 	public List<Movie> getMoviesByCategory(String category) {
 
-		Movie movie = new Movie();
 		query = "SELECT * from movie WHERE Category LIKE ?";
 		List<Movie> moviesByCategory = new ArrayList<Movie>();
 
@@ -73,11 +72,7 @@ public class MovieDAO implements IMovieDAO {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, "%" + category + "%");
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				movie = new Movie();
-				movie = movieSetter.mapMovie(resultSet);
-				moviesByCategory.add(movie);
-			}
+			moviesByCategory = movieSetter.mapMovie(resultSet);
 
 		} catch (SQLException e) {
 
@@ -179,7 +174,7 @@ public class MovieDAO implements IMovieDAO {
 		return false;
 	}
 
-	private String prepareSearchQuery(MoviesSearch requestDetails, String searchTerms) {
+	private String prepareSearchQuery(MovieSearch requestDetails, String searchTerms) {
 
 		if (0 == searchTerms.length()) {
 			logger.log(Level.ALL, "No search terms are supplied");
@@ -205,34 +200,75 @@ public class MovieDAO implements IMovieDAO {
 	}
 
 	@Override
-	public List<LibraryItem> getMoviesBySearchTerms(MoviesSearch requestDetails, String searchTerms) {
+	public List<LibraryItem> getMoviesBySearchTerms(MovieSearch requestDetails, String searchTerms) {
+		List<Movie> tempMovie = new ArrayList<>();
 		List<LibraryItem> movies = new LinkedList<LibraryItem>();
 		if(!requestDetails.isSearchInMovies()) {
 			return movies;
 		}
-		
-		Movie movie;
 		String query = prepareSearchQuery(requestDetails, searchTerms);
 		
-		if(null ==query) {
+		if(null == query) {
 			return movies;
 		}
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				movie = movieSetter.mapMovie(resultSet);
-				movie = movieSetter.mapMovie(resultSet);
-				movies.add(movie);
-			}
-
+			tempMovie = movieSetter.mapMovie(resultSet);
+			movies.addAll(tempMovie);
 			return movies;
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
 		}
 
 		return movies;
+	}
+
+	
+	@Override
+	public List<String> getMovieCategories()
+	{
+		List<String> categories = new ArrayList<String>();
+		query = "SELECT Distinct Category from movie";
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next())
+			{
+				categories.add(resultSet.getString("Category"));
+			}
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the list of Movie Categories", e);
+		}
+		return categories;
+	}
+	
+	@Override
+	public Boolean getAvailability(int itemID)
+	{
+		Boolean availability = false;
+		int moviesAvailable = 0; 
+		try {
+			query = "Select Availability from movie where Item_ID = ?";
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(0,itemID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			moviesAvailable = resultSet.getInt(0);
+		}	
+		catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error fetching the availability of Movie", e);
+		}
+		
+		if(moviesAvailable>0)
+		{
+			availability = true;
+		}
+		return availability;
 	}
 
 	public boolean checkMovieDuplicacy(Movie movie) {

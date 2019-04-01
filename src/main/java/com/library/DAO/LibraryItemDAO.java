@@ -48,17 +48,10 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 	public List<Book> getLatestBooks() throws SQLException {
 		bookMapper = new BookSetter();
 		List<Book> books = new ArrayList<Book>();
-		Book book = new Book();
 		query = "SELECT distinct * FROM books order by books.Item_ID desc limit " + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
-		if (!resultSet.next()) {
-			return null;
-		}
-		do {
-			book = bookMapper.mapBook(resultSet);
-			books.add(book);
-		} while (resultSet.next());
+		books = bookMapper.mapBook(resultSet);
 		return books;
 	}
 
@@ -66,17 +59,13 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 	public List<Movie> getLatestMovies() throws SQLException {
 		movieMapper = new MovieSetter();
 		List<Movie> movies = new ArrayList<Movie>();
-		Movie movie = new Movie();
 		query = "SELECT distinct * FROM movie order by movie.Item_ID desc limit " + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		if (!resultSet.next()) {
 			return null;
 		}
-		do {
-			movie = movieMapper.mapMovie(resultSet);
-			movies.add(movie);
-		} while (resultSet.next());
+		movies = movieMapper.mapMovie(resultSet);
 		return movies;
 	}
 
@@ -84,17 +73,13 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 	public List<Music> getLatestMusic() throws SQLException {
 		musicMapper = new MusicSetter();
 		List<Music> musicList = new ArrayList<Music>();
-		Music music = new Music();
 		query = "SELECT distinct * FROM music order by music.Item_ID desc limit " + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		if (!resultSet.next()) {
 			return null;
 		}
-		do {
-			music = musicMapper.mapMusic(resultSet);
-			musicList.add(music);
-		} while (resultSet.next());
+		musicList = musicMapper.mapMusic(resultSet);
 		return musicList;
 	}
 
@@ -102,18 +87,11 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 	public List<Book> getFavouriteBooks() throws SQLException {
 		bookMapper = new BookSetter();
 		List<Book> books = new ArrayList<Book>();
-		Book book = new Book();
 //		query = "SELECT distinct * FROM books order by books.count desc limit " + limitNumber;
 		query = "SELECT distinct * FROM books where Item_ID = 100001";
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
-		if (!resultSet.next()) {
-			return null;
-		}
-		do {
-			book = bookMapper.mapBook(resultSet);
-			books.add(book);
-		} while (resultSet.next());
+		books = bookMapper.mapBook(resultSet);
 		return books;
 	}
 
@@ -121,7 +99,6 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 	public List<Movie> getFavouriteMovies() throws SQLException {
 		movieMapper = new MovieSetter();
 		List<Movie> movies = new ArrayList<Movie>();
-		Movie movie = new Movie();
 //		query = "SELECT distinct * FROM books order by books.count desc limit " + limitNumber;
 		query = "SELECT distinct * FROM movie where Item_ID = 2001";
 		preparedStatement = connection.prepareStatement(query);
@@ -129,27 +106,20 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 		if (!resultSet.next()) {
 			return null;
 		}
-		do {
-			movie = movieMapper.mapMovie(resultSet);
-			movies.add(movie);
-		} while (resultSet.next());
+		movies = movieMapper.mapMovie(resultSet);
 		return movies;
 	}
 
 	@Override
 	public List<Music> getFavouriteMusic() throws SQLException {
 		List<Music> musicList = new ArrayList<Music>();
-		Music music = new Music();
 		query = "SELECT distinct * FROM music where Item_ID = 3001";
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		if (!resultSet.next()) {
 			return null;
 		}
-		do {
-			music = musicMapper.mapMusic(resultSet);
-			musicList.add(music);
-		} while (resultSet.next());
+		musicList = musicMapper.mapMusic(resultSet);
 		return musicList;
 	}
 }

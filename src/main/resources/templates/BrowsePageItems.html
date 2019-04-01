@@ -2,6 +2,15 @@
 	<html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<style type="text/css" media="screen">
+		
+			img {
+				border: 5px solid #fff;
+				border-radius: 5px;
+				padding: 7px;
+				width: 100px;
+				height: 100px;
+				float: right;
+			}
 
 			ul.breadcrumb {
 			  padding: 10px 16px;
@@ -13,10 +22,10 @@
 			  font-size: 18px;
 			}
 			
-			ul.breadcrumb li+li:before {
+			.breadcrumb li+li:before {
 			  padding: 8px;
 			  color: black;
-			  content: ">\00a0";
+			  content: "/\00a0";
 			}
 			
 			ul.breadcrumb li a {
@@ -37,15 +46,17 @@
         
         <div class = "BreadCrumbs" style = "margin-left:5%">
         	<ul class="breadcrumb">
-  				<li th:text=${itemType}></li>
+  				<a th:href="@{'/BrowsePage/'+${itemType}}"><b><li th:text=${itemType}> </li></b></a>
+  				/
+  				<b><li th:text=${category}></li></b>
 			</ul>
         </div>
         
-        
-        <div style="width: 9%; display: inline-block; vertical-align: top;" 
-        th:each="category:${categories}">
-			<a th:text="{category.category}">
-			</a>
+        <div style="width: 9%; display: inline-block; vertical-align: top;" th:each="displayItem:${displayItems}">
+        	<img th:src="${'data:image/png;base64,'+displayItem.image}" />
+        	<a th:href="@{'/itemDetail/' + ${itemType} + '/' + ${displayItem.itemID}}"  th:text="${displayItem.title}">
+        		<table>
+        	</a>
 		</div>
         
 	</body>

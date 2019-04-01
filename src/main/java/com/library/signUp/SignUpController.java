@@ -36,45 +36,40 @@ public class SignUpController implements ISignUpController {
 		ValidateUserForms.instance().setValidationRules();
 	}
 
-	public ArrayList<Entry<String, String>> authenticateSignUp() {
-		try {
-			
-			userExtendedInfo = new UserExtendedInfo();
-			userBasicInfo = new UserBasicInfo();
-			addSaltToPassword();
-			userBasicInfo.setEmail(user.getEmail());
-			userBasicInfo.setPassword(salt.getSaltedPassword());
-			userExtendedInfo.setCPassword(user.getCpassword());
-			userExtendedInfo.setFullname(user.getFullName());
-			userExtendedInfo.setPhone(user.getPhoneNumber());
-			listofValidationErrors = ValidateUserForms.instance().signUpUserData(userBasicInfo, userExtendedInfo);
-			if (listofValidationErrors.size() == 0) {
-				boolean status = registerUser();
-				if (status) {
-					logger.log(Level.ALL, "User has successfully registered.");
-				} else {
-					logger.log(Level.ALL, "User has not registered.");
-				}
+	public ArrayList<Entry<String, String>> validateSignUp() throws Exception {
+		userExtendedInfo = new UserExtendedInfo();
+		userBasicInfo = new UserBasicInfo();
+		userBasicInfo.setEmail(user.getEmail());
+		userBasicInfo.setPassword(user.getPassword());
+		userExtendedInfo.setCPassword(user.getCpassword());
+		userExtendedInfo.setFullname(user.getFullName());
+		userExtendedInfo.setPhone(user.getPhoneNumber());
+		listofValidationErrors = ValidateUserForms.instance().signUpUserData(userBasicInfo, userExtendedInfo);
+		
+		if (listofValidationErrors.size() == 0) {
+			boolean status = registerUser();
+			if (status) {
+				
+				logger.log(Level.ALL, "User has successfully registered.");
+			} else {
+				logger.log(Level.ALL, "User has not registered.");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
 	}
 
 	private void addSaltToPassword() {
 		salt.setSaltedPassword(user.getPassword(), ValidateUserFormsAbstract.saltValue);
+		user.setPassword(salt.getSaltedPassword());
 	}
 
 	private boolean registerUser() throws Exception {
 		boolean isUserRegistered = false;
-		try {
-			IDAOFactory factory = new DAOFactory();
-			IUserDAO userDAO = factory.makeUserDAO();
-			isUserRegistered = userDAO.registerUser(user);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		IDAOFactory factory = new DAOFactory();
+		IUserDAO userDAO = factory.makeUserDAO();
+		addSaltToPassword();
+		isUserRegistered = userDAO.registerUser(user);
+		logger.log(Level.ALL, "registerUser method completed successfully.");
 		return isUserRegistered;
 	}
 }

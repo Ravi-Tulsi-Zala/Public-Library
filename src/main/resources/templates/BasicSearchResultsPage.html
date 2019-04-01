@@ -20,15 +20,17 @@
 		  			style="float:left;line-height: 3em;">
       		<input type="text" th:field="${searchTermsAndPage.searchTerms}">
       		<input type="submit">		      									
-		  </form>		    
+		  </form>
+	      <div th:if="${userEmail != null}">
+			  <a style="float:right;line-height: 3em;" href="/logOut">Logout</a>
+	   	  	  <span style="float:right;margin-right: 20px;line-height: 3em;" th:text="${userEmail}">Test</span>
+   	  	  </div>		    
 	   	  <h1 style="text-align: center;">Welcome To The Library!</h1>
 	   	</div>
 		<div th:if="${not #lists.isEmpty(searchResults.searchResultsPerCategory[0])}">
 		  <span style="color: blue;display:block;width: 100%;">Books</span>
 		  <div style="width: 9%;display: inline-block;vertical-align: top;" th:each="book : ${searchResults.searchResultsPerCategory[0]}">
-			<a href="">
-<!-- 			  <img style="width: 100%;" src="\searchResults\100001.jpg"/>
- -->						  
+			<a th:href="@{'/itemDetail/Book/' + ${book.itemID}}">			  
  				<img style="width: 100%;" th:src="${book.coverImageUrl}"/>
  				 <p th:text=${book.title} style="text-align: center;"></p>	
 			</a>	  
@@ -37,7 +39,7 @@
 		<div th:if="${not #lists.isEmpty(searchResults.searchResultsPerCategory[1])}">
 		  <span style="color: blue;display:block;width: 100%;">Music</span>
 			  <div style="width: 9%;display: inline-block;vertical-align: top;" th:each="music : ${searchResults.searchResultsPerCategory[1]}">
-			  	<a href="">
+			  	<a th:href="@{'/itemDetail/Music/' + ${music.itemID}}">
 			      <img style="width: 100%;" th:src="${music.coverImageUrl}"/>
 			      <p th:text=${music.title} style="text-align: center;"></p>
 			    </a>		  
@@ -46,7 +48,7 @@
 		<div th:if="${not #lists.isEmpty(searchResults.searchResultsPerCategory[2])}">
 		  <span style="color: blue;display:block;width: 100%;">Movies</span>
 			  <div style="width: 9%;display: inline-block;vertical-align: top;" th:each="movie : ${searchResults.searchResultsPerCategory[2]}">
-			  	<a href="">
+			  	<a th:href="@{'/itemDetail/Movie/' + ${movie.itemID}}">
 			      <img style="width: 100%;" th:src="${movie.coverImageUrl}"/>
 			      <p th:text=${movie.title} style="text-align: center;"></p>	
 			    </a>	  
