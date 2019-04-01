@@ -2,7 +2,10 @@ package com.library.dbConnection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.mysql.jdbc.PreparedStatement;
 
 public class DatabaseConnection {
 	private static DatabaseConnection databaseConnectionInstance = null;
@@ -55,4 +58,30 @@ public class DatabaseConnection {
 		return getDatabaseConnectionInstance().connection;
 	}
 	
+	public void closeConnection(ResultSet resultSet, java.sql.PreparedStatement preparedStatement)
+	{
+		if(null != resultSet) {
+			try {
+				resultSet.close();
+			} catch (SQLException e) {
+				
+			}
+		}
+		if(null != preparedStatement) {
+			try {
+				preparedStatement.close();
+			} catch (SQLException e) {
+				
+			}
+		}
+		try {
+			if(!connection.isClosed())
+			{
+				connection.close();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

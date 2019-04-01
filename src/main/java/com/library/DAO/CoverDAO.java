@@ -20,9 +20,11 @@ public class CoverDAO implements ICoverDAO {
 	private PreparedStatement preparedStatement;
 	private Connection dbConnection;
 	private CoverSetter coverMapper = new CoverSetter();
+	DatabaseConnection databaseConnection;
+	ResultSet resultSet;
 	
 	public CoverDAO() {
-			DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
+			databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
 			this.dbConnection = databaseConnection.getConnection();
 	}
 	
@@ -31,7 +33,7 @@ public class CoverDAO implements ICoverDAO {
 		try {
 			preparedStatement = dbConnection.prepareStatement(SELECT_COVER_BY_ITEM_ID_QUERY);
 			preparedStatement.setInt(1, itemID);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				return coverMapper.setCover(resultSet);
 			}
@@ -39,13 +41,7 @@ public class CoverDAO implements ICoverDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if(null != preparedStatement) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+				databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return null;
 	}
@@ -63,13 +59,7 @@ public class CoverDAO implements ICoverDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if(null != preparedStatement) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return false;
 	}
@@ -85,13 +75,7 @@ public class CoverDAO implements ICoverDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			if(null != preparedStatement) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		
 		return false;

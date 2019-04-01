@@ -28,11 +28,13 @@ public class MusicDAO implements IMusicDAO {
 	Connection connection;
 	IMusicSetter musicSetter = new MusicSetter();
 	private static final Logger logger = LogManager.getLogger(MusicDAO.class);
-
+	ResultSet resultSet;
+	DatabaseConnection databaseConnection;
+	
 	public MusicDAO() {
 
 		try {
-			DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
+			databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
 			this.connection = databaseConnection.getConnection();
 
 		} catch (Exception e) {
@@ -49,7 +51,7 @@ public class MusicDAO implements IMusicDAO {
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			musics = musicSetter.mapMusic(resultSet);
 			music = musics.get(0);
 		} catch (SQLException e) {
@@ -58,6 +60,10 @@ public class MusicDAO implements IMusicDAO {
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not fetch music using id", e);
+		}
+		finally
+		{
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return music;
 	}
@@ -70,7 +76,7 @@ public class MusicDAO implements IMusicDAO {
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, "%" + category + "%");
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			musicsByCategory = musicSetter.mapMusic(resultSet);
 		} catch (SQLException e) {
 
@@ -78,6 +84,10 @@ public class MusicDAO implements IMusicDAO {
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not fetch the list of music by the specific category", e);
+		}
+		finally
+		{
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return musicsByCategory;
 
@@ -103,10 +113,10 @@ public class MusicDAO implements IMusicDAO {
 			preparedStatement.setString(4, musicRecordLabel);
 			preparedStatement.setInt(5, musicAvailability);
 			preparedStatement.executeUpdate();
-			ResultSet rs = preparedStatement.getGeneratedKeys();
+			resultSet = preparedStatement.getGeneratedKeys();
 			
-			if (rs.next()) {
-			    recentlyAddedMusicId = rs.getInt(1);
+			if (resultSet.next()) {
+			    recentlyAddedMusicId = resultSet.getInt(1);
 			}
 			
 			return recentlyAddedMusicId ;
@@ -117,6 +127,10 @@ public class MusicDAO implements IMusicDAO {
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not create music entry in database", e);
+		}
+		finally
+		{
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return recentlyAddedMusicId;
 	}
@@ -150,6 +164,10 @@ public class MusicDAO implements IMusicDAO {
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not update music into database", e);
 		}
+		finally
+		{
+			databaseConnection.closeConnection(resultSet, preparedStatement);
+		}
 		return false;
 	}
 
@@ -167,6 +185,10 @@ public class MusicDAO implements IMusicDAO {
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not delete music from database", e);
+		}
+		finally
+		{
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return false;
 	}
@@ -211,14 +233,17 @@ public class MusicDAO implements IMusicDAO {
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			tempMusics = musicSetter.mapMusic(resultSet);
 			musics.addAll(tempMusics);
 			return musics;
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
 		}
-
+		finally
+		{
+			databaseConnection.closeConnection(resultSet, preparedStatement);
+		}
 		return musics;
 	}
 	
@@ -229,7 +254,7 @@ public class MusicDAO implements IMusicDAO {
 		query = "SELECT Distinct Category from music";
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next())
 			{
 				categories.add(resultSet.getString("Category"));
@@ -238,6 +263,10 @@ public class MusicDAO implements IMusicDAO {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Error fetching the list of Music Categories", e);
+		}
+		finally
+		{
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return categories;
 	}
@@ -251,7 +280,7 @@ public class MusicDAO implements IMusicDAO {
 			query = "Select Availability from music where Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(0,itemID);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			musicsAvailable = resultSet.getInt(0);
 		}	
 		catch (SQLException e) {
@@ -259,11 +288,16 @@ public class MusicDAO implements IMusicDAO {
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Error fetching the availability of Music", e);
 		}
+		finally
+		{
+			databaseConnection.closeConnection(resultSet, preparedStatement);
+		}
 		
 		if(musicsAvailable>0)
 		{
 			availability = true;
 		}
+		
 		return availability;
 	}
 	
@@ -277,7 +311,7 @@ public class MusicDAO implements IMusicDAO {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, titleToBeAdded);
 			preparedStatement.setString(2, artistToBeAdded);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 
 			if (resultSet.next()) {
 				isMusicAvailable = true;
@@ -289,6 +323,10 @@ public class MusicDAO implements IMusicDAO {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Error fetching the list of Musics", e);
+		}
+		finally
+		{
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return isMusicAvailable;
 	}
