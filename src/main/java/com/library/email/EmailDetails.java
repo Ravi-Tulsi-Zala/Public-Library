@@ -1,4 +1,4 @@
-package com.library.ForgotPassword;
+package com.library.email;
 
 public class EmailDetails {
 	private String userEmailID;

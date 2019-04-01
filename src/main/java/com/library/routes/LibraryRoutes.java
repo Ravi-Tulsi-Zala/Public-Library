@@ -60,6 +60,12 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	private ILibraryFactory factory = null;
 	private LibraryFactorySingleton libraryInstance = null;
 
+	private String redirectToWelcome = Messages.WelcomePageRedirect.getMessage();
+	private String redirectToSignIn = Messages.SignInPageRedirect.getMessage();
+	private String redirectToSignUp = Messages.SignUpPageRedirect.getMessage();
+	private String redirectToForgotPwd = Messages.ForgotPassPageRedirect.getMessage();
+	private String redirectToErrorPage = Messages.ErrorPageRedirect.getMessage();
+
 	public LibraryRoutes() {
 		libraryInstance = LibraryFactorySingleton.instance();
 		factory = libraryInstance.getFactory();
@@ -79,11 +85,11 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			if (model.size() > 2) {
 				return "SignUpForm";
 			} else {
-				return "redirect:welcome";
+				return redirectToWelcome;
 			}
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Something went wrong while registering the User, please check detailed logs.", e);
-			return "redirect:ErrorPage";
+			return redirectToErrorPage;
 		}
 	}
 
@@ -104,7 +110,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 			return "AdvancedSearchPage";
 		}
-		return "redirect:welcome";
+		return redirectToWelcome;
 	}
 
 	@PostMapping("/advancedSearch")
@@ -117,7 +123,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 			return "AdvancedSearchResultsPage";
 		}
-		return "redirect:welcome";
+		return redirectToWelcome;
 	}
 
 	@GetMapping("/basicSearch")
@@ -146,7 +152,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		sr.addCategoryToSearchIn(moviesSearch);
 		return dbSearchController.search(sr, httpSession);
 	}
-	
+
 	private void addUserEmail(ModelMap model, HttpSession httpSession) {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
@@ -180,7 +186,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			return signIn.checkUserCredential();
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Something went wrong while signing in the User, please check detailed logs.", e);
-			return "redirect:ErrorPage"; // Something went wrong page.
+			return redirectToErrorPage; // Something went wrong page.
 		}
 	}
 
@@ -250,10 +256,10 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			favMusic = welcomeCtrl.getFavouriteMusic();
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Some problem occured while connection with Database in welcome controller.", e);
-			return "redirect:ErrorPage";
+			return redirectToErrorPage;
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Some problem occured, check logs.", e);
-			return "redirect:ErrorPage";
+			return redirectToErrorPage;
 		}
 		model.addAttribute("book", book);
 		model.addAttribute("favBooks", favBooks);
@@ -277,7 +283,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			AuthenticatedUsers.instance().removeAuthenticatedUser(httpSession);
 		}
-		return "redirect:welcome";
+		return redirectToWelcome;
 	}
 
 	@GetMapping(value = "/forgotPassword")
@@ -294,22 +300,22 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping(value = "/forgotPassword")
-	public String processForgotPasswordUserForm(ModelMap model, RecoverPassword recoverPassword) {
+	public String processForgotPasswordUserForm(RecoverPassword recoverPassword) {
 		Logger logger = LogManager.getLogger(ForgotPasswordController.class);
 		try {
 			recoverPassword.setSecurityQuestion(securityQuestionValue);
 			IForgotPasswordController fPwdCntrl = factory.forgotPassword(recoverPassword);
 			if (fPwdCntrl.recoverPassword()) {
-				return "redirect:signIn";
+				return redirectToSignIn;
 			} else {
-				return "redirect:forgotPassword";
+				return redirectToForgotPwd;
 			}
 		} catch (MessagingException | IOException em) {
 			logger.log(Level.ALL, "Some problem occured while sending a email.", em);
-			return "redirect:forgotPassword";
+			return redirectToErrorPage;
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Some generic error occured while in forgotPassword controller.", e);
-			return "redirect:forgotPassword";
+			return redirectToErrorPage;
 		}
 	}
 
