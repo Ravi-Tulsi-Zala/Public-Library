@@ -11,7 +11,7 @@ public class SearchRequest implements ISearchRequest {
 
 	@Override
 	public ISearchResults searchInDb() {
-		SearchResults searchResults = new SearchResults();
+		SearchResults searchResults = SearchFactory.instance().makeSearchResults();
 		for(SearchCategory category : categoriesToSearch) {
 			List<LibraryItem> items = category.search(termsAndPage.getSearchTerms());
 			searchResults.addSearchResultsForCategory(items);

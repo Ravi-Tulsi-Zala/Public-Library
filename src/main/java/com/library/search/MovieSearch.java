@@ -5,7 +5,7 @@ import java.util.List;
 import com.library.DAOFactory.DAOFactory;
 import com.library.businessModels.LibraryItem;
 
-public class MoviesSearch extends SearchCategory {
+public class MovieSearch extends SearchCategory {
 
 	private boolean searchInMovies = true;
 	private boolean searchMovieTitle = true;
@@ -15,18 +15,6 @@ public class MoviesSearch extends SearchCategory {
 	@Override
 	public List<LibraryItem> search(String searchterms) {
 		return daoFactory.makeMovieDAO().getMoviesBySearchTerms(this, searchterms);
-	}
-	
-	@Override
-	public boolean equals(SearchCategory previousMovieSearch) {
-		MoviesSearch prev = (MoviesSearch) previousMovieSearch;
-		boolean isEqual = 
-				this.searchInMovies == prev.searchInMovies &&
-				this.searchMovieTitle == prev.searchMovieTitle &&
-				this.searchMovieDirector == prev.searchMovieDirector &&
-				this.searchMovieDescription == prev.searchMovieDescription;
-		
-		return isEqual;
 	}
 
 	public boolean isSearchInMovies() {

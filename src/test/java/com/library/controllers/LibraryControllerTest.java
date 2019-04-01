@@ -29,12 +29,11 @@ import com.library.demo.LibraryApplication;
 import com.library.search.IDBSearchController;
 import com.library.search.SearchResults;
 import com.library.signIn.AuthenticatedUsers;
+import com.library.search.SearchFactory;
 
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
-// try to remove the annotation below, run this TEST and observe error. Look for solution here:
-// https://stackoverflow.com/questions/43515279/error-unable-to-find-springbootconfiguration-when-doing-webmvctest-for-spring
 @ContextConfiguration(classes={LibraryApplication.class})
 public class LibraryControllerTest {
 
@@ -58,19 +57,19 @@ public class LibraryControllerTest {
 //    @SuppressWarnings("unchecked")
 	@Test
     public void authenticatedUserBowseAdvancedSearchPageWithPOST() throws Exception {
-    	SearchResults searchResult = new SearchResults();
+    	SearchResults results = SearchFactory.instance().makeSearchResults();
     	
     	List<LibraryItem> booksFoundInSearch = new LinkedList<LibraryItem>();
-    	searchResult.addSearchResultsForCategory(booksFoundInSearch);
+    	results.addSearchResultsForCategory(booksFoundInSearch);
     	List<LibraryItem> moviesFoundInSearch = new LinkedList<LibraryItem>();
-    	searchResult.addSearchResultsForCategory(moviesFoundInSearch);
+    	results.addSearchResultsForCategory(moviesFoundInSearch);
     	List<LibraryItem> musicFoundInSearch = new LinkedList<LibraryItem>();
-    	searchResult.addSearchResultsForCategory(musicFoundInSearch);
+    	results.addSearchResultsForCategory(musicFoundInSearch);
         
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post("/advancedSearch");
         request.session(mockHttpSessionAuthenticated);
         
-        when(dbSearchControllerMock.search(any(), eq(mockHttpSessionAuthenticated))).thenReturn(searchResult);
+        when(dbSearchControllerMock.search(any(), eq(mockHttpSessionAuthenticated))).thenReturn(results);
        
         
 		this.mockMvc.perform(request)
@@ -116,7 +115,7 @@ public class LibraryControllerTest {
     
     @Test
     public void anyUserBrowseBasicSearchPagePOST() throws Exception {       
-    	SearchResults searchResult = new SearchResults();
+    	SearchResults searchResult = SearchFactory.instance().makeSearchResults();
     	
     	List<LibraryItem> booksFoundInSearch = new LinkedList<LibraryItem>();
     	searchResult.addSearchResultsForCategory(booksFoundInSearch);

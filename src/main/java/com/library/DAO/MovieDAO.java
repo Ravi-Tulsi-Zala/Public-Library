@@ -18,7 +18,7 @@ import com.library.IDAO.IMovieDAO;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.dbConnection.DatabaseConnection;
-import com.library.search.MoviesSearch;
+import com.library.search.MovieSearch;
 
 public class MovieDAO implements IMovieDAO {
 
@@ -174,7 +174,7 @@ public class MovieDAO implements IMovieDAO {
 		return false;
 	}
 
-	private String prepareSearchQuery(MoviesSearch requestDetails, String searchTerms) {
+	private String prepareSearchQuery(MovieSearch requestDetails, String searchTerms) {
 
 		if (0 == searchTerms.length()) {
 			logger.log(Level.ALL, "No search terms are supplied");
@@ -200,7 +200,7 @@ public class MovieDAO implements IMovieDAO {
 	}
 
 	@Override
-	public List<LibraryItem> getMoviesBySearchTerms(MoviesSearch requestDetails, String searchTerms) {
+	public List<LibraryItem> getMoviesBySearchTerms(MovieSearch requestDetails, String searchTerms) {
 		List<Movie> tempMovie = new ArrayList<>();
 		List<LibraryItem> movies = new LinkedList<LibraryItem>();
 		if(!requestDetails.isSearchInMovies()) {
