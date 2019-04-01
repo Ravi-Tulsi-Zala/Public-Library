@@ -58,19 +58,37 @@ a, a label {
 	}
 </script>
 </head>
-<body style="margin: 0 auto;" action="post">
+<body style="margin: 0 100px;" action="post">
 	<div style="float: left;">
 		<p>
 			Search Terms <input id="searchTerms" type="text"
 				style="width: 250px;" />
 		</p>
 	</div>
-	<a style="float: right; line-height: 3em; margin-right: 200px"
-		href="logOut">Login/Logout</a>
+
+	<div style="float: right">
+		<p style="float: left" th:text="${sessionClient}"></p>
+		<a style="float:right; margin:0 100px"
+			href="/signIn"><p th:text="${loggingStatus}"></p></a>
+	</div>
+
 	<span style="float: right; margin-right: 20px; line-height: 3em;"
 		th:text="${userEmail}">Test</span>
 	<h1 style="text-align: center;">Welcome To The Library!</h1>
 	<div style="margin-top: 50px;"></div>
+	<div>
+		<table th:if="*{isAdminAval}">
+			<tr>
+				<p>Admin Tools</p>
+			</tr>
+			<tr>
+				<td><a href="/signIn"><div class="boxed">Add Library
+							items</div></a></td>
+				<td><a href="/signIn"><div class="boxed">Loan
+							Management</div></a></td>
+			</tr>
+		</table>
+	</div>
 	<span style="color: blue; display: block; width: 100%;">New
 		arrivals</span>
 	<div style="width: 9%; display: inline-block; vertical-align: top;"

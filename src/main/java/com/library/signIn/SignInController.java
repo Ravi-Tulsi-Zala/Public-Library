@@ -20,7 +20,7 @@ import com.library.validatations.ValidateUserForms;
 import com.library.validatations.ValidateUserFormsAbstract;
 import com.library.welcomePage.AdminPage;
 
-public class SignInController implements ISignInController{
+public class SignInController implements ISignInController {
 
 	private IUserBasicInfo userBasicInfo = null;
 	private User user = null;
@@ -38,22 +38,28 @@ public class SignInController implements ISignInController{
 		ValidateUserForms.instance().setValidationRules();
 	}
 
-	public String checkUserCredential() throws Exception{
+	public String checkUserCredential() throws Exception {
 		DAOFactory factory = new DAOFactory();
 		IUserDAO userDAO = factory.makeUserDAO();
 		addSaltToPassword();
+		AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, userBasicInfo.getEmail());
 		if (userDAO.checkPassword(user.getEmail(), salt.getSaltedPassword())) {
 			logger.log(Level.ALL, "User has successfully logged in.");
-			AdminPage.setAdminAvailable(false);
-			return "Welcome";
+			AdminPage.setAvailableAdmin(false);
+			AdminPage.setAvailableUserID(user.getEmail());
+			AdminPage.setLoggingStatus("Logout");
+			return "redirect:welcome";
 
 		} else if (userBasicInfo.getEmail().equals(ValidateUserFormsAbstract.isAdmin)
 				&& userBasicInfo.getPassword().equals(ValidateUserFormsAbstract.isAdminPwd)) {
-			AdminPage.setAdminAvailable(true);
-			return "Welcome";
+			AdminPage.setAvailableAdmin(true);
+			AdminPage.setAvailableUserID("Administrator"); //use ENUM here.
+			AdminPage.setLoggingStatus("Logout"); //HeRE.
+			return "redirect:welcome";
 		}
 		logger.log(Level.ALL, "checkUserCredential method implemented successfully.");
-		return "Welcome";
+		AdminPage.setLoggingStatus("Logout");
+		return "redirect:welcome";
 	}
 
 	private void addSaltToPassword() {
@@ -64,10 +70,6 @@ public class SignInController implements ISignInController{
 		userBasicInfo.setEmail(user.getEmail());
 		userBasicInfo.setPassword(user.getPassword());
 		listofValidationErrors = ValidateUserForms.instance().signInUserData(userBasicInfo);
-		if (listofValidationErrors.size() == 0) {
-			AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, userBasicInfo.getEmail());
-
-		}
 		logger.log(Level.ALL, "validateSignIn method implemented successfully.");
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
 	}
