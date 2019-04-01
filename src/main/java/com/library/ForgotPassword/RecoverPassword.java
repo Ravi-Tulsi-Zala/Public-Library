@@ -11,7 +11,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.library.DAOFactory.DAOFactory;
 import com.library.IDAO.IUserDAO;
-import com.library.businessModels.Salt;
+import com.library.email.EmailDetails;
+import com.library.email.EmailUtility;
 import com.library.validatations.ValidateUserFormsAbstract;
 
 public class RecoverPassword extends RecoverPasswordAbstract {
@@ -50,8 +51,6 @@ public class RecoverPassword extends RecoverPasswordAbstract {
 	}
 
 	public boolean sendEmailToUser() throws AddressException, MessagingException, IOException {
-		details.setAdminEmailID("devanshu010193@gmail.com");
-		details.setAdminPassword("PopMom123");
 		details.setUserEmailID(email);
 		details.setBody(getBody());
 		details.setSubject(getSubject());
@@ -65,7 +64,7 @@ public class RecoverPassword extends RecoverPasswordAbstract {
 	protected void getEmailMatchingPassword() {
 		DAOFactory factory = new DAOFactory();
 		IUserDAO user = factory.makeUserDAO();
-		details.setSubject("HELLO my friend.");
+		details.setSubject("LMS reminder for password.");
 		details.setBody(user.getEmailRelatedPassword(details.getUserEmailID()).replace(ValidateUserFormsAbstract.saltValue,""));;
 	}
 
