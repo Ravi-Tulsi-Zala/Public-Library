@@ -1,7 +1,12 @@
 package com.library.routes;
 
+
+import java.io.Console;
+
 import java.io.IOException;
+
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +37,9 @@ import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
+import com.library.businessModels.UserItem;
+import com.library.loanmanagement.ILoanManagementController;
+import com.library.loanmanagement.Select;
 import com.library.messages.Messages;
 import com.library.search.BookSearch;
 import com.library.search.IDBSearchController;
@@ -212,23 +220,21 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		return "AddItemPage";
 	}
 
-	@RequestMapping("/addBook")
+	@PostMapping("/addBook")
 	public String addBookToDatabase(ModelMap model, Book book, Cover coverBook) {
 
-		IAddBookController iAddBookController = LibraryFactorySingleton.instance().getFactory().makeAddBookController();
+		IAddBookController iAddBookController = factory.makeAddBookController();
 		message = iAddBookController.addBookRecordInDatabase(book, coverBook.getCoverImage());
 		displayMessage = message.getMessage();
 		model.addAttribute("message", displayMessage);
 		redirectPage = mappingsForAddItem(model);
 		return redirectPage;
-
 	}
 
 	@PostMapping("/addMovie")
 	public String addMovieToDatabase(ModelMap model, Movie movie, Cover coverMovie) {
 
-		IAddMovieController iAddMovieController = LibraryFactorySingleton.instance().getFactory()
-				.makeAddMovieController();
+		IAddMovieController iAddMovieController = factory.makeAddMovieController();
 		message = iAddMovieController.addMovieRecordInDatabase(movie, coverMovie.getCoverImage());
 		displayMessage = message.getMessage();
 		model.addAttribute("message", displayMessage);
@@ -240,15 +246,36 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@PostMapping("/addMusic")
 	public String addMusicToDatabase(ModelMap model, Music music, Cover coverMusic) {
 
-		IAddMusicController iAddMusicController = LibraryFactorySingleton.instance().getFactory()
-				.makeAddMusicController();
+		IAddMusicController iAddMusicController = factory.makeAddMusicController();
 		message = iAddMusicController.addMusicRecordInDatabase(music, coverMusic.getCoverImage());
 		displayMessage = message.getMessage();
 		model.addAttribute("message", displayMessage);
 		redirectPage = mappingsForAddItem(model);
 		return redirectPage;
 	}
-
+	
+	@GetMapping("/loan")
+	public String mappingsForLoanManagement(ModelMap model)
+	{
+		model.addAttribute("item",new UserItem());
+		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
+		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
+		model.addAttribute("items", items);
+		model.addAttribute("select",new Select());
+		return "LoanManagement";
+	}
+	
+	@PostMapping("/loanItems")
+	public String returnItems(ModelMap model,Select select)
+	{
+		System.out.println("Selections : "+select.getSelections());
+		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
+		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
+		model.addAttribute("select",new Select());
+		model.addAttribute("items", items);
+		return "LoanManagement";
+	}
+	
 	@GetMapping("/welcome")
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem) {
 		Logger logger = LogManager.getLogger(WelcomePageController.class);

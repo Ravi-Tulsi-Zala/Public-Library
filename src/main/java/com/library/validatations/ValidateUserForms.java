@@ -153,6 +153,7 @@ public class ValidateUserForms extends ValidateUserFormsAbstract {
 	public ArrayList<Map.Entry<String, String>> signInUserData(IUserBasicInfo userBasicInfo) throws Exception {
 		listofValidationErrors = new ArrayList<Map.Entry<String, String>>();
 		listofValidationErrors.clear();
+
 		String userEmail = userBasicInfo.getEmail();
 		String userPwd = userBasicInfo.getPassword();
 
