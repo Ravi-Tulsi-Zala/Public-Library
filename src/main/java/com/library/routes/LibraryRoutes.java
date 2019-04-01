@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.library.ForgotPassword.ForgotPasswordController;
 import com.library.ForgotPassword.IForgotPasswordController;
@@ -65,6 +66,11 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	private String redirectToSignUp = Messages.SignUpPageRedirect.getMessage();
 	private String redirectToForgotPwd = Messages.ForgotPassPageRedirect.getMessage();
 	private String redirectToErrorPage = Messages.ErrorPageRedirect.getMessage();
+	
+	private String gotoSignInPage = "SignInForm";
+	private String gotoSignUpPage = "SignUpForm";
+	private String gotoWelcomePage = "Welcome";
+	private String gotoForgotPwdPage = "ForgotPassword";
 
 	public LibraryRoutes() {
 		libraryInstance = LibraryFactorySingleton.instance();
@@ -83,7 +89,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			// model object has by default two values; anytime it gets more than that
 			// signifies a validation violation
 			if (model.size() > 2) {
-				return "SignUpForm";
+				return gotoSignUpPage;
 			} else {
 				return redirectToWelcome;
 			}
@@ -95,7 +101,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@GetMapping("/signUp")
 	public String getSignUpForm(User user) {
-		return "SignUpForm";
+		return gotoSignUpPage;
 	}
 
 	@GetMapping("/advancedSearch")
@@ -166,7 +172,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@GetMapping("/signIn")
 	public String getSignInForm(User user) {
-		return "SignInForm";
+		return gotoSignInPage;
 	}
 
 	@PostMapping("/signIn")
@@ -181,7 +187,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			// ModelMap by default has two values and anytime it gets more than that
 			// signifies validation violation
 			if (model.size() > 2) {
-				return "SignInForm";
+				return gotoSignInPage;
 			}
 			return signIn.checkUserCredential();
 		} catch (Exception e) {
@@ -270,7 +276,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("isAdminAval", welcomeCtrl.isAdminAvailable());
 		model.addAttribute("loggingStatus", AdminPage.getLoggingStatus());
 		model.addAttribute("sessionClient", AdminPage.getAvailableUserID());
-		return "Welcome";
+		return gotoWelcomePage;
 	}
 
 	@GetMapping("/ErrorPage")
@@ -296,7 +302,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Some generic error occured while in forgotPassword controller.", e);
 		}
-		return "ForgotPassword";
+		return gotoForgotPwdPage;
 	}
 
 	@PostMapping(value = "/forgotPassword")
