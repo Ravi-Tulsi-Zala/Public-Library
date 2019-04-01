@@ -28,7 +28,7 @@ public abstract class ValidateUserFormsAbstract {
 	private static final String cpasswordErrorKeyRoot = "cpasswordErrorString";
 	private static final String saltKeyRoot = "salt";
 	protected String passwordErrorStatement;
-	protected String emailErrorStatement = "";
+	protected String emailErrorStatement;
 	protected String blankErrorStatement;
 	protected String phoneErrorStatement;
 	protected String cpasswordErrorStatement;
@@ -105,21 +105,22 @@ public abstract class ValidateUserFormsAbstract {
 		this.cpasswordErrorStatement = "";
 		List<Map.Entry<String, String>> list = XmlParser.parse(filePathToErrorStatements);
 		for (int i = 0; i < list.size(); i++) {
+			String getValFromList = list.get(i).getKey();
 			switch (list.get(i).getKey()) {
 			case emailErrorKeyRoot:
-				this.emailErrorStatement = list.get(i).getValue();
+				this.emailErrorStatement = getValFromList;
 				break;
 			case emptyErrorKeyRoot:
-				this.blankErrorStatement = list.get(i).getValue();
+				this.blankErrorStatement = getValFromList;
 				break;
 			case passwordErrorKeyRoot:
-				this.passwordErrorStatement = list.get(i).getValue();
+				this.passwordErrorStatement = getValFromList;
 				break;
 			case phoneErrorKeyRoot:
-				this.phoneErrorStatement = list.get(i).getValue();
+				this.phoneErrorStatement = getValFromList;
 				break;
 			case cpasswordErrorKeyRoot:
-				this.cpasswordErrorStatement = list.get(i).getValue();
+				this.cpasswordErrorStatement = getValFromList;
 				break;
 			default:
 				break;
