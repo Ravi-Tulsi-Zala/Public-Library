@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.library.ForgotPassword.EmailDetails;
+import com.library.email.EmailDetails;
 import com.library.validatations.ValidateUserForms;
 import com.library.validatations.ValidateUserFormsAbstract;
 

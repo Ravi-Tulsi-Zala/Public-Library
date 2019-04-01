@@ -16,6 +16,7 @@ import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.Salt;
 import com.library.businessModels.User;
 import com.library.businessModels.UserBasicInfo;
+import com.library.messages.Messages;
 import com.library.validatations.ValidateUserForms;
 import com.library.validatations.ValidateUserFormsAbstract;
 import com.library.welcomePage.AdminPage;
@@ -39,6 +40,7 @@ public class SignInController implements ISignInController {
 	}
 
 	public String checkUserCredential() throws Exception {
+		String redirectToWelcome = Messages.WelcomePageRedirect.getMessage();
 		DAOFactory factory = new DAOFactory();
 		IUserDAO userDAO = factory.makeUserDAO();
 		addSaltToPassword();
@@ -47,19 +49,19 @@ public class SignInController implements ISignInController {
 			logger.log(Level.ALL, "User has successfully logged in.");
 			AdminPage.setAvailableAdmin(false);
 			AdminPage.setAvailableUserID(user.getEmail());
-			AdminPage.setLoggingStatus("Logout");
-			return "redirect:welcome";
+			AdminPage.setLoggingStatus(Messages.Logout.getMessage());
+			return redirectToWelcome;
 
 		} else if (userBasicInfo.getEmail().equals(ValidateUserFormsAbstract.isAdmin)
 				&& userBasicInfo.getPassword().equals(ValidateUserFormsAbstract.isAdminPwd)) {
 			AdminPage.setAvailableAdmin(true);
-			AdminPage.setAvailableUserID("Administrator"); //use ENUM here.
-			AdminPage.setLoggingStatus("Logout"); //HeRE.
-			return "redirect:welcome";
+			AdminPage.setAvailableUserID(Messages.AdminEmailID.getMessage());
+			AdminPage.setLoggingStatus(Messages.Logout.getMessage());
+			return redirectToWelcome;
 		}
 		logger.log(Level.ALL, "checkUserCredential method implemented successfully.");
-		AdminPage.setLoggingStatus("Logout");
-		return "redirect:welcome";
+		AdminPage.setLoggingStatus(Messages.Logout.getMessage());
+		return redirectToWelcome;
 	}
 
 	private void addSaltToPassword() {

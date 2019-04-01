@@ -11,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.library.DAOFactory.DAOFactory;
 import com.library.IDAO.IUserDAO;
+import com.library.email.EmailDetails;
+import com.library.email.EmailUtility;
 import com.library.validatations.ValidateUserFormsAbstract;
 
 public class RecoverPassword extends RecoverPasswordAbstract {

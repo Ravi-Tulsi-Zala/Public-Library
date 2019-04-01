@@ -1,9 +1,11 @@
 package com.library.welcomePage;
 
+import com.library.messages.Messages;
+
 public class AdminPage {
 	private static boolean isAdminAvailable = false;
 	private static String availableUserID;
-	private static String loggingStatus = "Register / Login";
+	private static String loggingStatus = Messages.RegisterLogin.getMessage();
 
 	public static boolean getAdminAvailable() {
 		return isAdminAvailable;
@@ -28,8 +30,4 @@ public class AdminPage {
 	public static void setLoggingStatus(String loggingStatus) {
 		AdminPage.loggingStatus = loggingStatus;
 	}
-	// TODO: call eugene's work for getting the emailID for the normail user and
-	// change the name of this class to some other class.
-	// generic class i would say.
-
 }
