@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.Level;
@@ -68,7 +69,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	private String redirectToSignUp = Messages.SignUpPageRedirect.getMessage();
 	private String redirectToForgotPwd = Messages.ForgotPassPageRedirect.getMessage();
 	private String redirectToErrorPage = Messages.ErrorPageRedirect.getMessage();
-	
+
 	private String gotoSignInPage = "SignInForm";
 	private String gotoSignUpPage = "SignUpForm";
 	private String gotoWelcomePage = "Welcome";
@@ -250,9 +251,27 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@GetMapping("/welcome")
-	public String welcomeBody(ModelMap model, LibraryItem libraryItem) {
+	public String welcomeBody(ModelMap model, LibraryItem libraryItem, HttpServletRequest request,
+			HttpSession httpSession) {
 		Logger logger = LogManager.getLogger(WelcomePageController.class);
+		dbSearchController.clearSearch(httpSession);
+		String loggingStatus = AdminPage.getLoggingStatus();
+		String sessionClient  = AdminPage.getAvailableUserID();
+		model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
 		IWelcomeController welcomeCtrl = factory.welcomePage();
+		java.util.Enumeration<String> reqEnum = request.getParameterNames();
+
+		while (reqEnum.hasMoreElements()) {
+			String s = reqEnum.nextElement();
+			System.out.println(s);
+			System.out.println("==" + request.getParameter(s));
+			if (s.equals("LoggedOut") && request.getParameter(s).equals("true")) {
+				loggingStatus = Messages.RegisterLogin.getMessage();
+				sessionClient = "";
+			}
+
+		}
+
 		List<Book> book, favBooks;
 		List<Movie> movie, favMovies;
 		List<Music> music, favMusic;
@@ -277,8 +296,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("music", music);
 		model.addAttribute("favMusic", favMusic);
 		model.addAttribute("isAdminAval", welcomeCtrl.isAdminAvailable());
-		model.addAttribute("loggingStatus", AdminPage.getLoggingStatus());
-		model.addAttribute("sessionClient", AdminPage.getAvailableUserID());
+		model.addAttribute("loggingStatus", loggingStatus);
+		model.addAttribute("sessionClient", sessionClient);
 		return gotoWelcomePage;
 	}
 
@@ -288,10 +307,11 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@GetMapping("/logOut")
-	public String processLogOut(HttpSession httpSession, ModelMap model, User user) {
+	public String processLogOut(HttpSession httpSession, ModelMap model, RedirectAttributes redirectAttributes) {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			AuthenticatedUsers.instance().removeAuthenticatedUser(httpSession);
 		}
+		redirectAttributes.addAttribute("LoggedOut", true);
 		return redirectToWelcome;
 	}
 
