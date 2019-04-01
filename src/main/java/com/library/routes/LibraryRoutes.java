@@ -1,6 +1,5 @@
 package com.library.routes;
 
-
 import java.io.Console;
 
 import java.io.IOException;
@@ -254,49 +253,44 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		redirectPage = mappingsForAddItem(model);
 		return redirectPage;
 	}
-	
+
 	@GetMapping("/loan")
-	public String mappingsForLoanManagement(ModelMap model)
-	{
-		model.addAttribute("item",new UserItem());
+	public String mappingsForLoanManagement(ModelMap model) {
+		model.addAttribute("item", new UserItem());
 		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
 		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
 		model.addAttribute("items", items);
-		model.addAttribute("select",new Select());
+		model.addAttribute("select", new Select());
 		return "LoanManagement";
 	}
-	
+
 	@PostMapping("/loanItems")
-	public String returnItems(ModelMap model,Select select)
-	{
-		System.out.println("Selections : "+select.getSelections());
+	public String returnItems(ModelMap model, Select select) {
+		System.out.println("Selections : " + select.getSelections());
 		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
 		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
-		model.addAttribute("select",new Select());
+		model.addAttribute("select", new Select());
 		model.addAttribute("items", items);
 		return "LoanManagement";
 	}
-	
+
 	@GetMapping("/welcome")
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem, HttpServletRequest request,
 			HttpSession httpSession) {
 		Logger logger = LogManager.getLogger(WelcomePageController.class);
 		dbSearchController.clearSearch(httpSession);
 		String loggingStatus = AdminPage.getLoggingStatus();
-		String sessionClient  = AdminPage.getAvailableUserID();
+		String sessionClient = AdminPage.getAvailableUserID();
 		model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
 		IWelcomeController welcomeCtrl = factory.welcomePage();
 		java.util.Enumeration<String> reqEnum = request.getParameterNames();
 
 		while (reqEnum.hasMoreElements()) {
 			String s = reqEnum.nextElement();
-			System.out.println(s);
-			System.out.println("==" + request.getParameter(s));
 			if (s.equals("LoggedOut") && request.getParameter(s).equals("true")) {
 				loggingStatus = Messages.RegisterLogin.getMessage();
 				sessionClient = "";
 			}
-
 		}
 
 		List<Book> book, favBooks;
@@ -337,8 +331,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	public String processLogOut(HttpSession httpSession, ModelMap model, RedirectAttributes redirectAttributes) {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			AuthenticatedUsers.instance().removeAuthenticatedUser(httpSession);
+			redirectAttributes.addAttribute("LoggedOut", true);
 		}
-		redirectAttributes.addAttribute("LoggedOut", true);
 		return redirectToWelcome;
 	}
 
