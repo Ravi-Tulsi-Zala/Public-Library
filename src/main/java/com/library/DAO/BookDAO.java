@@ -29,6 +29,7 @@ import com.library.search.BookSearch;
 public class BookDAO implements IBookDAO {
 
 	private PreparedStatement preparedStatement;
+	private ResultSet resultSet = null;
 	private String query;
 	private Connection connection;
 	private IBookSetter bookMapper = new BookSetter();
@@ -151,15 +152,41 @@ public class BookDAO implements IBookDAO {
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			tempBooks = bookMapper.mapBook(resultSet);
 			books.addAll(tempBooks);
 			return books;
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
+		} finally {
+			cleanUpResources(resultSet, preparedStatement);
 		}
 
 		return books;
+	}
+	
+	private void cleanUpResources(ResultSet resultSet, PreparedStatement preparedStatement) {
+		if(null != resultSet) {
+			try {
+				resultSet.close();
+			} catch (SQLException e) {
+				logger.log(Level.ALL, "Failed to close the ResultSet.", e);
+			}
+		}
+		if(null != preparedStatement) {
+			try {
+				preparedStatement.close();
+			} catch (SQLException e) {
+				logger.log(Level.ALL, "Failed to close the PreparedStatement.", e);
+			}
+		}
+		if(null != connection) {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				logger.log(Level.ALL, "Failed to close the DB Connection.", e);
+			}
+		}
 	}
 
 	@Override
