@@ -59,21 +59,32 @@ a, a label {
 </script>
 </head>
 <body style="margin: 0 100px;" action="post">
-	<div style="float: left;">
+	<!-- <div style="float: left;">
 		<p>
 			Search Terms <input id="searchTerms" type="text"
 				style="width: 250px;" />
 		</p>
+	</div> -->
+
+	<div>
+		<form onsubmit="return validateSearchForm()" method="post"
+			th:action="@{/basicSearch}" style="float: left; line-height: 3em;">
+			<a href="/advancedSearch"> Search Terms</a> <input id="searchTerms"
+				type="text" th:field="${searchTermsAndPage.searchTerms}"
+				style="width: 100px;" /> <input type="submit">
+		</form>
 	</div>
 
 	<div style="float: right">
 		<p style="float: left" th:text="${sessionClient}"></p>
-		<a style="float:right; margin:0 100px"
-			href="/signIn"><p th:text="${loggingStatus}"></p></a>
+		<a style="float: right; margin: 0 100px" th:if="${loggingStatus}=='Logout'" href="/logOut"><p
+				th:text="${loggingStatus}"></p></a>
+		<a style="float: right; margin: 0 100px" th:if="${loggingStatus}=='Register / Login'" href="/signIn"><p
+				th:text="${loggingStatus}"></p></a>
 	</div>
 
-	<span style="float: right; margin-right: 20px; line-height: 3em;"
-		th:text="${userEmail}">Test</span>
+	<!-- <span style="float: right; margin-right: 20px; line-height: 3em;"
+		th:text="${userEmail}">Test</span> -->
 	<h1 style="text-align: center;">Welcome To The Library!</h1>
 	<div style="margin-top: 50px;"></div>
 	<div>
@@ -145,7 +156,7 @@ a, a label {
 
 	<div>
 		<table>
-			<tr th:if="*{isAdminAval}">
+			<tr >
 				<td><a href="/signIn"><div class="boxed">Books</div></a></td>
 				<td><a href="/signIn"><div class="boxed">Movies</div></a></td>
 				<td><a href="/signIn"><div class="boxed">Music</div></a></td>
