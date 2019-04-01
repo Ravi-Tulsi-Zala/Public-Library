@@ -5,20 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.regex.Pattern;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.thymeleaf.util.StringUtils;
-
-import com.library.DAO.BookDAO;
 import com.library.DAOFactory.DAOFactory;
 import com.library.DAOFactory.IDAOFactory;
 import com.library.IDAO.IUserDAO;
 import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.IUserExtendedInfo;
-import com.library.businessModels.UserBasicInfo;
 
 public class ValidateUserForms extends ValidateUserFormsAbstract {
 
@@ -165,7 +159,7 @@ public class ValidateUserForms extends ValidateUserFormsAbstract {
 		if (userEmail.isEmpty() || isWhitespace(userEmail) || !emailPhoneValidations(userEmail, false)) {
 			mapperEntry(email, emailErrorStatement);
 		}
-		if (userPwd == null || userPwd.isEmpty() || isWhitespace(userPwd) || !passwordValidations(userPwd)) {
+		if (userPwd.isEmpty() || isWhitespace(userPwd) || !passwordValidations(userPwd)) {
 			mapperEntry(password, passwordErrorStatement);
 		}
 		logger.log(Level.ALL, "signInIserData method implemented completely.");
