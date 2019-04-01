@@ -16,18 +16,6 @@ public class MusicSearch extends SearchCategory {
 	public List<LibraryItem> search(String searchterms) {
 		return daoFactory.makeMusicDAO().getMusicBySearchTerms(this, searchterms);
 	}
-	
-	@Override
-	public boolean equals(SearchCategory previousMusicSearch) {
-		MusicSearch prev = (MusicSearch) previousMusicSearch;
-		boolean isEqual = 
-				this.searchInMusic == prev.searchInMusic &&
-				this.searchMusicAlbumName == prev.searchMusicAlbumName &&
-				this.searchMusicArtist == prev.searchMusicArtist &&
-				this.searchMusicRecordLabel == prev.searchMusicRecordLabel;
-		
-		return isEqual;
-	}
 
 	public boolean isSearchInMusic() {
 		return searchInMusic;

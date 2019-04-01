@@ -17,21 +17,6 @@ public class BookSearch extends SearchCategory {
 		return daoFactory.makeBookDAO().getBooksBySearchTerms(this, searchterms);
 	}
 	
-	@Override
-	public boolean equals(SearchCategory previousBookSearch) {
-		BookSearch prev = (BookSearch) previousBookSearch;
-		boolean isEqual = 
-				this.searchInBooks == prev.searchInBooks &&
-				this.searchBookTitle == prev.searchBookTitle &&
-				this.searchBookAuthor == prev.searchBookAuthor &&
-				this.searchBookCategory == prev.searchBookCategory &&
-				this.searchBookPublisher == prev.searchBookPublisher &&
-				this.searchBookDescription == prev.searchBookDescription &&
-				this.searchBookISBN == prev.searchBookISBN ;
-		
-		return isEqual;
-	}
-	
 	public boolean isSearchInBooks() {
 		return searchInBooks;
 	}

@@ -8,11 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class MovieSearchTest {
-	private MoviesSearch ms;
+	private MovieSearch ms;
 
 	@Before
 	public void setUp() throws Exception {
-		ms = new MoviesSearch();
+		ms = new MovieSearch();
 	}
 
 	@Test

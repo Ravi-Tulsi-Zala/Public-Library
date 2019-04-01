@@ -20,17 +20,17 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 	}
 		
 	private class SearchRequestAndResults {
-		ISearchRequest requestDetails;
+		ISearchRequest searchRequest;
 		ISearchResults results;
 		
 		public SearchRequestAndResults(ISearchRequest requestDetails, ISearchResults results) {
-			this.requestDetails = requestDetails;
+			this.searchRequest = requestDetails;
 			this.results = results;
 		}
 	}
 
 	@Override
-	public SearchResults search(ISearchRequest requestDetails, HttpSession httpSession) {
+	public SearchResults search(ISearchRequest currentRequest, HttpSession httpSession) {
 		SearchRequestAndResults searchRAndR = null;
 		String sessionId = httpSession.getId();
 		
@@ -38,24 +38,24 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 		boolean isNewSearchTerms = false;
 		
 		if(searchIsInProgress) {
-			ISearchRequest previousSearchRequest = sessionIdToSearchRAndR.get(sessionId).requestDetails;
-			isNewSearchTerms = previousSearchRequest.isNewSearchTerms(requestDetails);
+			ISearchRequest previousRequest = sessionIdToSearchRAndR.get(sessionId).searchRequest;
+			isNewSearchTerms = previousRequest.isNewSearchTerms(currentRequest);
 			if(isNewSearchTerms) {
-				clearPreviousSearch(httpSession);
-				previousSearchRequest.getTermsAndPage().setRequestedResultsPageNumber(FIRST_PAGE);
-				String newSearchTerms = requestDetails.getTermsAndPage().getSearchTerms();
-				previousSearchRequest.getTermsAndPage().setSearchTerms(newSearchTerms);
-				searchRAndR = executeSearchInDb(previousSearchRequest,httpSession);
+				clearSearch(httpSession);
+				SearchTermsAndPage prevTermsAndPage = previousRequest.getTermsAndPage();
+				String newSearchTerms = currentRequest.getTermsAndPage().getSearchTerms();
+				prevTermsAndPage.setRequestedResultsPageNumber(FIRST_PAGE);
+				prevTermsAndPage.setSearchTerms(newSearchTerms);
+				searchRAndR = executeSearchInDb(previousRequest,httpSession);
 			} else {
-				searchRAndR = sessionIdToSearchRAndR.get(sessionId);
-				int pageNumber = requestDetails.getTermsAndPage().getRequestedResultsPageNumber();
-				searchRAndR.requestDetails.getTermsAndPage().setRequestedResultsPageNumber(pageNumber);
+				int pageNumber = currentRequest.getTermsAndPage().getRequestedResultsPageNumber();
+				previousRequest.getTermsAndPage().setRequestedResultsPageNumber(pageNumber);
 			}
 		} else {
-			searchRAndR = executeSearchInDb(requestDetails, httpSession);
+			searchRAndR = executeSearchInDb(currentRequest, httpSession);
 		}
 		
-		int requestedPageNumber = searchRAndR.requestDetails.getTermsAndPage().getRequestedResultsPageNumber(); 
+		int requestedPageNumber = searchRAndR.searchRequest.getTermsAndPage().getRequestedResultsPageNumber(); 
 		SearchResults resultSet = searchRAndR.results.getResultSetForPageNumber(requestedPageNumber);
 		if(resultSet.isNotEmpty()) {
 			coverImageProxy.loadCoverImages(resultSet, Integer.toString(requestedPageNumber), httpSession);
@@ -63,24 +63,25 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 		return resultSet;
 	}
 
-	private SearchRequestAndResults executeSearchInDb(ISearchRequest requestDetails, HttpSession httpSession) {
-		ISearchResults searchResults = requestDetails.searchInDb();
-		SearchRequestAndResults searchRAndR = new SearchRequestAndResults(requestDetails, searchResults);
+	private SearchRequestAndResults executeSearchInDb(ISearchRequest request, HttpSession httpSession) {
+		ISearchResults searchResults = request.searchInDb();
+		SearchRequestAndResults searchRAndR = new SearchRequestAndResults(request, searchResults);
 		sessionIdToSearchRAndR.put(httpSession.getId(), searchRAndR);
 		return searchRAndR;
 	}
 
 	@Override
-	public void notifyUserSignOut(HttpSession httpSession) {
-		String sessionId = httpSession.getId();
-		if(sessionIdToSearchRAndR.containsKey(sessionId)) {
-			clearPreviousSearch(httpSession);
-		}
+	public boolean notifyUserSignOut(HttpSession httpSession) {
+		return clearSearch(httpSession);
 	}
 	
 	@Override
-	public void clearPreviousSearch(HttpSession httpSession) {
-		coverImageProxy.deleteCoverImagesForSearchResults(httpSession);
-		sessionIdToSearchRAndR.remove(httpSession.getId());
+	public boolean clearSearch(HttpSession httpSession) {
+		if(sessionIdToSearchRAndR.containsKey(httpSession.getId())) {
+			coverImageProxy.deleteCoverImagesForSearchResults(httpSession);
+			sessionIdToSearchRAndR.remove(httpSession.getId());
+		return true;
+	}
+	return false;
 	}
 }

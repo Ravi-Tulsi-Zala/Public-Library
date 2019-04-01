@@ -34,7 +34,8 @@ import com.library.businessModels.User;
 import com.library.messages.Messages;
 import com.library.search.BookSearch;
 import com.library.search.IDBSearchController;
-import com.library.search.MoviesSearch;
+import com.library.search.SearchFactory;
+import com.library.search.MovieSearch;
 import com.library.search.MusicSearch;
 import com.library.search.SearchRequest;
 import com.library.search.SearchResults;
@@ -52,6 +53,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	private List<Map.Entry<String, String>> list = null;
 	@Inject
 	private IDBSearchController dbSearchController;
+	private SearchFactory searchFactory = null;
 	private static String securityQuestionValue;
 
 	private Messages message;
@@ -62,6 +64,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	public LibraryRoutes() {
 		libraryInstance = LibraryFactorySingleton.instance();
 		factory = libraryInstance.getFactory();
+		searchFactory = SearchFactory.instance();
 	}
 
 	@PostMapping("/signUp")
@@ -95,11 +98,11 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	public String getAdvancedSearchPage(HttpSession httpSession, ModelMap model) {
 		AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, "removeMeFromTheController@mail.com");
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
-			dbSearchController.clearPreviousSearch(httpSession);
-			model.addAttribute("searchTermsAndPage", new SearchTermsAndPage());
-			model.addAttribute("bookSearch", new BookSearch());
-			model.addAttribute("musicSearch", new MusicSearch());
-			model.addAttribute("moviesSearch", new MoviesSearch());
+			dbSearchController.clearSearch(httpSession);
+			model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
+			model.addAttribute("bookSearch", searchFactory.makeBookSearch());
+			model.addAttribute("musicSearch", searchFactory.makeMusicSearch());
+			model.addAttribute("moviesSearch", searchFactory.makeMovieSearech());
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 			return "AdvancedSearchPage";
 		}
@@ -108,7 +111,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@PostMapping("/advancedSearch")
 	public String executeAdvancedSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage,
-			BookSearch bookSearch, MusicSearch musicSearch, MoviesSearch moviesSearch) {
+			BookSearch bookSearch, MusicSearch musicSearch, MovieSearch moviesSearch) {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			SearchResults searchResults = executeSearch(httpSession, termsAndPage, bookSearch, musicSearch,
 					moviesSearch);
@@ -121,15 +124,15 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@GetMapping("/basicSearch")
 	public String getSimpleSearchPage(ModelMap model, HttpSession httpSession) {
-		dbSearchController.clearPreviousSearch(httpSession);
-		model.addAttribute("searchTermsAndPage", new SearchTermsAndPage());
+		dbSearchController.clearSearch(httpSession);
+		model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
 		addUserEmail(model, httpSession);
 		return "BasicSearchPage";
 	}
 
 	@PostMapping("/basicSearch")
 	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage,
-			BookSearch bookSearch, MusicSearch musicSearch, MoviesSearch moviesSearch) {
+			BookSearch bookSearch, MusicSearch musicSearch, MovieSearch moviesSearch) {
 		SearchResults searchResults = executeSearch(httpSession, termsAndPage, bookSearch, musicSearch, moviesSearch);
 		model.addAttribute("searchResults", searchResults);
 		addUserEmail(model, httpSession);
@@ -137,7 +140,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	private SearchResults executeSearch(HttpSession httpSession, SearchTermsAndPage termsAndPage, BookSearch bookSearch,
-			MusicSearch musicSearch, MoviesSearch moviesSearch) {
+			MusicSearch musicSearch, MovieSearch moviesSearch) {
 		SearchRequest sr = new SearchRequest();
 		sr.setTermsAndPage(termsAndPage);
 		sr.addCategoryToSearchIn(bookSearch);
