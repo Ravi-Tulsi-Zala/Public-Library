@@ -9,7 +9,7 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table	.min.css">
+	<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css">
 	<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
 	<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/locale/bootstrap-table-zh-CN.min.js"></script>
 </head>
@@ -18,27 +18,46 @@
   <span class="navbar-brand mb-0 h1">Library Management System</span>
   <button type="button" class="btn-link h2 btn ">Administrator</button>
 </nav>
-<form method="POST" th:action="@{/loan}">
+<form method="POST" id="form" th:action="@{/loanItems}">
+
 <table class="table table-bordered table-striped" id="table" data-toggle="table">
   <!-- Table head -->
   <thead class="thead-dark">
-    <tr>
+    <tr data-field="item">
       <th data-field="state" data-checkbox="true"></th>
-      <th data-sortable="true">Content Type</th>
-      <th data-sortable="true">Title</th>
-      <th data-sortable="true">User</th>
+      <th data-field="category" data-sortable="true">Content Type</th>
+      <th data-field="title" data-sortable="true">Title</th>
+      <th data-field="email" data-sortable="true">User</th>
     </tr>
   </thead>
   <tbody>
-    <tr th:each="item : ${items}" >
+    <tr data-field="item" th:each="item : ${items}" >
       <td data-field="state" data-checkbox="true"></td>
-      <td th:text ="${item.category}"></td>
-      <td th:text ="${item.title}"></td>
-      <td th:text ="${item.email}"></td>
+      <td data-field="category" th:text ="${item.category}"></td>
+      <td data-field="title" th:text ="${item.title}"></td>
+      <td data-field="email" th:text ="${item.email}"></td>
     </tr>
   </tbody>
 </table>
-<input type="submit" class="btn btn-primary" value="Return Items" >
+<button type="submit" id="button" class="btn btn-primary" >Return Items</button>
+<input type="hidden" id="abc" name="abc" th:field="${select.selections}"/>
 </form>
+
+<script>
+		
+	  var $table = $('#table')
+	  var $button = $('#button')
+	  var selection
+	  
+	  $(function() {
+	    $button.click(function () {
+	      selection = JSON.stringify($table.bootstrapTable('getSelections'))
+	      document.getElementById("abc").value = selection;
+	    })
+	  })
+	  
+	 
+
+</script>
 </body>
 </html>

@@ -32,6 +32,7 @@ import com.library.businessModels.Music;
 import com.library.businessModels.User;
 import com.library.businessModels.UserItem;
 import com.library.loanmanagement.ILoanManagementController;
+import com.library.loanmanagement.Select;
 import com.library.messages.Messages;
 import com.library.search.BookSearch;
 import com.library.search.IDBSearchController;
@@ -196,8 +197,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("message", displayMessage);
 		redirectPage = mappingsForAddItem(model);
 		return redirectPage;
-		
-
+	
 	}
 
 	@PostMapping("/addMovie")
@@ -223,27 +223,28 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		return redirectPage;
 	}
 	
-	@GetMapping(value="/loan")
+	@GetMapping("/loan")
 	public String mappingsForLoanManagement(ModelMap model)
 	{
-	
 		model.addAttribute("item",new UserItem());
 		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
 		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
 		model.addAttribute("items", items);
+		model.addAttribute("select",new Select());
 		return "LoanManagement";
 	}
 	
-	@PostMapping(value="/loan",params="items")
-	public String returnItems(ModelMap model,List<UserItem> items )
+	@PostMapping("/loanItems")
+	public String returnItems(ModelMap model,Select select)
 	{
-		
-		System.out.println("Fisrt checkbox : "+items.get(0));
+		System.out.println("Selections : "+select.getSelections());
+		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
+		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
+		model.addAttribute("select",new Select());
+		model.addAttribute("items", items);
 		return "LoanManagement";
 	}
 	
-
-
 	@GetMapping("/welcome")
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem) {
 		Logger logger = LogManager.getLogger(WelcomePageController.class);
