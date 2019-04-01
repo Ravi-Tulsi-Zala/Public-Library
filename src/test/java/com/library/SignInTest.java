@@ -1,6 +1,7 @@
 package com.library;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.UserBasicInfo;
 import com.library.mockDB.SignInMocked;
 import com.library.mockDB.SignUpMocked;
@@ -52,4 +54,13 @@ public class SignInTest {
 			}
 		}
 	}
+
+	@Test
+	public void testSalt() {
+		IUserBasicInfo userBasicInfo = signInMocked.addSaltToMockData();
+		assertEquals(userBasicInfo.getEmail(),"devanshu1@gmail.com");
+		assertNotEquals(userBasicInfo.getPassword(),"123456789");
+		assertEquals(userBasicInfo.getPassword(),"123456789-LMS");
+	}
+	
 }

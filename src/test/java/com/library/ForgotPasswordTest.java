@@ -28,7 +28,7 @@ public class ForgotPasswordTest {
 	}
 
 	@Test
-	public void TestRecoveredPassword() {
+	public void testRecoveredPassword() {
 		ForgotPasswordMocked fPassword = new ForgotPasswordMocked();
 		EmailDetails eDetails = fPassword.initiateForgotUserMock();
 		try {

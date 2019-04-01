@@ -41,14 +41,14 @@ public class WelcomePageTest {
 	}
 
 	@Test
-	public void TestAdminAvailable() {
+	public void testAdminAvailable() {
 		welcomePageMocked.adminInitiated();
 		boolean isAdmin = AdminPage.getAdminAvailable();
 		assertEquals(isAdmin,true);
 	}
 
 	@Test
-	public void TestgetBookItems() {
+	public void testgetBookItems() {
 		List<Book> book = welcomePageMocked.initiateLatestBookMock();
 		assertNotNull(book);
 		try {
@@ -67,7 +67,7 @@ public class WelcomePageTest {
 	}
 
 	@Test
-	public void TestgetMoviesItems() {
+	public void testgetMoviesItems() {
 		List<Movie> movies = welcomePageMocked.initiateLatestMovieMock();
 		assertNotNull(movies);
 		try {
@@ -85,7 +85,7 @@ public class WelcomePageTest {
 	}
 
 	@Test
-	public void TestgetMusicItems() {
+	public void testgetMusicItems() {
 		List<Music> music = welcomePageMocked.initiateLatestMusicMock();
 		assertNotNull(music);
 		try {
@@ -102,7 +102,7 @@ public class WelcomePageTest {
 		assertNotNull(wlcmCntrl);
 	}
 	@Test
-	public void TestgetFavBookItems() {
+	public void testgetFavBookItems() {
 		List<Book> book = welcomePageMocked.initiateFavBookMock();
 		assertNotNull(book);//if this case fails that means that there are no favourite yet in the database.
 		try {
@@ -120,7 +120,7 @@ public class WelcomePageTest {
 		assertNotNull(wlcmCntrl);
 	}
 	@Test
-	public void TestgetFavMovieItems() {
+	public void testgetFavMovieItems() {
 		List<Movie> movies = welcomePageMocked.initiateFavMoviesMock();
 		assertNotNull(movies); //if this case fails that means that there are no favourite yet in the database.
 		try {
@@ -137,7 +137,7 @@ public class WelcomePageTest {
 		assertNotNull(wlcmCntrl);
 	}
 	@Test
-	public void TestgetFavMusicItems() {
+	public void testgetFavMusicItems() {
 		List<Music> music = welcomePageMocked.initiatefavMusicMock();
 		assertNotNull(music); //if this case fails that means that there are no favourite yet in the database.
 		try {
