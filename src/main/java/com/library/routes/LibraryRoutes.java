@@ -3,7 +3,7 @@ package com.library.routes;
 import java.io.Console;
 
 import java.io.IOException;
-
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +37,7 @@ import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
+import com.library.dbConnection.DatabaseConnection;
 import com.library.businessModels.UserItem;
 import com.library.loanmanagement.ILoanManagementController;
 import com.library.loanmanagement.Select;
@@ -57,6 +58,7 @@ import com.library.signUp.SignUpController;
 import com.library.welcomePage.AdminPage;
 import com.library.welcomePage.IWelcomeController;
 import com.library.welcomePage.WelcomePageController;
+import com.mysql.jdbc.PreparedStatement;
 
 @Controller
 public class LibraryRoutes implements WebMvcConfigurer {
@@ -309,6 +311,10 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Some problem occured, check logs.", e);
 			return redirectToErrorPage;
+		}
+		finally{
+			DatabaseConnection databaseConnection = new DatabaseConnection();
+			databaseConnection.closeConnection();
 		}
 		model.addAttribute("book", book);
 		model.addAttribute("favBooks", favBooks);

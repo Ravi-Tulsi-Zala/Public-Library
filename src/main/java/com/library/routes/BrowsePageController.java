@@ -54,6 +54,7 @@ public class BrowsePageController {
 			@PathVariable(value = "itemID") int itemID, ModelMap model) {
 		IDetailedDisplayFetcher displayFetcher = new DetailedDisplayFetcher();
 		DisplayDetailed displayDetailed = displayFetcher.fetchDetailedDisplay(itemType, itemID);
+		System.out.println(displayDetailed.getImage());
 		model.addAttribute("displayDetailed",displayDetailed);
 		return "itemDetail";
 	}

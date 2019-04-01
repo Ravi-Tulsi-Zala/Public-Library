@@ -26,19 +26,19 @@ public class DetailedDisplayFetcher implements IDetailedDisplayFetcher{
 	@Override
 	public DisplayDetailed fetchDetailedDisplay(String itemType, int itemID) {
 		
-		if(itemType=="Book")
+		if(itemType.equals("Book"))
 		{
 			IBookDAO bookDAO = factory.makeBookDAO();
 			Book book = bookDAO.getBookByID(itemID);
 			displayDetailed = detailedDisplaySetter.makeDetailedBook(book);
 		}
-		else if(itemType == "Movie")
+		else if(itemType.equals("Movie"))
 		{
 			IMovieDAO movieDAO = factory.makeMovieDAO();
 			Movie movie = movieDAO.getMovieById(itemID);
 			displayDetailed = detailedDisplaySetter.makeDetailedMovie(movie);
 		}
-		else if(itemType=="Music")
+		else if(itemType.equals("Music"))
 		{
 			IMusicDAO musicDAO = factory.makeMusicDAO();
 			Music music = musicDAO.getMusicById(itemID);
