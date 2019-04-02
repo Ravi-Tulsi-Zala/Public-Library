@@ -330,4 +330,26 @@ public class MusicDAO implements IMusicDAO {
 		}
 		return isMusicAvailable;
 	}
+
+	@Override
+	public Boolean increaseCount(int itemID) {
+		Boolean countIncrease = false;
+		try {
+			this.connection = databaseConnection.getConnection();
+			query = "update music set count = count + 1 where Item_ID = ?";
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, itemID);
+			preparedStatement.execute();
+			countIncrease = true;
+		}
+		catch (SQLException e)
+		{
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		}
+		catch (Exception e)
+		{
+			logger.log(Level.ALL, "Error increasing count of Music", e);
+		}
+		return countIncrease;
+	}
 }

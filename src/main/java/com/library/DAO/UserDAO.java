@@ -33,6 +33,7 @@ public class UserDAO implements IUserDAO {
 	public Boolean checkPassword(String emailAddress, String Password) {
 		query = "SELECT Password from user_info WHERE Email = ?";
 		try {
+			this.connection = databaseConnection.getConnection();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, emailAddress);
 			resultSet = preparedStatement.executeQuery();
@@ -61,6 +62,7 @@ public class UserDAO implements IUserDAO {
 		query = "SELECT Password from user_info WHERE Email = ?";
 		String databasePassword = "";
 		try {
+			this.connection = databaseConnection.getConnection();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, emailAddress);
 			resultSet = preparedStatement.executeQuery();
@@ -84,6 +86,7 @@ public class UserDAO implements IUserDAO {
 	public Boolean changePassword(String emailAddress, String password) {
 		query = "UPDATE user_info SET Password = ? WHERE Email = ?";
 		try {
+			this.connection = databaseConnection.getConnection();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, password);
 			preparedStatement.setString(2, emailAddress);
@@ -107,6 +110,7 @@ public class UserDAO implements IUserDAO {
 	public Boolean registerUser(User user) {
 		query = "INSERT INTO user_info (User_name,Phone_Number,Email,Password) VALUES (?,?,?,?)";
 		try {
+			this.connection = databaseConnection.getConnection();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, user.getFullName());
 			preparedStatement.setString(2, user.getPhoneNumber());
@@ -133,6 +137,7 @@ public class UserDAO implements IUserDAO {
 		boolean result = false;
 		query = "SELECT Email from user_info WHERE Email = ? LIMIT 1";
 		try {
+			this.connection = databaseConnection.getConnection();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, emailID);
 			resultSet = preparedStatement.executeQuery();
