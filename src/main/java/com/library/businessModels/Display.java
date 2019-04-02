@@ -56,7 +56,7 @@ public class Display {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} 
-	}
+	}			
 	
 	public String getItemType() {
 		return itemType;

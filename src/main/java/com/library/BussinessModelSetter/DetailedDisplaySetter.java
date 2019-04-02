@@ -22,6 +22,7 @@ public class DetailedDisplaySetter implements IDetailedDisplaySetter{
 		displayDetailed.setTitle(book.getTitle());
 		String details = detailsSetter.getBookDetails(book);
 		displayDetailed.setDetails(details);
+		displayDetailed.setItemType("Book");
 		return displayDetailed;
 	}
 
@@ -31,6 +32,7 @@ public class DetailedDisplaySetter implements IDetailedDisplaySetter{
 		displayDetailed.setTitle(movie.getTitle());
 		String details = detailsSetter.getMovieDetails(movie);
 		displayDetailed.setDetails(details);
+		displayDetailed.setItemType("Movie");
 		return displayDetailed;
 	}
 
@@ -40,6 +42,7 @@ public class DetailedDisplaySetter implements IDetailedDisplaySetter{
 		displayDetailed.setTitle(music.getTitle());
 		String details = detailsSetter.getMusicDetails(music);
 		displayDetailed.setDetails(details);
+		displayDetailed.setItemType("Music");
 		return displayDetailed;
 	}
 
