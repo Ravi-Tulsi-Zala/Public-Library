@@ -39,6 +39,7 @@ import com.library.businessModels.Music;
 import com.library.businessModels.User;
 import com.library.dbConnection.DatabaseConnection;
 import com.library.businessModels.UserItem;
+import com.library.jsonparser.JsonStringParser;
 import com.library.loanmanagement.ILoanManagementController;
 import com.library.loanmanagement.Select;
 import com.library.messages.Messages;
@@ -267,8 +268,17 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@PostMapping("/loanItems")
 	public String returnItems(ModelMap model, Select select) {
-		System.out.println("Selections : " + select.getSelections());
+
+		String selections = select.getSelections();
+		JsonStringParser jsonStringParser = new JsonStringParser();
+		List<UserItem> userItems = new ArrayList<UserItem>();
+		userItems = jsonStringParser.parseSelections(selections);
 		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
+		for (UserItem item : userItems) {
+
+			iLoanManagementController.removeUserItem(item);
+		}
+
 		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
 		model.addAttribute("select", new Select());
 		model.addAttribute("items", items);

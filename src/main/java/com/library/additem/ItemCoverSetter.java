@@ -1,5 +1,6 @@
 package com.library.additem;
 
+import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 
@@ -27,13 +28,21 @@ public class ItemCoverSetter implements IItemCoverSetter {
 	public boolean isCoverAddedToDatabase(int itemId,MultipartFile coverImage)
 	{
 		String originalFileName = coverImage.getOriginalFilename();
-		byte[] bytes = originalFileName.getBytes();
+		
 
 		try {
-			Blob coverBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
-			String[] fileNameTokens = coverImage.getOriginalFilename().split("\\.");
-			String fileExtension = fileNameTokens[fileNameTokens.length - 1];
-			isCoverCreated = coverDAO.createCoverByID(itemId, coverBlob, fileExtension);
+			byte[] bytes;
+			try {
+				bytes = coverImage.getBytes();
+				Blob coverBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
+				String[] fileNameTokens = coverImage.getOriginalFilename().split("\\.");
+				String fileExtension = fileNameTokens[fileNameTokens.length - 1];
+				isCoverCreated = coverDAO.createCoverByID(itemId, coverBlob, fileExtension);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			
 
 		} catch (SQLException e) {
