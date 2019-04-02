@@ -279,7 +279,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		userItems = jsonStringParser.parseSelections(selections);
 		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
 		for (UserItem item : userItems) {
-
 			iLoanManagementController.removeUserItem(item);
 		}
 
