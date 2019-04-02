@@ -76,6 +76,7 @@ public class UserItemDAO implements IUserItemDAO {
 			preparedStatement.setString(1, email);
 			preparedStatement.setString(2, title);
 			preparedStatement.executeUpdate();
+			
 			return true;
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
@@ -92,7 +93,7 @@ public class UserItemDAO implements IUserItemDAO {
 		String email = item.getEmail();
 		String title = item.getTitle();
 		boolean isBorrowed = false;
-		
+
 		query = "SELECT from user_item WHERE Email=? and Title=?";
 
 		try {
@@ -105,22 +106,49 @@ public class UserItemDAO implements IUserItemDAO {
 			if (resultSet.next()) {
 				isBorrowed = true;
 			} else {
-				isBorrowed  = false;
+				isBorrowed = false;
 			}
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not find item in User item", e);
+			logger.log(Level.ALL, "Can not find item in User item table", e);
 		}
 
 		return isBorrowed;
+
+	}
+
+	public void updateAvailability() {
+		
+			
 		
 	}
 
 	public boolean isItemOnHold(UserItem item) {
 
+		String email = item.getEmail();
+		String category = item.getCategory();
+		String title = item.getTitle();
+
+		try {
+			query = "INSERT INTO holds (Email,Title,Category) VALUES (?, ?, ?)";
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, email);
+			preparedStatement.setString(2, title);
+			preparedStatement.setString(3, category);
+			preparedStatement.executeUpdate();
+			return true;
+
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Can not insert movie into database", e);
+		}
+
 		return false;
+
 	}
 
 	@Override
