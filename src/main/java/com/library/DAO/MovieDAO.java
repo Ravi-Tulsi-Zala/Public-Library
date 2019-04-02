@@ -43,7 +43,8 @@ public class MovieDAO implements IMovieDAO {
 
 	@Override
 	public Movie getMovieById(int itemID) {
-
+		
+		this.connection = databaseConnection.getConnection();
 		List<Movie> movies = new ArrayList<Movie>();
 		Movie movie = new Movie();
 		query = "SELECT * from movie WHERE Item_ID = ?";
@@ -71,6 +72,7 @@ public class MovieDAO implements IMovieDAO {
 	@Override
 	public List<Movie> getMoviesByCategory(String category) {
 
+		this.connection = databaseConnection.getConnection();
 		query = "SELECT * from movie WHERE Category LIKE ?";
 		List<Movie> moviesByCategory = new ArrayList<Movie>();
 
@@ -96,7 +98,8 @@ public class MovieDAO implements IMovieDAO {
 
 	@Override
 	public int createMovie(Movie movie) {
-
+		
+		this.connection = databaseConnection.getConnection();
 		int recentlyAddedMovieId = 0;
 		String movieCategory = movie.getCategory();
 		String movieTitle = movie.getTitle();
@@ -137,6 +140,7 @@ public class MovieDAO implements IMovieDAO {
 	@Override
 	public Boolean updateMovie(Movie movie) {
 
+		this.connection = databaseConnection.getConnection();
 		String movieCategory = movie.getCategory();
 		String movieTitle = movie.getTitle();
 		String movieDirector = movie.getDirector();
@@ -165,7 +169,7 @@ public class MovieDAO implements IMovieDAO {
 		}
 		finally
 		{
-			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return false;
 	}
@@ -173,6 +177,7 @@ public class MovieDAO implements IMovieDAO {
 	@Override
 	public Boolean deleteMovie(Movie movie) {
 
+		this.connection = databaseConnection.getConnection();
 		int movieItemId = movie.getItemID();
 
 		try {
@@ -191,13 +196,14 @@ public class MovieDAO implements IMovieDAO {
 		}
 		finally
 		{
-			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return false;
 	}
 
 	private String prepareSearchQuery(MovieSearch requestDetails, String searchTerms) {
 
+		this.connection = databaseConnection.getConnection();
 		if (0 == searchTerms.length()) {
 			logger.log(Level.ALL, "No search terms are supplied");
 			return null;
@@ -222,6 +228,8 @@ public class MovieDAO implements IMovieDAO {
 
 	@Override
 	public List<LibraryItem> getMoviesBySearchTerms(MovieSearch requestDetails, String searchTerms) {
+		
+		this.connection = databaseConnection.getConnection();
 		List<Movie> tempMovie = new ArrayList<>();
 		List<LibraryItem> movies = new LinkedList<LibraryItem>();
 		if(!requestDetails.isSearchInMovies()) {
@@ -253,6 +261,7 @@ public class MovieDAO implements IMovieDAO {
 	@Override
 	public List<String> getMovieCategories()
 	{
+		this.connection = databaseConnection.getConnection();
 		List<String> categories = new ArrayList<String>();
 		query = "SELECT Distinct Category from movie";
 		try {
@@ -277,6 +286,7 @@ public class MovieDAO implements IMovieDAO {
 	@Override
 	public Boolean getAvailability(int itemID)
 	{
+		this.connection = databaseConnection.getConnection();
 		Boolean availability = false;
 		int moviesAvailable = 0; 
 		try {
@@ -304,6 +314,8 @@ public class MovieDAO implements IMovieDAO {
 	}
 
 	public boolean checkMovieDuplicacy(Movie movie) {
+		
+		this.connection = databaseConnection.getConnection();
 		String directorToBeAdded = movie.getDirector();
 		String titleToBeAdded = movie.getTitle();
 		boolean isMovieAvailable = false;
@@ -335,6 +347,7 @@ public class MovieDAO implements IMovieDAO {
 
 	@Override
 	public Boolean increaseCount(int itemID) {
+		
 		Boolean countIncrease = false;
 		try {
 			this.connection = databaseConnection.getConnection();
@@ -351,6 +364,10 @@ public class MovieDAO implements IMovieDAO {
 		catch (Exception e)
 		{
 			logger.log(Level.ALL, "Error increasing count of Movie", e);
+		}
+		finally
+		{
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return countIncrease;
 	}

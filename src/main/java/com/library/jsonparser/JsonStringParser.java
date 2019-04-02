@@ -14,7 +14,6 @@ public class JsonStringParser {
 		Gson gson = new Gson();
 		Type type = new TypeToken<List<UserItem>>(){}.getType();
 		List<UserItem> items = gson.fromJson(selections, type);
-		
 		return items;
 	
 	}

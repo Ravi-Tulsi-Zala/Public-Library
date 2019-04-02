@@ -30,7 +30,7 @@ public class MusicDAO implements IMusicDAO {
 	private static final Logger logger = LogManager.getLogger(MusicDAO.class);
 	ResultSet resultSet;
 	DatabaseConnection databaseConnection;
-	
+
 	public MusicDAO() {
 
 		try {
@@ -46,6 +46,7 @@ public class MusicDAO implements IMusicDAO {
 	public Music getMusicById(int itemID) {
 
 		Music music = new Music();
+		this.connection = databaseConnection.getConnection();
 		List<Music> musics = new ArrayList<>();
 		query = "SELECT * from music WHERE Item_ID = ?";
 		try {
@@ -60,9 +61,7 @@ public class MusicDAO implements IMusicDAO {
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not fetch music using id", e);
-		}
-		finally
-		{
+		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return music;
@@ -70,6 +69,8 @@ public class MusicDAO implements IMusicDAO {
 
 	@Override
 	public List<Music> getMusicByCategory(String category) {
+
+		this.connection = databaseConnection.getConnection();
 		query = "SELECT * from music WHERE Category LIKE ?";
 		List<Music> musicsByCategory = new ArrayList<Music>();
 
@@ -84,9 +85,7 @@ public class MusicDAO implements IMusicDAO {
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not fetch the list of music by the specific category", e);
-		}
-		finally
-		{
+		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return musicsByCategory;
@@ -96,17 +95,17 @@ public class MusicDAO implements IMusicDAO {
 	@Override
 	public int createMusic(Music music) {
 
-
-		String musicCategory= music.getCategory();
+		this.connection = databaseConnection.getConnection();
+		String musicCategory = music.getCategory();
 		String musicTitle = music.getTitle();
 		String musicArtist = music.getArtist();
 		String musicRecordLabel = music.getRecordLabel();
 		int musicAvailability = music.getAvailability();
 		int recentlyAddedMusicId = 0;
-		
+
 		try {
 			query = "INSERT INTO music (Category,Title,Artist,Record_Label,Availability) VALUES ( ?, ?, ?, ?, ?)";
-			preparedStatement = connection.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+			preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, musicCategory);
 			preparedStatement.setString(2, musicTitle);
 			preparedStatement.setString(3, musicArtist);
@@ -114,23 +113,21 @@ public class MusicDAO implements IMusicDAO {
 			preparedStatement.setInt(5, musicAvailability);
 			preparedStatement.executeUpdate();
 			resultSet = preparedStatement.getGeneratedKeys();
-			
+
 			if (resultSet.next()) {
-			    recentlyAddedMusicId = resultSet.getInt(1);
+				recentlyAddedMusicId = resultSet.getInt(1);
 			}
-			
-			return recentlyAddedMusicId ;
-			
+
+			return recentlyAddedMusicId;
+
 		} catch (SQLException e) {
 
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not create music entry in database", e);
-		}
-		finally
-		{
-			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
+		} finally {
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return recentlyAddedMusicId;
 	}
@@ -138,19 +135,19 @@ public class MusicDAO implements IMusicDAO {
 	@Override
 	public Boolean updateMusic(Music music) {
 
-		String musicCategory= music.getCategory();
+		this.connection = databaseConnection.getConnection();
+		String musicCategory = music.getCategory();
 		String musicTitle = music.getTitle();
 		String musicArtist = music.getArtist();
 		String musicRecordLabel = music.getRecordLabel();
 		int musicAvailability = music.getAvailability();
 		int musicItemId = music.getItemID();
-		
-		
+
 		try {
 			query = "UPDATE music SET Category=?,Title=?,Artist=?,Record_Label=?,Availability=? WHERE Item_ID=? ";
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, musicCategory);
-			preparedStatement.setString(2,musicTitle);
+			preparedStatement.setString(2, musicTitle);
 			preparedStatement.setString(3, musicArtist);
 			preparedStatement.setString(4, musicRecordLabel);
 			preparedStatement.setInt(5, musicAvailability);
@@ -163,16 +160,16 @@ public class MusicDAO implements IMusicDAO {
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not update music into database", e);
-		}
-		finally
-		{
-			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
+		} finally {
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return false;
 	}
 
 	@Override
 	public Boolean deleteMusic(Music music) {
+
+		this.connection = databaseConnection.getConnection();
 		try {
 			query = "DELETE from music WHERE Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
@@ -185,10 +182,8 @@ public class MusicDAO implements IMusicDAO {
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not delete music from database", e);
-		}
-		finally
-		{
-			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
+		} finally {
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return false;
 	}
@@ -220,14 +215,16 @@ public class MusicDAO implements IMusicDAO {
 
 	@Override
 	public List<LibraryItem> getMusicBySearchTerms(MusicSearch requestDetails, String searchTerms) {
+
+		this.connection = databaseConnection.getConnection();
 		List<LibraryItem> musics = new LinkedList<LibraryItem>();
 		List<Music> tempMusics = new ArrayList<>();
-		if(!requestDetails.isSearchInMusic()) {
+		if (!requestDetails.isSearchInMusic()) {
 			return musics;
 		}
 		String query = prepareSearchQuery(requestDetails, searchTerms);
-		
-		if(null ==query) {
+
+		if (null == query) {
 			return musics;
 		}
 
@@ -239,69 +236,62 @@ public class MusicDAO implements IMusicDAO {
 			return musics;
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
-		}
-		finally
-		{
+		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return musics;
 	}
-	
+
 	@Override
-	public List<String> getMusicCategories()
-	{
+	public List<String> getMusicCategories() {
+		this.connection = databaseConnection.getConnection();
 		List<String> categories = new ArrayList<String>();
 		query = "SELECT Distinct Category from music";
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			resultSet = preparedStatement.executeQuery();
-			while (resultSet.next())
-			{
+			while (resultSet.next()) {
 				categories.add(resultSet.getString("Category"));
-			} 
+			}
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Error fetching the list of Music Categories", e);
-		}
-		finally
-		{
+		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return categories;
 	}
-	
+
 	@Override
-	public Boolean getAvailability(int itemID)
-	{
+	public Boolean getAvailability(int itemID) {
+		this.connection = databaseConnection.getConnection();
 		Boolean availability = false;
-		int musicsAvailable = 0; 
+		int musicsAvailable = 0;
 		try {
 			query = "Select Availability from music where Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(0,itemID);
+			preparedStatement.setInt(0, itemID);
 			resultSet = preparedStatement.executeQuery();
 			musicsAvailable = resultSet.getInt(0);
-		}	
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Error fetching the availability of Music", e);
-		}
-		finally
-		{
+		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
-		
-		if(musicsAvailable>0)
-		{
+
+		if (musicsAvailable > 0) {
 			availability = true;
 		}
-		
+
 		return availability;
 	}
-	
+
 	public boolean checkMusicDuplicacy(Music music) {
+
+		this.connection = databaseConnection.getConnection();
 		String artistToBeAdded = music.getArtist();
 		String titleToBeAdded = music.getTitle();
 		boolean isMusicAvailable = false;
@@ -323,9 +313,7 @@ public class MusicDAO implements IMusicDAO {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Error fetching the list of Musics", e);
-		}
-		finally
-		{
+		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return isMusicAvailable;
@@ -341,14 +329,13 @@ public class MusicDAO implements IMusicDAO {
 			preparedStatement.setInt(1, itemID);
 			preparedStatement.execute();
 			countIncrease = true;
-		}
-		catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			logger.log(Level.ALL, "Error increasing count of Music", e);
+		} finally {
+
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return countIncrease;
 	}
@@ -356,12 +343,12 @@ public class MusicDAO implements IMusicDAO {
 	@Override
 	public void increaseAvailability(String title) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void decreaseAvailability(String title) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
