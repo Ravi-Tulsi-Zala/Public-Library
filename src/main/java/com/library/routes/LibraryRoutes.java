@@ -32,16 +32,21 @@ import com.library.ForgotPassword.RecoverPassword;
 import com.library.additem.IAddBookController;
 import com.library.additem.IAddMovieController;
 import com.library.additem.IAddMusicController;
+import com.library.borrowItem.BookItem;
+import com.library.borrowItem.ItemStatus;
 import com.library.browsePage.DisplayObjectInitializer;
 import com.library.browsePage.IBrowseDisplayObjects;
 import com.library.businessModels.Book;
 import com.library.businessModels.Cover;
 import com.library.businessModels.Display;
+import com.library.businessModels.DisplayDetailed;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
 import com.library.dbConnection.DatabaseConnection;
+import com.library.itemDetailed.DetailedDisplayFetcher;
+import com.library.itemDetailed.IDetailedDisplayFetcher;
 import com.library.businessModels.UserItem;
 import com.library.jsonparser.JsonStringParser;
 import com.library.loanmanagement.ILoanManagementController;
@@ -423,5 +428,34 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		return "BrowsePageItems";
 	}
 
-
+	@GetMapping("/itemDetail/{itemType}/{itemID}")
+	public String BrowsePageItems1(@PathVariable(value = "itemType") String itemType,
+			@PathVariable(value = "itemID") int itemID, ModelMap model, HttpSession httpSession) {
+		IDetailedDisplayFetcher displayFetcher = new DetailedDisplayFetcher();
+		DisplayDetailed displayDetailed = displayFetcher.fetchDetailedDisplay(itemType, itemID);
+		AuthenticatedUsers user = AuthenticatedUsers.instance();
+		String emailAddress = user.getUserEmail(httpSession);
+		ItemStatus statusFetcher = new ItemStatus(displayDetailed,emailAddress);
+		String status = statusFetcher.getItemStatus();
+		String loggingStatus = AdminPage.getLoggingStatus();
+		String sessionClient = AdminPage.getAvailableUserID();
+		model.addAttribute("loggingStatus", loggingStatus);
+		model.addAttribute("sessionClient", sessionClient);
+		model.addAttribute("status",status);
+		model.addAttribute("displayDetailed",displayDetailed);
+		return "itemDetail";
+	}
+	
+	@PostMapping("/borrowItem/{status}")
+	public String borrowItems(@PathVariable(value = "status") String status ,HttpSession httpSession, ModelMap model,DisplayDetailed displayDetailed)
+	{
+		AuthenticatedUsers user = AuthenticatedUsers.instance();
+		String emailAddress = user.getUserEmail(httpSession);
+		BookItem bookItem = new BookItem(displayDetailed, emailAddress);
+		Boolean isItemBooked = bookItem.bookItem(status);
+		String itemType = displayDetailed.getItemType();
+		int itemID = displayDetailed.getItemID();
+		return "itemDetail";
+	}
+	
 }
