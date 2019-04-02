@@ -6,35 +6,37 @@ import com.library.IDAO.IBookDAO;
 import com.library.IDAO.IMovieDAO;
 import com.library.IDAO.IMusicDAO;
 import com.library.businessModels.Display;
+import com.library.businessModels.DisplayDetailed;
+import com.library.businessModels.UserItem;
 
 public class ItemStatus {
 	
 	
-	private String userEmail;
-	private int itemID;
-	private String itemType;
+	UserItem userItem;
+	int itemID;
 	
-	public ItemStatus(Display display,String userEmail) {
-		this.userEmail = userEmail;
-		this.itemID = display.getItemID();
-		this.itemType = display.getItemType();
+	public ItemStatus(DisplayDetailed displayDetailed,String userEmail) {
+		userItem.setTitle(displayDetailed.getTitle());
+		userItem.setCategory(displayDetailed.getItemType());
+		userItem.setEmail(userEmail);
+		itemID = displayDetailed.getItemID();
 	}
 	
-	public Boolean isItemAvailable()
+	private Boolean isItemAvailable()
 	{
 		IDAOFactory factory = new DAOFactory();
 		Boolean availability = false;
-		if(itemType=="Book")
+		if(userItem.getEmail().equals("Book"))
 		{
 			IBookDAO bookDAO = factory.makeBookDAO();
 			availability = bookDAO.getAvailability(itemID);
 		}
-		else if(itemType=="Movie")
+		else if(userItem.getEmail().equals("Movie"))
 		{
 			IMovieDAO movieDAO = factory.makeMovieDAO();
 			availability = movieDAO.getAvailability(itemID);
 		}
-		else if(itemType=="Music")
+		else if(userItem.getEmail().equals("Music"))
 		{
 			IMusicDAO musicDAO = factory.makeMusicDAO();
 			availability = musicDAO.getAvailability(itemID);
@@ -42,12 +44,12 @@ public class ItemStatus {
 		return availability;
 	}
 	
-	public Boolean isItemAlreadyBooked()
+	private Boolean isItemAlreadyBooked()
 	{
 	  	return true;
 	}
 	
-	public Boolean isItemOnHold()
+	private Boolean isItemOnHold()
 	{
 		return true;
 	}
