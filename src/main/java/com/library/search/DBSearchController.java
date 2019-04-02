@@ -38,21 +38,23 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 		boolean isNewSearchTerms = false;
 		
 		if(searchIsInProgress) {
-			ISearchRequest previousRequest = sessionIdToSearchRAndR.get(sessionId).searchRequest;
-			isNewSearchTerms = previousRequest.isNewSearchTerms(currentRequest);
+			searchRAndR = sessionIdToSearchRAndR.get(sessionId);
+			ISearchRequest request = searchRAndR.searchRequest;
+			isNewSearchTerms = searchRAndR.searchRequest.isNewSearchTerms(currentRequest);
 			if(isNewSearchTerms) {
 				clearSearch(httpSession);
-				SearchTermsAndPage prevTermsAndPage = previousRequest.getTermsAndPage();
+				SearchTermsAndPage prevTermsAndPage = request.getTermsAndPage();
 				String newSearchTerms = currentRequest.getTermsAndPage().getSearchTerms();
 				prevTermsAndPage.setRequestedResultsPageNumber(FIRST_PAGE);
 				prevTermsAndPage.setSearchTerms(newSearchTerms);
-				searchRAndR = executeSearchInDb(previousRequest,httpSession);
+				searchRAndR = executeSearchInDb(request,httpSession);
 			} else {
 				int pageNumber = currentRequest.getTermsAndPage().getRequestedResultsPageNumber();
-				previousRequest.getTermsAndPage().setRequestedResultsPageNumber(pageNumber);
+				request.getTermsAndPage().setRequestedResultsPageNumber(pageNumber);
 			}
 		} else {
 			searchRAndR = executeSearchInDb(currentRequest, httpSession);
+			sessionIdToSearchRAndR.put(sessionId, searchRAndR);
 		}
 		
 		int requestedPageNumber = searchRAndR.searchRequest.getTermsAndPage().getRequestedResultsPageNumber(); 
