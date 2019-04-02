@@ -103,6 +103,8 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 	public List<Movie> getFavouriteMovies() throws SQLException {
 		movieMapper = new MovieSetter();
 		List<Movie> movies = new ArrayList<Movie>();
+		this.connection = databaseConnection.getConnection();
+//		query = "SELECT distinct * FROM books order by books.count desc limit " + limitNumber;
 		query = "SELECT distinct * FROM movie order by movie.Count desc limit " + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
@@ -116,6 +118,7 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 	@Override
 	public List<Music> getFavouriteMusic() throws SQLException {
 		List<Music> musicList = new ArrayList<Music>();
+		this.connection = databaseConnection.getConnection();
 		query = "SELECT distinct * FROM music order by music.Count desc limit " + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
