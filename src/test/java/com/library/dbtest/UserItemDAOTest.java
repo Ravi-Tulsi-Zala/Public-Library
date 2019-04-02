@@ -14,9 +14,9 @@ public class UserItemDAOTest {
 	public void addItemTest() {
 
 		UserItem item = new UserItem();
-		item.setCategory("Movie");
-		item.setEmail("niravsolanki@dal.ca");
-		item.setTitle("Avengers");
+		item.setCategory("Book");
+		item.setEmail("nirav.solanki@dal.ca");
+		item.setTitle("Alchemist");
 		assertTrue(itemDao.addItem(item));
 	}
 

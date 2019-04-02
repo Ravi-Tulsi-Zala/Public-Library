@@ -35,4 +35,14 @@ public class LoanManagentController implements ILoanManagementController {
 		return items;
 	}
 
+	@Override
+	public Boolean removeUserItem(UserItem item) {
+		
+		Boolean isRemoved;
+		isRemoved = itemDAO.removeItem(item);
+		return isRemoved;
+	}
+	
+	
+
 }
