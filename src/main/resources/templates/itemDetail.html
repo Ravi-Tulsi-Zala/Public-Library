@@ -40,8 +40,10 @@
         </div>       	
         
         <form th:action="@{/borrowItem/{status}}" th:object="${displayDetailed}" method="post">
-        <p th:field="*{title}" />
-		<input type="submit" th:field=${displayDetailed.title} >
+        <input type="hidden" th:field="*{title}" >
+        <input type="hidden" th:field="*{itemID}">
+        <input type="hidden" th:field="*{itemType}" >
+		<input type="submit" th:value=${status} >
 		</form>
         
 	</body>

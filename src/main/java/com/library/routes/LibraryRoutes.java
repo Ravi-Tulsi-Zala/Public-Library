@@ -40,6 +40,8 @@ import com.library.businessModels.Book;
 import com.library.businessModels.Cover;
 import com.library.businessModels.Display;
 import com.library.businessModels.DisplayDetailed;
+import com.library.businessModels.Book;
+import com.library.businessModels.Cover;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
@@ -48,7 +50,6 @@ import com.library.dbConnection.DatabaseConnection;
 import com.library.itemDetailed.DetailedDisplayFetcher;
 import com.library.itemDetailed.IDetailedDisplayFetcher;
 import com.library.businessModels.UserItem;
-import com.library.jsonparser.JsonStringParser;
 import com.library.loanmanagement.ILoanManagementController;
 import com.library.loanmanagement.Select;
 import com.library.messages.Messages;
@@ -98,11 +99,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		libraryInstance = LibraryFactorySingleton.instance();
 		factory = libraryInstance.getFactory();
 		searchFactory = SearchFactory.instance();
-	}
-	
-	@GetMapping("/")
-	public String indexCallToApplication() {
-		return redirectToWelcome;
 	}
 
 	@PostMapping("/signUp")
@@ -192,6 +188,11 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		}
 	}
 
+	@GetMapping("/")
+	public String getIndexPage() {
+		return redirectToWelcome;
+	}
+
 	@GetMapping("/signIn")
 	public String getSignInForm(User user) {
 		return gotoSignInPage;
@@ -277,17 +278,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@PostMapping("/loanItems")
 	public String returnItems(ModelMap model, Select select) {
-
-		String selections = select.getSelections();
-		JsonStringParser jsonStringParser = new JsonStringParser();
-		List<UserItem> userItems = new ArrayList<UserItem>();
-		userItems = jsonStringParser.parseSelections(selections);
+		System.out.println("Selections : " + select.getSelections());
 		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
-		for (UserItem item : userItems) {
-
-			iLoanManagementController.removeUserItem(item);
-		}
-
 		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
 		model.addAttribute("select", new Select());
 		model.addAttribute("items", items);
@@ -455,7 +447,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		Boolean isItemBooked = bookItem.bookItem(status);
 		String itemType = displayDetailed.getItemType();
 		int itemID = displayDetailed.getItemID();
-		return "itemDetail";
+		return "redirect:/itemDetail/" + itemType + "/" + itemID;
 	}
-	
 }
