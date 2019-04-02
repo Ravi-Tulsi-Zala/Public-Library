@@ -93,9 +93,9 @@ a, a label {
 				<p>Admin Tools</p>
 			</tr>
 			<tr>
-				<td><a href="/signIn"><div class="boxed">Add Library
+				<td><a href="/addBook"><div class="boxed">Add Library
 							items</div></a></td>
-				<td><a href="/signIn"><div class="boxed">Loan
+				<td><a href="/loan"><div class="boxed">Loan
 							Management</div></a></td>
 			</tr>
 		</table>
@@ -131,7 +131,7 @@ a, a label {
 		purchased</span>
 	<div style="width: 9%; display: inline-block; vertical-align: top;"
 		th:each="favbooks:${favBooks}">
-		<a href=""> <img
+		<a th:href="@{'/itemDetail/Book/'+${favbooks.itemID}}"> <img
 			th:src="${'data:image/png;base64,'+favbooks.coverImageUrl}"
 			width="100px" height="100px" />
 			<p th:text="${favbooks.title}" style="text-align: center;"></p>
@@ -139,7 +139,7 @@ a, a label {
 	</div>
 	<div style="width: 9%; display: inline-block; vertical-align: top;"
 		th:each="favmovies:${favMovies}">
-		<a href=""> <img
+		<a th:href="@{'/itemDetail/Movie/'+${favmovies.itemID}}"> <img
 			th:src="${'data:image/png;base64,'+favmovies.coverImageUrl}"
 			width="100px" height="100px" />
 			<p th:text="${favmovies.title}" style="text-align: center;"></p>
@@ -147,7 +147,7 @@ a, a label {
 	</div>
 	<div style="width: 9%; display: inline-block; vertical-align: top;"
 		th:each="favmusic:${favMusic}">
-		<a href=""> <img
+		<a th:href="@{'/itemDetail/Music/'+${favmusic.itemID}}"> <img
 			th:src="${'data:image/png;base64,'+favmusic.coverImageUrl}"
 			width="100px" height="100px" />
 			<p th:text="${favmusic.title}" style="text-align: center;"></p>
@@ -157,9 +157,9 @@ a, a label {
 	<div>
 		<table>
 			<tr>
-				<td><a href="/signIn"><div class="boxed">Books</div></a></td>
-				<td><a href="/signIn"><div class="boxed">Movies</div></a></td>
-				<td><a href="/signIn"><div class="boxed">Music</div></a></td>
+				<td><a href="/BrowsePage/Book"><div class="boxed">Books</div></a></td>
+				<td><a href="/BrowsePage/Movie"><div class="boxed">Movies</div></a></td>
+				<td><a href="/BrowsePage/Music"><div class="boxed">Music</div></a></td>
 			</tr>
 		</table>
 	</div>
