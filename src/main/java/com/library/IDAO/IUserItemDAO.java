@@ -9,4 +9,5 @@ public interface IUserItemDAO {
 	public boolean addItem(UserItem item);	
 	public boolean isItemOnHold(UserItem item);
 	public boolean isItemBorrowed(UserItem item);
+	public boolean addItemOnHold(UserItem item);
 }
