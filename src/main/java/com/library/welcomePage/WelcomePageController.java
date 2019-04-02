@@ -74,19 +74,19 @@ public class WelcomePageController implements IWelcomeController {
 		favMusic = mapImagesIntoList(favMusic, typeEntity.favouriteMusic);
 		return favMusic;
 	}
-
+ 
 	private List mapImagesIntoList(List entity, typeEntity entityValue) {
-		DisplaySetter ds = new DisplaySetter();
-		List<Display> d = null;
+		DisplaySetter displaySetter = new DisplaySetter();
+		List<Display> displayList = null;
 		if (entityValue.equals(typeEntity.latestBooks) || entityValue.equals(typeEntity.favouriteBooks)) {
-			d = ds.getBookDisplayObjects(entity);
+			displayList = displaySetter.getBookDisplayObjects(entity);
 		} else if (entityValue.equals(typeEntity.latestMovies) || entityValue.equals(typeEntity.favouriteMovies)) {
-			d = ds.getMovieDisplayObjects(entity);
+			displayList = displaySetter.getMovieDisplayObjects(entity);
 		} else {
-			d = ds.getMusicDisplayObjects(entity);
+			displayList = displaySetter.getMusicDisplayObjects(entity);
 		}
 		for (int i = 0; i < entity.size(); i++) {
-			((LibraryItem) entity.get(i)).setCoverImageUrl(d.get(i).getImage());
+			((LibraryItem) entity.get(i)).setCoverImageUrl(displayList.get(i).getImage());
 		}
 		return entity;
 	}

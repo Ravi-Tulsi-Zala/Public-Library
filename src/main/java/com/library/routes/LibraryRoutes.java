@@ -89,6 +89,11 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		factory = libraryInstance.getFactory();
 		searchFactory = SearchFactory.instance();
 	}
+	
+	@GetMapping("/")
+	public String indexCallToApplication() {
+		return "redirect:welcome";
+	}
 
 	@PostMapping("/signUp")
 	public String processSignUpForm(ModelMap model, User user) {
@@ -119,7 +124,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@GetMapping("/advancedSearch")
 	public String getAdvancedSearchPage(HttpSession httpSession, ModelMap model) {
-		AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, "removeMeFromTheController@mail.com");
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			dbSearchController.clearSearch(httpSession);
 			model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
@@ -176,11 +180,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 		}
-	}
-
-	@GetMapping("/")
-	public String getItemDetailsById() {
-		return "ItemDetailsPage";
 	}
 
 	@GetMapping("/signIn")
