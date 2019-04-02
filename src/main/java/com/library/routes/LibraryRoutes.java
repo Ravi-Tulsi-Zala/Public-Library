@@ -348,6 +348,9 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			AuthenticatedUsers.instance().removeAuthenticatedUser(httpSession);
 			redirectAttributes.addAttribute("LoggedOut", true);
+			AdminPage.setAvailableAdmin(false);
+			AdminPage.setAvailableUserID("");
+			AdminPage.setLoggingStatus(Messages.RegisterLogin.getMessage());
 		}
 		return redirectToWelcome;
 	}
