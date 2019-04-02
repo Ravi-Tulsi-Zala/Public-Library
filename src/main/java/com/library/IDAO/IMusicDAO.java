@@ -16,4 +16,5 @@ public interface IMusicDAO {
 	List<String> getMusicCategories();
 	public Boolean getAvailability(int itemID); 
 	public boolean checkMusicDuplicacy(Music music);
+	public Boolean increaseCount(int itemID);
 }

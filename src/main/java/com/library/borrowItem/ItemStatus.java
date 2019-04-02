@@ -44,7 +44,7 @@ public class ItemStatus {
 	
 	public Boolean isItemAlreadyBooked()
 	{
-		return true;
+	  	return true;
 	}
 	
 	public Boolean isItemOnHold()

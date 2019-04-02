@@ -3,7 +3,7 @@ package com.library.routes;
 import java.io.Console;
 
 import java.io.IOException;
-
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.Level;
@@ -36,6 +37,7 @@ import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
+import com.library.dbConnection.DatabaseConnection;
 import com.library.businessModels.UserItem;
 import com.library.jsonparser.JsonStringParser;
 import com.library.loanmanagement.ILoanManagementController;
@@ -57,6 +59,7 @@ import com.library.signUp.SignUpController;
 import com.library.welcomePage.AdminPage;
 import com.library.welcomePage.IWelcomeController;
 import com.library.welcomePage.WelcomePageController;
+import com.mysql.jdbc.PreparedStatement;
 
 @Controller
 public class LibraryRoutes implements WebMvcConfigurer {
@@ -284,9 +287,24 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@GetMapping("/welcome")
-	public String welcomeBody(ModelMap model, LibraryItem libraryItem) {
+	public String welcomeBody(ModelMap model, LibraryItem libraryItem, HttpServletRequest request,
+			HttpSession httpSession) {
 		Logger logger = LogManager.getLogger(WelcomePageController.class);
+		dbSearchController.clearSearch(httpSession);
+		String loggingStatus = AdminPage.getLoggingStatus();
+		String sessionClient = AdminPage.getAvailableUserID();
+		model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
 		IWelcomeController welcomeCtrl = factory.welcomePage();
+		java.util.Enumeration<String> reqEnum = request.getParameterNames();
+
+		while (reqEnum.hasMoreElements()) {
+			String s = reqEnum.nextElement();
+			if (s.equals("LoggedOut") && request.getParameter(s).equals("true")) {
+				loggingStatus = Messages.RegisterLogin.getMessage();
+				sessionClient = "";
+			}
+		}
+
 		List<Book> book, favBooks;
 		List<Movie> movie, favMovies;
 		List<Music> music, favMusic;
@@ -304,6 +322,10 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			logger.log(Level.ALL, "Some problem occured, check logs.", e);
 			return redirectToErrorPage;
 		}
+		finally{
+			DatabaseConnection databaseConnection = new DatabaseConnection();
+			databaseConnection.closeConnection();
+		}
 		model.addAttribute("book", book);
 		model.addAttribute("favBooks", favBooks);
 		model.addAttribute("movie", movie);
@@ -311,8 +333,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("music", music);
 		model.addAttribute("favMusic", favMusic);
 		model.addAttribute("isAdminAval", welcomeCtrl.isAdminAvailable());
-		model.addAttribute("loggingStatus", AdminPage.getLoggingStatus());
-		model.addAttribute("sessionClient", AdminPage.getAvailableUserID());
+		model.addAttribute("loggingStatus", loggingStatus);
+		model.addAttribute("sessionClient", sessionClient);
 		return gotoWelcomePage;
 	}
 
@@ -322,9 +344,10 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@GetMapping("/logOut")
-	public String processLogOut(HttpSession httpSession, ModelMap model, User user) {
+	public String processLogOut(HttpSession httpSession, ModelMap model, RedirectAttributes redirectAttributes) {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			AuthenticatedUsers.instance().removeAuthenticatedUser(httpSession);
+			redirectAttributes.addAttribute("LoggedOut", true);
 		}
 		return redirectToWelcome;
 	}

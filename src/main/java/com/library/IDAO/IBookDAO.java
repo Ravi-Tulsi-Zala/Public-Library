@@ -12,9 +12,9 @@ public interface IBookDAO {
 	public Boolean updateBook(Book book);
 	public List<LibraryItem> getBooksBySearchTerms(BookSearch requestDetails, String searchTerms);
 	public List<Book> getBookByCategory(String category);
-	public List<Book> getTopBooks();
 	public List<String> getBookCategories();
 	public Boolean getAvailability(int itemID);
 	public boolean checkBookDuplicacy(Book book);
+	public Boolean increaseCount(int itemID);
 }
 

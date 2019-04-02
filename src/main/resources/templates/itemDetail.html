@@ -1,6 +1,19 @@
 <html>
 	<html xmlns:th="http://www.thymeleaf.org">
 	<head>
+	
+		<style>
+		
+			img {
+				border: 5px solid #fff;
+				border-radius: 5px;
+				padding: 7px;
+				width: 100px;
+				height: 100px;
+				float: right;
+			}
+			
+		</style>
 	</head>
 	<body>
 	
@@ -13,8 +26,14 @@
         </div>
         
         <div>
-        	<ul>
-        		<li th:text=${displayDetailed.itemID}></li>
+        	<div>
+        		<img th:src="${'data:image/png;base64,'+displayDetailed.image}"   />
+        	</div>
+        	
+        	<div>
+        		<b><p th:text=${displayDetailed.title} /><b>
+        		<p th:utext = ${displayDetailed.details} />
+        	</div>
         </div>
        
         

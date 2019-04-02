@@ -17,10 +17,12 @@ public class UserDAO implements IUserDAO {
 	private PreparedStatement preparedStatement;
 	String query;
 	private static final Logger logger = LogManager.getLogger(UserDAO.class);
+	DatabaseConnection databaseConnection;
+	ResultSet resultSet;
 
 	public UserDAO() {
 		try {
-			DatabaseConnection databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
+			databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
 			this.connection = databaseConnection.getConnection();
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Unable to connect to database", e);
@@ -30,23 +32,27 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public Boolean checkPassword(String emailAddress, String Password) {
 		query = "SELECT Password from user_info WHERE Email = ?";
-		ResultSet result;
 		try {
+			this.connection = databaseConnection.getConnection();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, emailAddress);
-			result = preparedStatement.executeQuery();
-			if (!result.next()) {
+			resultSet = preparedStatement.executeQuery();
+			if (!resultSet.next()) {
 				return false;
 			}
-			String databasePassword = result.getString("Password");
+			String databasePassword = resultSet.getString("Password");
 			Boolean doesPasswordMatch = databasePassword.equals(Password);
 			return doesPasswordMatch;
 		} catch (SQLException e) {
-
+		
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not fetch password from user info", e);
+		}
+		finally
+		{
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return false;
 	}
@@ -54,14 +60,13 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public String getEmailRelatedPassword(String emailAddress) {
 		query = "SELECT Password from user_info WHERE Email = ?";
-		ResultSet result;
 		String databasePassword = "";
 		try {
+			this.connection = databaseConnection.getConnection();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, emailAddress);
-			result = preparedStatement.executeQuery();
-			result.next();
-			databasePassword = result.getString("Password");
+			resultSet = preparedStatement.executeQuery();
+			databasePassword = resultSet.getString("Password");
 			return databasePassword;
 		} catch (SQLException e) {
 
@@ -70,6 +75,10 @@ public class UserDAO implements IUserDAO {
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not fetch password from user info", e);
 		}
+		finally
+		{
+			databaseConnection.closeConnection(resultSet, preparedStatement);
+		}
 		return databasePassword;
 	}
 
@@ -77,6 +86,7 @@ public class UserDAO implements IUserDAO {
 	public Boolean changePassword(String emailAddress, String password) {
 		query = "UPDATE user_info SET Password = ? WHERE Email = ?";
 		try {
+			this.connection = databaseConnection.getConnection();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, password);
 			preparedStatement.setString(2, emailAddress);
@@ -89,6 +99,10 @@ public class UserDAO implements IUserDAO {
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not update password for the specific user emailid", e);
 		}
+		finally
+		{
+			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
+		}
 		return false;
 	}
 
@@ -96,6 +110,7 @@ public class UserDAO implements IUserDAO {
 	public Boolean registerUser(User user) {
 		query = "INSERT INTO user_info (User_name,Phone_Number,Email,Password) VALUES (?,?,?,?)";
 		try {
+			this.connection = databaseConnection.getConnection();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, user.getFullName());
 			preparedStatement.setString(2, user.getPhoneNumber());
@@ -110,6 +125,10 @@ public class UserDAO implements IUserDAO {
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not insert a record in user info table", e);
 		}
+		finally
+		{
+			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
+		}
 		return false;
 	}
 
@@ -118,9 +137,10 @@ public class UserDAO implements IUserDAO {
 		boolean result = false;
 		query = "SELECT Email from user_info WHERE Email = ? LIMIT 1";
 		try {
+			this.connection = databaseConnection.getConnection();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, emailID);
-			ResultSet resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.executeQuery();
 			System.out.println(resultSet);
 			if (!resultSet.next() ) {
 				result = false;
@@ -137,6 +157,10 @@ public class UserDAO implements IUserDAO {
 		} catch (Exception e) {
 			result = false;
 			logger.log(Level.ALL, "Can not fetch a record from user info table", e);
+		}
+		finally
+		{
+			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return result;
 	}
