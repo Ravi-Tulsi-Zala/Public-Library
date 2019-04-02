@@ -92,7 +92,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	
 	@GetMapping("/")
 	public String indexCallToApplication() {
-		return "redirect:welcome";
+		return redirectToWelcome;
 	}
 
 	@PostMapping("/signUp")
