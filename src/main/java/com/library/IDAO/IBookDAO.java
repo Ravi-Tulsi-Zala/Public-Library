@@ -17,5 +17,6 @@ public interface IBookDAO {
 	public boolean checkBookDuplicacy(Book book);
 	public void increaseAvailability(String title);
 	public void decreaseAvailability(String title);
+	public Boolean increaseCount(int itemID);
 }
 
