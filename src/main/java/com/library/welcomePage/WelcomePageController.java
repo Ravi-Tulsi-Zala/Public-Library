@@ -74,7 +74,7 @@ public class WelcomePageController implements IWelcomeController {
 		favMusic = mapImagesIntoList(favMusic, typeEntity.favouriteMusic);
 		return favMusic;
 	}
-
+ 
 	private List mapImagesIntoList(List entity, typeEntity entityValue) {
 		DisplaySetter ds = new DisplaySetter();
 		List<Display> d = null;
