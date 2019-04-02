@@ -1,6 +1,5 @@
 package com.library.routes;
 
-
 import java.io.Console;
 
 import java.io.IOException;
@@ -38,6 +37,7 @@ import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
 import com.library.businessModels.UserItem;
+import com.library.jsonparser.JsonStringParser;
 import com.library.loanmanagement.ILoanManagementController;
 import com.library.loanmanagement.Select;
 import com.library.messages.Messages;
@@ -76,7 +76,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	private String redirectToSignUp = Messages.SignUpPageRedirect.getMessage();
 	private String redirectToForgotPwd = Messages.ForgotPassPageRedirect.getMessage();
 	private String redirectToErrorPage = Messages.ErrorPageRedirect.getMessage();
-	
+
 	private String gotoSignInPage = "SignInForm";
 	private String gotoSignUpPage = "SignUpForm";
 	private String gotoWelcomePage = "Welcome";
@@ -253,29 +253,36 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		redirectPage = mappingsForAddItem(model);
 		return redirectPage;
 	}
-	
+
 	@GetMapping("/loan")
-	public String mappingsForLoanManagement(ModelMap model)
-	{
-		model.addAttribute("item",new UserItem());
+	public String mappingsForLoanManagement(ModelMap model) {
+		model.addAttribute("item", new UserItem());
 		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
 		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
 		model.addAttribute("items", items);
-		model.addAttribute("select",new Select());
+		model.addAttribute("select", new Select());
 		return "LoanManagement";
 	}
-	
+
 	@PostMapping("/loanItems")
-	public String returnItems(ModelMap model,Select select)
-	{
-		System.out.println("Selections : "+select.getSelections());
+	public String returnItems(ModelMap model, Select select) {
+
+		String selections = select.getSelections();
+		JsonStringParser jsonStringParser = new JsonStringParser();
+		List<UserItem> userItems = new ArrayList<UserItem>();
+		userItems = jsonStringParser.parseSelections(selections);
 		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
+		for (UserItem item : userItems) {
+
+			iLoanManagementController.removeUserItem(item);
+		}
+
 		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
-		model.addAttribute("select",new Select());
+		model.addAttribute("select", new Select());
 		model.addAttribute("items", items);
 		return "LoanManagement";
 	}
-	
+
 	@GetMapping("/welcome")
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem) {
 		Logger logger = LogManager.getLogger(WelcomePageController.class);
