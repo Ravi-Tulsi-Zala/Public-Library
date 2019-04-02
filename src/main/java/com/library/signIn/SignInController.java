@@ -44,11 +44,12 @@ public class SignInController implements ISignInController {
 		DAOFactory factory = new DAOFactory();
 		IUserDAO userDAO = factory.makeUserDAO();
 		addSaltToPassword();
-		AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, userBasicInfo.getEmail());
+		AuthenticatedUsers authUsers = AuthenticatedUsers.instance();
+		authUsers.addAuthenticatedUser(httpSession, userBasicInfo.getEmail());
 		if (userDAO.checkPassword(user.getEmail(), salt.getSaltedPassword())) {
 			logger.log(Level.ALL, "User has successfully logged in.");
 			AdminPage.setAvailableAdmin(false);
-			AdminPage.setAvailableUserID(user.getEmail());
+			AdminPage.setAvailableUserID(authUsers.getUserEmail(httpSession));
 			AdminPage.setLoggingStatus(Messages.Logout.getMessage());
 			return redirectToWelcome;
 

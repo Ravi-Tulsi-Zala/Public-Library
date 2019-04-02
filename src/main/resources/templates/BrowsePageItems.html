@@ -37,11 +37,12 @@
 	</head>
 	<body>
 		<div style="text-align:center;margin-top:1%">
-        	<span style="font-size: 2em;font-weight: bolder">Library Management System</span>
-        	<div style="float:right; margin-right:2%; margin-top:1%;">
-		       <label style="margin-right:4px;">ravizala420@gmail.com</label>
-		       <label>logout</label>
-    		</div>
+        	<span style="font-size: 2em;font-weight: bolder">Public Library</span>
+        	<p style="float: left" th:text="${sessionClient}"></p>
+			<a style="float: right; margin: 0 100px" th:if="${loggingStatus}=='Logout'" href="/logOut"><p
+					th:text="${loggingStatus}"></p></a>
+			<a style="float: right; margin: 0 100px" th:if="${loggingStatus}=='Register / Login'" href="/signIn"><p
+					th:text="${loggingStatus}"></p></a>
         </div>
         
         <div class = "BreadCrumbs" style = "margin-left:5%">

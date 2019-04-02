@@ -5,36 +5,47 @@ import com.library.DAOFactory.IDAOFactory;
 import com.library.IDAO.IBookDAO;
 import com.library.IDAO.IMovieDAO;
 import com.library.IDAO.IMusicDAO;
+import com.library.IDAO.IUserItemDAO;
 import com.library.businessModels.Display;
+import com.library.businessModels.DisplayDetailed;
+import com.library.businessModels.UserItem;
 
 public class ItemStatus {
 	
+	static final String borowed= "Borrowed";
+	static final String onHold = "Reserved";
+	static final String available = "Borrow";
+	static final String reserve = "Reserve";
+	private IUserItemDAO userItemDAO;
 	
-	private String userEmail;
+	private UserItem userItem;
 	private int itemID;
-	private String itemType;
 	
-	public ItemStatus(Display display,String userEmail) {
-		this.userEmail = userEmail;
-		this.itemID = display.getItemID();
-		this.itemType = display.getItemType();
+	public ItemStatus(DisplayDetailed displayDetailed,String userEmail) {
+		userItem = new UserItem();
+		userItem.setTitle(displayDetailed.getTitle());
+		userItem.setCategory(displayDetailed.getItemType());
+		userItem.setEmail(userEmail);
+		itemID = displayDetailed.getItemID();
+		IDAOFactory factory = new DAOFactory();
+		userItemDAO = factory.makeUserItemDAO();
 	}
 	
-	public Boolean isItemAvailable()
+	private Boolean isItemAvailable()
 	{
 		IDAOFactory factory = new DAOFactory();
 		Boolean availability = false;
-		if(itemType=="Book")
+		if(userItem.getCategory().equals("Book"))
 		{
 			IBookDAO bookDAO = factory.makeBookDAO();
 			availability = bookDAO.getAvailability(itemID);
 		}
-		else if(itemType=="Movie")
+		else if(userItem.getCategory().equals("Movie"))
 		{
 			IMovieDAO movieDAO = factory.makeMovieDAO();
 			availability = movieDAO.getAvailability(itemID);
 		}
-		else if(itemType=="Music")
+		else if(userItem.getCategory().equals("Music"))
 		{
 			IMusicDAO musicDAO = factory.makeMusicDAO();
 			availability = musicDAO.getAvailability(itemID);
@@ -42,14 +53,34 @@ public class ItemStatus {
 		return availability;
 	}
 	
-	public Boolean isItemAlreadyBooked()
+	private Boolean isItemAlreadyBooked()
 	{
-		return true;
+		return userItemDAO.isItemBorrowed(userItem);
 	}
 	
-	public Boolean isItemOnHold()
+	private Boolean isItemAlreadyOnHold()
 	{
-		return true;
+		return userItemDAO.isItemOnHold(userItem);
+	}
+	
+	public String getItemStatus()
+	{
+		if(isItemAlreadyBooked())
+		{
+			return borowed;
+		}
+		else if(isItemAlreadyOnHold())
+		{
+			return onHold;
+		}
+		else if(isItemAvailable())
+		{
+			return available;
+		}
+		else
+		{
+			return reserve;
+		}
 	}
 }
    

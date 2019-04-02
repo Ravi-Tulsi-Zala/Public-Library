@@ -20,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -31,6 +32,14 @@ import com.library.ForgotPassword.RecoverPassword;
 import com.library.additem.IAddBookController;
 import com.library.additem.IAddMovieController;
 import com.library.additem.IAddMusicController;
+import com.library.borrowItem.BookItem;
+import com.library.borrowItem.ItemStatus;
+import com.library.browsePage.DisplayObjectInitializer;
+import com.library.browsePage.IBrowseDisplayObjects;
+import com.library.businessModels.Book;
+import com.library.businessModels.Cover;
+import com.library.businessModels.Display;
+import com.library.businessModels.DisplayDetailed;
 import com.library.businessModels.Book;
 import com.library.businessModels.Cover;
 import com.library.businessModels.LibraryItem;
@@ -38,6 +47,8 @@ import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
 import com.library.dbConnection.DatabaseConnection;
+import com.library.itemDetailed.DetailedDisplayFetcher;
+import com.library.itemDetailed.IDetailedDisplayFetcher;
 import com.library.businessModels.UserItem;
 import com.library.loanmanagement.ILoanManagementController;
 import com.library.loanmanagement.Select;
@@ -119,7 +130,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@GetMapping("/advancedSearch")
 	public String getAdvancedSearchPage(HttpSession httpSession, ModelMap model) {
-		AuthenticatedUsers.instance().addAuthenticatedUser(httpSession, "removeMeFromTheController@mail.com");
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			dbSearchController.clearSearch(httpSession);
 			model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
@@ -179,8 +189,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@GetMapping("/")
-	public String getItemDetailsById() {
-		return "ItemDetailsPage";
+	public String getIndexPage() {
+		return redirectToWelcome;
 	}
 
 	@GetMapping("/signIn")
@@ -211,14 +221,15 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@GetMapping("/addBook")
 	public String mappingsForAddItem(ModelMap model) {
-
+	
+		String sessionClient = AdminPage.getAvailableUserID();
 		model.addAttribute("book", new Book());
 		model.addAttribute("movie", new Movie());
 		model.addAttribute("music", new Music());
 		model.addAttribute("coverBook", new Cover());
 		model.addAttribute("coverMovie", new Cover());
 		model.addAttribute("coverMusic", new Cover());
-
+		model.addAttribute("sessionClient", sessionClient);
 		return "AddItemPage";
 	}
 
@@ -258,11 +269,14 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@GetMapping("/loan")
 	public String mappingsForLoanManagement(ModelMap model) {
+		
+		String sessionClient = AdminPage.getAvailableUserID();
 		model.addAttribute("item", new UserItem());
 		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
 		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
 		model.addAttribute("items", items);
 		model.addAttribute("select", new Select());
+		model.addAttribute("sessionClient", sessionClient);
 		return "LoanManagement";
 	}
 
@@ -338,6 +352,9 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			AuthenticatedUsers.instance().removeAuthenticatedUser(httpSession);
 			redirectAttributes.addAttribute("LoggedOut", true);
+			AdminPage.setAvailableAdmin(false);
+			AdminPage.setAvailableUserID("");
+			AdminPage.setLoggingStatus(Messages.RegisterLogin.getMessage());
 		}
 		return redirectToWelcome;
 	}
@@ -374,5 +391,69 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			return redirectToErrorPage;
 		}
 	}
+	
+	@GetMapping("/BrowsePage/{itemType}")
+	public String BrowsePageCategory(@PathVariable String itemType, ModelMap model) {
+		DisplayObjectInitializer displayObjectInitializer = new DisplayObjectInitializer();
+		IBrowseDisplayObjects browseDisplayObjects = null;
+		List<String> categories;
+		browseDisplayObjects = displayObjectInitializer.getDisplayObject(itemType);
+		categories = browseDisplayObjects.getCategories();
+		String loggingStatus = AdminPage.getLoggingStatus();
+		String sessionClient = AdminPage.getAvailableUserID();
+		model.addAttribute("loggingStatus", loggingStatus);
+		model.addAttribute("sessionClient", sessionClient);
+		model.addAttribute("categories", categories);
+		model.addAttribute("itemType", itemType);
+		return "BrowsePageCategory";
+	}
 
+	@GetMapping("/BrowsePage/{itemType}/{category}")
+	public String BrowsePageItems(@PathVariable(value = "itemType") String itemType,
+			@PathVariable(value = "category") String category, ModelMap model) {
+		
+		DisplayObjectInitializer displayObjectInitializer = new DisplayObjectInitializer();
+		IBrowseDisplayObjects browseDisplayObjects = null;
+		List<Display> displayItems;
+		browseDisplayObjects = displayObjectInitializer.getDisplayObject(itemType);
+		displayItems = browseDisplayObjects.itemsByCategory(category);
+		String loggingStatus = AdminPage.getLoggingStatus();
+		String sessionClient = AdminPage.getAvailableUserID();
+		model.addAttribute("loggingStatus", loggingStatus);
+		model.addAttribute("sessionClient", sessionClient);
+		model.addAttribute("displayItems", displayItems);
+		model.addAttribute(itemType);
+		model.addAttribute(category);
+		return "BrowsePageItems";
+	}
+
+	@GetMapping("/itemDetail/{itemType}/{itemID}")
+	public String BrowsePageItems1(@PathVariable(value = "itemType") String itemType,
+			@PathVariable(value = "itemID") int itemID, ModelMap model, HttpSession httpSession) {
+		IDetailedDisplayFetcher displayFetcher = new DetailedDisplayFetcher();
+		DisplayDetailed displayDetailed = displayFetcher.fetchDetailedDisplay(itemType, itemID);
+		AuthenticatedUsers user = AuthenticatedUsers.instance();
+		String emailAddress = user.getUserEmail(httpSession);
+		ItemStatus statusFetcher = new ItemStatus(displayDetailed,emailAddress);
+		String status = statusFetcher.getItemStatus();
+		String loggingStatus = AdminPage.getLoggingStatus();
+		String sessionClient = AdminPage.getAvailableUserID();
+		model.addAttribute("loggingStatus", loggingStatus);
+		model.addAttribute("sessionClient", sessionClient);
+		model.addAttribute("status",status);
+		model.addAttribute("displayDetailed",displayDetailed);
+		return "itemDetail";
+	}
+	
+	@PostMapping("/borrowItem/{status}")
+	public String borrowItems(@PathVariable(value = "status") String status ,HttpSession httpSession, ModelMap model,DisplayDetailed displayDetailed)
+	{
+		AuthenticatedUsers user = AuthenticatedUsers.instance();
+		String emailAddress = user.getUserEmail(httpSession);
+		BookItem bookItem = new BookItem(displayDetailed, emailAddress);
+		Boolean isItemBooked = bookItem.bookItem(status);
+		String itemType = displayDetailed.getItemType();
+		int itemID = displayDetailed.getItemID();
+		return "redirect:/itemDetail/" + itemType + "/" + itemID;
+	}
 }

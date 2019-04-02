@@ -16,4 +16,8 @@ public interface IMovieDAO {
 	public List<String> getMovieCategories();
 	public Boolean getAvailability(int itemID); 
 	public boolean checkMovieDuplicacy(Movie movie);
+	public Boolean increaseCount(int itemID);
+	public void increaseAvailability(String title);
+	public void decreaseAvailability(String title);
+	
 }

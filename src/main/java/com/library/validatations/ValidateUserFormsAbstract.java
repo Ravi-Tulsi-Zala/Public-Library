@@ -105,7 +105,7 @@ public abstract class ValidateUserFormsAbstract {
 		this.cpasswordErrorStatement = "";
 		List<Map.Entry<String, String>> list = XmlParser.parse(filePathToErrorStatements);
 		for (int i = 0; i < list.size(); i++) {
-			String getValFromList = list.get(i).getKey();
+			String getValFromList = list.get(i).getValue();
 			switch (list.get(i).getKey()) {
 			case emailErrorKeyRoot:
 				this.emailErrorStatement = getValFromList;
