@@ -352,4 +352,16 @@ public class MusicDAO implements IMusicDAO {
 		}
 		return countIncrease;
 	}
+
+	@Override
+	public void increaseAvailability(String title) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void decreaseAvailability(String title) {
+		// TODO Auto-generated method stub
+		
+	}
 }

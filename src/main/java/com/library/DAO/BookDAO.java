@@ -369,7 +369,7 @@ public class BookDAO implements IBookDAO {
 		Boolean countIncrease = false;
 		try {
 			this.connection = databaseConnection.getConnection();
-			query = "update books set count = count + 1 where Item_ID = ?";
+			query = "update books set availability =? where Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
 			preparedStatement.execute();
@@ -384,6 +384,18 @@ public class BookDAO implements IBookDAO {
 			logger.log(Level.ALL, "Error increasing count of book", e);
 		}
 		return countIncrease;
+	}
+
+	@Override
+	public void increaseAvailability(String title) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void decreaseAvailability(String title) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
