@@ -119,10 +119,6 @@ public class UserItemDAO implements IUserItemDAO {
 
 	}
 
-	public void updateAvailability() {
-
-	}
-
 	public boolean addItemOnHold(UserItem item) {
 
 		String email = item.getEmail();

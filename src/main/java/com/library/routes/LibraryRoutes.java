@@ -20,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -31,8 +32,11 @@ import com.library.ForgotPassword.RecoverPassword;
 import com.library.additem.IAddBookController;
 import com.library.additem.IAddMovieController;
 import com.library.additem.IAddMusicController;
+import com.library.browsePage.DisplayObjectInitializer;
+import com.library.browsePage.IBrowseDisplayObjects;
 import com.library.businessModels.Book;
 import com.library.businessModels.Cover;
+import com.library.businessModels.Display;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
@@ -382,5 +386,41 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			return redirectToErrorPage;
 		}
 	}
+	
+	@GetMapping("/BrowsePage/{itemType}")
+	public String BrowsePageCategory(@PathVariable String itemType, ModelMap model) {
+		DisplayObjectInitializer displayObjectInitializer = new DisplayObjectInitializer();
+		IBrowseDisplayObjects browseDisplayObjects = null;
+		List<String> categories;
+		browseDisplayObjects = displayObjectInitializer.getDisplayObject(itemType);
+		categories = browseDisplayObjects.getCategories();
+		String loggingStatus = AdminPage.getLoggingStatus();
+		String sessionClient = AdminPage.getAvailableUserID();
+		model.addAttribute("loggingStatus", loggingStatus);
+		model.addAttribute("sessionClient", sessionClient);
+		model.addAttribute("categories", categories);
+		model.addAttribute("itemType", itemType);
+		return "BrowsePageCategory";
+	}
+
+	@GetMapping("/BrowsePage/{itemType}/{category}")
+	public String BrowsePageItems(@PathVariable(value = "itemType") String itemType,
+			@PathVariable(value = "category") String category, ModelMap model) {
+		
+		DisplayObjectInitializer displayObjectInitializer = new DisplayObjectInitializer();
+		IBrowseDisplayObjects browseDisplayObjects = null;
+		List<Display> displayItems;
+		browseDisplayObjects = displayObjectInitializer.getDisplayObject(itemType);
+		displayItems = browseDisplayObjects.itemsByCategory(category);
+		String loggingStatus = AdminPage.getLoggingStatus();
+		String sessionClient = AdminPage.getAvailableUserID();
+		model.addAttribute("loggingStatus", loggingStatus);
+		model.addAttribute("sessionClient", sessionClient);
+		model.addAttribute("displayItems", displayItems);
+		model.addAttribute(itemType);
+		model.addAttribute(category);
+		return "BrowsePageItems";
+	}
+
 
 }
