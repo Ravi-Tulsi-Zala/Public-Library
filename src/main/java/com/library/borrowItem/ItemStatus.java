@@ -11,6 +11,10 @@ import com.library.businessModels.UserItem;
 
 public class ItemStatus {
 	
+	static final String borowed= "Already Borrowed";
+	static final String onHold = "Reserved Item";
+	static final String available = "Borrow";
+	static final String reserve = "Reserve";
 	
 	UserItem userItem;
 	int itemID;
@@ -49,9 +53,25 @@ public class ItemStatus {
 	  	return true;
 	}
 	
-	private Boolean isItemOnHold()
+	private Boolean isItemAlreadyOnHold()
 	{
 		return true;
+	}
+	
+	public String getItemStatus()
+	{
+		if(isItemAlreadyBooked())
+		{
+			return borowed;
+		}
+		else if(isItemAlreadyOnHold())
+		{
+			return onHold;
+		}
+		else if(isItemAvailable())
+		{
+			return available;
+		}
 	}
 }
    
