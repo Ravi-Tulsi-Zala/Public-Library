@@ -221,14 +221,15 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@GetMapping("/addBook")
 	public String mappingsForAddItem(ModelMap model) {
-
+	
+		String sessionClient = AdminPage.getAvailableUserID();
 		model.addAttribute("book", new Book());
 		model.addAttribute("movie", new Movie());
 		model.addAttribute("music", new Music());
 		model.addAttribute("coverBook", new Cover());
 		model.addAttribute("coverMovie", new Cover());
 		model.addAttribute("coverMusic", new Cover());
-
+		model.addAttribute("sessionClient", sessionClient);
 		return "AddItemPage";
 	}
 
@@ -268,11 +269,14 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@GetMapping("/loan")
 	public String mappingsForLoanManagement(ModelMap model) {
+		
+		String sessionClient = AdminPage.getAvailableUserID();
 		model.addAttribute("item", new UserItem());
 		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
 		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
 		model.addAttribute("items", items);
 		model.addAttribute("select", new Select());
+		model.addAttribute("sessionClient", sessionClient);
 		return "LoanManagement";
 	}
 

@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title></title>
+	<title>Loan Management</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -15,32 +15,35 @@
 </head>
 <body>
 <nav class="navbar navbar-light bg-light">
-  <span class="navbar-brand mb-0 h1">Library Management System</span>
-  <button type="button" class="btn-link h2 btn ">Administrator</button>
+  <span class="navbar-brand mb-0 h1"><h2>Public Library</h2></span>
+  <div style="float: right">
+		<p style="float: left" th:text="${sessionClient}"></p>
+	</div>
 </nav>
+<h4 style="margin-top: 2%;margin-bottom:2%">Loan Management</h4>
 <form method="POST" id="form" th:action="@{/loanItems}">
 
-<table class="table table-bordered table-striped" id="table" data-toggle="table">
-  <!-- Table head -->
-  <thead class="thead-dark">
-    <tr data-field="item">
-      <th data-field="state" data-checkbox="true"></th>
-      <th data-field="category" data-sortable="true">Content Type</th>
-      <th data-field="title" data-sortable="true">Title</th>
-      <th data-field="email" data-sortable="true">User</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr data-field="item" th:each="item : ${items}" >
-      <td data-field="state" data-checkbox="true"></td>
-      <td data-field="category" th:text ="${item.category}"></td>
-      <td data-field="title" th:text ="${item.title}"></td>
-      <td data-field="email" th:text ="${item.email}"></td>
-    </tr>
-  </tbody>
-</table>
-<button type="submit" id="button" class="btn btn-primary" >Return Items</button>
-<input type="hidden" id="abc" name="abc" th:field="${select.selections}"/>
+	<table class="table table-bordered table-striped" id="table" data-toggle="table">
+	  <!-- Table head -->
+	  <thead class="thead-dark">
+	    <tr data-field="item">
+	      <th data-field="state" data-checkbox="true"></th>
+	      <th data-field="category" data-sortable="true">Content Type</th>
+	      <th data-field="title" data-sortable="true">Title</th>
+	      <th data-field="email" data-sortable="true">User</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr data-field="item" th:each="item : ${items}" >
+	      <td data-field="state" data-checkbox="true"></td>
+	      <td data-field="category" th:text ="${item.category}"></td>
+	      <td data-field="title" th:text ="${item.title}"></td>
+	      <td data-field="email" th:text ="${item.email}"></td>
+	    </tr>
+	  </tbody>
+	</table>
+	<button type="submit" id="button" class="btn btn-primary" style="margin-top: 2%;">Return Items</button>
+	<input type="hidden" id="abc" name="abc" th:field="${select.selections}"/>
 </form>
 
 <script>

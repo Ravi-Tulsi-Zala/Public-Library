@@ -39,12 +39,9 @@ public class ItemCoverSetter implements IItemCoverSetter {
 				String fileExtension = fileNameTokens[fileNameTokens.length - 1];
 				isCoverCreated = coverDAO.createCoverByID(itemId, coverBlob, fileExtension);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.log(Level.ALL,"Error in creating cover",e);
 			}
 			
-			
-
 		} catch (SQLException e) {
 			logger.log(Level.ALL,"Error in creating cover",e);
 		}

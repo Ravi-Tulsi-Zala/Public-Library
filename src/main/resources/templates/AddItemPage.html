@@ -1,105 +1,118 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Add Item</title>
-<meta charset="UTF-8" />
-<script type="text/javascript">
-    function setForm(value) {
-
-        if(value == 'Book') {
-            document.getElementById('Book').style='display:block;';
-            document.getElementById('Movie').style='display:none;';
-            document.getElementById('Music').style='display:none;';
-        }   
-        else if(value == 'Movie') {
-            document.getElementById('Movie').style = 'display:block;';
-            document.getElementById('Music').style = 'display:none;';
-            document.getElementById('Book').style='display:none;';
-        }
-        else {
-            document.getElementById('Music').style = 'display:block;';
-            document.getElementById('Movie').style = 'display:none;';
-            document.getElementById('Book').style='display:none;';
-        }
-    }
-
-    var loadFileBook = function(event) {
-    	var output = document.getElementById('outputBookCover');
-        output.src = URL.createObjectURL(event.target.files[0]);
-    };
-    
-    var loadFileMovie = function(event) {
-    	var output = document.getElementById('outputMovieCover');
-        output.src = URL.createObjectURL(event.target.files[0]);
-    };
-    
-    var loadFileMusic = function(event) {
-    	var output = document.getElementById('outputMusicCover');
-        output.src = URL.createObjectURL(event.target.files[0]);
-    };
-
-</script>
-<style type="text/css" media="screen">
-label {
-	display: inline-block;
-	width: 140px;
-}
-
-.formElements {
-	margin-bottom: 2%;
-}
-
-.coverImg {
-	overflow: auto;
-	width: 30%;
-}
-
-.btn {
-	background-color: #008CBA;
-	border-radius: 7px;
-	color: white;
-	padding: 10px;
-	text-align: center;
-	display: inline-block;
-	font-size: 16px;
-	margin: 4px 2px;
-}
-
-#headerDiv {
-	text-align: center;
-}
-
-#headerText {
-	font-size: 2em;
-	font-weight: bolder;
-}
-
-#adminLink {
-	float: right;
-	font-size: x-large;
-}
-
-p {
-	color: red;
-	font-weight: bolder;
-}
-
-img {
-	border: 5px solid #fff;
-	border-radius: 5px;
-	padding: 7px;
-	width: 100px;
-	height: 100px;
-	float: right;
-}
-</style>
+		<title>Add Item</title>
+		<meta charset="UTF-8" />
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>Loan Management</title>
+		<script type="text/javascript">
+		    function setForm(value) {
+		
+		        if(value == 'Book') {
+		            document.getElementById('Book').style='display:block;';
+		            document.getElementById('Movie').style='display:none;';
+		            document.getElementById('Music').style='display:none;';
+		        }   
+		        else if(value == 'Movie') {
+		            document.getElementById('Movie').style = 'display:block;';
+		            document.getElementById('Music').style = 'display:none;';
+		            document.getElementById('Book').style='display:none;';
+		        }
+		        else {
+		            document.getElementById('Music').style = 'display:block;';
+		            document.getElementById('Movie').style = 'display:none;';
+		            document.getElementById('Book').style='display:none;';
+		        }
+		    }
+		
+		    var loadFileBook = function(event) {
+		    	var output = document.getElementById('outputBookCover');
+		        output.src = URL.createObjectURL(event.target.files[0]);
+		    };
+		    
+		    var loadFileMovie = function(event) {
+		    	var output = document.getElementById('outputMovieCover');
+		        output.src = URL.createObjectURL(event.target.files[0]);
+		    };
+		    
+		    var loadFileMusic = function(event) {
+		    	var output = document.getElementById('outputMusicCover');
+		        output.src = URL.createObjectURL(event.target.files[0]);
+		    };
+		
+		</script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		
+		<style type="text/css" media="screen">
+		label {
+			display: inline-block;
+			width: 140px;
+		}
+		
+		.formElements {
+			margin-bottom: 1%;
+		}
+		
+		.coverImg {
+			overflow: auto;
+			width: 30%;
+		}
+		
+		.btn {
+			background-color: #008CBA;
+			border-radius: 7px;
+			color: white;
+			padding: 10px;
+			text-align: center;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+		}
+		
+		#headerDiv {
+			text-align: center;
+		}
+		
+		#headerText {
+			font-size: 2em;
+			font-weight: bolder;
+		}
+		
+		#adminLink {
+			float: right;
+			font-size: x-large;
+		}
+		
+		p {
+			color: red;
+			font-weight: bolder;
+		}
+		
+		img {
+			border: 5px solid #fff;
+			border-radius: 5px;
+			padding: 7px;
+			width: 150px;
+			height: 150px;
+			float: right;
+		}
+		</style>
 </head>
-<body id="">
-	<div id="headerDiv">
-		<span id="headerText">Library Management System</span> <a href="#"
-			id="adminLink">Administrator</a>
+<body>
+	<nav class="navbar navbar-light bg-light" style="margin-bottom: 2%;">
+  		<span class="navbar-brand mb-0 h1"><h2 style="text-align:center">Public Library</h2></span>
+  		<div style="float: right">
+		<p style="float: left;color:gray;" th:text="${sessionClient}"></p>
 	</div>
-	<h2>Add Item</h2>
+	</nav>
+	
+	<h4 style="margin-bottom: 2%;">Add Item</h4>
+	
 	<div class="formElements">
 		<label>Content Type</label> <select id="contentType"
 			onchange="setForm(this.value)">
@@ -107,10 +120,11 @@ img {
 			<option value="Movie">Movie</option>
 			<option value="Music">Music</option>
 		</select>
-	</div>
+	</div> 
 	<div id="Book">
 		<form method="post" name="bookForm" th:action="@{/addBook}"
 			enctype="multipart/form-data">
+			
 			<div class="formElements">
 				<label>Category</label> <select id="bookCategory"
 					th:field="${book.category}">
@@ -122,7 +136,7 @@ img {
 				</select>
 			</div>
 			<div class="formElements">
-				<label>Title</label> <input type="text" th:field="${book.title}">
+				<label >Title</label> <input type="text" th:field="${book.title}">
 			</div>
 			<div class="formElements">
 				<label>Author</label><input type="text" th:field="${book.author}">
@@ -146,6 +160,7 @@ img {
 
 			<span><input class="btn" type="submit" value="Save Item"></span>
 			<span><input class="btn" type="reset" value="Cancel" onclick="window.location='welcome'"></span>
+			
 		</form>
 	</div>
 
@@ -215,8 +230,9 @@ img {
 			<span><input class="btn" type="reset" value="Cancel" onclick="window.location='welcome'"></span>
 		</form>
 	</div>
-		<div class="formElements">
-				<p th:text="${message}"></p>
-		</div>
+	<div class="formElements">
+			<p th:text="${message}"></p>
+	</div>
+	
 </body>
 </html>
