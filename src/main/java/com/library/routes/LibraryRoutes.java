@@ -32,18 +32,24 @@ import com.library.ForgotPassword.RecoverPassword;
 import com.library.additem.IAddBookController;
 import com.library.additem.IAddMovieController;
 import com.library.additem.IAddMusicController;
+import com.library.borrowItem.BookItem;
+import com.library.borrowItem.ItemStatus;
 import com.library.browsePage.DisplayObjectInitializer;
 import com.library.browsePage.IBrowseDisplayObjects;
 import com.library.businessModels.Book;
 import com.library.businessModels.Cover;
 import com.library.businessModels.Display;
+import com.library.businessModels.DisplayDetailed;
+import com.library.businessModels.Book;
+import com.library.businessModels.Cover;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
 import com.library.dbConnection.DatabaseConnection;
+import com.library.itemDetailed.DetailedDisplayFetcher;
+import com.library.itemDetailed.IDetailedDisplayFetcher;
 import com.library.businessModels.UserItem;
-import com.library.jsonparser.JsonStringParser;
 import com.library.loanmanagement.ILoanManagementController;
 import com.library.loanmanagement.Select;
 import com.library.messages.Messages;
@@ -93,11 +99,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		libraryInstance = LibraryFactorySingleton.instance();
 		factory = libraryInstance.getFactory();
 		searchFactory = SearchFactory.instance();
-	}
-	
-	@GetMapping("/")
-	public String indexCallToApplication() {
-		return redirectToWelcome;
 	}
 
 	@PostMapping("/signUp")
@@ -185,6 +186,11 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 		}
+	}
+
+	@GetMapping("/")
+	public String getIndexPage() {
+		return redirectToWelcome;
 	}
 
 	@GetMapping("/signIn")
@@ -276,16 +282,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@PostMapping("/loanItems")
 	public String returnItems(ModelMap model, Select select) {
-
-		String selections = select.getSelections();
-		JsonStringParser jsonStringParser = new JsonStringParser();
-		List<UserItem> userItems = new ArrayList<UserItem>();
-		userItems = jsonStringParser.parseSelections(selections);
+		System.out.println("Selections : " + select.getSelections());
 		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
-		for (UserItem item : userItems) {
-			iLoanManagementController.removeUserItem(item);
-		}
-
 		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
 		model.addAttribute("select", new Select());
 		model.addAttribute("items", items);
@@ -354,6 +352,9 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			AuthenticatedUsers.instance().removeAuthenticatedUser(httpSession);
 			redirectAttributes.addAttribute("LoggedOut", true);
+			AdminPage.setAvailableAdmin(false);
+			AdminPage.setAvailableUserID("");
+			AdminPage.setLoggingStatus(Messages.RegisterLogin.getMessage());
 		}
 		return redirectToWelcome;
 	}
@@ -426,5 +427,33 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		return "BrowsePageItems";
 	}
 
-
+	@GetMapping("/itemDetail/{itemType}/{itemID}")
+	public String BrowsePageItems1(@PathVariable(value = "itemType") String itemType,
+			@PathVariable(value = "itemID") int itemID, ModelMap model, HttpSession httpSession) {
+		IDetailedDisplayFetcher displayFetcher = new DetailedDisplayFetcher();
+		DisplayDetailed displayDetailed = displayFetcher.fetchDetailedDisplay(itemType, itemID);
+		AuthenticatedUsers user = AuthenticatedUsers.instance();
+		String emailAddress = user.getUserEmail(httpSession);
+		ItemStatus statusFetcher = new ItemStatus(displayDetailed,emailAddress);
+		String status = statusFetcher.getItemStatus();
+		String loggingStatus = AdminPage.getLoggingStatus();
+		String sessionClient = AdminPage.getAvailableUserID();
+		model.addAttribute("loggingStatus", loggingStatus);
+		model.addAttribute("sessionClient", sessionClient);
+		model.addAttribute("status",status);
+		model.addAttribute("displayDetailed",displayDetailed);
+		return "itemDetail";
+	}
+	
+	@PostMapping("/borrowItem/{status}")
+	public String borrowItems(@PathVariable(value = "status") String status ,HttpSession httpSession, ModelMap model,DisplayDetailed displayDetailed)
+	{
+		AuthenticatedUsers user = AuthenticatedUsers.instance();
+		String emailAddress = user.getUserEmail(httpSession);
+		BookItem bookItem = new BookItem(displayDetailed, emailAddress);
+		Boolean isItemBooked = bookItem.bookItem(status);
+		String itemType = displayDetailed.getItemType();
+		int itemID = displayDetailed.getItemID();
+		return "redirect:/itemDetail/" + itemType + "/" + itemID;
+	}
 }

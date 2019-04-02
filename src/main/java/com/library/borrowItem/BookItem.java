@@ -12,15 +12,14 @@ public class BookItem {
 	static final String reserve = "Reserve";
 	private UserItem userItem;
 	private IUserItemDAO userItemDAO;
-	private String itemType;
 	private int itemID;
 	
 	public BookItem(DisplayDetailed displayDetailed,String userEmail)
 	{
+		userItem = new UserItem();
 		userItem.setTitle(displayDetailed.getTitle());
 		userItem.setCategory(displayDetailed.getItemType());
 		userItem.setEmail(userEmail);
-		itemType = displayDetailed.getItemType();
 		itemID = displayDetailed.getItemID();
 		IDAOFactory factory = new DAOFactory();
 		userItemDAO = factory.makeUserItemDAO();
@@ -49,7 +48,7 @@ public class BookItem {
 		}
 		if(isItemBooked)
 		{
-			ChangeItemCount countChanger = new ChangeItemCount(itemType, itemID);
+			ChangeItemCount countChanger = new ChangeItemCount(userItem.getCategory(), itemID);
 			countChanger.changeCount();
 		}
 		
