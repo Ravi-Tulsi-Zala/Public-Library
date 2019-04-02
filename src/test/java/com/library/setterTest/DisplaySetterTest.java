@@ -1,4 +1,4 @@
-package com.library.displayTest;
+package com.library.setterTest;
 
 import static org.junit.Assert.assertEquals;
 

@@ -1,5 +1,6 @@
 package com.library.businessModels;
 
+import java.io.File;
 import java.sql.SQLException;
 
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -15,19 +16,10 @@ public class Display {
 	private int itemID;
 	private String image = null;
 	private String itemType;
-	private String details;
 	private IDAOFactory factory = new DAOFactory();
 	private ICoverDAO coverDAO = factory.makeCoverDAO();
 	
 	
-	public String getDetails() {
-		return details;
-	}
-
-	public void setDetails(String details) {
-		this.details = details;
-	}
-
 	public String getTitle() {
 		return title;
 	}

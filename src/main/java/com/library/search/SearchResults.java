@@ -7,10 +7,11 @@ import java.util.List;
 
 import com.library.businessModels.LibraryItem;
 
-public class SearchResults {
-	private final int DESPLAY_ROW_SIZE = 10; // should move to the configuration file
+public class SearchResults implements ISearchResults{
+	private final int DESPLAY_ROW_SIZE = 10;
 	private ArrayList<List<LibraryItem>> searchResultsPerCategory = new ArrayList<List<LibraryItem>>();
 
+	@Override
 	public boolean isNotEmpty() {
 		for(List<LibraryItem> categoryResult : searchResultsPerCategory) {
 			if(!categoryResult.isEmpty()) {
@@ -20,6 +21,7 @@ public class SearchResults {
 		return false;
 	}
 
+	@Override
 	public List<LibraryItem> getAllFoundItems() {
 		List<LibraryItem> allItems = new LinkedList<LibraryItem>();
 		for(List<LibraryItem> categoryResult : searchResultsPerCategory) {
@@ -27,15 +29,15 @@ public class SearchResults {
 		}
 		return allItems;
 	}
-	
 
-	
+	@Override
 	public void addSearchResultsForCategory(List<LibraryItem> resultsPerCategory) {
 		searchResultsPerCategory.add(resultsPerCategory);
 	}
 
+	@Override
 	public SearchResults getResultSetForPageNumber(int requestedPageNumber) {
-		SearchResults results = new SearchResults();
+		SearchResults results = SearchFactory.instance().makeSearchResults();
 		for(List<LibraryItem> categoryResult : searchResultsPerCategory) {
 			List<LibraryItem> resultsForCurrentCategory = new LinkedList<LibraryItem>();
 			Iterator<LibraryItem> iterator = categoryResult.iterator();
@@ -50,6 +52,7 @@ public class SearchResults {
 		return results;
 	}
 	
+	@Override
 	public ArrayList<List<LibraryItem>> getSearchResultsPerCategory() {
 		return searchResultsPerCategory;
 	}

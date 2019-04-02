@@ -1,14 +1,11 @@
 package com.library.businessModels;
 
-import java.util.Date;
-
 public class UserItem implements IUserItem {
 	
 	
 	private String email;
-	private int itemID;
-	private Date timestamp;
-	private short status;
+	private String category;
+	private String title;
 	
 	public String getEmail() {
 		return email;
@@ -16,22 +13,19 @@ public class UserItem implements IUserItem {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public int getItem_ID() {
-		return itemID;
+	public String getCategory() {
+		return category;
 	}
-	public void setItem_ID(int itemID) {
-		this.itemID = itemID;
+	public void setCategory(String category) {
+		this.category = category;
 	}
-	public Date getTimestamp() {
-		return timestamp;
+	public String getTitle() {
+		return title;
 	}
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
+	public void setTitle(String title) {
+		this.title = title;
 	}
-	public short getStatus() {
-		return status;
-	}
-	public void setStatus(short status) {
-		this.status = status;
-	}
+
+	
+	
 }

@@ -1,21 +1,17 @@
 package com.library.search;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import com.library.DAOFactory.DAOFactory;
-import com.library.businessModels.Book;
-import com.library.businessModels.Movie;
-import com.library.businessModels.Music;
 import com.library.signOut.ISignOutObserver;
 import com.library.signOut.SignOutController;
 
 public class DBSearchController implements IDBSearchController, ISignOutObserver {
 	
-	private Map<String, SearchRequestsAndResults> searchesPerSessionId = new HashMap<>();
+	private static final int FIRST_PAGE = 1;
+	private Map<String, SearchRequestAndResults> sessionIdToSearchRAndR = new HashMap<>();
 	@Inject
 	private ISearchResultCoverImgProxy coverImageProxy;
 	
@@ -23,44 +19,45 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 		SignOutController.instance().registerAsSignOutObserver(this);
 	}
 		
-	private class SearchRequestsAndResults {
-		SearchRequest requestDetails;
-		SearchResults results;
+	private class SearchRequestAndResults {
+		ISearchRequest searchRequest;
+		ISearchResults results;
 		
-		public SearchRequestsAndResults(SearchRequest requestDetails, SearchResults results) {
-			this.requestDetails = requestDetails;
+		public SearchRequestAndResults(ISearchRequest requestDetails, ISearchResults results) {
+			this.searchRequest = requestDetails;
 			this.results = results;
 		}
 	}
 
-	
 	@Override
-	public SearchResults search(SearchRequest requestDetails, HttpSession httpSession) {
-		SearchRequestsAndResults searchRAndR = null;
+	public SearchResults search(ISearchRequest currentRequest, HttpSession httpSession) {
+		SearchRequestAndResults searchRAndR = null;
 		String sessionId = httpSession.getId();
 		
-		boolean isNotFirstSearchForSessionID = searchesPerSessionId.containsKey(httpSession.getId());
-		boolean isSameSearchCriteriaButDifferentResultsPage = false;
-		if(isNotFirstSearchForSessionID) {
-			isSameSearchCriteriaButDifferentResultsPage = 
-					searchesPerSessionId.get(sessionId).requestDetails.onlyRequestedPageDiffers(requestDetails);
-		}
+		boolean searchIsInProgress = sessionIdToSearchRAndR.containsKey(sessionId);
+		boolean isNewSearchTerms = false;
 		
-		if(isNotFirstSearchForSessionID) {
-			if(isSameSearchCriteriaButDifferentResultsPage) {
-				searchRAndR = searchesPerSessionId.get(httpSession.getId());
-				searchRAndR.requestDetails.setRequestedResultsPageNumber(
-						requestDetails.getRequestedResultsPageNumber());
+		if(searchIsInProgress) {
+			searchRAndR = sessionIdToSearchRAndR.get(sessionId);
+			ISearchRequest request = searchRAndR.searchRequest;
+			isNewSearchTerms = searchRAndR.searchRequest.isNewSearchTerms(currentRequest);
+			if(isNewSearchTerms) {
+				clearSearch(httpSession);
+				SearchTermsAndPage prevTermsAndPage = request.getTermsAndPage();
+				String newSearchTerms = currentRequest.getTermsAndPage().getSearchTerms();
+				prevTermsAndPage.setRequestedResultsPageNumber(FIRST_PAGE);
+				prevTermsAndPage.setSearchTerms(newSearchTerms);
+				searchRAndR = executeSearchInDb(request,httpSession);
 			} else {
-				coverImageProxy.deleteCoverImagesForSearchResults(httpSession);
-				searchesPerSessionId.remove(httpSession.getId());
-				searchRAndR = executeSearchInDb(requestDetails,httpSession);
+				int pageNumber = currentRequest.getTermsAndPage().getRequestedResultsPageNumber();
+				request.getTermsAndPage().setRequestedResultsPageNumber(pageNumber);
 			}
 		} else {
-			searchRAndR = executeSearchInDb(requestDetails, httpSession);
+			searchRAndR = executeSearchInDb(currentRequest, httpSession);
+			sessionIdToSearchRAndR.put(sessionId, searchRAndR);
 		}
 		
-		int requestedPageNumber = searchRAndR.requestDetails.getRequestedResultsPageNumber(); 
+		int requestedPageNumber = searchRAndR.searchRequest.getTermsAndPage().getRequestedResultsPageNumber(); 
 		SearchResults resultSet = searchRAndR.results.getResultSetForPageNumber(requestedPageNumber);
 		if(resultSet.isNotEmpty()) {
 			coverImageProxy.loadCoverImages(resultSet, Integer.toString(requestedPageNumber), httpSession);
@@ -68,19 +65,25 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 		return resultSet;
 	}
 
-	private SearchRequestsAndResults executeSearchInDb(SearchRequest requestDetails, HttpSession httpSession) {
-		SearchResults searchResults = requestDetails.searchInDb();
-		SearchRequestsAndResults searchRAndR = new SearchRequestsAndResults(requestDetails, searchResults);
-		searchesPerSessionId.put(httpSession.getId(), searchRAndR);
+	private SearchRequestAndResults executeSearchInDb(ISearchRequest request, HttpSession httpSession) {
+		ISearchResults searchResults = request.searchInDb();
+		SearchRequestAndResults searchRAndR = new SearchRequestAndResults(request, searchResults);
+		sessionIdToSearchRAndR.put(httpSession.getId(), searchRAndR);
 		return searchRAndR;
 	}
 
 	@Override
-	public void notifyUserSignOut(HttpSession httpSession) {
-		String sessionId = httpSession.getId();
-		if(searchesPerSessionId.containsKey(sessionId)) {
-			searchesPerSessionId.remove(sessionId);
+	public boolean notifyUserSignOut(HttpSession httpSession) {
+		return clearSearch(httpSession);
+	}
+	
+	@Override
+	public boolean clearSearch(HttpSession httpSession) {
+		if(sessionIdToSearchRAndR.containsKey(httpSession.getId())) {
 			coverImageProxy.deleteCoverImagesForSearchResults(httpSession);
-		}
+			sessionIdToSearchRAndR.remove(httpSession.getId());
+		return true;
+	}
+	return false;
 	}
 }

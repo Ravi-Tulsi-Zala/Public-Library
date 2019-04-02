@@ -1,76 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title></title>
-	<link rel="stylesheet" href="">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css">
+	<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
+	<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/locale/bootstrap-table-zh-CN.min.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-light bg-light">
   <span class="navbar-brand mb-0 h1">Library Management System</span>
   <button type="button" class="btn-link h2 btn ">Administrator</button>
 </nav>
-<table class="table table-bordered table-striped">
+<form method="POST" id="form" th:action="@{/loanItems}">
+
+<table class="table table-bordered table-striped" id="table" data-toggle="table">
   <!-- Table head -->
   <thead class="thead-dark">
-    <tr>
-      <th>
-        <!-- Default unchecked -->
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" id="tableDefaultCheck1">
-          <label class="custom-control-label" for="tableDefaultCheck1">Return</label>
-        </div>
-      </th>
-      <th>Content Type</th>
-      <th>Title</th>
-      <th>User</th>
+    <tr data-field="item">
+      <th data-field="state" data-checkbox="true"></th>
+      <th data-field="category" data-sortable="true">Content Type</th>
+      <th data-field="title" data-sortable="true">Title</th>
+      <th data-field="email" data-sortable="true">User</th>
     </tr>
   </thead>
-
   <tbody>
-    <tr>
-      <th scope="row">
-        <!-- Default unchecked -->
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" id="tableDefaultCheck2" checked>
-          <label class="custom-control-label" for="tableDefaultCheck2">Check 2</label>
-        </div>
-      </th>
-      <td>Cell 1</td>
-      <td>Cell 2</td>
-      <td>Cell 3</td>
-    </tr>
-    <tr>
-      <th scope="row">
-        <!-- Default unchecked -->
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" id="tableDefaultCheck3">
-          <label class="custom-control-label" for="tableDefaultCheck3">Check 3</label>
-        </div>
-      </th>
-      <td>Cell 4</td>
-      <td>Cell 5</td>
-      <td>Cell 6</td>
-    </tr>
-    <tr>
-      <th scope="row">
- 
-        <div class="custom-control custom-checkbox">
-          <input type="checkbox" class="custom-control-input" id="tableDefaultCheck4">
-          <label class="custom-control-label" for="tableDefaultCheck4">Check 4</label>
-        </div>
-      </th>
-      <td>Cell 7</td>
-      <td>Cell 8</td>
-      <td>Cell 9</td>
+    <tr data-field="item" th:each="item : ${items}" >
+      <td data-field="state" data-checkbox="true"></td>
+      <td data-field="category" th:text ="${item.category}"></td>
+      <td data-field="title" th:text ="${item.title}"></td>
+      <td data-field="email" th:text ="${item.email}"></td>
     </tr>
   </tbody>
-
 </table>
-<button type="button" class="btn btn-primary">Return Items</button>
+<button type="submit" id="button" class="btn btn-primary" >Return Items</button>
+<input type="hidden" id="abc" name="abc" th:field="${select.selections}"/>
+</form>
+
+<script>
+		
+	  var $table = $('#table')
+	  var $button = $('#button')
+	  var selection
+	  
+	  $(function() {
+	    $button.click(function () {
+	      selection = JSON.stringify($table.bootstrapTable('getSelections'))
+	      document.getElementById("abc").value = selection;
+	    })
+	  })
+	  
+	 
+
+</script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-package com.library.ForgotPassword;
+package com.library.email;
 
 import java.io.IOException;
 import java.util.Date;
@@ -39,7 +39,7 @@ public class EmailUtility {
 
 		msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(details.getUserEmailID()));
 		msg.setSubject(details.getSubject());
-		msg.setContent(details.getBody(), "text/html");
+		msg.setContent("Your password is: "+details.getBody(), "text/html");
 		msg.setSentDate(new Date());
 
 		MimeBodyPart messageBodyPart = new MimeBodyPart();

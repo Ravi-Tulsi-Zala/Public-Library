@@ -1,11 +1,9 @@
 package com.library.search;
 
 import java.util.List;
-
-import com.library.DAOFactory.DAOFactory;
 import com.library.businessModels.LibraryItem;
 
-public class BookSearch implements ISearchCategory {
+public class BookSearch extends SearchCategory {
 	private boolean searchInBooks = true;
 	private boolean searchBookTitle = true;
 	private boolean searchBookAuthor = true;
@@ -13,23 +11,10 @@ public class BookSearch implements ISearchCategory {
 	private boolean searchBookPublisher = true;
 	private boolean searchBookDescription = true;
 	private boolean searchBookISBN = true;
-	private DAOFactory daoFactory = new DAOFactory();
 	
 	@Override
 	public List<LibraryItem> search(String searchterms) {
 		return daoFactory.makeBookDAO().getBooksBySearchTerms(this, searchterms);
-	}
-	
-	public boolean equals(ISearchCategory previousBookSearch) {
-		BookSearch prev = (BookSearch) previousBookSearch;
-		boolean isEqual = 
-				this.searchInBooks == prev.searchInBooks &&
-				this.searchBookAuthor == prev.searchBookAuthor &&
-				this.searchBookPublisher == prev.searchBookPublisher &&
-				this.searchBookDescription == prev.searchBookDescription &&
-				this.searchBookISBN == prev.searchBookISBN ;
-		
-		return isEqual;
 	}
 	
 	public boolean isSearchInBooks() {

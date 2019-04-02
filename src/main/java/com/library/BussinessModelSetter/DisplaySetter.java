@@ -30,8 +30,6 @@ public class DisplaySetter implements IDisplaySetter{
 			display.setTitle(book.getTitle());
 			display.setItemID(book.getItemID());
 			display.setItemType("Book");
-			String details = detailsSetter.getBookDetails(book);
-			display.setDetails(details);
 			displayObjects.add(display);
 		}
 		return displayObjects;
@@ -48,8 +46,6 @@ public class DisplaySetter implements IDisplaySetter{
 			display.setTitle(movie.getTitle());
 			display.setItemID(movie.getItemID());
 			display.setItemType("Movie");
-			String details = detailsSetter.getMovieDetails(movie);
-			display.setDetails(details);
 			displayObjects.add(display);
 		}
 		return displayObjects;
@@ -66,8 +62,6 @@ public class DisplaySetter implements IDisplaySetter{
 			display.setTitle(music.getTitle());
 			display.setItemID(music.getItemID());
 			display.setItemType("Music");
-			String details = detailsSetter.getMusicDetails(music);
-			display.setDetails(details);
 			displayObjects.add(display);
 		}
 		return displayObjects;

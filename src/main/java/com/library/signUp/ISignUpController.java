@@ -5,6 +5,6 @@ import java.util.Map.Entry;
 
 public interface ISignUpController {
 
-	List<Entry<String, String>> authenticateSignUp();
+	List<Entry<String, String>> validateSignUp() throws Exception;
 
 }

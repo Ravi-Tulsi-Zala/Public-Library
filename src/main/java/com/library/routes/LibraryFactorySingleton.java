@@ -1,7 +1,7 @@
 package com.library.routes;
 
 public class LibraryFactorySingleton {
-	private static LibraryFactorySingleton singletonLibraryFactory;
+	private static LibraryFactorySingleton singletonLibraryFactory = null;
 	private ILibraryFactory factory;
 
 	public static LibraryFactorySingleton instance() {
@@ -12,11 +12,7 @@ public class LibraryFactorySingleton {
 	}
 
 	public ILibraryFactory getFactory() {
-		return factory;
-	}
-
-	public void build(ILibraryFactory factory) {
-		this.factory = factory;
+		return new LibraryControllerFactory();
 	}
 
 }

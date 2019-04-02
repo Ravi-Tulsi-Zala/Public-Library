@@ -1,0 +1,41 @@
+<html>
+	<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	
+		<style>
+		
+			img {
+				border: 5px solid #fff;
+				border-radius: 5px;
+				padding: 7px;
+				width: 100px;
+				height: 100px;
+				float: right;
+			}
+			
+		</style>
+	</head>
+	<body>
+	
+		<div style="text-align:center;margin-top:1%">
+        	<span style="font-size: 2em;font-weight: bolder">Library Management System</span>
+        	<div style="float:right; margin-right:2%; margin-top:1%;">
+		       <label style="margin-right:4px;">ravizala420@gmail.com</label>
+		       <label>logout</label>
+    		</div>
+        </div>
+        
+        <div>
+        	<div>
+        		<img th:src="${'data:image/png;base64,'+displayDetailed.image}"   />
+        	</div>
+        	
+        	<div>
+        		<b><p th:text=${displayDetailed.title} /><b>
+        		<p th:utext = ${displayDetailed.details} />
+        	</div>
+        </div>
+       
+        
+	</body>
+</html>
