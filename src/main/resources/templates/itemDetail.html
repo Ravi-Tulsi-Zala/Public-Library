@@ -38,7 +38,13 @@
         		<p th:utext = ${displayDetailed.details} />
         	</div>
         </div>       	
-        <button th:attr="onclick=|BrowsePageItems1('${gallery}')|" th:text=${status} type="button" >
+        
+        <form th:action="@{/borrowItem/{status}}" th:object="${displayDetailed}" method="post">
+        <input type="hidden" th:field="*{title}" >
+        <input type="hidden" th:field="*{itemID}">
+        <input type="hidden" th:field="*{itemType}" >
+		<input type="submit" th:value=${status} >
+		</form>
         
 	</body>
 </html>
