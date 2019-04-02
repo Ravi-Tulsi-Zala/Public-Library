@@ -76,7 +76,7 @@ public class UserItemDAO implements IUserItemDAO {
 			preparedStatement.setString(1, email);
 			preparedStatement.setString(2, title);
 			preparedStatement.executeUpdate();
-			
+
 			return true;
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
@@ -120,12 +120,10 @@ public class UserItemDAO implements IUserItemDAO {
 	}
 
 	public void updateAvailability() {
-		
-			
-		
+
 	}
 
-	public boolean isItemOnHold(UserItem item) {
+	public boolean addItemOnHold(UserItem item) {
 
 		String email = item.getEmail();
 		String category = item.getCategory();
@@ -148,6 +146,37 @@ public class UserItemDAO implements IUserItemDAO {
 		}
 
 		return false;
+
+	}
+
+	public boolean isItemOnHold(UserItem item) {
+
+		String email = item.getEmail();
+		String title = item.getTitle();
+		boolean isItemOnHold = false;
+
+		query = "SELECT from holds WHERE Email=? and Title=?";
+
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, email);
+			preparedStatement.setString(2, title);
+
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			if (resultSet.next()) {
+				isItemOnHold = true;
+			} else {
+				isItemOnHold = false;
+			}
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Can not find item in User item table", e);
+		}
+
+		return isItemOnHold;
 
 	}
 
