@@ -51,19 +51,19 @@ public class RecoverPassword extends RecoverPasswordAbstract {
 	}
 
 	protected boolean sendEmailToUser() throws AddressException, MessagingException, IOException {
-		settingEmailRelatedDetails();
+		details.setUserEmailID(email);
+		details.setSubject("LMS reminder for password.");
+		fetchSaltedPwdFromDB();
 		EmailUtility.sendmail(details);
 		emailSent = true;
 		logger.log(Level.ALL, "Email sent successfully to the user => ", email);
 		return emailSent;
 	}
 
-	private void settingEmailRelatedDetails() {
+	private void fetchSaltedPwdFromDB() {
 		DAOFactory factory = new DAOFactory();
 		IUserDAO user = factory.makeUserDAO();
 		String passwordFromDB = user.getEmailRelatedPassword(details.getUserEmailID());
-		details.setUserEmailID(email);
-		details.setSubject("LMS reminder for password.");
 		if (!passwordFromDB.isEmpty()) {
 			details.setBody("The password is: " + passwordFromDB.replace(ValidateUserFormsAbstract.saltValue, ""));
 			logger.log(Level.ALL, "Email is sent with the details of password to the registered user.");
