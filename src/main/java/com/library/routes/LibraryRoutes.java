@@ -49,6 +49,7 @@ import com.library.businessModels.User;
 import com.library.dbConnection.DatabaseConnection;
 import com.library.itemDetailed.DetailedDisplayFetcher;
 import com.library.itemDetailed.IDetailedDisplayFetcher;
+import com.library.jsonparser.JsonStringParser;
 import com.library.businessModels.UserItem;
 import com.library.loanmanagement.ILoanManagementController;
 import com.library.loanmanagement.Select;
@@ -221,7 +222,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@GetMapping("/addBook")
 	public String mappingsForAddItem(ModelMap model) {
-	
+
 		String sessionClient = AdminPage.getAvailableUserID();
 		model.addAttribute("book", new Book());
 		model.addAttribute("movie", new Movie());
@@ -269,7 +270,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@GetMapping("/loan")
 	public String mappingsForLoanManagement(ModelMap model) {
-		
+
 		String sessionClient = AdminPage.getAvailableUserID();
 		model.addAttribute("item", new UserItem());
 		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
@@ -282,8 +283,17 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@PostMapping("/loanItems")
 	public String returnItems(ModelMap model, Select select) {
-		System.out.println("Selections : " + select.getSelections());
+
+		String selections = select.getSelections();
+		JsonStringParser jsonStringParser = new JsonStringParser();
+		List<UserItem> userItems = new ArrayList<UserItem>();
+		userItems = jsonStringParser.parseSelections(selections);
 		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
+		for (UserItem item : userItems) {
+
+			iLoanManagementController.removeUserItem(item);
+		}
+
 		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
 		model.addAttribute("select", new Select());
 		model.addAttribute("items", items);
@@ -325,8 +335,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Some problem occured, check logs.", e);
 			return redirectToErrorPage;
-		}
-		finally{
+		} finally {
 			DatabaseConnection databaseConnection = new DatabaseConnection();
 			databaseConnection.closeConnection();
 		}
@@ -391,7 +400,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			return redirectToErrorPage;
 		}
 	}
-	
+
 	@GetMapping("/BrowsePage/{itemType}")
 	public String BrowsePageCategory(@PathVariable String itemType, ModelMap model) {
 		DisplayObjectInitializer displayObjectInitializer = new DisplayObjectInitializer();
@@ -411,7 +420,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@GetMapping("/BrowsePage/{itemType}/{category}")
 	public String BrowsePageItems(@PathVariable(value = "itemType") String itemType,
 			@PathVariable(value = "category") String category, ModelMap model) {
-		
+
 		DisplayObjectInitializer displayObjectInitializer = new DisplayObjectInitializer();
 		IBrowseDisplayObjects browseDisplayObjects = null;
 		List<Display> displayItems;
@@ -434,20 +443,20 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		DisplayDetailed displayDetailed = displayFetcher.fetchDetailedDisplay(itemType, itemID);
 		AuthenticatedUsers user = AuthenticatedUsers.instance();
 		String emailAddress = user.getUserEmail(httpSession);
-		ItemStatus statusFetcher = new ItemStatus(displayDetailed,emailAddress);
+		ItemStatus statusFetcher = new ItemStatus(displayDetailed, emailAddress);
 		String status = statusFetcher.getItemStatus();
 		String loggingStatus = AdminPage.getLoggingStatus();
 		String sessionClient = AdminPage.getAvailableUserID();
 		model.addAttribute("loggingStatus", loggingStatus);
 		model.addAttribute("sessionClient", sessionClient);
-		model.addAttribute("status",status);
-		model.addAttribute("displayDetailed",displayDetailed);
+		model.addAttribute("status", status);
+		model.addAttribute("displayDetailed", displayDetailed);
 		return "itemDetail";
 	}
-	
+
 	@PostMapping("/borrowItem/{status}")
-	public String borrowItems(@PathVariable(value = "status") String status ,HttpSession httpSession, ModelMap model,DisplayDetailed displayDetailed)
-	{
+	public String borrowItems(@PathVariable(value = "status") String status, HttpSession httpSession, ModelMap model,
+			DisplayDetailed displayDetailed) {
 		AuthenticatedUsers user = AuthenticatedUsers.instance();
 		String emailAddress = user.getUserEmail(httpSession);
 		BookItem bookItem = new BookItem(displayDetailed, emailAddress);
