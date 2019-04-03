@@ -16,7 +16,6 @@ import com.library.welcomePage.IWelcomeController;
 
 public interface ILibraryFactory{
 	public ISignInController signIn(User user,HttpSession httpSession) throws Exception;
-	public ISignUpController signUp(User user) throws Exception;
 	public IForgotPasswordController forgotPassword(RecoverPassword recoverDetails) throws Exception;
 	public IAddBookController makeAddBookController();
 	public IAddMovieController makeAddMovieController();
@@ -24,5 +23,6 @@ public interface ILibraryFactory{
 	public IItemCoverSetter makeItemCoverSetter();
 	public IWelcomeController welcomePage();
 	public ILoanManagementController makeLoanManagementController();
+	public ISignUpController signUp(User user, HttpSession httpSession) throws Exception;
 
 }

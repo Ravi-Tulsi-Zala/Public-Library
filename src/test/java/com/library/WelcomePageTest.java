@@ -23,7 +23,7 @@ import com.library.businessModels.Music;
 import com.library.mockDB.WelcomePageMocked;
 import com.library.routes.ILibraryFactory;
 import com.library.routes.LibraryFactorySingleton;
-import com.library.welcomePage.AdminPage;
+import com.library.welcomePage.UserSessionDetail;
 import com.library.welcomePage.IWelcomeController;
 
 @RunWith(SpringRunner.class)
@@ -43,7 +43,7 @@ public class WelcomePageTest {
 	@Test
 	public void testAdminAvailable() {
 		welcomePageMocked.adminInitiated();
-		boolean isAdmin = AdminPage.getAdminAvailable();
+		boolean isAdmin = UserSessionDetail.getAdminAvailable();
 		assertEquals(isAdmin,true);
 	}
 
