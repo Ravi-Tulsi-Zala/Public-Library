@@ -64,8 +64,9 @@ public class RecoverPassword extends RecoverPasswordAbstract {
 	protected void getEmailMatchingPassword() {
 		DAOFactory factory = new DAOFactory();
 		IUserDAO user = factory.makeUserDAO();
+		String passwordFromDB = user.getEmailRelatedPassword(details.getUserEmailID());
 		details.setSubject("LMS reminder for password.");
-		details.setBody(user.getEmailRelatedPassword(details.getUserEmailID()).replace(ValidateUserFormsAbstract.saltValue,""));;
+		details.setBody("The password is: "+passwordFromDB.replace(ValidateUserFormsAbstract.saltValue,""));;
 	}
 
 }
