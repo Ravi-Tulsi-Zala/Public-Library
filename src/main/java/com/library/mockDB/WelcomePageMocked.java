@@ -13,7 +13,7 @@ import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.signIn.SignInController;
-import com.library.welcomePage.AdminPage;
+import com.library.welcomePage.UserSessionDetail;
 
 public class WelcomePageMocked {
 	private DAOFactory factory = null;
@@ -87,6 +87,6 @@ public class WelcomePageMocked {
 	}
 
 	public void adminInitiated() {
-		AdminPage.setAvailableAdmin(true);
+		UserSessionDetail.setAvailableAdmin(true);
 	}
 }

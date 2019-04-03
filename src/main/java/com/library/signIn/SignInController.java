@@ -19,7 +19,7 @@ import com.library.businessModels.UserBasicInfo;
 import com.library.messages.Messages;
 import com.library.validatations.ValidateUserForms;
 import com.library.validatations.ValidateUserFormsAbstract;
-import com.library.welcomePage.AdminPage;
+import com.library.welcomePage.UserSessionDetail;
 
 public class SignInController implements ISignInController {
 
@@ -48,20 +48,20 @@ public class SignInController implements ISignInController {
 		authUsers.addAuthenticatedUser(httpSession, userBasicInfo.getEmail());
 		if (userDAO.checkPassword(user.getEmail(), salt.getSaltedPassword())) {
 			logger.log(Level.ALL, "User has successfully logged in.");
-			AdminPage.setAvailableAdmin(false);
-			AdminPage.setAvailableUserID(authUsers.getUserEmail(httpSession));
-			AdminPage.setLoggingStatus(Messages.Logout.getMessage());
+			UserSessionDetail.setAvailableAdmin(false);
+			UserSessionDetail.setAvailableUserID(authUsers.getUserEmail(httpSession));
+			UserSessionDetail.setClientActiveStatus(Messages.Logout.getMessage());
 			return redirectToWelcome;
 
 		} else if (userBasicInfo.getEmail().equals(ValidateUserFormsAbstract.isAdmin)
 				&& userBasicInfo.getPassword().equals(ValidateUserFormsAbstract.isAdminPwd)) {
-			AdminPage.setAvailableAdmin(true);
-			AdminPage.setAvailableUserID(Messages.AdminEmailID.getMessage());
-			AdminPage.setLoggingStatus(Messages.Logout.getMessage());
+			UserSessionDetail.setAvailableAdmin(true);
+			UserSessionDetail.setAvailableUserID(Messages.AdminEmailID.getMessage());
+			UserSessionDetail.setClientActiveStatus(Messages.Logout.getMessage());
 			return redirectToWelcome;
 		}
 		logger.log(Level.ALL, "checkUserCredential method implemented successfully.");
-		AdminPage.setLoggingStatus(Messages.Logout.getMessage());
+		UserSessionDetail.setClientActiveStatus(Messages.Logout.getMessage());
 		return redirectToWelcome;
 	}
 
