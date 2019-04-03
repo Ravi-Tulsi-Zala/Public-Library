@@ -24,7 +24,7 @@ import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.SignInController;
 import com.library.validatations.ValidateUserForms;
 import com.library.validatations.ValidateUserFormsAbstract;
-import com.library.welcomePage.AdminPage;
+import com.library.welcomePage.UserSessionDetail;
 
 public class SignUpController implements ISignUpController {
 	private List<Entry<String, String>> listofValidationErrors = null;
@@ -58,8 +58,8 @@ public class SignUpController implements ISignUpController {
 			if (status) {
 				AuthenticatedUsers authUsers = AuthenticatedUsers.instance();
 				authUsers.addAuthenticatedUser(httpSession, userBasicInfo.getEmail());
-				AdminPage.setClientActiveStatus(Messages.Logout.getMessage());
-				AdminPage.setAvailableUserID(user.getEmail());
+				UserSessionDetail.setClientActiveStatus(Messages.Logout.getMessage());
+				UserSessionDetail.setAvailableUserID(user.getEmail());
 				logger.log(Level.ALL, "User has successfully registered.");
 			} else {
 				logger.log(Level.ALL, "User has not registered.");

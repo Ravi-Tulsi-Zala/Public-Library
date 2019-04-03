@@ -28,7 +28,7 @@ public class WelcomePageController implements IWelcomeController {
 	}
 
 	public boolean isAdminAvailable() {
-		return AdminPage.getAdminAvailable();
+		return UserSessionDetail.getAdminAvailable();
 	}
 
 	public List<Book> getBookItems() throws SQLException {
