@@ -44,14 +44,12 @@ public class UserDAO implements IUserDAO {
 			Boolean doesPasswordMatch = databasePassword.equals(Password);
 			return doesPasswordMatch;
 		} catch (SQLException e) {
-		
+
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not fetch password from user info", e);
-		}
-		finally
-		{
+		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return false;
@@ -75,9 +73,7 @@ public class UserDAO implements IUserDAO {
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not fetch password from user info", e);
-		}
-		finally
-		{
+		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return databasePassword;
@@ -99,9 +95,7 @@ public class UserDAO implements IUserDAO {
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not update password for the specific user emailid", e);
-		}
-		finally
-		{
+		} finally {
 			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
 		}
 		return false;
@@ -125,9 +119,7 @@ public class UserDAO implements IUserDAO {
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not insert a record in user info table", e);
-		}
-		finally
-		{
+		} finally {
 			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
 		}
 		return false;
@@ -143,14 +135,13 @@ public class UserDAO implements IUserDAO {
 			preparedStatement.setString(1, emailID);
 			resultSet = preparedStatement.executeQuery();
 			System.out.println(resultSet);
-			if (!resultSet.next() ) {
+			if (!resultSet.next()) {
 				result = false;
-			    System.out.println("no data");
-			} 
-			else {
+				System.out.println("no data");
+			} else {
 				result = true;
 			}
-			
+
 		} catch (SQLException e) {
 			result = false;
 			logger.log(Level.ALL, "Check the SQL syntax", e);
@@ -158,9 +149,7 @@ public class UserDAO implements IUserDAO {
 		} catch (Exception e) {
 			result = false;
 			logger.log(Level.ALL, "Can not fetch a record from user info table", e);
-		}
-		finally
-		{
+		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return result;

@@ -28,7 +28,7 @@ public class ForgotPasswordController implements IForgotPasswordController {
 			recoverPassword.setSecurityQuestionAnswer(recoverDetails.getSecurityQuestionAnswer());
 			recoverPassword.setSecurityQuestion(recoverDetails.getSecurityQuestion());
 			status = recoverPassword.sendEmailToUser();
-			logger.log(Level.ALL, "Email sent successfully! => ", status);
+			logger.log(Level.ALL, "Email status => ", status);
 		}
 		return status;
 	}
