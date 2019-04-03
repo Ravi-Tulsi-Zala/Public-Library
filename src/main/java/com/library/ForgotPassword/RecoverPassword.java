@@ -50,22 +50,27 @@ public class RecoverPassword extends RecoverPasswordAbstract {
 		this.securityQuestionAnswer = securityQuestionAnswer;
 	}
 
-	public boolean sendEmailToUser() throws AddressException, MessagingException, IOException {
+	protected boolean sendEmailToUser() throws AddressException, MessagingException, IOException {
 		details.setUserEmailID(email);
-		details.setBody(getBody());
-		details.setSubject(getSubject());
-		getEmailMatchingPassword();
+		details.setSubject("LMS reminder for password.");
+		fetchSaltedPwdFromDB();
 		EmailUtility.sendmail(details);
 		emailSent = true;
+		logger.log(Level.ALL, "Email sent successfully to the user => ", email);
 		return emailSent;
 	}
 
-	@Override
-	protected void getEmailMatchingPassword() {
+	private void fetchSaltedPwdFromDB() {
 		DAOFactory factory = new DAOFactory();
 		IUserDAO user = factory.makeUserDAO();
-		details.setSubject("LMS reminder for password.");
-		details.setBody(user.getEmailRelatedPassword(details.getUserEmailID()).replace(ValidateUserFormsAbstract.saltValue,""));;
-	}
+		String passwordFromDB = user.getEmailRelatedPassword(details.getUserEmailID());
+		if (!passwordFromDB.isEmpty()) {
+			details.setBody("The password is: " + passwordFromDB.replace(ValidateUserFormsAbstract.saltValue, ""));
+			logger.log(Level.ALL, "Email is sent with the details of password to the registered user.");
+		} else {
+			details.setBody("You don't have registered EmailID, please register again to the library.");
+			logger.log(Level.ALL, "You don't have registered EmailID, please register again to the library.");
+		}
 
+	}
 }
