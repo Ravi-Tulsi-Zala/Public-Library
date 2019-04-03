@@ -5,7 +5,7 @@ import com.library.messages.Messages;
 public class AdminPage {
 	private static boolean isAdminAvailable = false;
 	private static String availableUserID;
-	private static String loggingStatus = Messages.RegisterLogin.getMessage();
+	private static String clientActiveStatus = Messages.RegisterLogin.getMessage();
 
 	public static boolean getAdminAvailable() {
 		return isAdminAvailable;
@@ -23,11 +23,11 @@ public class AdminPage {
 		AdminPage.availableUserID = availableUserID;
 	}
 
-	public static String getLoggingStatus() {
-		return loggingStatus;
+	public static String getClientActiveStatus() {
+		return clientActiveStatus;
 	}
 
-	public static void setLoggingStatus(String loggingStatus) {
-		AdminPage.loggingStatus = loggingStatus;
+	public static void setClientActiveStatus(String loggingStatus) {
+		AdminPage.clientActiveStatus = loggingStatus;
 	}
 }

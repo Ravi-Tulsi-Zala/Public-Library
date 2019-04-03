@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,9 +19,12 @@ import com.library.businessModels.Salt;
 import com.library.businessModels.User;
 import com.library.businessModels.UserBasicInfo;
 import com.library.businessModels.UserExtendedInfo;
+import com.library.messages.Messages;
+import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.SignInController;
 import com.library.validatations.ValidateUserForms;
 import com.library.validatations.ValidateUserFormsAbstract;
+import com.library.welcomePage.AdminPage;
 
 public class SignUpController implements ISignUpController {
 	private List<Entry<String, String>> listofValidationErrors = null;
@@ -27,13 +32,15 @@ public class SignUpController implements ISignUpController {
 	private IUserExtendedInfo userExtendedInfo = null;
 	private User user = null;
 	private Salt salt = null;
+	private HttpSession httpSession = null;
 	private static final Logger logger = LogManager.getLogger(SignUpController.class);
 
-	public SignUpController(User user) throws Exception {
+	public SignUpController(User user, HttpSession httpSession) throws Exception {
 		this.user = user;
 		this.salt = new Salt();
 		ValidateUserForms.instance().setErrorStringToHTML();
 		ValidateUserForms.instance().setValidationRules();
+		this.httpSession = httpSession;
 	}
 
 	public ArrayList<Entry<String, String>> validateSignUp() throws Exception {
@@ -45,11 +52,14 @@ public class SignUpController implements ISignUpController {
 		userExtendedInfo.setFullname(user.getFullName());
 		userExtendedInfo.setPhone(user.getPhoneNumber());
 		listofValidationErrors = ValidateUserForms.instance().signUpUserData(userBasicInfo, userExtendedInfo);
-		
+
 		if (listofValidationErrors.size() == 0) {
 			boolean status = registerUser();
 			if (status) {
-				
+				AuthenticatedUsers authUsers = AuthenticatedUsers.instance();
+				authUsers.addAuthenticatedUser(httpSession, userBasicInfo.getEmail());
+				AdminPage.setClientActiveStatus(Messages.Logout.getMessage());
+				AdminPage.setAvailableUserID(user.getEmail());
 				logger.log(Level.ALL, "User has successfully registered.");
 			} else {
 				logger.log(Level.ALL, "User has not registered.");
