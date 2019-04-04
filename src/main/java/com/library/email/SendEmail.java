@@ -28,6 +28,9 @@ public class SendEmail {
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
 		props.put("mail.smtp.ssl.trust", "smtp.sparkpostmail.com");
+		props.put("mail.smtp.starttls.required", "true");
+		props.put("mail.username", details.getAdminEmailID());
+		props.put("mail.password", details.getAdminPassword());
 		
 //		mail.host=smtp.sparkpostmail.com
 //				mail.port=587
