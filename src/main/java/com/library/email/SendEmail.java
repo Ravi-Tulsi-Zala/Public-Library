@@ -24,13 +24,14 @@ public class SendEmail {
 			throws AddressException, MessagingException, IOException {
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
+//		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.mail.yahoo.com");
 		props.put("mail.smtp.port", "587");
-		props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-		props.put("mail.smtp.starttls.required", "true");
-		props.put("mail.username", details.getAdminEmailID());
-		props.put("mail.password", details.getAdminPassword());
+		props.put("mail.debug", "false");
+//		props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+//		props.put("mail.smtp.starttls.required", "true");
+		props.put("mail.username", "eugene.shishlannikov@yahoo.com");
+		props.put("mail.password", "Rel7.xPass!");
 		
 //		mail.host=smtp.sparkpostmail.com
 //				mail.port=587
