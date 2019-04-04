@@ -24,26 +24,13 @@ public class SendEmail {
 			throws AddressException, MessagingException, IOException {
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
-//		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.mail.yahoo.com");
+		props.put("mail.smtp.fallback", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.starttls.required", "true");
+		props.put("mail.smtp.ssl.enable", "false");
+		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
-		props.put("mail.debug", "false");
-		props.put("mail.smtp.ssl.trust", "smtp.mail.yahoo.com");
-//		props.put("mail.smtp.starttls.required", "true");
-		props.put("mail.username", "eugene.shishlannikov@yahoo.com");
-		props.put("mail.password", "Rel7.xPass!");
-		
-//		mail.host=smtp.sparkpostmail.com
-//				mail.port=587
-//				mail.smtp.auth=true
-//				mail.smtp.socketFactory.port=587
-//				mail.smtp.socketFactory.fallback=true
-//				mail.smtp.starttls.enable=true
-//				mail.smtp.starttls.required=true
-//				mail.smtp.ssl.enable=false
-//				#mail.smtp.debug=true
-//				mail.username=xxxx
-//				mail.password=xxxx
+//		props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
