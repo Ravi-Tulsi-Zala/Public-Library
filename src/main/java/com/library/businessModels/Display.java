@@ -4,9 +4,9 @@ import java.sql.SQLException;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
+import com.library.DAO.ICoverDAO;
 import com.library.DAOFactory.DAOFactory;
 import com.library.DAOFactory.IDAOFactory;
-import com.library.IDAO.ICoverDAO;
 import com.mysql.jdbc.Blob;
 
 public class Display {

@@ -1,9 +1,6 @@
 package com.library.routes;
 
-import java.io.Console;
-
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +19,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -40,25 +36,23 @@ import com.library.businessModels.Book;
 import com.library.businessModels.Cover;
 import com.library.businessModels.Display;
 import com.library.businessModels.DisplayDetailed;
-import com.library.businessModels.Book;
-import com.library.businessModels.Cover;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
+import com.library.businessModels.UserItem;
 import com.library.dbConnection.DatabaseConnection;
 import com.library.itemDetailed.DetailedDisplayFetcher;
 import com.library.itemDetailed.IDetailedDisplayFetcher;
-import com.library.jsonparser.JsonStringParser;
-import com.library.businessModels.UserItem;
 import com.library.loanmanagement.ILoanManagementController;
 import com.library.loanmanagement.Select;
 import com.library.messages.Messages;
+import com.library.parsers.JsonStringParser;
 import com.library.search.BookSearch;
 import com.library.search.IDBSearchController;
-import com.library.search.SearchFactory;
 import com.library.search.MovieSearch;
 import com.library.search.MusicSearch;
+import com.library.search.SearchFactory;
 import com.library.search.SearchRequest;
 import com.library.search.SearchResults;
 import com.library.search.SearchTermsAndPage;
@@ -67,10 +61,9 @@ import com.library.signIn.ISignInController;
 import com.library.signIn.SignInController;
 import com.library.signUp.ISignUpController;
 import com.library.signUp.SignUpController;
-import com.library.welcomePage.AdminPage;
 import com.library.welcomePage.IWelcomeController;
+import com.library.welcomePage.UserSessionDetail;
 import com.library.welcomePage.WelcomePageController;
-import com.mysql.jdbc.PreparedStatement;
 
 @Controller
 public class LibraryRoutes implements WebMvcConfigurer {
@@ -95,6 +88,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	private String gotoSignUpPage = "SignUpForm";
 	private String gotoWelcomePage = "Welcome";
 	private String gotoForgotPwdPage = "ForgotPassword";
+	private String gotoErrorPwdPage = "ErrorPage";
 
 	public LibraryRoutes() {
 		libraryInstance = LibraryFactorySingleton.instance();
@@ -103,10 +97,10 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/signUp")
-	public String processSignUpForm(ModelMap model, User user) {
+	public String processSignUpForm(ModelMap model, User user,HttpSession httpSession) {
 		Logger logger = LogManager.getLogger(SignUpController.class);
 		try {
-			ISignUpController signUpCreate = factory.signUp(user);
+			ISignUpController signUpCreate = factory.signUp(user,httpSession);
 			list = signUpCreate.validateSignUp();
 			for (int i = 0; i < list.size(); i++) {
 				model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
@@ -200,9 +194,18 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/signIn")
-	public String processSignInForm(HttpSession httpSession, ModelMap model, User user) {
+	public String processSignInForm(HttpSession httpSession, ModelMap model,HttpServletRequest request, User user) {
 		Logger logger = LogManager.getLogger(SignInController.class);
 		try {
+			
+			java.util.Enumeration<String> reqEnum = request.getParameterNames();
+
+//			while (reqEnum.hasMoreElements()) {
+//				String s = reqEnum.nextElement();
+//				model.addAttribute("Error",request.getParameter(s));
+//			}
+
+			
 			ISignInController signIn = factory.signIn(user, httpSession);
 			list = signIn.validateSignIn();
 			for (int index = 0; index < list.size(); index++) {
@@ -223,7 +226,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@GetMapping("/addBook")
 	public String mappingsForAddItem(ModelMap model) {
 
-		String sessionClient = AdminPage.getAvailableUserID();
+		String sessionClient = UserSessionDetail.getAvailableUserID();
 		model.addAttribute("book", new Book());
 		model.addAttribute("movie", new Movie());
 		model.addAttribute("music", new Music());
@@ -271,7 +274,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@GetMapping("/loan")
 	public String mappingsForLoanManagement(ModelMap model) {
 
-		String sessionClient = AdminPage.getAvailableUserID();
+		String sessionClient = UserSessionDetail.getAvailableUserID();
 		model.addAttribute("item", new UserItem());
 		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
 		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
@@ -301,8 +304,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			HttpSession httpSession) {
 		Logger logger = LogManager.getLogger(WelcomePageController.class);
 		dbSearchController.clearSearch(httpSession);
-		String loggingStatus = AdminPage.getLoggingStatus();
-		String sessionClient = AdminPage.getAvailableUserID();
+		String loggingStatus = UserSessionDetail.getClientActiveStatus();
+		String sessionClient = UserSessionDetail.getAvailableUserID();
 		model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
 		IWelcomeController welcomeCtrl = factory.welcomePage();
 		java.util.Enumeration<String> reqEnum = request.getParameterNames();
@@ -349,7 +352,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@GetMapping("/ErrorPage")
 	public String errorPage() {
-		return "ErrorPage";
+		return gotoErrorPwdPage;
 	}
 
 	@GetMapping("/logOut")
@@ -357,9 +360,9 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			AuthenticatedUsers.instance().removeAuthenticatedUser(httpSession);
 			redirectAttributes.addAttribute("LoggedOut", true);
-			AdminPage.setAvailableAdmin(false);
-			AdminPage.setAvailableUserID("");
-			AdminPage.setLoggingStatus(Messages.RegisterLogin.getMessage());
+			UserSessionDetail.setAvailableAdmin(false);
+			UserSessionDetail.setAvailableUserID("");
+			UserSessionDetail.setClientActiveStatus(Messages.RegisterLogin.getMessage());
 		}
 		return redirectToWelcome;
 	}
@@ -378,7 +381,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping(value = "/forgotPassword")
-	public String processForgotPasswordUserForm(RecoverPassword recoverPassword) {
+	public String processForgotPasswordUserForm(RecoverPassword recoverPassword, RedirectAttributes redirectAttr) {
 		Logger logger = LogManager.getLogger(ForgotPasswordController.class);
 		try {
 			recoverPassword.setSecurityQuestion(securityQuestionValue);
@@ -390,10 +393,12 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			}
 		} catch (MessagingException | IOException em) {
 			logger.log(Level.ALL, "Some problem occured while sending a email.", em);
-			return redirectToErrorPage;
+			redirectAttr.addAttribute("error", em.getMessage());
+			return redirectToSignIn;
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Some generic error occured while in forgotPassword controller.", e);
-			return redirectToErrorPage;
+			redirectAttr.addAttribute("error", e.getMessage());
+			return redirectToSignIn;
 		}
 	}
 
@@ -404,8 +409,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		List<String> categories;
 		browseDisplayObjects = displayObjectInitializer.getDisplayObject(itemType);
 		categories = browseDisplayObjects.getCategories();
-		String loggingStatus = AdminPage.getLoggingStatus();
-		String sessionClient = AdminPage.getAvailableUserID();
+		String loggingStatus = UserSessionDetail.getClientActiveStatus();
+		String sessionClient = UserSessionDetail.getAvailableUserID();
 		model.addAttribute("loggingStatus", loggingStatus);
 		model.addAttribute("sessionClient", sessionClient);
 		model.addAttribute("categories", categories);
@@ -422,8 +427,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		List<Display> displayItems;
 		browseDisplayObjects = displayObjectInitializer.getDisplayObject(itemType);
 		displayItems = browseDisplayObjects.itemsByCategory(category);
-		String loggingStatus = AdminPage.getLoggingStatus();
-		String sessionClient = AdminPage.getAvailableUserID();
+		String loggingStatus = UserSessionDetail.getClientActiveStatus();
+		String sessionClient = UserSessionDetail.getAvailableUserID();
 		model.addAttribute("loggingStatus", loggingStatus);
 		model.addAttribute("sessionClient", sessionClient);
 		model.addAttribute("displayItems", displayItems);
@@ -441,8 +446,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		String emailAddress = user.getUserEmail(httpSession);
 		ItemStatus statusFetcher = new ItemStatus(displayDetailed, emailAddress);
 		String status = statusFetcher.getItemStatus();
-		String loggingStatus = AdminPage.getLoggingStatus();
-		String sessionClient = AdminPage.getAvailableUserID();
+		String loggingStatus = UserSessionDetail.getClientActiveStatus();
+		String sessionClient = UserSessionDetail.getAvailableUserID();
 		model.addAttribute("loggingStatus", loggingStatus);
 		model.addAttribute("sessionClient", sessionClient);
 		model.addAttribute("status", status);

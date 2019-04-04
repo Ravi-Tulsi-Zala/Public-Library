@@ -1,12 +1,7 @@
 package com.library;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.isA;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -16,15 +11,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.library.DAOFactory.DAOFactory;
 import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.mockDB.WelcomePageMocked;
 import com.library.routes.ILibraryFactory;
 import com.library.routes.LibraryFactorySingleton;
-import com.library.welcomePage.AdminPage;
 import com.library.welcomePage.IWelcomeController;
+import com.library.welcomePage.UserSessionDetail;
 
 @RunWith(SpringRunner.class)
 public class WelcomePageTest {
@@ -43,7 +37,7 @@ public class WelcomePageTest {
 	@Test
 	public void testAdminAvailable() {
 		welcomePageMocked.adminInitiated();
-		boolean isAdmin = AdminPage.getAdminAvailable();
+		boolean isAdmin = UserSessionDetail.getAdminAvailable();
 		assertEquals(isAdmin,true);
 	}
 

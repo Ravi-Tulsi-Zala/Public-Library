@@ -8,15 +8,14 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.library.DAO.IMusicDAO;
+import com.library.DAO.IUserItemDAO;
 import com.library.DAOFactory.DAOFactory;
 import com.library.DAOFactory.IDAOFactory;
 import com.library.ForgotPassword.ForgotPasswordController;
-
-import com.library.IDAO.IMusicDAO;
-import com.library.IDAO.IUserItemDAO;
 import com.library.businessModels.UserItem;
 import com.library.email.EmailDetails;
-import com.library.email.EmailUtility;
+import com.library.email.SendEmail;
 
 public class MusicReturnStrategy implements IReturnItemStrategy {
 
@@ -57,7 +56,7 @@ public class MusicReturnStrategy implements IReturnItemStrategy {
 				+ " is booked for you!" + "<br/><br/>" + "Regards, " + "<br/>" + " Public Library.");
 		emailDetails.setUserEmailID(email);
 		try {
-			EmailUtility.sendmail(emailDetails);
+			SendEmail.sendmail(emailDetails);
 		} catch (MessagingException | IOException e) {
 
 			logger.log(Level.ALL, "Check Email Sender class!", e);

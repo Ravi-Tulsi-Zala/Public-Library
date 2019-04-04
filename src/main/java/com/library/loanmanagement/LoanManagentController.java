@@ -3,9 +3,9 @@ package com.library.loanmanagement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.library.DAO.IUserItemDAO;
 import com.library.DAOFactory.DAOFactory;
 import com.library.DAOFactory.IDAOFactory;
-import com.library.IDAO.IUserItemDAO;
 import com.library.businessModels.UserItem;
 import com.library.routes.ILibraryFactory;
 import com.library.routes.LibraryFactorySingleton;

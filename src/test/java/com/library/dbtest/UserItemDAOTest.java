@@ -1,11 +1,11 @@
 package com.library.dbtest;
 
 import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
+
+import com.library.DAO.IUserItemDAO;
 import com.library.DAO.UserItemDAO;
-import com.library.IDAO.IBookDAO;
-import com.library.IDAO.IUserItemDAO;
-import com.library.businessModels.Book;
 import com.library.businessModels.UserItem;
 
 public class UserItemDAOTest {
@@ -17,10 +17,10 @@ public class UserItemDAOTest {
 //	public void addItemTest() {
 //
 //		UserItem item = new UserItem();
-//		item.setItemId(100003);
+//		item.setItemId(100009);
 //		item.setCategory("Book");
-//		item.setEmail("nirav.solanki@dal.ca");
-//		item.setTitle("Alchemist");
+//		item.setEmail("dv960112@dal.ca");
+//		item.setTitle("The Republic");
 //		assertTrue(itemDao.addItem(item));
 //	}
 	
@@ -28,10 +28,10 @@ public class UserItemDAOTest {
 	public void addItemHoldTest()
 	{
 		UserItem item = new UserItem();
-		item.setItemId(2004);
+		item.setItemId(2001);
 		item.setCategory("Movie");
-		item.setEmail("ravizala.emp@gmail.com");
-		item.setTitle("Inception");
+		item.setEmail("eugene.shishlannikov@dal.ca");
+		item.setTitle("Interstellar");
 		assertTrue(itemDao.addItemOnHold(item));
 	}
 

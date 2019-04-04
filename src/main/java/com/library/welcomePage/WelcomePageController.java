@@ -1,13 +1,12 @@
 package com.library.welcomePage;
 
 import java.sql.SQLException;
-import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
 
 import com.library.BussinessModelSetter.DisplaySetter;
+import com.library.DAO.ILibraryItemDAO;
 import com.library.DAOFactory.DAOFactory;
-import com.library.IDAO.ILibraryItemDAO;
 import com.library.businessModels.Book;
 import com.library.businessModels.Display;
 import com.library.businessModels.LibraryItem;
@@ -28,7 +27,7 @@ public class WelcomePageController implements IWelcomeController {
 	}
 
 	public boolean isAdminAvailable() {
-		return AdminPage.getAdminAvailable();
+		return UserSessionDetail.getAdminAvailable();
 	}
 
 	public List<Book> getBookItems() throws SQLException {

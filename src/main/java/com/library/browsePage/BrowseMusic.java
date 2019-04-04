@@ -2,13 +2,13 @@ package com.library.browsePage;
 
 import java.util.List;
 
+import com.library.BussinessModelSetter.DisplaySetter;
+import com.library.BussinessModelSetter.IDisplaySetter;
+import com.library.DAO.IMusicDAO;
 import com.library.DAOFactory.DAOFactory;
 import com.library.DAOFactory.IDAOFactory;
-import com.library.IBussinessModelSetter.IDisplaySetter;
-import com.library.IDAO.IMusicDAO;
 import com.library.businessModels.Display;
 import com.library.businessModels.Music;
-import com.library.BussinessModelSetter.DisplaySetter;
 
 public class BrowseMusic implements IBrowseDisplayObjects{
 

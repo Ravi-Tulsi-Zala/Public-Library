@@ -2,8 +2,8 @@ package com.library.search;
 
 import java.util.List;
 
-import com.library.DAOFactory.DAOFactory;
 import com.library.businessModels.LibraryItem;
+import com.library.DAOFactory.IDAOFactory;
 
 public class MovieSearch extends SearchCategory {
 

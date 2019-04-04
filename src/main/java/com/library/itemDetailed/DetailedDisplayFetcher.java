@@ -1,12 +1,12 @@
 package com.library.itemDetailed;
 
 import com.library.BussinessModelSetter.DetailedDisplaySetter;
+import com.library.BussinessModelSetter.IDetailedDisplaySetter;
+import com.library.DAO.IBookDAO;
+import com.library.DAO.IMovieDAO;
+import com.library.DAO.IMusicDAO;
 import com.library.DAOFactory.DAOFactory;
 import com.library.DAOFactory.IDAOFactory;
-import com.library.IBussinessModelSetter.IDetailedDisplaySetter;
-import com.library.IDAO.IBookDAO;
-import com.library.IDAO.IMovieDAO;
-import com.library.IDAO.IMusicDAO;
 import com.library.businessModels.Book;
 import com.library.businessModels.DisplayDetailed;
 import com.library.businessModels.Movie;

@@ -31,8 +31,8 @@ public class LibraryControllerFactory implements ILibraryFactory {
 	}
 
 	@Override
-	public ISignUpController signUp(User user) throws Exception {
-		return new SignUpController(user);
+	public ISignUpController signUp(User user, HttpSession httpSession) throws Exception {
+		return new SignUpController(user, httpSession);
 	}
 
 	@Override
@@ -73,5 +73,5 @@ public class LibraryControllerFactory implements ILibraryFactory {
 	{
 		return new LoanManagentController();
 	}
-	
+
 }
