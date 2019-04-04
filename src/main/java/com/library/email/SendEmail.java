@@ -16,7 +16,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-public class EmailUtility {
+public class SendEmail {
 	
 	
 	//https://www.tutorialspoint.com/spring_boot/spring_boot_sending_email.htm	
@@ -39,7 +39,7 @@ public class EmailUtility {
 
 		msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(details.getUserEmailID()));
 		msg.setSubject(details.getSubject());
-		msg.setContent("Your password is: "+details.getBody(), "text/html");
+		msg.setContent(details.getBody(), "text/html");
 		msg.setSentDate(new Date());
 
 		MimeBodyPart messageBodyPart = new MimeBodyPart();
