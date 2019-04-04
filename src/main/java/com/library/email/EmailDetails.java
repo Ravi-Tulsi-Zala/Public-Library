@@ -2,8 +2,8 @@ package com.library.email;
 
 public class EmailDetails {
 	private String userEmailID;
-	private String adminEmailID="csci5308group2@gmail.com";
-	private String adminPassword="Rel7.xPass!";
+	private String adminEmailID="SMTP_Injection";
+	private String adminPassword="c536beb37f4bad444330be544c49a11debe36467";
 	private String body;
 	private String subject;
 
