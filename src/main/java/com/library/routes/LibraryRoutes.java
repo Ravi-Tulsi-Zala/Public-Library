@@ -395,10 +395,10 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			}
 		} catch (MessagingException | IOException em) {
 			logger.log(Level.ALL, "Some problem occured while sending a email.", em);
-			return redirectToErrorPage;
+			return redirectToSignIn;
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Some generic error occured while in forgotPassword controller.", e);
-			return redirectToErrorPage;
+			return redirectToSignIn;
 		}
 	}
 
