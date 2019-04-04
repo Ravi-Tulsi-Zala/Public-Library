@@ -50,6 +50,7 @@ public class UserItemDAO implements IUserItemDAO {
 				item.setCategory(resultSet.getString("Category"));
 				item.setEmail(resultSet.getString("Email"));
 				item.setTitle(resultSet.getString("Title"));
+				item.setItemId(resultSet.getInt("Item_ID"));
 				items.add(item);
 			}
 		} catch (SQLException e) {
@@ -67,14 +68,14 @@ public class UserItemDAO implements IUserItemDAO {
 	public boolean removeItem(UserItem item) {
 
 		String email = item.getEmail();
-		String title = item.getTitle();
+		int itemId = item.getItemId();
 
-		query = "DELETE from user_item WHERE Email=? and Title=?";
+		query = "DELETE from user_item WHERE Item_ID=? and Email=?";
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, email);
-			preparedStatement.setString(2, title);
+			preparedStatement.setInt(1, itemId);
+			preparedStatement.setString(2, email);
 			preparedStatement.executeUpdate();
 
 			return true;

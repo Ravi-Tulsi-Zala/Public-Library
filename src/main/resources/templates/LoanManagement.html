@@ -28,6 +28,7 @@
 	  <thead class="thead-dark">
 	    <tr data-field="item">
 	      <th data-field="state" data-checkbox="true"></th>
+	      <th data-field="itemId" data-visible="false" data-sortable="true">Item Id</th>
 	      <th data-field="category" data-sortable="true">Content Type</th>
 	      <th data-field="title" data-sortable="true">Title</th>
 	      <th data-field="email" data-sortable="true">User</th>
@@ -36,6 +37,7 @@
 	  <tbody>
 	    <tr data-field="item" th:each="item : ${items}" >
 	      <td data-field="state" data-checkbox="true"></td>
+	      <td data-field="itemId" data-visible="false" th:text="${item.itemId}"></td>
 	      <td data-field="category" th:text ="${item.category}"></td>
 	      <td data-field="title" th:text ="${item.title}"></td>
 	      <td data-field="email" th:text ="${item.email}"></td>
@@ -59,8 +61,12 @@
 	    })
 	  })
 	  
-	 
-
+	  function noRecordsFound()
+	  {
+	  	document.getElementsByClassName("no-records-found").innerHTML = "<td colspan="4">No Records Found</td>"
+	  }
+	  
+	  window.onload = noRecordsFound
 </script>
 </body>
 </html>

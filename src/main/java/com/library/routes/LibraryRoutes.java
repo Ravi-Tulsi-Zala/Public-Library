@@ -285,6 +285,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	public String returnItems(ModelMap model, Select select) {
 
 		String selections = select.getSelections();
+		System.out.println("Selections" +selections);
 		JsonStringParser jsonStringParser = new JsonStringParser();
 		List<UserItem> userItems = new ArrayList<UserItem>();
 		userItems = jsonStringParser.parseSelections(selections);
