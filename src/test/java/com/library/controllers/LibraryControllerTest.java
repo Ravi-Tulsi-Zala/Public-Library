@@ -79,7 +79,7 @@ public class LibraryControllerTest {
     }
 	
 	@Test
-    public void authenticatedUserBowseAdvancedSearchPageWithGET() throws Exception {
+    public void authenticatedUserBrowseAdvancedSearchPageWithGET() throws Exception {
         
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/advancedSearch");
         request.session(mockHttpSessionAuthenticated);
@@ -92,7 +92,7 @@ public class LibraryControllerTest {
     
     @Ignore // remove @Ignore once we will remove the dummy authenticated user in LibraryController 
 	@Test
-    public void notAuthenticatedUserBowseAdvancedSearchPageWithGET() throws Exception {
+    public void notAuthenticatedUserBrowseAdvancedSearchPageWithGET() throws Exception {
         
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/advancedSearch");
         request.session(mockHttpSessionNotAuthenticated);
