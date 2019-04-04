@@ -201,9 +201,18 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/signIn")
-	public String processSignInForm(HttpSession httpSession, ModelMap model, User user) {
+	public String processSignInForm(HttpSession httpSession, ModelMap model,HttpServletRequest request, User user) {
 		Logger logger = LogManager.getLogger(SignInController.class);
 		try {
+			
+			java.util.Enumeration<String> reqEnum = request.getParameterNames();
+
+			while (reqEnum.hasMoreElements()) {
+				String s = reqEnum.nextElement();
+				model.addAttribute("Error",request.getParameter(s));
+			}
+
+			
 			ISignInController signIn = factory.signIn(user, httpSession);
 			list = signIn.validateSignIn();
 			for (int index = 0; index < list.size(); index++) {
@@ -383,7 +392,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping(value = "/forgotPassword")
-	public String processForgotPasswordUserForm(RecoverPassword recoverPassword) {
+	public String processForgotPasswordUserForm(RecoverPassword recoverPassword, RedirectAttributes redirectAttr) {
 		Logger logger = LogManager.getLogger(ForgotPasswordController.class);
 		try {
 			recoverPassword.setSecurityQuestion(securityQuestionValue);
@@ -395,10 +404,12 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			}
 		} catch (MessagingException | IOException em) {
 			logger.log(Level.ALL, "Some problem occured while sending a email.", em);
-			return redirectToErrorPage;
+			redirectAttr.addAttribute("error", em);
+			return redirectToSignIn;
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Some generic error occured while in forgotPassword controller.", e);
-			return redirectToErrorPage;
+			redirectAttr.addAttribute("error", e);
+			return redirectToSignIn;
 		}
 	}
 
