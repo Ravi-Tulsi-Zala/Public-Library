@@ -374,7 +374,7 @@ public class BookDAO implements IBookDAO {
 		
 		try {
 			this.connection = databaseConnection.getConnection();
-			query = "update books set Availability =? where Item_Id = ?";
+			query = "update books set Availability =? where Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, updatedAvailability);
 			preparedStatement.setInt(2, itemId);

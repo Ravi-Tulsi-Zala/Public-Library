@@ -12,16 +12,27 @@ public class UserItemDAOTest {
 
 	IUserItemDAO itemDao = new UserItemDAO();
 	
-
+//
+//	@Test
+//	public void addItemTest() {
+//
+//		UserItem item = new UserItem();
+//		item.setItemId(100003);
+//		item.setCategory("Book");
+//		item.setEmail("nirav.solanki@dal.ca");
+//		item.setTitle("Alchemist");
+//		assertTrue(itemDao.addItem(item));
+//	}
+	
 	@Test
-	public void addItemTest() {
-
+	public void addItemHoldTest()
+	{
 		UserItem item = new UserItem();
-		item.setItemId(100003);
-		item.setCategory("Book");
-		item.setEmail("nirav.solanki@dal.ca");
-		item.setTitle("Alchemist");
-		assertTrue(itemDao.addItem(item));
+		item.setItemId(2004);
+		item.setCategory("Movie");
+		item.setEmail("ravizala.emp@gmail.com");
+		item.setTitle("Inception");
+		assertTrue(itemDao.addItemOnHold(item));
 	}
 
 }
