@@ -15,10 +15,11 @@ public class SearchRequestTest {
 
 	@Test
 	public void test() {
-		sr.addCategoryToSearchIn(new MockMusicSearch());
-		sr.addCategoryToSearchIn(new MockMovieSearch());
-		sr.addCategoryToSearchIn(new MockBookSearch());
-		ISearchResults searchres = sr.searchInDb();
+//		sr.addCategoryToSearchIn(new MockMusicSearch());
+//		sr.addCategoryToSearchIn(new MockMovieSearch());
+//		sr.addCategoryToSearchIn(new MockBookSearch());
+//		ISearchResults searchResults = sr.searchInDb();
+//		searchResults.getSearchResultsPerCategory();
 	}
 
 }
