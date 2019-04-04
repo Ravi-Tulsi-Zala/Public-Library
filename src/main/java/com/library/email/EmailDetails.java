@@ -2,8 +2,8 @@ package com.library.email;
 
 public class EmailDetails {
 	private String userEmailID;
-	private String adminEmailID="devanshu.srivastava1@gmail.com";
-	private String adminPassword="devshipra1";
+	private String adminEmailID="devanshu010193@gmail.com";
+	private String adminPassword="PopMom123";
 	private String body;
 	private String subject;
 
