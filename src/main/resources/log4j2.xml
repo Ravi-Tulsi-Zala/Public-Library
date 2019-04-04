@@ -41,12 +41,19 @@
 			<AppenderRef ref="FileAppender" />
 			<AppenderRef ref="SQLAppender" />
 		</Logger>
+		<Logger name="com.library.loanmanagement" level="all" additivity="false">
+			<AppenderRef ref="FileAppender" />
+			<AppenderRef ref="SQLAppender" />
+		</Logger>
+		<Logger name="com.library.additem" level="all" additivity="false">
+			<AppenderRef ref="FileAppender" />
+			<AppenderRef ref="SQLAppender" />
+		</Logger>
 		<Logger name="org.springframework.boot" level="info"
 			additivity="false">
 			<AppenderRef ref="ConsoleAppender" />
 			<AppenderRef ref="FileAppender" />
 		</Logger>
-
 		<Logger name="org.springframework.core" level="info"
 			additivity="false">
 			<AppenderRef ref="ConsoleAppender" />
