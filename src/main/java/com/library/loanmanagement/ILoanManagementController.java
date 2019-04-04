@@ -7,6 +7,6 @@ import com.library.businessModels.UserItem;
 public interface ILoanManagementController {
 
 	public List<UserItem> getAllBorrowedItems();
-	public void removeUserItems(List<UserItem> userItems);
+	public Boolean removeUserItem(UserItem item);
 	
 }

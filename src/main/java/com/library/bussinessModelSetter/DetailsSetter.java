@@ -1,4 +1,4 @@
-package com.library.BussinessModelSetter;
+package com.library.bussinessModelSetter;
 
 import com.library.businessModels.Book;
 import com.library.businessModels.Movie;

@@ -1,4 +1,4 @@
-package com.library.DAO;
+package com.library.dao;
 
 import java.util.List;
 
@@ -14,9 +14,10 @@ public interface IMovieDAO {
 	public Boolean deleteMovie(Movie movie);
 	public List<LibraryItem> getMoviesBySearchTerms(MovieSearch requestDetails, String searchTerms);
 	public List<String> getMovieCategories();
-	public int getAvailability(int itemID); 
+	public Boolean getAvailability(int itemID); 
 	public boolean checkMovieDuplicacy(Movie movie);
 	public Boolean increaseCount(int itemID);
-	public void updateAvailability(int itemId, int udatedAvailability);
+	public void increaseAvailability(String title);
+	public void decreaseAvailability(String title);
 	
 }

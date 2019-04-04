@@ -2,10 +2,10 @@ package com.library.additem;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.library.DAO.IMovieDAO;
-import com.library.DAOFactory.DAOFactory;
-import com.library.DAOFactory.IDAOFactory;
 import com.library.businessModels.Movie;
+import com.library.dao.IMovieDAO;
+import com.library.daoFactory.DAOFactory;
+import com.library.daoFactory.IDAOFactory;
 import com.library.messages.Messages;
 import com.library.routes.ILibraryFactory;
 import com.library.routes.LibraryFactorySingleton;

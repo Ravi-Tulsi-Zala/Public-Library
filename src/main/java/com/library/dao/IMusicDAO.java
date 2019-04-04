@@ -1,4 +1,4 @@
-package com.library.DAO;
+package com.library.dao;
 
 import java.util.List;
 
@@ -14,10 +14,10 @@ public interface IMusicDAO {
 	public Boolean deleteMusic(Music music); 
 	public List<LibraryItem> getMusicBySearchTerms(MusicSearch requestDetails, String searchTerms);
 	List<String> getMusicCategories();
-	public int getAvailability(int itemID); 
+	public Boolean getAvailability(int itemID); 
 	public boolean checkMusicDuplicacy(Music music);
 	public Boolean increaseCount(int itemID);
-	public void updateAvailability(int itemId, int udatedAvailability);
-	
+	public void increaseAvailability(String title);
+	public void decreaseAvailability(String title);
 	
 }

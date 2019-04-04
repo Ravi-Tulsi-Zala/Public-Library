@@ -1,26 +1,27 @@
 package com.library.borrowItem;
 
-import com.library.DAO.IBookDAO;
-import com.library.DAO.IMovieDAO;
-import com.library.DAO.IMusicDAO;
-import com.library.DAO.IUserItemDAO;
-import com.library.DAOFactory.DAOFactory;
-import com.library.DAOFactory.IDAOFactory;
+import com.library.businessModels.Display;
 import com.library.businessModels.DisplayDetailed;
 import com.library.businessModels.UserItem;
+import com.library.dao.IBookDAO;
+import com.library.dao.IMovieDAO;
+import com.library.dao.IMusicDAO;
+import com.library.dao.IUserItemDAO;
+import com.library.daoFactory.DAOFactory;
+import com.library.daoFactory.IDAOFactory;
 
 public class ItemStatus {
-
-	static final String borowed = "Borrowed";
+	
+	static final String borowed= "Borrowed";
 	static final String onHold = "Reserved";
 	static final String available = "Borrow";
 	static final String reserve = "Reserve";
 	private IUserItemDAO userItemDAO;
-
+	
 	private UserItem userItem;
 	private int itemID;
-
-	public ItemStatus(DisplayDetailed displayDetailed, String userEmail) {
+	
+	public ItemStatus(DisplayDetailed displayDetailed,String userEmail) {
 		userItem = new UserItem();
 		userItem.setTitle(displayDetailed.getTitle());
 		userItem.setCategory(displayDetailed.getItemType());
@@ -29,52 +30,57 @@ public class ItemStatus {
 		IDAOFactory factory = new DAOFactory();
 		userItemDAO = factory.makeUserItemDAO();
 	}
-
-	private Boolean isItemAvailable() {
+	
+	private Boolean isItemAvailable()
+	{
 		IDAOFactory factory = new DAOFactory();
 		Boolean availability = false;
-		if (userItem.getCategory().equals("Book")) {
+		if(userItem.getCategory().equals("Book"))
+		{
 			IBookDAO bookDAO = factory.makeBookDAO();
-			int booksAvailable = bookDAO.getAvailability(itemID);
-			if (booksAvailable == 0) {
-				availability = false;
-			}
-			availability = true;
-		} else if (userItem.getCategory().equals("Movie")) {
+			availability = bookDAO.getAvailability(itemID);
+		}
+		else if(userItem.getCategory().equals("Movie"))
+		{
 			IMovieDAO movieDAO = factory.makeMovieDAO();
-			int moviesAvailable = movieDAO.getAvailability(itemID);
-			if (moviesAvailable == 0) {
-				availability = false;
-			}
-			availability = true;
-		} else if (userItem.getCategory().equals("Music")) {
+			availability = movieDAO.getAvailability(itemID);
+		}
+		else if(userItem.getCategory().equals("Music"))
+		{
 			IMusicDAO musicDAO = factory.makeMusicDAO();
-			int musicAvailable = musicDAO.getAvailability(itemID);
-			if (musicAvailable == 0) {
-				availability = false;
-			}
-			availability = true;
+			availability = musicDAO.getAvailability(itemID);
 		}
 		return availability;
 	}
-
-	private Boolean isItemAlreadyBooked() {
+	
+	private Boolean isItemAlreadyBooked()
+	{
 		return userItemDAO.isItemBorrowed(userItem);
 	}
-
-	private Boolean isItemAlreadyOnHold() {
-		return userItemDAO.isItemOnHold(itemID);
+	
+	private Boolean isItemAlreadyOnHold()
+	{
+		return userItemDAO.isItemOnHold(userItem);
 	}
-
-	public String getItemStatus() {
-		if (isItemAlreadyBooked()) {
+	
+	public String getItemStatus()
+	{
+		if(isItemAlreadyBooked())
+		{
 			return borowed;
-		} else if (isItemAlreadyOnHold()) {
+		}
+		else if(isItemAlreadyOnHold())
+		{
 			return onHold;
-		} else if (isItemAvailable()) {
+		}
+		else if(isItemAvailable())
+		{
 			return available;
-		} else {
+		}
+		else
+		{
 			return reserve;
 		}
 	}
 }
+   

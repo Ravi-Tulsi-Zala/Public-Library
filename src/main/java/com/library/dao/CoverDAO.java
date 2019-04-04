@@ -1,13 +1,14 @@
-package com.library.DAO;
+package com.library.dao;
 
 import java.sql.Blob;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.library.BussinessModelSetter.CoverSetter;
 import com.library.businessModels.Cover;
+import com.library.bussinessModelSetter.CoverSetter;
 import com.library.dbConnection.DatabaseConnection;
 
 public class CoverDAO implements ICoverDAO {
