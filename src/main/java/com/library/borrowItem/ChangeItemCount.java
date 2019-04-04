@@ -1,11 +1,10 @@
 package com.library.borrowItem;
 
-import com.library.DAO.MovieDAO;
-import com.library.DAOFactory.DAOFactory;
-import com.library.DAOFactory.IDAOFactory;
-import com.library.IDAO.IBookDAO;
-import com.library.IDAO.IMovieDAO;
-import com.library.IDAO.IMusicDAO;
+import com.library.dao.IBookDAO;
+import com.library.dao.IMovieDAO;
+import com.library.dao.IMusicDAO;
+import com.library.daoFactory.DAOFactory;
+import com.library.daoFactory.IDAOFactory;
 
 public class ChangeItemCount {
 

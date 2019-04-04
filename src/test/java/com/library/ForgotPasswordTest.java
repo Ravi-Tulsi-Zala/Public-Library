@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.library.businessModels.Book;
 import com.library.email.EmailDetails;
-import com.library.email.EmailUtility;
+import com.library.email.SendEmail;
 import com.library.mockDB.ForgotPasswordMocked;
 import com.library.mockDB.WelcomePageMocked;
 @RunWith(SpringRunner.class)
@@ -32,7 +32,7 @@ public class ForgotPasswordTest {
 		ForgotPasswordMocked fPassword = new ForgotPasswordMocked();
 		EmailDetails eDetails = fPassword.initiateForgotUserMock();
 		try {
-			EmailUtility.sendmail(eDetails);
+			SendEmail.sendmail(eDetails);
 			assertTrue(true);
 		} catch (MessagingException | IOException e) {
 			assertTrue(false);

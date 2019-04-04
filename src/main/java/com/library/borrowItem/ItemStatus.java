@@ -1,14 +1,14 @@
 package com.library.borrowItem;
 
-import com.library.DAOFactory.DAOFactory;
-import com.library.DAOFactory.IDAOFactory;
-import com.library.IDAO.IBookDAO;
-import com.library.IDAO.IMovieDAO;
-import com.library.IDAO.IMusicDAO;
-import com.library.IDAO.IUserItemDAO;
 import com.library.businessModels.Display;
 import com.library.businessModels.DisplayDetailed;
 import com.library.businessModels.UserItem;
+import com.library.dao.IBookDAO;
+import com.library.dao.IMovieDAO;
+import com.library.dao.IMusicDAO;
+import com.library.dao.IUserItemDAO;
+import com.library.daoFactory.DAOFactory;
+import com.library.daoFactory.IDAOFactory;
 
 public class ItemStatus {
 	
