@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import com.library.DAOFactory.DAOFactory;
 import com.library.IDAO.IUserDAO;
 import com.library.email.EmailDetails;
-import com.library.email.EmailUtility;
+import com.library.email.SendEmail;
 import com.library.validatations.ValidateUserFormsAbstract;
 
 public class RecoverPassword extends RecoverPasswordAbstract {
@@ -54,7 +54,7 @@ public class RecoverPassword extends RecoverPasswordAbstract {
 		details.setUserEmailID(email);
 		details.setSubject("LMS reminder for password.");
 		fetchSaltedPwdFromDB();
-		EmailUtility.sendmail(details);
+		SendEmail.sendmail(details);
 		emailSent = true;
 		logger.log(Level.ALL, "Email sent successfully to the user => ", email);
 		return emailSent;
