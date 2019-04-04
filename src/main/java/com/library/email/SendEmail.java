@@ -28,7 +28,7 @@ public class SendEmail {
 		props.put("mail.smtp.host", "smtp.mail.yahoo.com");
 		props.put("mail.smtp.port", "587");
 		props.put("mail.debug", "false");
-//		props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+		props.put("mail.smtp.ssl.trust", "smtp.mail.yahoo.com");
 //		props.put("mail.smtp.starttls.required", "true");
 		props.put("mail.username", "eugene.shishlannikov@yahoo.com");
 		props.put("mail.password", "Rel7.xPass!");
