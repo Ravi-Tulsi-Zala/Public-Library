@@ -2,13 +2,13 @@ package com.library.routes;
 
 import javax.servlet.http.HttpSession;
 
+import com.library.ForgotPassword.IForgotPasswordController;
+import com.library.ForgotPassword.RecoverPassword;
 import com.library.additem.IAddBookController;
 import com.library.additem.IAddMovieController;
 import com.library.additem.IAddMusicController;
 import com.library.additem.IItemCoverSetter;
 import com.library.businessModels.User;
-import com.library.forgotPassword.IForgotPasswordController;
-import com.library.forgotPassword.RecoverPassword;
 import com.library.loanmanagement.ILoanManagementController;
 import com.library.signIn.ISignInController;
 import com.library.signUp.ISignUpController;

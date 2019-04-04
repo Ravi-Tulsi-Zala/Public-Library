@@ -7,12 +7,11 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.library.DAO.ILibraryItemDAO;
+import com.library.DAOFactory.DAOFactory;
 import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
-import com.library.dao.ILibraryItemDAO;
-import com.library.daoFactory.DAOFactory;
-import com.library.signIn.SignInController;
 import com.library.welcomePage.UserSessionDetail;
 
 public class WelcomePageMocked {

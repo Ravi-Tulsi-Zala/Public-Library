@@ -6,6 +6,16 @@ public class UserItem implements IUserItem {
 	private String email;
 	private String category;
 	private String title;
+	private int itemId;
+	
+	
+	public int getItemId() {
+		return itemId;
+	}
+	
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
+	}
 	
 	public String getEmail() {
 		return email;

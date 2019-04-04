@@ -1,4 +1,4 @@
-package com.library.dao;
+package com.library.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,10 +13,10 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.library.BussinessModelSetter.IMusicSetter;
+import com.library.BussinessModelSetter.MusicSetter;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Music;
-import com.library.bussinessModelSetter.IMusicSetter;
-import com.library.bussinessModelSetter.MusicSetter;
 import com.library.dbConnection.DatabaseConnection;
 import com.library.search.MusicSearch;
 
@@ -263,16 +263,19 @@ public class MusicDAO implements IMusicDAO {
 	}
 
 	@Override
-	public Boolean getAvailability(int itemID) {
-		this.connection = databaseConnection.getConnection();
-		Boolean availability = false;
+	public int getAvailability(int itemID) {
+
 		int musicsAvailable = 0;
 		try {
+			this.connection = databaseConnection.getConnection();
 			query = "Select Availability from music where Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(0, itemID);
+			preparedStatement.setInt(1, itemID);
 			resultSet = preparedStatement.executeQuery();
-			musicsAvailable = resultSet.getInt(0);
+			if (resultSet.next()) {
+				musicsAvailable = resultSet.getInt("Availability");
+			}
+
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
@@ -280,12 +283,7 @@ public class MusicDAO implements IMusicDAO {
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
-
-		if (musicsAvailable > 0) {
-			availability = true;
-		}
-
-		return availability;
+		return musicsAvailable;
 	}
 
 	public boolean checkMusicDuplicacy(Music music) {
@@ -340,14 +338,24 @@ public class MusicDAO implements IMusicDAO {
 	}
 
 	@Override
-	public void increaseAvailability(String title) {
-		// TODO Auto-generated method stub
+	public void updateAvailability(int itemId, int udatedAvailability) {
+		
+		try {
+			this.connection = databaseConnection.getConnection();
+			query = "update music set Availability =? where Item_ID = ?";
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, udatedAvailability);
+			preparedStatement.setInt(2, itemId);
+			preparedStatement.executeUpdate();
 
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error updating availability of music", e);
+		} finally {
+			databaseConnection.closeConnection(resultSet, preparedStatement);
+		}
+		
 	}
 
-	@Override
-	public void decreaseAvailability(String title) {
-		// TODO Auto-generated method stub
-
-	}
 }

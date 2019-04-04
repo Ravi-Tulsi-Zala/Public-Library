@@ -1,6 +1,7 @@
-package com.library.forgotPassword;
+package com.library.ForgotPassword;
 
 import java.io.IOException;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 

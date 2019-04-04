@@ -4,9 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.library.BussinessModelSetter.DetailedDisplaySetter;
 import com.library.businessModels.DisplayDetailed;
 import com.library.businessModels.Music;
-import com.library.bussinessModelSetter.DetailedDisplaySetter;
 
 public class DisplayDetailSetterTest {
 

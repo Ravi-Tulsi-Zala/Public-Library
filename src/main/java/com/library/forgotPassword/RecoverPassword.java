@@ -1,4 +1,4 @@
-package com.library.forgotPassword;
+package com.library.ForgotPassword;
 
 import java.io.IOException;
 
@@ -9,8 +9,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.library.dao.IUserDAO;
-import com.library.daoFactory.DAOFactory;
+import com.library.DAO.IUserDAO;
+import com.library.DAOFactory.DAOFactory;
 import com.library.email.EmailDetails;
 import com.library.email.SendEmail;
 import com.library.validatations.ValidateUserFormsAbstract;

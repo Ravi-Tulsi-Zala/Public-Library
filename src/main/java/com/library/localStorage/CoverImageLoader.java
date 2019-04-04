@@ -12,8 +12,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 
+import com.library.DAO.CoverDAO;
 import com.library.businessModels.Cover;
-import com.library.dao.CoverDAO;
 
 public class CoverImageLoader implements ICoverImageLoader {
 	private static final String SEPARATOR = File.separator;
