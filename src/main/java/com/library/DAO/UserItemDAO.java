@@ -234,9 +234,8 @@ public class UserItemDAO implements IUserItemDAO {
 		return false;
 	}
 
-	public UserItem getTheNextUserInLine(UserItem item) {
+	public UserItem getTheNextUserInLine(int itemId) {
 
-		int itemId = item.getItemId();
 		UserItem userOnHold = new UserItem();
 
 		query = "SELECT * FROM holds WHERE Item_ID=? ORDER BY EntryDateTime LIMIT 1";
@@ -246,10 +245,10 @@ public class UserItemDAO implements IUserItemDAO {
 			preparedStatement.setInt(1, itemId);
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				item.setCategory(resultSet.getString("Category"));
-				item.setEmail(resultSet.getString("Email"));
-				item.setTitle(resultSet.getString("Title"));
-				item.setItemId(resultSet.getInt("Item_ID"));
+				userOnHold.setCategory(resultSet.getString("Category"));
+				userOnHold.setEmail(resultSet.getString("Email"));
+				userOnHold.setTitle(resultSet.getString("Title"));
+				userOnHold.setItemId(resultSet.getInt("Item_ID"));
 			}
 		} catch (SQLException e) {
 
@@ -264,5 +263,33 @@ public class UserItemDAO implements IUserItemDAO {
 
 		}
 		return userOnHold;
+	}
+
+	@Override
+	public void removeUserFromHold(UserItem userOnHold) {
+
+		String email = userOnHold.getEmail();
+		int itemId = userOnHold.getItemId();
+
+		query = "DELETE from holds WHERE Item_ID=? and Email=?";
+
+		try {
+			this.connection = databaseConnection.getConnection();
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, itemId);
+			preparedStatement.setString(2, email);
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Can not delete item from database", e);
+		} finally {
+
+			databaseConnection.closeConnection(resultSet, preparedStatement);
+
+		}
+
 	}
 }

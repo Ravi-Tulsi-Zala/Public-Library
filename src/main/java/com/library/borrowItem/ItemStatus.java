@@ -64,7 +64,7 @@ public class ItemStatus {
 	
 	private Boolean isItemAlreadyOnHold()
 	{
-		return userItemDAO.isItemOnHold(userItem);
+		return userItemDAO.isItemOnHold(itemID);
 	}
 	
 	public String getItemStatus()

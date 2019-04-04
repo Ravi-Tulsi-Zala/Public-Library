@@ -17,9 +17,22 @@ public class MovieReturnStrategy implements IReturnItemStrategy {
 	}
 
 	@Override
-	public boolean isItemOnHold(UserItem item) {
+	public boolean isItemOnHold(int itemId) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+
+	@Override
+	public UserItem getTheNextUserInLine(int itemId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void removeUserFromHold(UserItem userOnHold) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

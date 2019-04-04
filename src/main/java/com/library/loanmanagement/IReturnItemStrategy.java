@@ -8,6 +8,9 @@ public interface IReturnItemStrategy {
 
 	public void sendEmail(UserItem item);
 
-	public boolean isItemOnHold(UserItem item);
+	public boolean isItemOnHold(int itemId);
+	
+	public UserItem getTheNextUserInLine(int itemId);
 
+	public void removeUserFromHold(UserItem userOnHold);
 }
