@@ -28,14 +28,18 @@
 	<Loggers>
 		<Logger name="com.library.DAO" level="all" additivity="false">
 			<AppenderRef ref="FileAppender" />
-
-
+			<AppenderRef ref="SQLAppender" />
+		</Logger>
+		<Logger name="com.library.email" level="all" additivity="false">
+			<AppenderRef ref="FileAppender" />
+			<AppenderRef ref="SQLAppender" />
 		</Logger>
 		<Logger name="com.library.forgotPassword" level="all" additivity="false">
 			<AppenderRef ref="FileAppender" />
 		</Logger>
 		<Logger name="com.library.routes" level="all" additivity="false">
 			<AppenderRef ref="FileAppender" />
+			<AppenderRef ref="SQLAppender" />
 		</Logger>
 		<Logger name="org.springframework.boot" level="info"
 			additivity="false">
@@ -47,11 +51,13 @@
 			additivity="false">
 			<AppenderRef ref="ConsoleAppender" />
 			<AppenderRef ref="FileAppender" />
+			<AppenderRef ref="SQLAppender" />
 		</Logger>
 
 		<Root level="info">
 			<AppenderRef ref="ConsoleAppender" />
 			<AppenderRef ref="FileAppender" />
+			<AppenderRef ref="SQLAppender" />
 		</Root>
 	</Loggers>
 </Configuration>
