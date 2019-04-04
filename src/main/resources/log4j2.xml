@@ -31,6 +31,12 @@
 
 
 		</Logger>
+		<Logger name="com.library.forgotPassword" level="all" additivity="false">
+			<AppenderRef ref="FileAppender" />
+		</Logger>
+		<Logger name="com.library.routes" level="all" additivity="false">
+			<AppenderRef ref="FileAppender" />
+		</Logger>
 		<Logger name="org.springframework.boot" level="info"
 			additivity="false">
 			<AppenderRef ref="ConsoleAppender" />
