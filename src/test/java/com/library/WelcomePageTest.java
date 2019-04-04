@@ -16,10 +16,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.library.DAOFactory.DAOFactory;
 import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
+import com.library.daoFactory.DAOFactory;
 import com.library.mockDB.WelcomePageMocked;
 import com.library.routes.ILibraryFactory;
 import com.library.routes.LibraryFactorySingleton;
