@@ -1,6 +1,9 @@
 package com.library.routes;
 
+import java.io.Console;
+
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +22,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.library.ForgotPassword.ForgotPasswordController;
-import com.library.ForgotPassword.IForgotPasswordController;
-import com.library.ForgotPassword.RecoverPassword;
 import com.library.additem.IAddBookController;
 import com.library.additem.IAddMovieController;
 import com.library.additem.IAddMusicController;
@@ -36,23 +37,28 @@ import com.library.businessModels.Book;
 import com.library.businessModels.Cover;
 import com.library.businessModels.Display;
 import com.library.businessModels.DisplayDetailed;
+import com.library.businessModels.Book;
+import com.library.businessModels.Cover;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 import com.library.businessModels.User;
-import com.library.businessModels.UserItem;
 import com.library.dbConnection.DatabaseConnection;
+import com.library.forgotPassword.ForgotPasswordController;
+import com.library.forgotPassword.IForgotPasswordController;
+import com.library.forgotPassword.RecoverPassword;
 import com.library.itemDetailed.DetailedDisplayFetcher;
 import com.library.itemDetailed.IDetailedDisplayFetcher;
+import com.library.businessModels.UserItem;
 import com.library.loanmanagement.ILoanManagementController;
 import com.library.loanmanagement.Select;
 import com.library.messages.Messages;
 import com.library.parsers.JsonStringParser;
 import com.library.search.BookSearch;
 import com.library.search.IDBSearchController;
+import com.library.search.SearchFactory;
 import com.library.search.MovieSearch;
 import com.library.search.MusicSearch;
-import com.library.search.SearchFactory;
 import com.library.search.SearchRequest;
 import com.library.search.SearchResults;
 import com.library.search.SearchTermsAndPage;
@@ -61,9 +67,10 @@ import com.library.signIn.ISignInController;
 import com.library.signIn.SignInController;
 import com.library.signUp.ISignUpController;
 import com.library.signUp.SignUpController;
-import com.library.welcomePage.IWelcomeController;
 import com.library.welcomePage.UserSessionDetail;
+import com.library.welcomePage.IWelcomeController;
 import com.library.welcomePage.WelcomePageController;
+import com.mysql.jdbc.PreparedStatement;
 
 @Controller
 public class LibraryRoutes implements WebMvcConfigurer {
@@ -200,10 +207,10 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			
 			java.util.Enumeration<String> reqEnum = request.getParameterNames();
 
-//			while (reqEnum.hasMoreElements()) {
-//				String s = reqEnum.nextElement();
-//				model.addAttribute("Error",request.getParameter(s));
-//			}
+			while (reqEnum.hasMoreElements()) {
+				String s = reqEnum.nextElement();
+				model.addAttribute("Error",request.getParameter(s));
+			}
 
 			
 			ISignInController signIn = factory.signIn(user, httpSession);
@@ -287,12 +294,16 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@PostMapping("/loanItems")
 	public String returnItems(ModelMap model, Select select) {
 
-		String selections = select.getSelections(); 
+		String selections = select.getSelections();
 		JsonStringParser jsonStringParser = new JsonStringParser();
 		List<UserItem> userItems = new ArrayList<UserItem>();
 		userItems = jsonStringParser.parseSelections(selections);
 		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
-		iLoanManagementController.removeUserItems(userItems);
+		for (UserItem item : userItems) {
+
+			iLoanManagementController.removeUserItem(item);
+		}
+
 		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
 		model.addAttribute("select", new Select());
 		model.addAttribute("items", items);

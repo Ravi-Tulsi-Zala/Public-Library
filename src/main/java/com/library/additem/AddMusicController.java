@@ -2,13 +2,13 @@ package com.library.additem;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.library.DAO.IMusicDAO;
-import com.library.DAOFactory.DAOFactory;
-import com.library.DAOFactory.IDAOFactory;
 import com.library.businessModels.Music;
+import com.library.dao.IMusicDAO;
+import com.library.daoFactory.DAOFactory;
+import com.library.daoFactory.IDAOFactory;
 import com.library.messages.Messages;
-import com.library.routes.ILibraryFactory;
 import com.library.routes.LibraryFactorySingleton;
+import com.library.routes.ILibraryFactory;
 
 public class AddMusicController implements IAddMusicController {
 

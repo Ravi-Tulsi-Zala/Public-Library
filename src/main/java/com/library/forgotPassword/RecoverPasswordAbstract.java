@@ -1,4 +1,4 @@
-package com.library.ForgotPassword;
+package com.library.forgotPassword;
 
 import java.io.IOException;
 

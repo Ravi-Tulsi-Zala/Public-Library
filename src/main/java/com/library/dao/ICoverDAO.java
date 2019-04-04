@@ -1,7 +1,6 @@
-package com.library.DAO;
+package com.library.dao;
 
 import java.sql.Blob;
-
 import com.library.businessModels.Cover;
 
 public interface ICoverDAO {

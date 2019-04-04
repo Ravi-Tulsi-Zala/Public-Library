@@ -1,9 +1,7 @@
 package com.library.search;
 
 import java.util.List;
-
 import com.library.businessModels.LibraryItem;
-
 
 public class BookSearch extends SearchCategory {
 	private boolean searchInBooks = true;

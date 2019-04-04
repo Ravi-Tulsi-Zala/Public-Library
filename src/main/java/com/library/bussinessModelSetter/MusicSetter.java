@@ -1,4 +1,4 @@
-package com.library.BussinessModelSetter;
+package com.library.bussinessModelSetter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package com.library.DAO;
+package com.library.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,15 +11,15 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.library.BussinessModelSetter.BookSetter;
-import com.library.BussinessModelSetter.IBookSetter;
-import com.library.BussinessModelSetter.IMovieSetter;
-import com.library.BussinessModelSetter.IMusicSetter;
-import com.library.BussinessModelSetter.MovieSetter;
-import com.library.BussinessModelSetter.MusicSetter;
 import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
+import com.library.bussinessModelSetter.BookSetter;
+import com.library.bussinessModelSetter.IBookSetter;
+import com.library.bussinessModelSetter.IMovieSetter;
+import com.library.bussinessModelSetter.IMusicSetter;
+import com.library.bussinessModelSetter.MovieSetter;
+import com.library.bussinessModelSetter.MusicSetter;
 import com.library.dbConnection.DatabaseConnection;
 
 public class LibraryItemDAO implements ILibraryItemDAO {
