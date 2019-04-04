@@ -404,11 +404,11 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			}
 		} catch (MessagingException | IOException em) {
 			logger.log(Level.ALL, "Some problem occured while sending a email.", em);
-			redirectAttr.addAttribute("error", em);
+			redirectAttr.addAttribute("error", em.getMessage());
 			return redirectToSignIn;
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Some generic error occured while in forgotPassword controller.", e);
-			redirectAttr.addAttribute("error", e);
+			redirectAttr.addAttribute("error", e.getMessage());
 			return redirectToSignIn;
 		}
 	}
