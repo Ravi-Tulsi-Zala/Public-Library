@@ -8,11 +8,12 @@ import java.util.Map.Entry;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.library.DAOFactory.DAOFactory;
-import com.library.DAOFactory.IDAOFactory;
-import com.library.IDAO.IUserDAO;
+
 import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.IUserExtendedInfo;
+import com.library.dao.IUserDAO;
+import com.library.daoFactory.DAOFactory;
+import com.library.daoFactory.IDAOFactory;
 
 public class ValidateUserForms extends ValidateUserFormsAbstract {
 

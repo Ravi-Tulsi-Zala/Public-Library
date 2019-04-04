@@ -3,10 +3,10 @@ package com.library.loanmanagement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.library.DAOFactory.DAOFactory;
-import com.library.DAOFactory.IDAOFactory;
-import com.library.IDAO.IUserItemDAO;
 import com.library.businessModels.UserItem;
+import com.library.dao.IUserItemDAO;
+import com.library.daoFactory.DAOFactory;
+import com.library.daoFactory.IDAOFactory;
 import com.library.routes.ILibraryFactory;
 import com.library.routes.LibraryFactorySingleton;
 

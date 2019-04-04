@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.IUserExtendedInfo;
-import com.library.xmlParser.XmlParser;
+import com.library.parsers.XmlParser;
 
 //Template pattern implemented in this class and in its child class. I have implemented setValidationRules() and setErrorStringRules() that are being used by the child class many times.
 // Abstract functions are also added in this class and that are used by child class, where it changes the flow of action as required.
