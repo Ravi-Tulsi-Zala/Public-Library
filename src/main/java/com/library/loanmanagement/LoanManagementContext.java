@@ -12,9 +12,12 @@ public class LoanManagementContext {
 
 	}
 
-	public boolean executeReturnItemStrategy(UserItem item) {
-
-		return iReturnItemStrategy.returnItem(item);
+	public void executeReturnItemStrategy(UserItem item) {
+		
+		boolean isItemOnHold=false;
+		iReturnItemStrategy.returnItem(item);
+		iReturnItemStrategy.isItemOnHold(item);
+		iReturnItemStrategy.sendEmail(item);
 	}
 
 }

@@ -38,7 +38,11 @@ public class ItemStatus {
 		if(userItem.getCategory().equals("Book"))
 		{
 			IBookDAO bookDAO = factory.makeBookDAO();
-			availability = bookDAO.getAvailability(itemID);
+			if(bookDAO.getAvailability(itemID) == 0)
+			{
+				availability= false;
+			}
+			availability=true;
 		}
 		else if(userItem.getCategory().equals("Movie"))
 		{

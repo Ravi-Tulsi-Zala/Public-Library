@@ -284,17 +284,12 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@PostMapping("/loanItems")
 	public String returnItems(ModelMap model, Select select) {
 
-		String selections = select.getSelections();
-		System.out.println("Selections" +selections);
+		String selections = select.getSelections(); 
 		JsonStringParser jsonStringParser = new JsonStringParser();
 		List<UserItem> userItems = new ArrayList<UserItem>();
 		userItems = jsonStringParser.parseSelections(selections);
 		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
-		for (UserItem item : userItems) {
-
-			iLoanManagementController.removeUserItem(item);
-		}
-
+		iLoanManagementController.removeUserItems(userItems);
 		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
 		model.addAttribute("select", new Select());
 		model.addAttribute("items", items);

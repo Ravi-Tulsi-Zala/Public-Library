@@ -11,7 +11,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css">
 	<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
-	<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+	<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/locale/bootstrap-table-en-CN.min.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-light bg-light">
@@ -35,7 +35,7 @@
 	    </tr>
 	  </thead>
 	  <tbody>
-	    <tr data-field="item" th:each="item : ${items}" >
+	    <tr data-field="item" th:each="item : ${items}">
 	      <td data-field="state" data-checkbox="true"></td>
 	      <td data-field="itemId" data-visible="false" th:text="${item.itemId}"></td>
 	      <td data-field="category" th:text ="${item.category}"></td>
@@ -47,7 +47,7 @@
 	<button type="submit" id="button" class="btn btn-primary" style="margin-top: 2%;">Return Items</button>
 	<input type="hidden" id="abc" name="abc" th:field="${select.selections}"/>
 </form>
-
+</body>
 <script>
 		
 	  var $table = $('#table')
@@ -60,13 +60,5 @@
 	      document.getElementById("abc").value = selection;
 	    })
 	  })
-	  
-	  function noRecordsFound()
-	  {
-	  	document.getElementsByClassName("no-records-found").innerHTML = "<td colspan="4">No Records Found</td>"
-	  }
-	  
-	  window.onload = noRecordsFound
 </script>
-</body>
 </html>

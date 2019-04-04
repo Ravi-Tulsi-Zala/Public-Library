@@ -13,10 +13,9 @@ public interface IBookDAO {
 	public List<LibraryItem> getBooksBySearchTerms(BookSearch requestDetails, String searchTerms);
 	public List<Book> getBookByCategory(String category);
 	public List<String> getBookCategories();
-	public Boolean getAvailability(int itemID);
+	public int getAvailability(int itemID);
 	public boolean checkBookDuplicacy(Book book);
-	public void increaseAvailability(String title);
-	public void decreaseAvailability(String title);
+	public void updateAvailability(int itemId, int updatedAvailability);
 	public Boolean increaseCount(int itemID);
 }
 

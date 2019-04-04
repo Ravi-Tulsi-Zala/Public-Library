@@ -4,6 +4,10 @@ import com.library.businessModels.UserItem;
 
 public interface IReturnItemStrategy {
 	
-	public boolean returnItem(UserItem item);
+	public void returnItem(UserItem item);
+
+	public void sendEmail(UserItem item);
+
+	public boolean isItemOnHold(UserItem item);
 
 }
