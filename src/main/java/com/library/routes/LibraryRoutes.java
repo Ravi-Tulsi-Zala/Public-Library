@@ -1,11 +1,7 @@
 package com.library.routes;
 
-import java.io.Console;
-
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +18,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -40,8 +35,6 @@ import com.library.businessModels.Book;
 import com.library.businessModels.Cover;
 import com.library.businessModels.Display;
 import com.library.businessModels.DisplayDetailed;
-import com.library.businessModels.Book;
-import com.library.businessModels.Cover;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
@@ -69,7 +62,6 @@ import com.library.signUp.SignUpController;
 import com.library.welcomePage.AdminPage;
 import com.library.welcomePage.IWelcomeController;
 import com.library.welcomePage.WelcomePageController;
-import com.mysql.jdbc.PreparedStatement;
 
 @Controller
 public class LibraryRoutes implements WebMvcConfigurer {
@@ -86,7 +78,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	private String redirectToWelcome = Messages.WelcomePageRedirect.getMessage();
 	private String redirectToSignIn = Messages.SignInPageRedirect.getMessage();
-	private String redirectToSignUp = Messages.SignUpPageRedirect.getMessage();
 	private String redirectToForgotPwd = Messages.ForgotPassPageRedirect.getMessage();
 	private String redirectToErrorPage = Messages.ErrorPageRedirect.getMessage();
 
@@ -156,7 +147,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@GetMapping("/basicSearch")
-	public String getSimpleSearchPage(ModelMap model, HttpSession httpSession) {
+	public String getBasicSearchPage(ModelMap model, HttpSession httpSession) {
 		dbSearchController.clearSearch(httpSession);
 		model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
 		addUserEmail(model, httpSession);
@@ -164,7 +155,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/basicSearch")
-	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage,
+	public String executeBasicSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage,
 			BookSearch bookSearch, MusicSearch musicSearch, MovieSearch moviesSearch) {
 		SearchResults searchResults = executeSearch(httpSession, termsAndPage, bookSearch, musicSearch, moviesSearch);
 		model.addAttribute("searchResults", searchResults);
