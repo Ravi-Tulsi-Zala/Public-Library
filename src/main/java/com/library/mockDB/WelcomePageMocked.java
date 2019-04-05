@@ -7,12 +7,11 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.library.DAOFactory.DAOFactory;
-import com.library.IDAO.ILibraryItemDAO;
 import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
-import com.library.signIn.SignInController;
+import com.library.dao.ILibraryItemDAO;
+import com.library.daoFactory.DAOFactory;
 import com.library.welcomePage.UserSessionDetail;
 
 public class WelcomePageMocked {
@@ -31,7 +30,7 @@ public class WelcomePageMocked {
 		try {
 			movie = libraryFactory.getLatestMovies();
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Mock data got an error in getting latest movies.");
+			logger.log(Level.ALL, "Mock data got an error in getting latest movies.",e);
 		}
 		return movie;
 	}

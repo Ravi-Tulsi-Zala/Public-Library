@@ -2,9 +2,6 @@ package com.library.routes;
 
 import javax.servlet.http.HttpSession;
 
-import com.library.ForgotPassword.ForgotPasswordController;
-import com.library.ForgotPassword.IForgotPasswordController;
-import com.library.ForgotPassword.RecoverPassword;
 import com.library.additem.AddBookController;
 import com.library.additem.AddMovieController;
 import com.library.additem.AddMusicController;
@@ -14,6 +11,9 @@ import com.library.additem.IAddMusicController;
 import com.library.additem.IItemCoverSetter;
 import com.library.additem.ItemCoverSetter;
 import com.library.businessModels.User;
+import com.library.forgotPassword.ForgotPasswordController;
+import com.library.forgotPassword.IForgotPasswordController;
+import com.library.forgotPassword.RecoverPassword;
 import com.library.loanmanagement.ILoanManagementController;
 import com.library.loanmanagement.LoanManagentController;
 import com.library.signIn.ISignInController;
@@ -60,9 +60,9 @@ public class LibraryControllerFactory implements ILibraryFactory {
 
 	@Override
 	public IItemCoverSetter makeItemCoverSetter() {
-		
+
 		return new ItemCoverSetter();
-		
+
 	}
 
 	public IWelcomeController welcomePage() {
@@ -73,5 +73,4 @@ public class LibraryControllerFactory implements ILibraryFactory {
 	{
 		return new LoanManagentController();
 	}
-
 }

@@ -1,12 +1,7 @@
 package com.library;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.isA;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -16,15 +11,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.library.DAOFactory.DAOFactory;
 import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
+import com.library.dbConnection.DatabaseConnection;
 import com.library.mockDB.WelcomePageMocked;
 import com.library.routes.ILibraryFactory;
 import com.library.routes.LibraryFactorySingleton;
-import com.library.welcomePage.UserSessionDetail;
 import com.library.welcomePage.IWelcomeController;
+import com.library.welcomePage.UserSessionDetail;
 
 @RunWith(SpringRunner.class)
 public class WelcomePageTest {
@@ -44,7 +39,7 @@ public class WelcomePageTest {
 	public void testAdminAvailable() {
 		welcomePageMocked.adminInitiated();
 		boolean isAdmin = UserSessionDetail.getAdminAvailable();
-		assertEquals(isAdmin,true);
+		assertEquals(isAdmin, true);
 	}
 
 	@Test
@@ -62,6 +57,9 @@ public class WelcomePageTest {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DatabaseConnection databaseConnection = new DatabaseConnection();
+			databaseConnection.closeConnection();
 		}
 		assertNotNull(wlcmCntrl);
 	}
@@ -80,6 +78,9 @@ public class WelcomePageTest {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DatabaseConnection databaseConnection = new DatabaseConnection();
+			databaseConnection.closeConnection();
 		}
 		assertNotNull(wlcmCntrl);
 	}
@@ -98,13 +99,17 @@ public class WelcomePageTest {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DatabaseConnection databaseConnection = new DatabaseConnection();
+			databaseConnection.closeConnection();
 		}
 		assertNotNull(wlcmCntrl);
 	}
+
 	@Test
 	public void testgetFavBookItems() {
 		List<Book> book = welcomePageMocked.initiateFavBookMock();
-		assertNotNull(book);//if this case fails that means that there are no favourite yet in the database.
+		assertNotNull(book);
 		try {
 			List<Book> listOfBooks = wlcmCntrl.getFavouriteBooks();
 			for (int i = 0; i < wlcmCntrl.getBookItems().size(); i++) {
@@ -116,13 +121,17 @@ public class WelcomePageTest {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DatabaseConnection databaseConnection = new DatabaseConnection();
+			databaseConnection.closeConnection();
 		}
 		assertNotNull(wlcmCntrl);
 	}
+
 	@Test
 	public void testgetFavMovieItems() {
 		List<Movie> movies = welcomePageMocked.initiateFavMoviesMock();
-		assertNotNull(movies); //if this case fails that means that there are no favourite yet in the database.
+		assertNotNull(movies);
 		try {
 			List<Movie> listOfMovies = wlcmCntrl.getFavouriteMovies();
 			for (int i = 0; i < listOfMovies.size(); i++) {
@@ -133,13 +142,17 @@ public class WelcomePageTest {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DatabaseConnection databaseConnection = new DatabaseConnection();
+			databaseConnection.closeConnection();
 		}
 		assertNotNull(wlcmCntrl);
 	}
+
 	@Test
 	public void testgetFavMusicItems() {
 		List<Music> music = welcomePageMocked.initiatefavMusicMock();
-		assertNotNull(music); //if this case fails that means that there are no favourite yet in the database.
+		assertNotNull(music);
 		try {
 			List<Music> listOfMovies = wlcmCntrl.getFavouriteMusic();
 			for (int i = 0; i < listOfMovies.size(); i++) {
@@ -150,6 +163,9 @@ public class WelcomePageTest {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DatabaseConnection databaseConnection = new DatabaseConnection();
+			databaseConnection.closeConnection();
 		}
 		assertNotNull(wlcmCntrl);
 	}
