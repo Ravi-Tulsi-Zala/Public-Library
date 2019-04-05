@@ -1,19 +1,20 @@
-package com.library.bussinessModelSetter;
+package com.library.businessModelSetter;
+
 import com.library.businessModels.Book;
 import com.library.businessModels.DisplayDetailed;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 
-public class DetailedDisplaySetter implements IDetailedDisplaySetter{
+public class DetailedDisplaySetter implements IDetailedDisplaySetter {
 
 	private IDetailsSetter detailsSetter;
 	private DisplayDetailed displayDetailed;
-	
+
 	public DetailedDisplaySetter() {
 		detailsSetter = new DetailsSetter();
 		displayDetailed = new DisplayDetailed();
 	}
-	
+
 	@Override
 	public DisplayDetailed makeDetailedBook(Book book) {
 		displayDetailed.setItemID(book.getItemID());

@@ -1,7 +1,9 @@
 package com.library.dbCredentialTest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
+
 import com.library.dbConnection.DatabaseCredentials;
 
 

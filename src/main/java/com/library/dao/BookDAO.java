@@ -18,11 +18,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.library.businessModelSetter.BookSetter;
+import com.library.businessModelSetter.IBookSetter;
 import com.library.businessModels.Book;
 import com.library.businessModels.LibraryItem;
-import com.library.bussinessModelSetter.BookSetter;
-import com.library.bussinessModelSetter.IBookSetter;
-import com.library.dbConnection.*;
+import com.library.dbConnection.DatabaseConnection;
 import com.library.search.BookSearch;
 
 public class BookDAO implements IBookDAO {

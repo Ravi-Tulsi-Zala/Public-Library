@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
 import com.library.signIn.AuthenticatedUsers;
 
 public class SignOutController {
@@ -33,7 +34,7 @@ public class SignOutController {
 			authenticatedUsers.removeAuthenticatedUser(httpSession);
 			notifyUserSignOut(httpSession);			
 		} else {
-			logger.log(Level.ALL, "Attempt to sign out a not signed in user with session id %s", httpSession.getId());
+			logger.log(Level.ALL, "Attempt to sign out a not signed in user with session id %s");
 		}
 	}
 

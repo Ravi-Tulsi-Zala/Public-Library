@@ -13,10 +13,10 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.library.businessModelSetter.IMovieSetter;
+import com.library.businessModelSetter.MovieSetter;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
-import com.library.bussinessModelSetter.IMovieSetter;
-import com.library.bussinessModelSetter.MovieSetter;
 import com.library.dbConnection.DatabaseConnection;
 import com.library.search.MovieSearch;
 

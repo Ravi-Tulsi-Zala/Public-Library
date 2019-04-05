@@ -13,10 +13,10 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.library.businessModelSetter.IMusicSetter;
+import com.library.businessModelSetter.MusicSetter;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Music;
-import com.library.bussinessModelSetter.IMusicSetter;
-import com.library.bussinessModelSetter.MusicSetter;
 import com.library.dbConnection.DatabaseConnection;
 import com.library.search.MusicSearch;
 

@@ -1,6 +1,5 @@
 package com.library.borrowItem;
 
-import com.library.businessModels.Display;
 import com.library.businessModels.DisplayDetailed;
 import com.library.businessModels.UserItem;
 import com.library.dao.IBookDAO;

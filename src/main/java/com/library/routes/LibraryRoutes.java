@@ -50,8 +50,6 @@ import com.library.forgotPassword.RecoverPassword;
 import com.library.itemDetailed.DetailedDisplayFetcher;
 import com.library.itemDetailed.IDetailedDisplayFetcher;
 import com.library.businessModels.UserItem;
-import com.library.loanmanagement.ILoanManagementController;
-import com.library.loanmanagement.Select;
 import com.library.messages.Messages;
 import com.library.parsers.JsonStringParser;
 import com.library.search.BookSearch;
@@ -267,38 +265,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("message", displayMessage);
 		redirectPage = mappingsForAddItem(model);
 		return redirectPage;
-	}
-
-	@GetMapping("/loan")
-	public String mappingsForLoanManagement(ModelMap model) {
-
-		String sessionClient = UserSessionDetail.getAvailableUserID();
-		model.addAttribute("item", new UserItem());
-		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
-		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
-		model.addAttribute("items", items);
-		model.addAttribute("select", new Select());
-		model.addAttribute("sessionClient", sessionClient);
-		return "LoanManagement";
-	}
-
-	@PostMapping("/loanItems")
-	public String returnItems(ModelMap model, Select select) {
-
-		String selections = select.getSelections();
-		JsonStringParser jsonStringParser = new JsonStringParser();
-		List<UserItem> userItems = new ArrayList<UserItem>();
-		userItems = jsonStringParser.parseSelections(selections);
-		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
-		for (UserItem item : userItems) {
-
-			iLoanManagementController.removeUserItem(item);
-		}
-
-		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
-		model.addAttribute("select", new Select());
-		model.addAttribute("items", items);
-		return "LoanManagement";
 	}
 
 	@GetMapping("/welcome")
