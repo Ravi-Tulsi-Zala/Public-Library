@@ -1,13 +1,14 @@
 package com.library.browsePage;
 
 import java.util.List;
-import com.library.DAOFactory.DAOFactory;
-import com.library.DAOFactory.IDAOFactory;
-import com.library.IBussinessModelSetter.IDisplaySetter;
-import com.library.IDAO.IBookDAO;
+
 import com.library.businessModels.Book;
 import com.library.businessModels.Display;
-import com.library.BussinessModelSetter.DisplaySetter;
+import com.library.bussinessModelSetter.DisplaySetter;
+import com.library.bussinessModelSetter.IDisplaySetter;
+import com.library.dao.IBookDAO;
+import com.library.daoFactory.DAOFactory;
+import com.library.daoFactory.IDAOFactory;
 
 public class BrowseBooks implements IBrowseDisplayObjects{
 

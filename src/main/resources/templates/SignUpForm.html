@@ -27,7 +27,7 @@
 			} else {
 				password.type = "password";
 			}
-		} else {
+		} else if (str == "check2") {
 			var cpassword = document.getElementById("cpassword");
 			if (cpassword.type === "password") {
 				cpassword.type = "text";
@@ -38,94 +38,70 @@
 	}
 </script>
 <style>
-	td {
-		padding-bottom: 20px;
-		padding-right: 50px
-	}
-	
-	h5 {
-		margin: 0;
-		font-weight: 400;
-	}
-	
-	#login-box {
-		box-shadow: 1px 1px 7px 7px rgba(0.75, 0.75, 0.75, 0.75);
-	}
-	
-	#login .container #login-row #login-column #login-box {
-		margin-top: 120px;
-		max-width: 600px;
-		height: 400px;
-		border: 1px solid #9C9C9C;
-		background-color: #EAEAEA;
-	}
-	
-	#login .container #login-row #login-column #login-box #login-form {
-		padding: 20px;
-	}
-	
-	#login .container #login-row #login-column #login-box #login-form #register-link
-		{
-		margin-top: -85px;
-	}
+td {
+	padding-bottom: 20px;
+	padding-right: 50px
+}
+
+h5 {
+	margin: 0;
+	font-weight: 400;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #17a2b8;
+	height: 100vh;
+}
+
+
+#login-box {
+	box-shadow: 1px 1px 7px 7px rgba(0.75, 0.75, 0.75, 0.75);
+}
+
+#login .container #login-row #login-column #login-box {
+	margin-top: 120px;
+	max-width: 600px;
+	height: 800px;
+	border: 1px solid #9C9C9C;
+	background-color: #EAEAEA;
+}
+p{
+color:red;
+font-size:medium;
+}
+
+#login .container #login-row #login-column #login-box #login-form {
+	padding: 20px;
+}
+
+#login .container #login-row #login-column #login-box #login-form #register-link
+	{
+	margin-top: -85px;
+}
 </style>
-<!-- <body>
-	<form action="/signUp" th:action="@{/signUp}" th:object="${user}"
-		method="post">
-		<table id="table">
-			<tr>
-				<td>Full Name:</td>
-				<td><input name="uname" type="text" th:field="*{fullName}" /></td>
-				<td th:text="${fullName}">name error</td>
-			</tr>
-			<tr>
-				<td>Phone:</td>
-				<td><input type="number" name="uphone"
-					th:field="*{phoneNumber}" /></td>
-				<td th:text="${phoneNumber}">phone error</td>
-			</tr>
-			<tr>
-				<td>Email:</td>
-				<td><input name="uemail" type="text" th:field="*{email}" /></td>
-				<td th:text="${email}">email error</td>
-			</tr>
-			<tr>
-				<td>Password:</td>
-				<td><input name="upass" type="password" th:field="*{password}" /></td>
-				<td th:text="${password}">Password error</td>
-			</tr>
-			<tr>
-				<td><input type="checkbox" id="check1"
-					onclick="showPassword('check1')">Show Password</td>
-			</tr>
-			<tr>
-				<td>Confirm Password:</td>
-				<td><input name="ucpass" type="password"
-					th:field="*{cpassword}" /></td>
-				<td th:text="${cpassword}">Password error</td>
-				<td><span id='message'></span></td>
-			</tr>
-			<tr>
-				<td><input type="checkbox" id="check2"
-					onclick="showPassword('check2')">Show Password</td>
-			</tr>
-			<tr>
-				<td><button type="submit">Submit</button></td>
-			</tr>
-		</table>
-	</form>
-</body> -->
 
 <body>
 	<div id="login">
-		<h3 class="text-center text-white pt-5">Login form</h3>
 		<div class="container">
 			<div id="login-row"
 				class="row justify-content-center align-items-center">
 				<div id="login-column" class="col-md-6">
 					<div id="login-box" class="col-md-12">
-						<form th:action="@{/signIn}" th:object="${user}" method="post">
-							<h3 class="text-center text-info">Login</h3>
+						<form th:action="@{/signUp}" th:object="${user}" method="post">
+							<h3 class="text-center text-info">Registration</h3>
+							<div class="form-group">
+								<label for="fullname" class="text-info">Full Name:</label><br>
+								<input name="uname" type="text" th:field="*{fullName}" /><br>
+								<p th:text="${fullName}" />
+							</div>
+							<div class="form-group">
+								<label for="phone" class="text-info">Phone Number:</label><br>
+								<input maxlength="10" type="number" name="uphone" th:field="*{phoneNumber}" /><br>
+								<p th:text="${phoneNumber}" />
+							</div>
+
 							<div class="form-group">
 								<label for="username" class="text-info">Email:</label><br>
 								<input name="uemail" type="text" id="uemail"
@@ -134,19 +110,24 @@
 							</div>
 							<div class="form-group">
 								<label for="password" class="text-info">Password:</label><br>
-								<input name="upass" type="password" class="form-control"
-									id="upass" th:field="*{password}" /><br>
+								<input name="upass" type="password" th:field="*{password}" /><br>
 								<p th:text="${password}"></p>
-								<input type="checkbox" onclick="showPassword()">Show
-								Password
+								<input type="checkbox" id="check1"
+									onclick="showPassword('check1')" />Show Password
+							</div>
+							<div class="form-group">
+								<label for="cpassword" class="text-info">Confirm
+									Password:</label><br> <input name="ucpass" type="password"
+									th:field="*{cpassword}" /><br>
+								<p th:text="${cpassword}"></p>
+								<input type="checkbox" id="check2"
+									onclick="showPassword('check2')">Show Password
 								</td>
 							</div>
+
 							<div class="form-group">
 								<input type="submit" name="submit" class="btn btn-info btn-md"
 									value="submit">
-								<div class="form-group" style="float: right">
-									<a href="/signUp">Register</a>
-								</div>
 							</div>
 
 						</form>

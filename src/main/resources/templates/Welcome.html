@@ -85,7 +85,7 @@ a, a label {
 
 	<!-- <span style="float: right; margin-right: 20px; line-height: 3em;"
 		th:text="${userEmail}">Test</span> -->
-	<h1 style="text-align: center;">Welcome To The Library!</h1>
+	<h1 style="text-align: center;">Public Library</h1>
 	<div style="margin-top: 50px;"></div>
 	<div>
 		<table th:if="*{isAdminAval}">
@@ -104,7 +104,7 @@ a, a label {
 		arrivals</span>
 	<div style="width: 9%; display: inline-block; vertical-align: top;"
 		th:each="books:${book}">
-		<a href=""> <img
+		<a th:href="@{'/itemDetail/Book/'+${books.itemID}}"> <img
 			th:src="${'data:image/png;base64,'+books.coverImageUrl}"
 			width="100px" height="100px" />
 			<p th:text="${books.title}" style="text-align: center;"></p>
@@ -112,7 +112,7 @@ a, a label {
 	</div>
 	<div style="width: 9%; display: inline-block; vertical-align: top;"
 		th:each="movies:${movie}">
-		<a href=""> <img
+		<a th:href="@{'/itemDetail/Movie/'+${movies.itemID}}"> <img
 			th:src="${'data:image/png;base64,'+movies.coverImageUrl}"
 			width="100px" height="100px" />
 			<p th:text="${movies.title}" style="text-align: center;"></p>
@@ -120,7 +120,7 @@ a, a label {
 	</div>
 	<div style="width: 9%; display: inline-block; vertical-align: top;"
 		th:each="musics:${music}">
-		<a href=""> <img
+		<a th:href="@{'/itemDetail/Music/'+${musics.itemID}}"> <img
 			th:src="${'data:image/png;base64,'+musics.coverImageUrl}"
 			width="100px" height="100px" />
 			<p th:text="${musics.title}" style="text-align: center;"></p>
