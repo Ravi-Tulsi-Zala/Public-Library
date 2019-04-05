@@ -2,13 +2,13 @@ package com.library.browsePage;
 
 import java.util.List;
 
-import com.library.BussinessModelSetter.DisplaySetter;
-import com.library.BussinessModelSetter.IDisplaySetter;
-import com.library.DAO.IMovieDAO;
-import com.library.DAOFactory.DAOFactory;
-import com.library.DAOFactory.IDAOFactory;
+import com.library.businessModelSetter.DisplaySetter;
+import com.library.businessModelSetter.IDisplaySetter;
 import com.library.businessModels.Display;
 import com.library.businessModels.Movie;
+import com.library.dao.IMovieDAO;
+import com.library.daoFactory.DAOFactory;
+import com.library.daoFactory.IDAOFactory;
 
 public class BrowseMovies implements IBrowseDisplayObjects{
 	

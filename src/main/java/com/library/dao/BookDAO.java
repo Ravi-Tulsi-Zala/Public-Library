@@ -1,4 +1,4 @@
-package com.library.DAO;
+package com.library.dao;
 
 import java.io.IOException;
 import java.sql.Blob;
@@ -18,8 +18,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.library.BussinessModelSetter.BookSetter;
-import com.library.BussinessModelSetter.IBookSetter;
+import com.library.businessModelSetter.BookSetter;
+import com.library.businessModelSetter.IBookSetter;
 import com.library.businessModels.Book;
 import com.library.businessModels.LibraryItem;
 import com.library.dbConnection.DatabaseConnection;

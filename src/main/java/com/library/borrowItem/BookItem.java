@@ -1,10 +1,10 @@
 package com.library.borrowItem;
 
-import com.library.DAO.IUserItemDAO;
-import com.library.DAOFactory.DAOFactory;
-import com.library.DAOFactory.IDAOFactory;
 import com.library.businessModels.DisplayDetailed;
 import com.library.businessModels.UserItem;
+import com.library.dao.IUserItemDAO;
+import com.library.daoFactory.DAOFactory;
+import com.library.daoFactory.IDAOFactory;
 
 public class BookItem {
 

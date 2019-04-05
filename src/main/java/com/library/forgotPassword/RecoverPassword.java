@@ -1,4 +1,4 @@
-package com.library.ForgotPassword;
+package com.library.forgotPassword;
 
 import java.io.IOException;
 
@@ -9,8 +9,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.library.DAO.IUserDAO;
-import com.library.DAOFactory.DAOFactory;
+import com.library.dao.IUserDAO;
+import com.library.daoFactory.DAOFactory;
 import com.library.email.EmailDetails;
 import com.library.email.SendEmail;
 import com.library.validatations.ValidateUserFormsAbstract;
@@ -56,7 +56,7 @@ public class RecoverPassword extends RecoverPasswordAbstract {
 		fetchSaltedPwdFromDB();
 		SendEmail.sendmail(details);
 		emailSent = true;
-		logger.log(Level.ALL, "Email sent successfully to the user => ", email);
+		logger.log(Level.ALL, "Email sent successfully to the user => ");
 		return emailSent;
 	}
 

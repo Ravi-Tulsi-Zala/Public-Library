@@ -1,4 +1,4 @@
-package com.library.BussinessModelSetter;
+package com.library.businessModelSetter;
 	import java.sql.ResultSet;
 
 import com.library.businessModels.Cover;

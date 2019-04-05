@@ -1,4 +1,4 @@
-package com.library.DAO;
+package com.library.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -40,7 +40,7 @@ public class UserItemDAO implements IUserItemDAO {
 	public List<UserItem> getAllBorrowedItems() {
 
 		UserItem item;
-		query = "SELECT * FROM user_item";
+		query = "SELEC * FROM user_item";
 		List<UserItem> items = new ArrayList<UserItem>();
 
 		try {

@@ -8,10 +8,10 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.multipart.MultipartFile;
-import com.library.DAO.ICoverDAO;
-import com.library.DAOFactory.DAOFactory;
-import com.library.DAOFactory.IDAOFactory;
 
+import com.library.dao.ICoverDAO;
+import com.library.daoFactory.DAOFactory;
+import com.library.daoFactory.IDAOFactory;
 public class ItemCoverSetter implements IItemCoverSetter {
 
 	IDAOFactory iDAOfactory;

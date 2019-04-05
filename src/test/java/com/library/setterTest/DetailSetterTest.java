@@ -2,7 +2,7 @@ package com.library.setterTest;
 
 import org.junit.Test;
 
-import com.library.BussinessModelSetter.DetailsSetter;
+import com.library.businessModelSetter.DetailsSetter;
 import com.library.businessModels.Music;
 
 public class DetailSetterTest {

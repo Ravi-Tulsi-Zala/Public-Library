@@ -4,9 +4,9 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.library.DAO.IUserItemDAO;
-import com.library.DAO.UserItemDAO;
 import com.library.businessModels.UserItem;
+import com.library.dao.IUserItemDAO;
+import com.library.dao.UserItemDAO;
 
 public class UserItemDAOTest {
 

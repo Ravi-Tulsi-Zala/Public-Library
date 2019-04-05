@@ -1,4 +1,4 @@
-package com.library.DAO;
+package com.library.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +13,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.library.BussinessModelSetter.IMusicSetter;
-import com.library.BussinessModelSetter.MusicSetter;
+import com.library.businessModelSetter.IMusicSetter;
+import com.library.businessModelSetter.MusicSetter;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Music;
 import com.library.dbConnection.DatabaseConnection;

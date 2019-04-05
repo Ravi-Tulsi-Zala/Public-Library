@@ -8,14 +8,14 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.library.DAO.IMovieDAO;
-import com.library.DAO.IUserItemDAO;
-import com.library.DAOFactory.DAOFactory;
-import com.library.DAOFactory.IDAOFactory;
-import com.library.ForgotPassword.ForgotPasswordController;
 import com.library.businessModels.UserItem;
+import com.library.dao.IMovieDAO;
+import com.library.dao.IUserItemDAO;
+import com.library.daoFactory.DAOFactory;
+import com.library.daoFactory.IDAOFactory;
 import com.library.email.EmailDetails;
-import com.library.email.SendEmail;;
+import com.library.email.SendEmail;
+import com.library.forgotPassword.ForgotPasswordController;
 
 public class MovieReturnStrategy implements IReturnItemStrategy {
 

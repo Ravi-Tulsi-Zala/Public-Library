@@ -10,15 +10,15 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.library.DAO.IUserDAO;
-import com.library.DAOFactory.DAOFactory;
-import com.library.DAOFactory.IDAOFactory;
 import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.IUserExtendedInfo;
 import com.library.businessModels.Salt;
 import com.library.businessModels.User;
 import com.library.businessModels.UserBasicInfo;
 import com.library.businessModels.UserExtendedInfo;
+import com.library.dao.IUserDAO;
+import com.library.daoFactory.DAOFactory;
+import com.library.daoFactory.IDAOFactory;
 import com.library.messages.Messages;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.validatations.ValidateUserForms;

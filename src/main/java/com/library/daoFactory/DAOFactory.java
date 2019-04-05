@@ -1,19 +1,19 @@
-package com.library.DAOFactory;
+package com.library.daoFactory;
 
-import com.library.DAO.BookDAO;
-import com.library.DAO.CoverDAO;
-import com.library.DAO.IBookDAO;
-import com.library.DAO.ICoverDAO;
-import com.library.DAO.ILibraryItemDAO;
-import com.library.DAO.IMovieDAO;
-import com.library.DAO.IMusicDAO;
-import com.library.DAO.IUserDAO;
-import com.library.DAO.IUserItemDAO;
-import com.library.DAO.LibraryItemDAO;
-import com.library.DAO.MovieDAO;
-import com.library.DAO.MusicDAO;
-import com.library.DAO.UserDAO;
-import com.library.DAO.UserItemDAO;
+import com.library.dao.BookDAO;
+import com.library.dao.CoverDAO;
+import com.library.dao.IBookDAO;
+import com.library.dao.ICoverDAO;
+import com.library.dao.ILibraryItemDAO;
+import com.library.dao.IMovieDAO;
+import com.library.dao.IMusicDAO;
+import com.library.dao.IUserDAO;
+import com.library.dao.IUserItemDAO;
+import com.library.dao.LibraryItemDAO;
+import com.library.dao.MovieDAO;
+import com.library.dao.MusicDAO;
+import com.library.dao.UserDAO;
+import com.library.dao.UserItemDAO;
 
 
 public class DAOFactory implements IDAOFactory {

@@ -1,5 +1,7 @@
 package com.library.search;
 
+import javax.inject.Inject;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -10,8 +12,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.library.demo.LibraryApplication;
-
-import javax.inject.Inject;
 
 
 @RunWith(SpringRunner.class)
