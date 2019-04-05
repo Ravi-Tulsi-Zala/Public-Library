@@ -36,7 +36,12 @@ public enum Messages {
 	WelcomeSQlErrorStatement("Some problem occured while connection with Database in welcome controller."),
 	WelcomeErrorStatement("Something went wrong in Welcome controller please look into logs."),
 	ForgotPwdErrorStatement("Some generic error occured while in forgotPassword controller, look for logs."),
-	ForgotPwdEmailErrorStatement("Some problem occured while sending a email.");
+	ForgotPwdEmailErrorStatement("Some problem occured while sending a email."),
+	ParsingErrorStatement("Some problem occured while parsing XML."),
+	EmailExistErrorStatement("Email already exists. Please register with different email"),
+	validationSignUp("signUpUserData method implemented completely"),
+	validationSignIn("signInUserData method implemented completely");
+	
 	
 	
 	private String message;

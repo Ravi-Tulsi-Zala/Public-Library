@@ -26,10 +26,26 @@
 		
 	</Appenders>
 	<Loggers>
-		<Logger name="com.library.DAO" level="all" additivity="false">
+		<Logger name="com.library.dao" level="all" additivity="false">
 			<AppenderRef ref="FileAppender" />
-			
-			
+		</Logger>
+		<Logger name="com.library.signIn" level="all" additivity="false">
+			<AppenderRef ref="FileAppender" />
+		</Logger>
+		<Logger name="com.library.signUp" level="all" additivity="false">
+			<AppenderRef ref="FileAppender" />
+		</Logger>
+		<Logger name="com.library.welcomePage" level="all" additivity="false">
+			<AppenderRef ref="FileAppender" />
+		</Logger>
+		<Logger name="com.library.validations" level="all" additivity="false">
+			<AppenderRef ref="FileAppender" />
+		</Logger>
+		<Logger name="com.library.forgotPassword" level="all" additivity="false">
+			<AppenderRef ref="FileAppender" />
+		</Logger>
+		<Logger name="com.library.parsers" level="all" additivity="false">
+			<AppenderRef ref="FileAppender" />
 		</Logger>
 		<Logger name="org.springframework.boot" level="info"
 			additivity="false">

@@ -1,4 +1,4 @@
-package com.library.validatations;
+package com.library.validations;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +8,9 @@ import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.IUserExtendedInfo;
 import com.library.parsers.XmlParser;
 
-//Template pattern implemented in this class and in its child class. I have implemented setValidationRules() and setErrorStringRules() that are being used by the child class many times.
-// Abstract functions are also added in this class and that are used by child class, where it changes the flow of action as required.
-// Hence, template patter.
+// This abstraction layer provides a convenient flow of taking responsibility of configurable business logic. 
+// Tried to implement Template pattern; Abstract functions in this class and that are used by child class, 
+// where it changes the flow of action as required.
 public abstract class ValidateUserFormsAbstract {
 	// Roots in the .xml file are declared below.
 	private static final String passwordLengthKeyRoot = "passwordlength";
