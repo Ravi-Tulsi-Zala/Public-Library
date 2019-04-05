@@ -81,7 +81,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	private String redirectToWelcome = Messages.WelcomePageRedirect.getMessage();
 	private String redirectToSignIn = Messages.SignInPageRedirect.getMessage();
-	private String redirectToSignUp = Messages.SignUpPageRedirect.getMessage();
 	private String redirectToForgotPwd = Messages.ForgotPassPageRedirect.getMessage();
 	private String redirectToErrorPage = Messages.ErrorPageRedirect.getMessage();
 
@@ -153,7 +152,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@GetMapping("/basicSearch")
-	public String getSimpleSearchPage(ModelMap model, HttpSession httpSession) {
+	public String getBasicSearchPage(ModelMap model, HttpSession httpSession) {
 		dbSearchController.clearSearch(httpSession);
 		model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
 		addUserEmail(model, httpSession);
@@ -161,7 +160,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/basicSearch")
-	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage,
+	public String executeBasicSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage,
 			BookSearch bookSearch, MusicSearch musicSearch, MovieSearch moviesSearch) {
 		SearchResults searchResults = executeSearch(httpSession, termsAndPage, bookSearch, musicSearch, moviesSearch);
 		model.addAttribute("searchResults", searchResults);

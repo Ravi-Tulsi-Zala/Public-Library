@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MusicSearchtest {
+public class MusicSearchTest {
 	private MusicSearch ms;
 	
 	@Before
