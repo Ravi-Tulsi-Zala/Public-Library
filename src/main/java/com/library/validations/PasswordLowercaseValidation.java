@@ -1,4 +1,4 @@
-package com.library.validatations;
+package com.library.validations;
 
 public class PasswordLowercaseValidation {
 	private String passwordLowerCase;

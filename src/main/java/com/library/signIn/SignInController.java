@@ -17,8 +17,8 @@ import com.library.businessModels.UserBasicInfo;
 import com.library.dao.IUserDAO;
 import com.library.daoFactory.DAOFactory;
 import com.library.messages.Messages;
-import com.library.validatations.ValidateUserForms;
-import com.library.validatations.ValidateUserFormsAbstract;
+import com.library.validations.ValidateUserForms;
+import com.library.validations.ValidateUserFormsAbstract;
 import com.library.welcomePage.UserSessionDetail;
 
 public class SignInController implements ISignInController {

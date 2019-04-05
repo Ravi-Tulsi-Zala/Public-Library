@@ -1,4 +1,4 @@
-package com.library.bussinessModelSetter;
+package com.library.businessModelSetter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,11 +11,10 @@ public class MovieSetter implements IMovieSetter {
 
 	@Override
 	public List<Movie> mapMovie(ResultSet resultSet) {
-		
+
 		List<Movie> movies = new ArrayList<Movie>();
 		try {
-			while(resultSet.next())
-			{
+			while (resultSet.next()) {
 				Movie movie = new Movie();
 				movie.setCategory(resultSet.getString("Category"));
 				movie.setDescription(resultSet.getString("Description"));

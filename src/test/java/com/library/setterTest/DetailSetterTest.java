@@ -2,8 +2,8 @@ package com.library.setterTest;
 
 import org.junit.Test;
 
+import com.library.businessModelSetter.DetailsSetter;
 import com.library.businessModels.Music;
-import com.library.bussinessModelSetter.DetailsSetter;
 
 public class DetailSetterTest {
 

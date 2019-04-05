@@ -3,7 +3,6 @@ package com.library.search;
 import java.util.List;
 
 import com.library.businessModels.LibraryItem;
-import com.library.daoFactory.DAOFactory;
 
 public class MovieSearch extends SearchCategory {
 
@@ -11,7 +10,7 @@ public class MovieSearch extends SearchCategory {
 	private boolean searchMovieTitle = true;
 	private boolean searchMovieDirector = true;
 	private boolean searchMovieDescription = true;
-	
+
 	@Override
 	public List<LibraryItem> search(String searchterms) {
 		return daoFactory.makeMovieDAO().getMoviesBySearchTerms(this, searchterms);

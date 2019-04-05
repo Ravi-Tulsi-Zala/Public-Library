@@ -1,13 +1,12 @@
 package com.library.search;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import com.library.businessModels.LibraryItem;
 
 public class BookSearchTest {
 	private BookSearch bs;

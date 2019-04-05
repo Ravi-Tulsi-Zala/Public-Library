@@ -13,7 +13,7 @@ import com.library.dao.IUserDAO;
 import com.library.daoFactory.DAOFactory;
 import com.library.email.EmailDetails;
 import com.library.email.SendEmail;
-import com.library.validatations.ValidateUserFormsAbstract;
+import com.library.validations.ValidateUserFormsAbstract;
 
 public class RecoverPassword extends RecoverPasswordAbstract {
 	private String securityQuestion;
@@ -56,7 +56,7 @@ public class RecoverPassword extends RecoverPasswordAbstract {
 		fetchSaltedPwdFromDB();
 		SendEmail.sendmail(details);
 		emailSent = true;
-		logger.log(Level.ALL, "Email sent successfully to the user => ", email);
+		logger.log(Level.ALL, "Email sent successfully to the user => ");
 		return emailSent;
 	}
 

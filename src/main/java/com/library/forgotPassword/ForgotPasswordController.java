@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.library.validatations.ValidateUserForms;
+import com.library.validations.ValidateUserForms;
 
 public class ForgotPasswordController implements IForgotPasswordController {
 
@@ -28,7 +28,7 @@ public class ForgotPasswordController implements IForgotPasswordController {
 			recoverPassword.setSecurityQuestionAnswer(recoverDetails.getSecurityQuestionAnswer());
 			recoverPassword.setSecurityQuestion(recoverDetails.getSecurityQuestion());
 			status = recoverPassword.sendEmailToUser();
-			logger.log(Level.ALL, "Email status => ", status);
+			logger.log(Level.ALL, "Email status => ");
 		}
 		return status;
 	}
