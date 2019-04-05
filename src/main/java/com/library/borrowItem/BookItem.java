@@ -42,6 +42,8 @@ public class BookItem {
 			isItemBooked = borrowBook();
 			BookingEmailSender bookingEmailSender = new BookingEmailSender();
 			bookingEmailSender.sendEmail(userItem);
+			DescreaseAvailability decreaser = new DescreaseAvailability(userItem.getCategory());
+			decreaser.decreaseAvailability(userItem.getItemId());
 		}
 		else if(status.equals(reserve))
 		{
