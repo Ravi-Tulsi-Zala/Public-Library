@@ -199,10 +199,10 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			
 			java.util.Enumeration<String> reqEnum = request.getParameterNames();
 
-			while (reqEnum.hasMoreElements()) {
-				String s = reqEnum.nextElement();
-				model.addAttribute("Error",request.getParameter(s));
-			}
+//			while (reqEnum.hasMoreElements()) {
+//				String s = reqEnum.nextElement();
+//				model.addAttribute("Error",request.getParameter(s));
+//			}
 
 			
 			ISignInController signIn = factory.signIn(user, httpSession);
