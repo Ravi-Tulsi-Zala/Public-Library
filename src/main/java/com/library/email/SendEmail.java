@@ -28,7 +28,7 @@ public class SendEmail {
 		props.put("mail.smtp.fallback", "true");
 		props.put("mail.smtp.starttls.enable", "true");
 		props.put("mail.smtp.starttls.required", "true");
-		props.put("mail.smtp.ssl.enable", "false");
+		props.put("mail.smtp.ssl.enable", "true");
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
 	    props.put("mail.smtp.socketFactory.port", "587");   
