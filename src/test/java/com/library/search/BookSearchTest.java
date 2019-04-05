@@ -46,6 +46,6 @@ public class BookSearchTest {
 		bs.setSearchBookTitle(false);
 		assertFalse(bs.isSearchBookTitle());
 		bs.setSearchInBooks(false);
-		assertFalse(bs.isSearchInBooks());
+		assertFalse(bs.isSearchInBooks()); 
 	}
 }
