@@ -56,7 +56,7 @@ public class RecoverPassword extends RecoverPasswordAbstract {
 		fetchSaltedPwdFromDB();
 		SendEmail.sendmail(details);
 		emailSent = true;
-		logger.log(Level.ALL, "Email sent successfully to the user => ", email);
+		logger.log(Level.ALL, "Email sent successfully to the user => ");
 		return emailSent;
 	}
 

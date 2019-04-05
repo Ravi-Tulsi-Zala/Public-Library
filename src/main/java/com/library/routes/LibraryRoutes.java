@@ -194,17 +194,9 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/signIn")
-	public String processSignInForm(HttpSession httpSession, ModelMap model, HttpServletRequest request, User user) {
+	public String processSignInForm(HttpSession httpSession, ModelMap model, User user) {
 		Logger logger = LogManager.getLogger(SignInController.class);
 		try {
-
-			java.util.Enumeration<String> reqEnum = request.getParameterNames();
-
-//			while (reqEnum.hasMoreElements()) {
-//				String s = reqEnum.nextElement();
-//				model.addAttribute("Error",request.getParameter(s));
-//			}
-
 			ISignInController signIn = factory.signIn(user, httpSession);
 			list = signIn.validateSignIn();
 			for (int index = 0; index < list.size(); index++) {
@@ -286,22 +278,18 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@PostMapping("/loanItems")
 	public String returnItems(ModelMap model, Select select) {
 
-		String selections = select.getSelections();
+		String selections = select.getSelections(); 
 		JsonStringParser jsonStringParser = new JsonStringParser();
 		List<UserItem> userItems = new ArrayList<UserItem>();
 		userItems = jsonStringParser.parseSelections(selections);
 		ILoanManagementController iLoanManagementController = factory.makeLoanManagementController();
-		for (UserItem item : userItems) {
-
-			iLoanManagementController.removeUserItem(item);
-		}
-
+		iLoanManagementController.removeUserItems(userItems);
 		List<UserItem> items = iLoanManagementController.getAllBorrowedItems();
 		model.addAttribute("select", new Select());
 		model.addAttribute("items", items);
 		return "LoanManagement";
 	}
-
+	
 	@GetMapping("/welcome")
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem, HttpServletRequest request,
 			HttpSession httpSession) {
@@ -396,12 +384,12 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			}
 		} catch (MessagingException | IOException em) {
 			logger.log(Level.ALL, "Some problem occured while sending a email.", em);
-			redirectAttr.addAttribute("error", em.getMessage());
-			return redirectToSignIn;
+			redirectAttr.addAttribute("error", em);
+			return redirectToErrorPage;
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Some generic error occured while in forgotPassword controller.", e);
-			redirectAttr.addAttribute("error", e.getMessage());
-			return redirectToSignIn;
+			redirectAttr.addAttribute("error", e);
+			return redirectToErrorPage;
 		}
 	}
 

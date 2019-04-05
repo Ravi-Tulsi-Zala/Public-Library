@@ -11,9 +11,9 @@ public class DisplayObjectInitializer {
 		IBrowseDisplayFactory browseFactory = BrowseDisplayFactory.getInstance();
 		if (itemType.equals(book)) {
 			browseDisplayObjects = browseFactory.makeBookDisplay();
-		} else if (itemType.equals(music)) {
-			browseDisplayObjects = browseFactory.makeMovieDisplay();
 		} else if (itemType.equals(movie)) {
+			browseDisplayObjects = browseFactory.makeMovieDisplay();
+		} else if (itemType.equals(music)) {
 			browseDisplayObjects = browseFactory.makeMusicDisplay();
 		}
 		return browseDisplayObjects;

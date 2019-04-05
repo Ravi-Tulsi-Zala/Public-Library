@@ -7,13 +7,12 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.library.businessModelSetter.DisplaySetter;
 import com.library.businessModels.Book;
 import com.library.businessModels.Display;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
-import com.library.bussinessModelSetter.DisplaySetter;
 import com.library.mockDB.BrowsePageMock;
-
 
 public class DisplaySetterTest {
 
@@ -26,9 +25,9 @@ public class DisplaySetterTest {
 		DisplaySetter displaySetter = new DisplaySetter();
 		bookDisplay = displaySetter.getBookDisplayObjects(books);
 		Display testBookDisplay = bookDisplay.get(0);
-		assertEquals("a",testBookDisplay.getTitle());
+		assertEquals("a", testBookDisplay.getTitle());
 	}
-	
+
 	@Test
 	public void movieDisplayTest() {
 		List<Movie> movies = new ArrayList<Movie>();
@@ -38,9 +37,9 @@ public class DisplaySetterTest {
 		DisplaySetter displaySetter = new DisplaySetter();
 		movieDisplay = displaySetter.getMovieDisplayObjects(movies);
 		Display testMovieDisplay = movieDisplay.get(0);
-		assertEquals("a",testMovieDisplay.getTitle());
+		assertEquals("a", testMovieDisplay.getTitle());
 	}
-	
+
 	@Test
 	public void MusicDisplayTest() {
 		List<Music> music = new ArrayList<Music>();
@@ -50,6 +49,6 @@ public class DisplaySetterTest {
 		DisplaySetter displaySetter = new DisplaySetter();
 		musicDisplay = displaySetter.getMusicDisplayObjects(music);
 		Display testMusicDisplay = musicDisplay.get(0);
-		assertEquals("a",testMusicDisplay.getTitle());
+		assertEquals("a", testMusicDisplay.getTitle());
 	}
 }

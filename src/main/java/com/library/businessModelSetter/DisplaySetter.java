@@ -1,4 +1,4 @@
-package com.library.bussinessModelSetter;
+package com.library.businessModelSetter;
 
 import java.util.ArrayList;
 import java.util.Iterator;
