@@ -1,5 +1,8 @@
 package com.library;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -35,4 +38,28 @@ public class ForgotPasswordTest {
 		}
 	}
 
+	@Test
+	public void testGetQuestion() {
+		ForgotPasswordMocked fPassword = new ForgotPasswordMocked();
+		assertNotNull(fPassword.getQuestion());
+	}
+
+	@Test
+	public void testGetPassword() {
+		ForgotPasswordMocked fPassword = new ForgotPasswordMocked();
+		assertEquals(fPassword.getPassword("QWERqwer1!@SALT"), "QWERqwer1!@");
+		assertNotNull(fPassword.getPassword("QWERqwer1!@SALT"));
+	}
+
+	@Test
+	public void testInitiateForgotPassword() {
+		EmailDetails emailDetails = null;
+		ForgotPasswordMocked fPassword = new ForgotPasswordMocked();
+		emailDetails = fPassword.initiateForgotUserMock();
+		assertNotNull(emailDetails);
+		assertEquals(emailDetails.getAdminEmailID(), "csci5308group2@gmail.com");
+		assertEquals(emailDetails.getAdminPassword(), "Rel7.xPass!");
+		assertEquals(emailDetails.getSubject(),"TEST EMAIL, IGNORE.");
+		assertNotNull(emailDetails.getBody());
+	}
 }

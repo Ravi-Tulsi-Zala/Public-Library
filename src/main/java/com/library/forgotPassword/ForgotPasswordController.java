@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.library.validatations.ValidateUserForms;
+import com.library.validations.ValidateUserForms;
 
 public class ForgotPasswordController implements IForgotPasswordController {
 

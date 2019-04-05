@@ -272,7 +272,6 @@ public class MusicDAO implements IMusicDAO {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
 			resultSet = preparedStatement.executeQuery();
-			musicsAvailable = resultSet.getInt(1);
 			if (resultSet.next()) {
 				musicsAvailable = resultSet.getInt("Availability");
 			}

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.message.Message;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -84,11 +85,11 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	private String redirectToForgotPwd = Messages.ForgotPassPageRedirect.getMessage();
 	private String redirectToErrorPage = Messages.ErrorPageRedirect.getMessage();
 
-	private String gotoSignInPage = "SignInForm";
-	private String gotoSignUpPage = "SignUpForm";
-	private String gotoWelcomePage = "Welcome";
-	private String gotoForgotPwdPage = "ForgotPassword";
-	private String gotoErrorPwdPage = "ErrorPage";
+	private String gotoSignInPage = Messages.SignInForm.getMessage();
+	private String gotoSignUpPage = Messages.SignUpForm.getMessage();
+	private String gotoWelcomePage = Messages.Welcome.getMessage();
+	private String gotoForgotPwdPage = Messages.ForgotPassword.getMessage();
+	private String gotoErrorPwdPage = Messages.ErrorPage.getMessage();
 
 	public LibraryRoutes() {
 		libraryInstance = LibraryFactorySingleton.instance();
@@ -97,7 +98,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/signUp")
-	public String processSignUpForm(ModelMap model, User user, HttpSession httpSession) {
+	public String processSignUpForm(ModelMap model, User user, HttpSession httpSession, RedirectAttributes redirectAttr) {
 		Logger logger = LogManager.getLogger(SignUpController.class);
 		try {
 			ISignUpController signUpCreate = factory.signUp(user, httpSession);
@@ -113,7 +114,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 				return redirectToWelcome;
 			}
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Something went wrong while registering the User, please check detailed logs.", e);
+			logger.log(Level.ALL, Messages.SignUpErrorStatement.getMessage(), e);
+			redirectAttr.addAttribute("error", e);
 			return redirectToErrorPage;
 		}
 	}
@@ -194,7 +196,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/signIn")
-	public String processSignInForm(HttpSession httpSession, ModelMap model, User user) {
+	public String processSignInForm(HttpSession httpSession, ModelMap model, User user, RedirectAttributes redirectAttr) {
 		Logger logger = LogManager.getLogger(SignInController.class);
 		try {
 			ISignInController signIn = factory.signIn(user, httpSession);
@@ -209,8 +211,9 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			}
 			return signIn.checkUserCredential();
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Something went wrong while signing in the User, please check detailed logs.", e);
-			return redirectToErrorPage; // Something went wrong page.
+			logger.log(Level.ALL,Messages.SignInErrorStatement.getMessage(), e);
+			redirectAttr.addAttribute("error", e);
+			return redirectToErrorPage; 
 		}
 	}
 
@@ -292,7 +295,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	
 	@GetMapping("/welcome")
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem, HttpServletRequest request,
-			HttpSession httpSession) {
+			HttpSession httpSession, RedirectAttributes redirectAttr) {
 		Logger logger = LogManager.getLogger(WelcomePageController.class);
 		dbSearchController.clearSearch(httpSession);
 		String loggingStatus = UserSessionDetail.getClientActiveStatus();
@@ -300,7 +303,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
 		IWelcomeController welcomeCtrl = factory.welcomePage();
 		java.util.Enumeration<String> reqEnum = request.getParameterNames();
-
 		while (reqEnum.hasMoreElements()) {
 			String s = reqEnum.nextElement();
 			if (s.equals("LoggedOut") && request.getParameter(s).equals("true")) {
@@ -308,7 +310,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 				sessionClient = "";
 			}
 		}
-
 		List<Book> book, favBooks;
 		List<Movie> movie, favMovies;
 		List<Music> music, favMusic;
@@ -320,10 +321,12 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			favMovies = welcomeCtrl.getFavouriteMovies();
 			favMusic = welcomeCtrl.getFavouriteMusic();
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Some problem occured while connection with Database in welcome controller.", e);
+			logger.log(Level.ALL, Messages.WelcomeSQlErrorStatement.getMessage(), e);
+			redirectAttr.addAttribute("error", e);
 			return redirectToErrorPage;
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Some problem occured, check logs.", e);
+			logger.log(Level.ALL, Messages.WelcomeErrorStatement.getMessage(), e);
+			redirectAttr.addAttribute("error", e);
 			return redirectToErrorPage;
 		} finally {
 			DatabaseConnection databaseConnection = new DatabaseConnection();
@@ -366,7 +369,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			securityQuestionValue = fPwdCntrl.setQuestion();
 			model.addAttribute("securityQuestion", securityQuestionValue);
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Some generic error occured while in forgotPassword controller.", e);
+			logger.log(Level.ALL, Messages.ForgotPwdErrorStatement.getMessage(), e);
 		}
 		return gotoForgotPwdPage;
 	}
@@ -383,11 +386,11 @@ public class LibraryRoutes implements WebMvcConfigurer {
 				return redirectToForgotPwd;
 			}
 		} catch (MessagingException | IOException em) {
-			logger.log(Level.ALL, "Some problem occured while sending a email.", em);
+			logger.log(Level.ALL, Messages.ForgotPwdEmailErrorStatement.getMessage(), em);
 			redirectAttr.addAttribute("error", em);
 			return redirectToErrorPage;
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Some generic error occured while in forgotPassword controller.", e);
+			logger.log(Level.ALL, Messages.ForgotPwdErrorStatement.getMessage(), e);
 			redirectAttr.addAttribute("error", e);
 			return redirectToErrorPage;
 		}
