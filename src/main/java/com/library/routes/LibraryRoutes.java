@@ -97,10 +97,10 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/signUp")
-	public String processSignUpForm(ModelMap model, User user,HttpSession httpSession) {
+	public String processSignUpForm(ModelMap model, User user, HttpSession httpSession) {
 		Logger logger = LogManager.getLogger(SignUpController.class);
 		try {
-			ISignUpController signUpCreate = factory.signUp(user,httpSession);
+			ISignUpController signUpCreate = factory.signUp(user, httpSession);
 			list = signUpCreate.validateSignUp();
 			for (int i = 0; i < list.size(); i++) {
 				model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
@@ -194,10 +194,10 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/signIn")
-	public String processSignInForm(HttpSession httpSession, ModelMap model,HttpServletRequest request, User user) {
+	public String processSignInForm(HttpSession httpSession, ModelMap model, HttpServletRequest request, User user) {
 		Logger logger = LogManager.getLogger(SignInController.class);
 		try {
-			
+
 			java.util.Enumeration<String> reqEnum = request.getParameterNames();
 
 //			while (reqEnum.hasMoreElements()) {
@@ -205,7 +205,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 //				model.addAttribute("Error",request.getParameter(s));
 //			}
 
-			
 			ISignInController signIn = factory.signIn(user, httpSession);
 			list = signIn.validateSignIn();
 			for (int index = 0; index < list.size(); index++) {

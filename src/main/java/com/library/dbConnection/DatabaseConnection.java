@@ -55,7 +55,7 @@ public class DatabaseConnection {
 	
 	public static Connection getConn()
 	{
-		return getDatabaseConnectionInstance().connection;
+		return getDatabaseConnectionInstance().getConnection();
 	}
 	
 	public void closeConnection(ResultSet resultSet, java.sql.PreparedStatement preparedStatement)
