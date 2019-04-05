@@ -275,7 +275,6 @@ public class MusicDAO implements IMusicDAO {
 			if (resultSet.next()) {
 				musicsAvailable = resultSet.getInt("Availability");
 			}
-
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {

@@ -296,7 +296,7 @@ public class BookDAO implements IBookDAO {
 
 	@Override
 	public int getAvailability(int itemID) {
-		
+
 		int booksAvailable = 0;
 		try {
 			this.connection = databaseConnection.getConnection();
@@ -304,11 +304,10 @@ public class BookDAO implements IBookDAO {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
 			resultSet = preparedStatement.executeQuery();
-			if(resultSet.next())
-			{
+			if (resultSet.next()) {
 				booksAvailable = resultSet.getInt("Availability");
 			}
-			
+
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
@@ -370,7 +369,7 @@ public class BookDAO implements IBookDAO {
 
 	@Override
 	public void updateAvailability(int itemId, int updatedAvailability) {
-		
+
 		try {
 			this.connection = databaseConnection.getConnection();
 			query = "update books set Availability =? where Item_ID = ?";
@@ -378,7 +377,7 @@ public class BookDAO implements IBookDAO {
 			preparedStatement.setInt(1, updatedAvailability);
 			preparedStatement.setInt(2, itemId);
 			preparedStatement.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
@@ -386,8 +385,6 @@ public class BookDAO implements IBookDAO {
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
-		
-
 	}
 
 }

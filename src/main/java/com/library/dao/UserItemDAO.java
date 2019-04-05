@@ -106,7 +106,7 @@ public class UserItemDAO implements IUserItemDAO {
 		String title = item.getTitle();
 		boolean isBorrowed = false;
 
-		query = "SELECT from user_item WHERE Email=? and Title=?";
+		query = "SELECT * from user_item WHERE Email=? and Title=?";
 
 		try {
 			this.connection = databaseConnection.getConnection();
@@ -136,6 +136,7 @@ public class UserItemDAO implements IUserItemDAO {
 
 	}
 
+	@Override
 	public boolean addItemOnHold(UserItem item) {
 
 		String email = item.getEmail();
@@ -168,6 +169,7 @@ public class UserItemDAO implements IUserItemDAO {
 
 	}
 
+	@Override
 	public boolean isItemOnHold(int itemId) {
 
 		boolean isItemOnHold = false;
@@ -292,3 +294,4 @@ public class UserItemDAO implements IUserItemDAO {
 
 	}
 }
+

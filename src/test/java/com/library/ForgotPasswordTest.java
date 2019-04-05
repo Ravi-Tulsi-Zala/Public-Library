@@ -17,7 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.library.email.EmailDetails;
 import com.library.email.SendEmail;
 import com.library.mockDB.ForgotPasswordMocked;
-
 @RunWith(SpringRunner.class)
 public class ForgotPasswordTest {
 	public static ForgotPasswordMocked forgotPasswordMocked;
