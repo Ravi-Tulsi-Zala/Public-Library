@@ -5,20 +5,24 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.mail.search.SearchTerm;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.library.businessModels.Book;
+import com.library.businessModels.BusinessModelsFactory;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
 
 public class SearchRequestTest {
 	private SearchRequest sr;
+	private SearchFactory sf = SearchFactory.instance();
 
 	@Before
 	public void setUp() throws Exception {
-		sr = SearchFactory.instance().makeSearchRequest();
+		sr = sf.makeSearchRequest();
 	}
 
 	@Test
@@ -26,7 +30,7 @@ public class SearchRequestTest {
 		sr.addCategoryToSearchIn(new MockMusicSearch(12));
 		sr.addCategoryToSearchIn(new MockMovieSearch(17));
 		sr.addCategoryToSearchIn(new MockBookSearch(19));
-		SearchTermsAndPage stap = new SearchTermsAndPage();
+		SearchTermsAndPage stap = sf.makeSearchTermsAndPage();
 		stap.setSearchTerms("asd");
 		sr.setTermsAndPage(stap);
 		ISearchResults searchResults = sr.searchInDb();
@@ -40,15 +44,21 @@ public class SearchRequestTest {
 	}
 	@Test
 	public void isNewSearchTermsTest() {
-		SearchRequest other = SearchFactory.instance().makeSearchRequest();
-		SearchTermsAndPage tap1 = SearchFactory.instance().makeSearchTermsAndPage();
+		SearchRequest other = sf.makeSearchRequest();
+		SearchTermsAndPage tap1 = sf.makeSearchTermsAndPage();
 		tap1.setSearchTerms("asd");
 		sr.setTermsAndPage(tap1);
-		SearchTermsAndPage tap2 = SearchFactory.instance().makeSearchTermsAndPage();
+		SearchTermsAndPage tap2 = sf.makeSearchTermsAndPage();
 		tap2.setSearchTerms("asdasd");
 		other.setTermsAndPage(tap2);
 		assertTrue(sr.isNewSearchTerms(other));
 		tap2.setSearchTerms("asd");
 		assertFalse(sr.isNewSearchTerms(other));
+	}
+	@Test
+	public void cansSetAndGetSearchTermsAndPage() {
+		SearchTermsAndPage stap = sf.makeSearchTermsAndPage();
+		sr.setTermsAndPage(stap);
+		assertTrue(sr.getTermsAndPage() == stap);
 	}
 }
