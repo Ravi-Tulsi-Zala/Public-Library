@@ -24,7 +24,7 @@ public class ForgotPasswordMocked {
 		}
 	}
 
-	private List<String> addUserEmailIds() {
+	public List<String> addUserEmailIds() {
 		arrItems = new ArrayList<String>();
 		arrItems.add("ravi.nair@dal.ca");
 		arrItems.add("sn891352@dal.ca");
@@ -41,16 +41,24 @@ public class ForgotPasswordMocked {
 	public EmailDetails initiateForgotUserMock() {
 		List<String> emailIDs = addUserEmailIds();
 		List<String> pwds = addUserPassword();
-		String retrievedPwd =  getPasswordFromDB(pwds.get(1));
+		String retrievedPwd =  getPassword(pwds.get(2));
 		eDetails.setBody(retrievedPwd);
-		eDetails.setUserEmailID(emailIDs.get(1));
+		eDetails.setUserEmailID(emailIDs.get(2));
 		eDetails.setSubject("TEST EMAIL, IGNORE.");
 		return eDetails;
 	}
 
-	private String getPasswordFromDB(String userEmailID) {
+	public String getPassword(String saltedPwd) {
 		String val = "";
-		val = userEmailID.replace(ValidateUserFormsAbstract.saltValue, "");
+		val = saltedPwd.replace(ValidateUserFormsAbstract.saltValue, "");
 		return val;
+	}
+	public String setQuestion() {
+		double x = (int) (Math.random() * 10) + 0;
+		return Double.toString(x);
+	}
+
+	public String getQuestion() {
+		return setQuestion();
 	}
 }

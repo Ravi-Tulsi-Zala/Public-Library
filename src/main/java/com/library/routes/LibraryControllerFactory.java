@@ -60,9 +60,9 @@ public class LibraryControllerFactory implements ILibraryFactory {
 
 	@Override
 	public IItemCoverSetter makeItemCoverSetter() {
-		
+
 		return new ItemCoverSetter();
-		
+
 	}
 
 	public IWelcomeController welcomePage() {
@@ -73,5 +73,4 @@ public class LibraryControllerFactory implements ILibraryFactory {
 	{
 		return new LoanManagentController();
 	}
-
 }

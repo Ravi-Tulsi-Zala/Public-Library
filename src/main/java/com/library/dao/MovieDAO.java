@@ -13,10 +13,10 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.library.businessModelSetter.IMovieSetter;
+import com.library.businessModelSetter.MovieSetter;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
-import com.library.bussinessModelSetter.IMovieSetter;
-import com.library.bussinessModelSetter.MovieSetter;
 import com.library.dbConnection.DatabaseConnection;
 import com.library.search.MovieSearch;
 
@@ -284,33 +284,28 @@ public class MovieDAO implements IMovieDAO {
 	}
 	
 	@Override
-	public Boolean getAvailability(int itemID)
-	{
-		this.connection = databaseConnection.getConnection();
-		Boolean availability = false;
-		int moviesAvailable = 0; 
+	public int getAvailability(int itemID) {
+
+		int moviesAvailable = 0;
 		try {
+			this.connection = databaseConnection.getConnection();
 			query = "Select Availability from movie where Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(0,itemID);
+			preparedStatement.setInt(1, itemID);
 			resultSet = preparedStatement.executeQuery();
-			moviesAvailable = resultSet.getInt(0);
-		}	
-		catch (SQLException e) {
+			if (resultSet.next()) {
+				moviesAvailable = resultSet.getInt("Availability");
+			}
+
+		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Error fetching the availability of Movie", e);
-		}
-		finally
-		{
+		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
-		
-		if(moviesAvailable>0)
-		{
-			availability = true;
-		}
-		return availability;
+
+		return moviesAvailable;
 	}
 
 	public boolean checkMovieDuplicacy(Movie movie) {
@@ -372,16 +367,24 @@ public class MovieDAO implements IMovieDAO {
 		return countIncrease;
 	}
 
-	@Override
-	public void increaseAvailability(String title) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void updateAvailability(int itemId, int udatedAvailability) {
 
-	@Override
-	public void decreaseAvailability(String title) {
-		// TODO Auto-generated method stub
-		
+		try {
+			this.connection = databaseConnection.getConnection();
+			query = "update movie set Availability =? where Item_ID = ?";
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setInt(1, udatedAvailability);
+			preparedStatement.setInt(2, itemId);
+			preparedStatement.executeUpdate();
+
+		} catch (SQLException e) {
+			logger.log(Level.ALL, "Check the SQL syntax", e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Error updating availability of movie", e);
+		} finally {
+			databaseConnection.closeConnection(resultSet, preparedStatement);
+		}
+
 	}
 
 }

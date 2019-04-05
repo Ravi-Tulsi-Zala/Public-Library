@@ -1,6 +1,5 @@
 package com.library.borrowItem;
 
-import com.library.businessModels.Display;
 import com.library.businessModels.DisplayDetailed;
 import com.library.businessModels.UserItem;
 import com.library.dao.IBookDAO;
@@ -38,17 +37,29 @@ public class ItemStatus {
 		if(userItem.getCategory().equals("Book"))
 		{
 			IBookDAO bookDAO = factory.makeBookDAO();
-			availability = bookDAO.getAvailability(itemID);
+			int booksAvailable = bookDAO.getAvailability(itemID);
+			if (booksAvailable == 0) {
+				availability = false;
+			}
+			availability = true;
 		}
 		else if(userItem.getCategory().equals("Movie"))
 		{
 			IMovieDAO movieDAO = factory.makeMovieDAO();
-			availability = movieDAO.getAvailability(itemID);
+			int moviesAvailable = movieDAO.getAvailability(itemID);
+			if (moviesAvailable == 0) {
+				availability = false;
+			}
+			availability = true;
 		}
 		else if(userItem.getCategory().equals("Music"))
 		{
 			IMusicDAO musicDAO = factory.makeMusicDAO();
-			availability = musicDAO.getAvailability(itemID);
+			int musicAvailable = musicDAO.getAvailability(itemID);
+			if (musicAvailable == 0) {
+				availability = false;
+			}
+			availability = true;
 		}
 		return availability;
 	}
@@ -60,7 +71,7 @@ public class ItemStatus {
 	
 	private Boolean isItemAlreadyOnHold()
 	{
-		return userItemDAO.isItemOnHold(userItem);
+		return userItemDAO.isItemOnHold(itemID);
 	}
 	
 	public String getItemStatus()

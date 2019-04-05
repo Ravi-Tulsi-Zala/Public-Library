@@ -2,10 +2,10 @@ package com.library.browsePage;
 
 import java.util.List;
 
+import com.library.businessModelSetter.DisplaySetter;
+import com.library.businessModelSetter.IDisplaySetter;
 import com.library.businessModels.Display;
 import com.library.businessModels.Music;
-import com.library.bussinessModelSetter.DisplaySetter;
-import com.library.bussinessModelSetter.IDisplaySetter;
 import com.library.dao.IMusicDAO;
 import com.library.daoFactory.DAOFactory;
 import com.library.daoFactory.IDAOFactory;

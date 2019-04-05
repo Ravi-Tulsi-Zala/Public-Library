@@ -14,7 +14,6 @@ import org.junit.Test;
 import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.UserBasicInfo;
 import com.library.mockDB.SignInMocked;
-import com.library.mockDB.SignUpMocked;
 
 public class SignInTest {
 	private static SignInMocked signInMocked;
