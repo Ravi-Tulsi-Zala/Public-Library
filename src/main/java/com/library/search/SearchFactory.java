@@ -29,4 +29,8 @@ public class SearchFactory {
 	public SearchResults makeSearchResults() {
 		return new SearchResults();
 	}
+	
+	public SearchRequest makeSearchRequest() {
+		return new SearchRequest();
+	}
 }
