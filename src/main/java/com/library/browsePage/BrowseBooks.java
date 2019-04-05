@@ -14,12 +14,13 @@ public class BrowseBooks implements IBrowseDisplayObjects{
 
 	private IBookDAO bookDAO;
 	private String itemType;
+	private static String book = "Book";
 	
 	public BrowseBooks()
 	{
 		IDAOFactory factory = new DAOFactory();
 		bookDAO = factory.makeBookDAO();
-		itemType = "Book";
+		itemType = book;
 	}
 	
 	@Override

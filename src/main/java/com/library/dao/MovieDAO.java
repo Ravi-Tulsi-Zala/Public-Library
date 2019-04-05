@@ -291,9 +291,10 @@ public class MovieDAO implements IMovieDAO {
 			this.connection = databaseConnection.getConnection();
 			query = "Select Availability from movie where Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, itemID);
+			preparedStatement.setInt(1,itemID);
 			resultSet = preparedStatement.executeQuery();
-			if (resultSet.next()) {
+			if (resultSet.next()) 
+			{
 				moviesAvailable = resultSet.getInt("Availability");
 			}
 

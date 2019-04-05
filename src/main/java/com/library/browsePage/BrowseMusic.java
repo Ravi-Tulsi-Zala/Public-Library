@@ -14,12 +14,13 @@ public class BrowseMusic implements IBrowseDisplayObjects{
 
 	private IMusicDAO musicDAO;
 	private String itemType;
+	private static String music = "Music";
 	
 	public BrowseMusic()
 	{
 		IDAOFactory factory = new DAOFactory();
 		musicDAO = factory.makeMusicDAO();	
-		itemType = "Music";
+		itemType = music;
 	}
 	
 	@Override

@@ -15,6 +15,10 @@ public class ItemStatus {
 	static final String onHold = "Reserved";
 	static final String available = "Borrow";
 	static final String reserve = "Reserve";
+
+	static final String book = "Book";
+	static final String movie = "Movie";
+	static final String music = "Music";
 	private IUserItemDAO userItemDAO;
 	
 	private UserItem userItem;
@@ -34,32 +38,30 @@ public class ItemStatus {
 	{
 		IDAOFactory factory = new DAOFactory();
 		Boolean availability = false;
-		if(userItem.getCategory().equals("Book"))
+		if(userItem.getCategory().equals(book))
 		{
 			IBookDAO bookDAO = factory.makeBookDAO();
 			int booksAvailable = bookDAO.getAvailability(itemID);
-			if (booksAvailable == 0) {
-				availability = false;
+			if (booksAvailable > 0) {
+				availability = true;
 			}
-			availability = true;
+			
 		}
-		else if(userItem.getCategory().equals("Movie"))
+		else if(userItem.getCategory().equals(movie))
 		{
 			IMovieDAO movieDAO = factory.makeMovieDAO();
 			int moviesAvailable = movieDAO.getAvailability(itemID);
-			if (moviesAvailable == 0) {
-				availability = false;
+			if (moviesAvailable > 0) {
+				availability = true;
 			}
-			availability = true;
 		}
-		else if(userItem.getCategory().equals("Music"))
+		else if(userItem.getCategory().equals(music))
 		{
 			IMusicDAO musicDAO = factory.makeMusicDAO();
 			int musicAvailable = musicDAO.getAvailability(itemID);
-			if (musicAvailable == 0) {
-				availability = false;
+			if (musicAvailable > 0) {
+				availability = true;
 			}
-			availability = true;
 		}
 		return availability;
 	}

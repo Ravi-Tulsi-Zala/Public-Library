@@ -306,8 +306,8 @@ public class BookDAO implements IBookDAO {
 			resultSet = preparedStatement.executeQuery();
 			if(resultSet.next())
 			{
-				booksAvailable = resultSet.getInt("Availability");
-			}
+				booksAvailable = resultSet.getInt(1);
+			}	
 			
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
@@ -368,7 +368,6 @@ public class BookDAO implements IBookDAO {
 		return countIncrease;
 	}
 
-	@Override
 	public void updateAvailability(int itemId, int updatedAvailability) {
 		
 		try {
@@ -386,8 +385,6 @@ public class BookDAO implements IBookDAO {
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
-		
-
 	}
 
 }

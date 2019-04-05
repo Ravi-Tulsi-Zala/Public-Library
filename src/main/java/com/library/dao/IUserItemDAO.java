@@ -10,7 +10,8 @@ public interface IUserItemDAO {
 	public boolean addItem(UserItem item);	
 	public boolean isItemOnHold(int itemId);
 	public boolean isItemBorrowed(UserItem item);
-	public boolean addItemOnHold(UserItem item);
 	public UserItem getTheNextUserInLine(int itemId);
 	public void removeUserFromHold(UserItem userOnHold);
+	public boolean addItemOnHold(UserItem item);
 }
+  
