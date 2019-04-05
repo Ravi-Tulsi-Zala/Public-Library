@@ -14,8 +14,6 @@ import com.library.businessModels.User;
 import com.library.forgotPassword.ForgotPasswordController;
 import com.library.forgotPassword.IForgotPasswordController;
 import com.library.forgotPassword.RecoverPassword;
-import com.library.loanmanagement.ILoanManagementController;
-import com.library.loanmanagement.LoanManagentController;
 import com.library.signIn.ISignInController;
 import com.library.signIn.SignInController;
 import com.library.signUp.ISignUpController;
@@ -60,18 +58,13 @@ public class LibraryControllerFactory implements ILibraryFactory {
 
 	@Override
 	public IItemCoverSetter makeItemCoverSetter() {
-		
+
 		return new ItemCoverSetter();
-		
+
 	}
 
 	public IWelcomeController welcomePage() {
 		return new WelcomePageController();
-	}
-	
-	public ILoanManagementController makeLoanManagementController()
-	{
-		return new LoanManagentController();
 	}
 
 }

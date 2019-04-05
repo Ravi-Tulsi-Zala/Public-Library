@@ -9,7 +9,6 @@ import com.library.additem.IItemCoverSetter;
 import com.library.businessModels.User;
 import com.library.forgotPassword.IForgotPasswordController;
 import com.library.forgotPassword.RecoverPassword;
-import com.library.loanmanagement.ILoanManagementController;
 import com.library.signIn.ISignInController;
 import com.library.signUp.ISignUpController;
 import com.library.welcomePage.IWelcomeController;
@@ -22,7 +21,6 @@ public interface ILibraryFactory{
 	public IAddMusicController makeAddMusicController();
 	public IItemCoverSetter makeItemCoverSetter();
 	public IWelcomeController welcomePage();
-	public ILoanManagementController makeLoanManagementController();
 	public ISignUpController signUp(User user, HttpSession httpSession) throws Exception;
 
 }
