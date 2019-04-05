@@ -23,6 +23,7 @@ public class SendEmail {
 	public static void sendmail(EmailDetails details)
 			throws AddressException, MessagingException, IOException {
 		Properties props = new Properties();
+		props.setProperty("mail.transport.protocol", "smtp"); 
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.fallback", "true");
 		props.put("mail.smtp.starttls.enable", "true");
@@ -30,6 +31,8 @@ public class SendEmail {
 		props.put("mail.smtp.ssl.enable", "false");
 		props.put("mail.smtp.host", "smtp.sparkpostmail.com");
 		props.put("mail.smtp.port", "587");
+	    props.put("mail.smtp.socketFactory.port", "587");   
+	    props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");   
 //		props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
