@@ -38,7 +38,7 @@ public class UserItemDAO implements IUserItemDAO {
 	public List<UserItem> getAllBorrowedItems() {
 
 		UserItem item;
-		query = "SELEC * FROM user_item";
+		query = "SELECT * FROM user_item";
 		List<UserItem> items = new ArrayList<UserItem>();
 
 		try {
