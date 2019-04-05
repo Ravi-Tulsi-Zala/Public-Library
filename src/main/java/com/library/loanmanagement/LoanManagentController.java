@@ -17,8 +17,6 @@ public class LoanManagentController implements ILoanManagementController {
 	LibraryFactorySingleton factorySingleton;
 	IUserItemDAO itemDAO;
 	List<UserItem> items;
-	LoanManagementContext context;
-	IReturnItemStrategy iReturnItemStrategy;
 
 	public LoanManagentController() {
 
@@ -38,33 +36,13 @@ public class LoanManagentController implements ILoanManagementController {
 	}
 
 	@Override
-	public void removeUserItems(List<UserItem> userItems) {
-
-		for (UserItem item : userItems) {
-			itemDAO.removeItem(item);
-			increaseAvailability(item);
-		}
-
+	public Boolean removeUserItem(UserItem item) {
+		
+		Boolean isRemoved;
+		isRemoved = itemDAO.removeItem(item);
+		return isRemoved;
 	}
-
-	private void increaseAvailability(UserItem item) {
-
-		String category = item.getCategory();
-
-		if (category.equalsIgnoreCase(CategoryEnum.BOOK.getText())) {
-			iReturnItemStrategy = new BookReturnStrategy();
-			context = new LoanManagementContext(iReturnItemStrategy);
-			context.executeReturnItemStrategy(item);
-		} else if (category.equalsIgnoreCase(CategoryEnum.MOVIE.getText())) {
-			iReturnItemStrategy = new MovieReturnStrategy();
-			context = new LoanManagementContext(iReturnItemStrategy);
-			context.executeReturnItemStrategy(item);
-		} else if (category.equalsIgnoreCase(CategoryEnum.MUSIC.getText())) {
-			iReturnItemStrategy = new MusicReturnStrategy();
-			context = new LoanManagementContext(iReturnItemStrategy);
-			context.executeReturnItemStrategy(item);
-		}
-
-	}
+	
+	
 
 }

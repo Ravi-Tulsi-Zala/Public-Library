@@ -7,14 +7,13 @@ import java.util.List;
 
 import com.library.businessModels.Music;
 
-public class MusicSetter implements IMusicSetter{
+public class MusicSetter implements IMusicSetter {
 
 	@Override
 	public List<Music> mapMusic(ResultSet resultSet) {
 		List<Music> musics = new ArrayList<Music>();
 		try {
-			while(resultSet.next())
-			{
+			while (resultSet.next()) {
 				Music music = new Music();
 				music.setTitle(resultSet.getString("Title"));
 				music.setCategory(resultSet.getString("Category"));
@@ -25,11 +24,10 @@ public class MusicSetter implements IMusicSetter{
 				musics.add(music);
 			}
 		} catch (SQLException e) {
-		
+
 			e.printStackTrace();
 		}
-		
-		
+
 		return musics;
 	}
 }

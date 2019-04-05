@@ -7,14 +7,15 @@ import com.library.daoFactory.DAOFactory;
 import com.library.daoFactory.IDAOFactory;
 
 public class BookItem {
-
+	
 	static final String available = "Borrow";
 	static final String reserve = "Reserve";
 	private UserItem userItem;
 	private IUserItemDAO userItemDAO;
 	private int itemID;
-
-	public BookItem(DisplayDetailed displayDetailed, String userEmail) {
+	
+	public BookItem(DisplayDetailed displayDetailed,String userEmail)
+	{
 		userItem = new UserItem();
 		userItem.setTitle(displayDetailed.getTitle());
 		userItem.setCategory(displayDetailed.getItemType());
@@ -23,27 +24,34 @@ public class BookItem {
 		IDAOFactory factory = new DAOFactory();
 		userItemDAO = factory.makeUserItemDAO();
 	}
-
-	private Boolean borrowBook() {
+	
+	private Boolean borrowBook()
+	{
 		return userItemDAO.addItem(userItem);
 	}
-
-	private Boolean holdItem() {
+	
+	private Boolean holdItem()
+	{
 		return userItemDAO.addItemOnHold(userItem);
 	}
-
-	public Boolean bookItem(String status) {
+	
+	public Boolean bookItem(String status)
+	{
 		Boolean isItemBooked = false;
-		if (status.equals(available)) {
+		if(status.equals(available))
+		{
 			isItemBooked = borrowBook();
-		} else if (status.equals(reserve)) {
+		}
+		else if(status.equals(reserve))
+		{
 			isItemBooked = holdItem();
 		}
-		if (isItemBooked) {
+		if(isItemBooked)
+		{
 			ChangeItemCount countChanger = new ChangeItemCount(userItem.getCategory(), itemID);
 			countChanger.changeCount();
 		}
-
+		
 		return isItemBooked;
 	}
 }

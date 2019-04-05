@@ -295,20 +295,19 @@ public class BookDAO implements IBookDAO {
 	}
 
 	@Override
-	public int getAvailability(int itemID) {
-		
+	public Boolean getAvailability(int itemID) {
+		Boolean availability = false;
 		int booksAvailable = 0;
 		try {
 			this.connection = databaseConnection.getConnection();
 			query = "Select Availability from books where Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, itemID);
+			preparedStatement.setInt(0, itemID);
 			resultSet = preparedStatement.executeQuery();
-			if(resultSet.next())
-			{
-				booksAvailable = resultSet.getInt("Availability");
+			booksAvailable = resultSet.getInt(0);
+			if (booksAvailable > 0) {
+				availability = true;
 			}
-			
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
@@ -316,7 +315,7 @@ public class BookDAO implements IBookDAO {
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
-		return booksAvailable;
+		return availability;
 	}
 
 	public boolean checkBookDuplicacy(Book book) {
@@ -369,24 +368,14 @@ public class BookDAO implements IBookDAO {
 	}
 
 	@Override
-	public void updateAvailability(int itemId, int updatedAvailability) {
-		
-		try {
-			this.connection = databaseConnection.getConnection();
-			query = "update books set Availability =? where Item_ID = ?";
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, updatedAvailability);
-			preparedStatement.setInt(2, itemId);
-			preparedStatement.executeUpdate();
-			
-		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
-		} catch (Exception e) {
-			logger.log(Level.ALL, "Error increasing availability of book", e);
-		} finally {
-			databaseConnection.closeConnection(resultSet, preparedStatement);
-		}
-		
+	public void increaseAvailability(String title) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void decreaseAvailability(String title) {
+		// TODO Auto-generated method stub
 
 	}
 

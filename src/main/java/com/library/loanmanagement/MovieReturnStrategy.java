@@ -1,5 +1,6 @@
 package com.library.loanmanagement;
 
+<<<<<<< HEAD
 import java.io.IOException;
 
 import javax.mail.MessagingException;
@@ -16,80 +17,16 @@ import com.library.daoFactory.IDAOFactory;
 import com.library.email.EmailDetails;
 import com.library.email.SendEmail;
 import com.library.forgotPassword.ForgotPasswordController;
+=======
+import com.library.businessModels.UserItem;
+>>>>>>> ec578c5e1375f0ffad7bf01e4611a7aa35a7a6bf
 
 public class MovieReturnStrategy implements IReturnItemStrategy {
 
-	IDAOFactory iDAOfactory;
-	IMovieDAO iMovieDAO;
-	IUserItemDAO iUserItemDAO;
-	EmailDetails emailDetails;
-	UserItem userOnHold;
-	private static final Logger logger = LogManager.getLogger(ForgotPasswordController.class);
-	
-	public MovieReturnStrategy() {
-		
-		iDAOfactory = new DAOFactory();
-		iMovieDAO = iDAOfactory.makeMovieDAO();
-		iUserItemDAO = iDAOfactory.makeUserItemDAO();
-		emailDetails = new EmailDetails();
-		
-	}
-	
 	@Override
-	public void returnItem(UserItem item) {
+	public boolean returnItem(UserItem item) {
 		
-		int itemId = item.getItemId();
-		int currentAvailability = iMovieDAO.getAvailability(itemId);
-		int udatedAvailability = currentAvailability + 1;
-		iMovieDAO.updateAvailability(itemId, udatedAvailability);
-	
-	}
-
-	@Override
-	public void sendEmail(UserItem item) {
-		
-		String title = item.getTitle();
-		String email = item.getEmail();
-
-		emailDetails.setSubject("Reg : Movie titled " + title + " is available in the library!");
-		emailDetails.setBody("Dear " + email + " ,<br/><br/>" + "This is to notify you that the Movie titled " + title
-				+ " is booked for you!" + "<br/><br/>" + "Regards, " + "<br/>" + " Public Library.");
-		emailDetails.setUserEmailID(email);
-		try {
-			SendEmail.sendmail(emailDetails);
-		} catch (MessagingException | IOException e) {
-
-			logger.log(Level.ALL, "Check Email Sender class!", e);
-		}
-		
-	}
-
-	@Override
-	public boolean isItemOnHold(int itemId) {
-		boolean isItemOnHold = false;
-
-		isItemOnHold = iUserItemDAO.isItemOnHold(itemId);
-		if (isItemOnHold) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-
-	@Override
-	public UserItem getTheNextUserInLine(int itemId) {
-		userOnHold = new UserItem();
-		userOnHold = iUserItemDAO.getTheNextUserInLine(itemId);
-		return userOnHold;
-	}
-
-	@Override
-	public void removeUserFromHold(UserItem userOnHold) {
-		
-		iUserItemDAO.removeUserFromHold(userOnHold);
-
-		
+		return false;
 	}
 
 }

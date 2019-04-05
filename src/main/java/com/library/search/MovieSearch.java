@@ -10,7 +10,7 @@ public class MovieSearch extends SearchCategory {
 	private boolean searchMovieTitle = true;
 	private boolean searchMovieDirector = true;
 	private boolean searchMovieDescription = true;
-	
+
 	@Override
 	public List<LibraryItem> search(String searchterms) {
 		return daoFactory.makeMovieDAO().getMoviesBySearchTerms(this, searchterms);

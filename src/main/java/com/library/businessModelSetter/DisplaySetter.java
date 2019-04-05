@@ -5,9 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.library.businessModels.Book;
+import com.library.businessModels.Cover;
 import com.library.businessModels.Display;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
+import com.library.dao.ICoverDAO;
+import com.library.daoFactory.DAOFactory;
+import com.library.daoFactory.IDAOFactory;
+import com.mysql.jdbc.Blob;
 
 public class DisplaySetter implements IDisplaySetter{
 

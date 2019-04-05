@@ -43,7 +43,7 @@ public class MovieDAO implements IMovieDAO {
 
 	@Override
 	public Movie getMovieById(int itemID) {
-
+		
 		this.connection = databaseConnection.getConnection();
 		List<Movie> movies = new ArrayList<Movie>();
 		Movie movie = new Movie();
@@ -61,7 +61,9 @@ public class MovieDAO implements IMovieDAO {
 		} catch (Exception e) {
 
 			logger.log(Level.ALL, "Movie not found for the specific Itemid", e);
-		} finally {
+		}
+		finally
+		{
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return movie;
@@ -86,7 +88,9 @@ public class MovieDAO implements IMovieDAO {
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Error fetching the list of movies for this category", e);
-		} finally {
+		}
+		finally
+		{
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return moviesByCategory;
@@ -94,7 +98,7 @@ public class MovieDAO implements IMovieDAO {
 
 	@Override
 	public int createMovie(Movie movie) {
-
+		
 		this.connection = databaseConnection.getConnection();
 		int recentlyAddedMovieId = 0;
 		String movieCategory = movie.getCategory();
@@ -125,7 +129,9 @@ public class MovieDAO implements IMovieDAO {
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not insert movie into database", e);
-		} finally {
+		}
+		finally
+		{
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return recentlyAddedMovieId;
@@ -160,7 +166,9 @@ public class MovieDAO implements IMovieDAO {
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not update movie into database", e);
-		} finally {
+		}
+		finally
+		{
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return false;
@@ -185,7 +193,9 @@ public class MovieDAO implements IMovieDAO {
 
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Can not delete movie into database", e);
-		} finally {
+		}
+		finally
+		{
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return false;
@@ -218,16 +228,16 @@ public class MovieDAO implements IMovieDAO {
 
 	@Override
 	public List<LibraryItem> getMoviesBySearchTerms(MovieSearch requestDetails, String searchTerms) {
-
+		
 		this.connection = databaseConnection.getConnection();
 		List<Movie> tempMovie = new ArrayList<>();
 		List<LibraryItem> movies = new LinkedList<LibraryItem>();
-		if (!requestDetails.isSearchInMovies()) {
+		if(!requestDetails.isSearchInMovies()) {
 			return movies;
 		}
 		String query = prepareSearchQuery(requestDetails, searchTerms);
-
-		if (null == query) {
+		
+		if(null == query) {
 			return movies;
 		}
 
@@ -239,60 +249,72 @@ public class MovieDAO implements IMovieDAO {
 			return movies;
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
-		} finally {
+		}
+		finally
+		{
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return movies;
 	}
 
+	
 	@Override
-	public List<String> getMovieCategories() {
+	public List<String> getMovieCategories()
+	{
 		this.connection = databaseConnection.getConnection();
 		List<String> categories = new ArrayList<String>();
 		query = "SELECT Distinct Category from movie";
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
+			while (resultSet.next())
+			{
 				categories.add(resultSet.getString("Category"));
 			}
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Error fetching the list of Movie Categories", e);
-		} finally {
+		}
+		finally
+		{
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return categories;
 	}
-
+	
 	@Override
-	public int getAvailability(int itemID) {
-
-		int moviesAvailable = 0;
+	public Boolean getAvailability(int itemID)
+	{
+		this.connection = databaseConnection.getConnection();
+		Boolean availability = false;
+		int moviesAvailable = 0; 
 		try {
-			this.connection = databaseConnection.getConnection();
 			query = "Select Availability from movie where Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, itemID);
+			preparedStatement.setInt(0,itemID);
 			resultSet = preparedStatement.executeQuery();
-			if (resultSet.next()) {
-				moviesAvailable = resultSet.getInt("Availability");
-			}
-
-		} catch (SQLException e) {
+			moviesAvailable = resultSet.getInt(0);
+		}	
+		catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Error fetching the availability of Movie", e);
-		} finally {
+		}
+		finally
+		{
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
-
-		return moviesAvailable;
+		
+		if(moviesAvailable>0)
+		{
+			availability = true;
+		}
+		return availability;
 	}
 
 	public boolean checkMovieDuplicacy(Movie movie) {
-
+		
 		this.connection = databaseConnection.getConnection();
 		String directorToBeAdded = movie.getDirector();
 		String titleToBeAdded = movie.getTitle();
@@ -315,7 +337,9 @@ public class MovieDAO implements IMovieDAO {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Error fetching the list of Movies", e);
-		} finally {
+		}
+		finally
+		{
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return isMovieAvailable;
@@ -323,7 +347,7 @@ public class MovieDAO implements IMovieDAO {
 
 	@Override
 	public Boolean increaseCount(int itemID) {
-
+		
 		Boolean countIncrease = false;
 		try {
 			this.connection = databaseConnection.getConnection();
@@ -332,35 +356,32 @@ public class MovieDAO implements IMovieDAO {
 			preparedStatement.setInt(1, itemID);
 			preparedStatement.execute();
 			countIncrease = true;
-		} catch (SQLException e) {
+		}
+		catch (SQLException e)
+		{
 			logger.log(Level.ALL, "Check the SQL syntax", e);
-		} catch (Exception e) {
+		}
+		catch (Exception e)
+		{
 			logger.log(Level.ALL, "Error increasing count of Movie", e);
-		} finally {
+		}
+		finally
+		{
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return countIncrease;
 	}
 
 	@Override
-	public void updateAvailability(int itemId, int udatedAvailability) {
+	public void increaseAvailability(String title) {
+		// TODO Auto-generated method stub
+		
+	}
 
-		try {
-			this.connection = databaseConnection.getConnection();
-			query = "update movie set Availability =? where Item_ID = ?";
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, udatedAvailability);
-			preparedStatement.setInt(2, itemId);
-			preparedStatement.executeUpdate();
-
-		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
-		} catch (Exception e) {
-			logger.log(Level.ALL, "Error updating availability of movie", e);
-		} finally {
-			databaseConnection.closeConnection(resultSet, preparedStatement);
-		}
-
+	@Override
+	public void decreaseAvailability(String title) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

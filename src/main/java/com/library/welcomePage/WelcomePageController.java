@@ -3,7 +3,6 @@ package com.library.welcomePage;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
-
 import com.library.businessModelSetter.DisplaySetter;
 import com.library.businessModels.Book;
 import com.library.businessModels.Display;
@@ -69,11 +68,11 @@ public class WelcomePageController implements IWelcomeController {
 	@Override
 	public List<Music> getFavouriteMusic() throws SQLException {
 		List<Music> favMusic = null;
-		favMusic= libraryFactory.getFavouriteMusic();
+		favMusic = libraryFactory.getFavouriteMusic();
 		favMusic = mapImagesIntoList(favMusic, typeEntity.favouriteMusic);
 		return favMusic;
 	}
- 
+
 	private List mapImagesIntoList(List entity, typeEntity entityValue) {
 		DisplaySetter displaySetter = new DisplaySetter();
 		List<Display> displayList = null;

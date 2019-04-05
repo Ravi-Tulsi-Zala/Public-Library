@@ -11,7 +11,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.css">
 	<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/bootstrap-table.min.js"></script>
-	<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/locale/bootstrap-table-en-CN.min.js"></script>
+	<script src="https://unpkg.com/bootstrap-table@1.14.2/dist/locale/bootstrap-table-zh-CN.min.js"></script>
 </head>
 <body>
 <nav class="navbar navbar-light bg-light">
@@ -28,16 +28,14 @@
 	  <thead class="thead-dark">
 	    <tr data-field="item">
 	      <th data-field="state" data-checkbox="true"></th>
-	      <th data-field="itemId" data-visible="false" data-sortable="true">Item Id</th>
 	      <th data-field="category" data-sortable="true">Content Type</th>
 	      <th data-field="title" data-sortable="true">Title</th>
 	      <th data-field="email" data-sortable="true">User</th>
 	    </tr>
 	  </thead>
 	  <tbody>
-	    <tr data-field="item" th:each="item : ${items}">
+	    <tr data-field="item" th:each="item : ${items}" >
 	      <td data-field="state" data-checkbox="true"></td>
-	      <td data-field="itemId" data-visible="false" th:text="${item.itemId}"></td>
 	      <td data-field="category" th:text ="${item.category}"></td>
 	      <td data-field="title" th:text ="${item.title}"></td>
 	      <td data-field="email" th:text ="${item.email}"></td>
@@ -47,7 +45,7 @@
 	<button type="submit" id="button" class="btn btn-primary" style="margin-top: 2%;">Return Items</button>
 	<input type="hidden" id="abc" name="abc" th:field="${select.selections}"/>
 </form>
-</body>
+
 <script>
 		
 	  var $table = $('#table')
@@ -60,5 +58,9 @@
 	      document.getElementById("abc").value = selection;
 	    })
 	  })
+	  
+	 
+
 </script>
+</body>
 </html>

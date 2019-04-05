@@ -263,19 +263,16 @@ public class MusicDAO implements IMusicDAO {
 	}
 
 	@Override
-	public int getAvailability(int itemID) {
-
+	public Boolean getAvailability(int itemID) {
+		this.connection = databaseConnection.getConnection();
+		Boolean availability = false;
 		int musicsAvailable = 0;
 		try {
-			this.connection = databaseConnection.getConnection();
 			query = "Select Availability from music where Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, itemID);
+			preparedStatement.setInt(0, itemID);
 			resultSet = preparedStatement.executeQuery();
-			if (resultSet.next()) {
-				musicsAvailable = resultSet.getInt("Availability");
-			}
-
+			musicsAvailable = resultSet.getInt(0);
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {
@@ -283,7 +280,12 @@ public class MusicDAO implements IMusicDAO {
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
-		return musicsAvailable;
+
+		if (musicsAvailable > 0) {
+			availability = true;
+		}
+
+		return availability;
 	}
 
 	public boolean checkMusicDuplicacy(Music music) {
@@ -338,24 +340,14 @@ public class MusicDAO implements IMusicDAO {
 	}
 
 	@Override
-	public void updateAvailability(int itemId, int udatedAvailability) {
-		
-		try {
-			this.connection = databaseConnection.getConnection();
-			query = "update music set Availability =? where Item_ID = ?";
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, udatedAvailability);
-			preparedStatement.setInt(2, itemId);
-			preparedStatement.executeUpdate();
+	public void increaseAvailability(String title) {
+		// TODO Auto-generated method stub
 
-		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
-		} catch (Exception e) {
-			logger.log(Level.ALL, "Error updating availability of music", e);
-		} finally {
-			databaseConnection.closeConnection(resultSet, preparedStatement);
-		}
-		
 	}
 
+	@Override
+	public void decreaseAvailability(String title) {
+		// TODO Auto-generated method stub
+
+	}
 }
