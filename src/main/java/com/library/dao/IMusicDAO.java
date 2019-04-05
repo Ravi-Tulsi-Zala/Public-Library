@@ -14,10 +14,9 @@ public interface IMusicDAO {
 	public Boolean deleteMusic(Music music); 
 	public List<LibraryItem> getMusicBySearchTerms(MusicSearch requestDetails, String searchTerms);
 	List<String> getMusicCategories();
-	public Boolean getAvailability(int itemID); 
+	public int getAvailability(int itemID); 
 	public boolean checkMusicDuplicacy(Music music);
 	public Boolean increaseCount(int itemID);
-	public void increaseAvailability(String title);
-	public void decreaseAvailability(String title);
+	void updateAvailability(int itemId, int udatedAvailability);
 	
 }

@@ -14,10 +14,8 @@ public interface IMovieDAO {
 	public Boolean deleteMovie(Movie movie);
 	public List<LibraryItem> getMoviesBySearchTerms(MovieSearch requestDetails, String searchTerms);
 	public List<String> getMovieCategories();
-	public Boolean getAvailability(int itemID); 
+	public int getAvailability(int itemID); 
 	public boolean checkMovieDuplicacy(Movie movie);
 	public Boolean increaseCount(int itemID);
-	public void increaseAvailability(String title);
-	public void decreaseAvailability(String title);
-	
+	public void updateAvailability(int itemId, int udatedAvailability);
 }
