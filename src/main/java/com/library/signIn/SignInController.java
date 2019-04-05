@@ -62,10 +62,6 @@ public class SignInController implements ISignInController {
 			logger.log(Level.ALL, "checkUserCredential method implemented successfully.");
 			return redirectToWelcome;
 		}
-		else {
-			UserSessionDetail.setClientActiveStatus(Messages.RegisterLogin.getMessage());
-			logger.log(Level.ALL, "Something wrong in the Password selection.");
-		}
 		
 		return redirectToWelcome;
 	}
