@@ -303,9 +303,12 @@ public class BookDAO implements IBookDAO {
 			this.connection = databaseConnection.getConnection();
 			query = "Select Availability from books where Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(0, itemID);
+			preparedStatement.setInt(1, itemID);
 			resultSet = preparedStatement.executeQuery();
-			booksAvailable = resultSet.getInt(0);
+			if(resultSet.next())
+			{
+				booksAvailable = resultSet.getInt(1);
+			}	
 			if (booksAvailable > 0) {
 				availability = true;
 			}
@@ -371,7 +374,6 @@ public class BookDAO implements IBookDAO {
 	@Override
 	public void increaseAvailability(String title) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

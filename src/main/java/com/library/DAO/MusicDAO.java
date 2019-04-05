@@ -271,9 +271,9 @@ public class MusicDAO implements IMusicDAO {
 		try {
 			query = "Select Availability from music where Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(0, itemID);
+			preparedStatement.setInt(1, itemID);
 			resultSet = preparedStatement.executeQuery();
-			musicsAvailable = resultSet.getInt(0);
+			musicsAvailable = resultSet.getInt(1);
 		} catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);
 		} catch (Exception e) {

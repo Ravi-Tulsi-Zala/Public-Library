@@ -39,7 +39,7 @@
         	</div>
         </div>       	
         
-        <form th:action="@{/borrowItem/{status}}" th:object="${displayDetailed}" method="post">
+        <form th:action="@{'/borrowItem/' + ${status}}" th:object="${displayDetailed}" method="post">
         <input type="hidden" th:field="*{title}" >
         <input type="hidden" th:field="*{itemID}">
         <input type="hidden" th:field="*{itemType}" >

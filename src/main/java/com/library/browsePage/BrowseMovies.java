@@ -14,12 +14,13 @@ public class BrowseMovies implements IBrowseDisplayObjects{
 	
 	private IMovieDAO movieDAO;
 	private String itemType;
+	private static String movie = "Movie";
 	
 	public BrowseMovies()
 	{
 		IDAOFactory factory = new DAOFactory();
 		movieDAO = factory.makeMovieDAO();	
-		itemType = "Movie";
+		itemType = "movie";
 	}
 
 	@Override

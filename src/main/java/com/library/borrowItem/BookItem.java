@@ -27,7 +27,7 @@ public class BookItem {
 	
 	private Boolean borrowBook()
 	{
-		return userItemDAO.addItem(userItem);
+		return userItemDAO.addItem(userItem,itemID);
 	}
 	
 	private Boolean holdItem()

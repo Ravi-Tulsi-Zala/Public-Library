@@ -292,9 +292,9 @@ public class MovieDAO implements IMovieDAO {
 		try {
 			query = "Select Availability from movie where Item_ID = ?";
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(0,itemID);
+			preparedStatement.setInt(1,itemID);
 			resultSet = preparedStatement.executeQuery();
-			moviesAvailable = resultSet.getInt(0);
+			moviesAvailable = resultSet.getInt(1);
 		}	
 		catch (SQLException e) {
 			logger.log(Level.ALL, "Check the SQL syntax", e);

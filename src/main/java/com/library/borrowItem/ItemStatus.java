@@ -16,6 +16,10 @@ public class ItemStatus {
 	static final String onHold = "Reserved";
 	static final String available = "Borrow";
 	static final String reserve = "Reserve";
+
+	static final String book = "Book";
+	static final String movie = "Movie";
+	static final String music = "Music";
 	private IUserItemDAO userItemDAO;
 	
 	private UserItem userItem;
@@ -35,17 +39,17 @@ public class ItemStatus {
 	{
 		IDAOFactory factory = new DAOFactory();
 		Boolean availability = false;
-		if(userItem.getCategory().equals("Book"))
+		if(userItem.getCategory().equals(book))
 		{
 			IBookDAO bookDAO = factory.makeBookDAO();
 			availability = bookDAO.getAvailability(itemID);
 		}
-		else if(userItem.getCategory().equals("Movie"))
+		else if(userItem.getCategory().equals(movie))
 		{
 			IMovieDAO movieDAO = factory.makeMovieDAO();
 			availability = movieDAO.getAvailability(itemID);
 		}
-		else if(userItem.getCategory().equals("Music"))
+		else if(userItem.getCategory().equals(music))
 		{
 			IMusicDAO musicDAO = factory.makeMusicDAO();
 			availability = musicDAO.getAvailability(itemID);

@@ -94,7 +94,7 @@ public class UserItemDAO implements IUserItemDAO {
 		String title = item.getTitle();
 		boolean isBorrowed = false;
 
-		query = "SELECT from user_item WHERE Email=? and Title=?";
+		query = "SELECT * from user_item WHERE Email=? and Title=?";
 
 		try {
 			preparedStatement = connection.prepareStatement(query);
@@ -177,18 +177,19 @@ public class UserItemDAO implements IUserItemDAO {
 	}
 
 	@Override
-	public boolean addItem(UserItem item) {
+	public boolean addItem(UserItem item, int itemID) {
 
 		String email = item.getEmail();
 		String category = item.getCategory();
 		String title = item.getTitle();
 
 		try {
-			query = "INSERT INTO user_item (Email,Category,Title) VALUES (?, ?, ?)";
+			query = "INSERT INTO user_item (Email,Category,Title,Item_ID) VALUES (?, ?, ?,?)";
 			preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, email);
 			preparedStatement.setString(2, category);
 			preparedStatement.setString(3, title);
+			preparedStatement.setInt(4, itemID);
 			preparedStatement.executeUpdate();
 			return true;
 
