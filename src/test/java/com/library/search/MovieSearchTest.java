@@ -13,7 +13,7 @@ public class MovieSearchTest {
 
 	@Before
 	public void setUp() throws Exception {
-		ms = new MovieSearch();
+		ms = SearchFactory.instance().makeMovieSearech();
 	}
 
 	@Test

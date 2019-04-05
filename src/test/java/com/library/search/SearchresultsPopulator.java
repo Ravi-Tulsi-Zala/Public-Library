@@ -3,16 +3,15 @@ package com.library.search;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.library.businessModels.Book;
+import com.library.businessModels.BusinessModelsFactory;
 import com.library.businessModels.LibraryItem;
-import com.library.businessModels.Movie;
-import com.library.businessModels.Music;
 
 public class SearchresultsPopulator {
+	private static BusinessModelsFactory bmf = BusinessModelsFactory.instance();
 	public static void populateSearchResults(List<LibraryItem> addedItems, SearchResults sr) {
 		List<LibraryItem> books = new LinkedList<LibraryItem>();
 		for(int i = 0; i < 15; ++i) {
-			LibraryItem book = new Book();
+			LibraryItem book = bmf.makeBook();
 			book.setAvailability(i);
 			books.add(book);
 		}
@@ -21,7 +20,7 @@ public class SearchresultsPopulator {
 		
 		List<LibraryItem> movies = new LinkedList<LibraryItem>();
 		for(int i = 0; i < 17; ++i) {
-			LibraryItem movie = new Movie();
+			LibraryItem movie = bmf.makeMovie();
 			movie.setAvailability(i);
 			movies.add(movie);
 		}
@@ -30,7 +29,7 @@ public class SearchresultsPopulator {
 		
 		List<LibraryItem> musics = new LinkedList<LibraryItem>();
 		for(int i = 0; i < 19; ++i) {
-			LibraryItem music = new Music();
+			LibraryItem music = bmf.makeMusic();
 			music.setAvailability(i);
 			musics.add(music);
 		}

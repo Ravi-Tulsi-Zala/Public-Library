@@ -13,7 +13,7 @@ public class MusicSearchTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		ms = new MusicSearch();
+		ms = SearchFactory.instance().makeMusicSearch();
 	}
 	
 	@Test

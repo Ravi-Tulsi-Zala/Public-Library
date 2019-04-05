@@ -18,7 +18,7 @@ public class SearchRequestTest {
 
 	@Before
 	public void setUp() throws Exception {
-		sr = new SearchRequest();
+		sr = SearchFactory.instance().makeSearchRequest();
 	}
 
 	@Test
@@ -38,5 +38,17 @@ public class SearchRequestTest {
 		assertTrue(resultsPerCategory.get(1).get(0) instanceof Movie);
 		assertTrue(resultsPerCategory.get(2).get(0) instanceof Book);
 	}
-
+	@Test
+	public void isNewSearchTermsTest() {
+		SearchRequest other = SearchFactory.instance().makeSearchRequest();
+		SearchTermsAndPage tap1 = SearchFactory.instance().makeSearchTermsAndPage();
+		tap1.setSearchTerms("asd");
+		sr.setTermsAndPage(tap1);
+		SearchTermsAndPage tap2 = SearchFactory.instance().makeSearchTermsAndPage();
+		tap2.setSearchTerms("asdasd");
+		other.setTermsAndPage(tap2);
+		assertTrue(sr.isNewSearchTerms(other));
+		tap2.setSearchTerms("asd");
+		assertFalse(sr.isNewSearchTerms(other));
+	}
 }

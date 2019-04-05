@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.library.businessModels.Book;
+import com.library.businessModels.BusinessModelsFactory;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
@@ -17,6 +18,7 @@ import com.library.businessModels.Music;
 public class SearchResultsTest {
 	private SearchResults sr = null;
 	List<LibraryItem> addedItems = null;
+	private static BusinessModelsFactory bmf = BusinessModelsFactory.instance();
 
 	@Before
 	public void setUp() throws Exception {
@@ -27,21 +29,21 @@ public class SearchResultsTest {
 	@Test
 	public void isNotEmptyPassesWhenOneBookIsAdded() {
 		List<LibraryItem> books = new LinkedList<LibraryItem>();
-		books.add(new Book());
+		books.add(bmf.makeBook());
 		sr.addSearchResultsForCategory(books);
 		assertTrue(sr.isNotEmpty());
 	}	
 	@Test
 	public void isNotEmptyPassesWhenOneMovieIsAdded() {
 		List<LibraryItem> movies = new LinkedList<LibraryItem>();
-		movies.add(new Movie());
+		movies.add(bmf.makeMovie());
 		sr.addSearchResultsForCategory(movies);
 		assertTrue(sr.isNotEmpty());
 	}
 	@Test
 	public void isNotEmptyPassesWhenOneMusicIsAdded() {
 		List<LibraryItem> musics = new LinkedList<LibraryItem>();
-		musics.add(new Music());
+		musics.add(bmf.makeMusic());
 		sr.addSearchResultsForCategory(musics);
 		assertTrue(sr.isNotEmpty());
 	}
