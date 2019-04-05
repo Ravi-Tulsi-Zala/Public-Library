@@ -22,7 +22,6 @@ public interface ILibraryFactory{
 	public IAddMusicController makeAddMusicController();
 	public IItemCoverSetter makeItemCoverSetter();
 	public IWelcomeController welcomePage();
-	public ILoanManagementController makeLoanManagementController();
 	public ISignUpController signUp(User user, HttpSession httpSession) throws Exception;
-
+	public ILoanManagementController makeLoanManagementController();
 }

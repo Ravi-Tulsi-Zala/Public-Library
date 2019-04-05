@@ -1,6 +1,5 @@
 package com.library.borrowItem;
 
-import com.library.businessModels.Display;
 import com.library.businessModels.DisplayDetailed;
 import com.library.businessModels.UserItem;
 import com.library.dao.IBookDAO;
@@ -16,6 +15,10 @@ public class ItemStatus {
 	static final String onHold = "Reserved";
 	static final String available = "Borrow";
 	static final String reserve = "Reserve";
+
+	static final String book = "Book";
+	static final String movie = "Movie";
+	static final String music = "Music";
 	private IUserItemDAO userItemDAO;
 	
 	private UserItem userItem;
@@ -35,20 +38,29 @@ public class ItemStatus {
 	{
 		IDAOFactory factory = new DAOFactory();
 		Boolean availability = false;
-		if(userItem.getCategory().equals("Book"))
+		if(userItem.getCategory().equals(book))
 		{
 			IBookDAO bookDAO = factory.makeBookDAO();
-			availability = bookDAO.getAvailability(itemID);
+			int booksAvailable = bookDAO.getAvailability(itemID);
+			if (booksAvailable > 0) {
+				availability = true;
+			}
 		}
-		else if(userItem.getCategory().equals("Movie"))
+		else if(userItem.getCategory().equals(movie))
 		{
 			IMovieDAO movieDAO = factory.makeMovieDAO();
-			availability = movieDAO.getAvailability(itemID);
+			int moviesAvailable = movieDAO.getAvailability(itemID);
+			if (moviesAvailable > 0) {
+				availability = true;
+			}
 		}
-		else if(userItem.getCategory().equals("Music"))
+		else if(userItem.getCategory().equals(music))
 		{
 			IMusicDAO musicDAO = factory.makeMusicDAO();
-			availability = musicDAO.getAvailability(itemID);
+			int musicAvailable = musicDAO.getAvailability(itemID);
+			if (musicAvailable > 0) {
+				availability = true;
+			}
 		}
 		return availability;
 	}
@@ -60,7 +72,7 @@ public class ItemStatus {
 	
 	private Boolean isItemAlreadyOnHold()
 	{
-		return userItemDAO.isItemOnHold(userItem);
+		return userItemDAO.isItemOnHold(itemID);
 	}
 	
 	public String getItemStatus()

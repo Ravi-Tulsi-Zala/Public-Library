@@ -1,4 +1,4 @@
-package com.library.validatations;
+package com.library.validations;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ import com.library.businessModels.IUserExtendedInfo;
 import com.library.dao.IUserDAO;
 import com.library.daoFactory.DAOFactory;
 import com.library.daoFactory.IDAOFactory;
+import com.library.messages.Messages;
 
 public class ValidateUserForms extends ValidateUserFormsAbstract {
 
@@ -26,7 +27,7 @@ public class ValidateUserForms extends ValidateUserFormsAbstract {
 	private static final String phoneNumber = "phoneNumber";
 	private static ValidateUserForms instance = null;
 	private static final Logger logger = LogManager.getLogger(ValidateUserForms.class);
-	private IUserDAO userDAO;
+	private IUserDAO userDAO = null;
 
 	public static ValidateUserForms instance() {
 		if (instance == null) {
@@ -130,7 +131,7 @@ public class ValidateUserForms extends ValidateUserFormsAbstract {
 		if (userEmail.isEmpty() || isWhitespace(userEmail) || !emailPhoneValidations(userEmail, false)) {
 			mapperEntry(email, emailErrorStatement);
 		} else if (userDAO.checkEmailIdExist(userEmail)) {
-			emailErrorStatement = "Email already exists. Please register with different email";
+			emailErrorStatement = Messages.EmailExistErrorStatement.getMessage();
 			mapperEntry(email, emailErrorStatement);
 		}
 		if (userPwd.isEmpty() || isWhitespace(userPwd) || !passwordValidations(userPwd)) {
@@ -147,7 +148,7 @@ public class ValidateUserForms extends ValidateUserFormsAbstract {
 		if (userPhone.isEmpty() || isWhitespace(userPhone) || !emailPhoneValidations(userPhone, true)) {
 			mapperEntry(phoneNumber, phoneErrorStatement);
 		}
-		logger.log(Level.ALL, "signUpUserData method implemented completely");
+		logger.log(Level.ALL, Messages.validationSignUp.getMessage());
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
 	}
 
@@ -164,7 +165,7 @@ public class ValidateUserForms extends ValidateUserFormsAbstract {
 		if (userPwd.isEmpty() || isWhitespace(userPwd) || !passwordValidations(userPwd)) {
 			mapperEntry(password, passwordErrorStatement);
 		}
-		logger.log(Level.ALL, "signInIserData method implemented completely.");
+		logger.log(Level.ALL, Messages.validationSignIn.getMessage());
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
 	}
 

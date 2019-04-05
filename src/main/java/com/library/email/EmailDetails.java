@@ -2,7 +2,7 @@ package com.library.email;
 
 public class EmailDetails {
 	private String userEmailID;
-	private String adminEmailID="csci5308group2@gmail.com";
+	private String adminEmailID="group2library2@gmail.com";
 	private String adminPassword="Rel7.xPass!";
 	private String body;
 	private String subject;
@@ -38,5 +38,5 @@ public class EmailDetails {
 	public String getUserEmailID() {
 		return userEmailID;
 	}
-
+// Dummy commit for testing CI CD - last lab 
 }

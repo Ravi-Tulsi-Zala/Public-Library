@@ -1,7 +1,10 @@
 package com.library.controllers;
 //
-import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -10,6 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Inject;
+
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -27,9 +31,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.library.businessModels.LibraryItem;
 import com.library.demo.LibraryApplication;
 import com.library.search.IDBSearchController;
+import com.library.search.SearchFactory;
 import com.library.search.SearchResults;
 import com.library.signIn.AuthenticatedUsers;
-import com.library.search.SearchFactory;
 
 
 @RunWith(SpringRunner.class)

@@ -17,22 +17,13 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 public class SendEmail {
-	
-	
-	//https://www.tutorialspoint.com/spring_boot/spring_boot_sending_email.htm	
 	public static void sendmail(EmailDetails details)
-			throws AddressException, MessagingException, IOException {
+		throws AddressException, MessagingException, IOException {
 		Properties props = new Properties();
-		props.setProperty("mail.transport.protocol", "smtp"); 
 		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.fallback", "true");
 		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.starttls.required", "true");
-		props.put("mail.smtp.ssl.enable", "true");
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.port", "587");
-//	    props.put("mail.smtp.socketFactory.port", "587");   
-//	    props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");   
 		props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 
 		Session session = Session.getInstance(props, new javax.mail.Authenticator() {
@@ -56,5 +47,4 @@ public class SendEmail {
 		msg.setContent(multipart);
 		Transport.send(msg);
 	}
-
 }

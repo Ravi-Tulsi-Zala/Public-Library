@@ -5,6 +5,7 @@ import com.library.businessModels.UserItem;
 public class LoanManagementContext {
 
 	private IReturnItemStrategy iReturnItemStrategy;
+	private UserItem userOnHold;
 
 	public LoanManagementContext(IReturnItemStrategy iReturnItemStrategy) {
 
@@ -12,9 +13,20 @@ public class LoanManagementContext {
 
 	}
 
-	public boolean executeReturnItemStrategy(UserItem item) {
+	public void executeReturnItemStrategy(UserItem item) {
 
-		return iReturnItemStrategy.returnItem(item);
+		boolean isItemOnHold = false;
+
+		int itemId = item.getItemId();
+		iReturnItemStrategy.returnItem(item);
+		isItemOnHold = iReturnItemStrategy.isItemOnHold(itemId);
+		if (isItemOnHold) {
+			userOnHold = new UserItem();
+			userOnHold = iReturnItemStrategy.getTheNextUserInLine(itemId);
+			iReturnItemStrategy.sendEmail(userOnHold);
+			iReturnItemStrategy.removeUserFromHold(userOnHold);
+		}
+
 	}
 
 }

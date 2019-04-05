@@ -22,8 +22,8 @@ import com.library.daoFactory.IDAOFactory;
 import com.library.messages.Messages;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.SignInController;
-import com.library.validatations.ValidateUserForms;
-import com.library.validatations.ValidateUserFormsAbstract;
+import com.library.validations.ValidateUserForms;
+import com.library.validations.ValidateUserFormsAbstract;
 import com.library.welcomePage.UserSessionDetail;
 
 public class SignUpController implements ISignUpController {
