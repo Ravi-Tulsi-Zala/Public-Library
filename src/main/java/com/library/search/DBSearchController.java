@@ -55,7 +55,6 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 			}
 		} else {
 			searchRAndR = executeSearchInDb(currentRequest, httpSession);
-			sessionIdToSearchRAndR.put(sessionId, searchRAndR);
 		}
 		
 		int requestedPageNumber = searchRAndR.searchRequest.getTermsAndPage().getRequestedResultsPageNumber(); 

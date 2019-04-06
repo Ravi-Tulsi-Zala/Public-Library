@@ -10,15 +10,15 @@ public class SearchFactory {
 		return instance;
 	}
 
-	public SearchCategory makeBookSearch() {
+	public BookSearch makeBookSearch() {
 		return new BookSearch();
 	}
 
-	public SearchCategory makeMusicSearch() {
+	public MusicSearch makeMusicSearch() {
 		return new MusicSearch();
 	}
 
-	public SearchCategory makeMovieSearech() {
+	public MovieSearch makeMovieSearech() {
 		return new MovieSearch();
 	}
 
@@ -28,5 +28,9 @@ public class SearchFactory {
 
 	public SearchResults makeSearchResults() {
 		return new SearchResults();
+	}
+	
+	public SearchRequest makeSearchRequest() {
+		return new SearchRequest();
 	}
 }

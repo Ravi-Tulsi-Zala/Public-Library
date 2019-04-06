@@ -8,12 +8,12 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MusicSearchtest {
+public class MusicSearchTest {
 	private MusicSearch ms;
 	
 	@Before
 	public void setUp() throws Exception {
-		ms = new MusicSearch();
+		ms = SearchFactory.instance().makeMusicSearch();
 	}
 	
 	@Test
