@@ -17,13 +17,13 @@ import com.library.businessModels.Music;
 
 public class SearchResultsTest {
 	private SearchResults sr = null;
-	List<LibraryItem> addedItems = null;
+	private List<LibraryItem> addedItems = null;
 	private static BusinessModelsFactory bmf = BusinessModelsFactory.instance();
 
 	@Before
 	public void setUp() throws Exception {
 		sr = SearchFactory.instance().makeSearchResults();
-		addedItems = new LinkedList<>();;
+		addedItems = new LinkedList<>();
 	}
 
 	@Test
@@ -49,24 +49,24 @@ public class SearchResultsTest {
 	}
 	@Test
 	public void canGetAllFoundItems() {
-		SearchresultsPopulator.populateSearchResults(addedItems, sr);		
+		SearchResultsPopulator.populateSearchResults(addedItems, sr, new MockNumOfItemsInResult(12, 13, 17));		
 		List<LibraryItem> items = sr.getAllFoundItems();
 		items.containsAll(addedItems);
 		assertTrue(items.size() == addedItems.size());
 	}	
 	@Test
 	public void canGetSearchResultsPerCategory() {
-		SearchresultsPopulator.populateSearchResults(addedItems, sr);
+		SearchResultsPopulator.populateSearchResults(addedItems, sr, new MockNumOfItemsInResult(8, 11, 23));
 		ArrayList<List<LibraryItem>> resultsPerCategories = sr.getSearchResultsPerCategory() ;
 		for(List<LibraryItem> resultsPerCategory : resultsPerCategories) {
 			addedItems.containsAll(resultsPerCategory);
 			int size = resultsPerCategory.size();
-			assertTrue(size == 15 || size == 17 || size == 19);
+			assertTrue(size == 8 || size == 11 || size == 23);
 		}		
 	}
 	@Test
 	public void canGetResultSetForPageNumber() {
-		SearchresultsPopulator.populateSearchResults(addedItems, sr);
+		SearchResultsPopulator.populateSearchResults(addedItems, sr, new MockNumOfItemsInResult(15, 17, 19));
 		SearchResults sr = this.sr.getResultSetForPageNumber(1);
 		ArrayList<List<LibraryItem>> resultsPerCategories = sr.getSearchResultsPerCategory();
 		for(List<LibraryItem> resultsPerCategory : resultsPerCategories) {
