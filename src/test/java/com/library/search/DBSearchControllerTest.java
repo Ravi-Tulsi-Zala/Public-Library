@@ -21,7 +21,7 @@ import static org.mockito.Mockito.doNothing;
 
 import javax.inject.Inject;
 
-@ActiveProfiles("test")
+@ActiveProfiles("DBSearchControllerTest")
 @RunWith(SpringRunner.class)
 @WebMvcTest
 @ContextConfiguration(classes={LibraryApplication.class, DBSearchControllerTestConfiguration.class})
@@ -89,12 +89,11 @@ public class DBSearchControllerTest {
 		results = dbSearchController.search(mockSearchRequest, mockHttpSession);
 		assertTrue(results.getSearchResultsPerCategory().get(0).size() == DESPLAY_ROW_SIZE);
 	}
-	@Test
+	@Test(expected = IllegalStateException.class)
 	public void removesUserSearchDataOnUserLogOutIfUserWasLoggedIn() {
-		assertFalse(dbSearchController.notifyUserSignOut(mockHttpSession));
 		results = dbSearchController.search(mockSearchRequest, mockHttpSession);
 		assertTrue(dbSearchController.notifyUserSignOut(mockHttpSession));
-		assertFalse(dbSearchController.notifyUserSignOut(mockHttpSession));
+		dbSearchController.notifyUserSignOut(mockHttpSession);
 	}
 	@Test
 	public void clearsSearch() {
