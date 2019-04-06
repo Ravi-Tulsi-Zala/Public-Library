@@ -14,7 +14,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.message.Message;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -230,7 +229,19 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("sessionClient", sessionClient);
 		return "AddItemPage";
 	}
-
+	
+	@GetMapping("/addMovie")
+	public String mappingsForAddMovie(ModelMap model) {
+	
+		return mappingsForAddItem(model);
+	}
+	
+	@GetMapping("/addMusic")
+	public String mappingsForAddMusic(ModelMap model) {
+		return mappingsForAddItem(model);
+	}
+	
+	
 	@PostMapping("/addBook")
 	public String addBookToDatabase(ModelMap model, Book book, Cover coverBook) {
 
@@ -278,7 +289,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		return "LoanManagement";
 	}
 
-	@PostMapping("/loanItems")
+	@PostMapping("/loan")
 	public String returnItems(ModelMap model, Select select) {
 
 		String selections = select.getSelections(); 

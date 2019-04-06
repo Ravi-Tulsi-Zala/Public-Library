@@ -205,6 +205,7 @@ public class UserItemDAO implements IUserItemDAO {
 	@Override
 	public boolean addItem(UserItem item) {
 
+		System.out.println(item.getEmail());
 		String email = item.getEmail();
 		String category = item.getCategory();
 		String title = item.getTitle();
