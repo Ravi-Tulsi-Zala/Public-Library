@@ -13,7 +13,8 @@ public class MockSearchRequest extends SearchRequest {
 	
 	public MockSearchRequest() {
 		List<LibraryItem> notUsedHere = new LinkedList<LibraryItem>();
-		SearchresultsPopulator.populateSearchResults(notUsedHere , searchResults);
+		MockNumOfItemsInResult mockNumOfItemsInResult = new MockNumOfItemsInResult(15, 17, 19);
+		SearchResultsPopulator.populateSearchResults(notUsedHere , searchResults, mockNumOfItemsInResult);
 	}
 
 	@Override
