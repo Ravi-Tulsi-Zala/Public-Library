@@ -42,12 +42,12 @@ public class LoanManagentController implements ILoanManagementController {
 
 		for (UserItem item : userItems) {
 			itemDAO.removeItem(item);
-			increaseAvailability(item);
+			returnProcess(item);
 		}
 
 	}
 
-	private void increaseAvailability(UserItem item) {
+	private void returnProcess(UserItem item) {
 
 		String category = item.getCategory();
 

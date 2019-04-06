@@ -34,7 +34,7 @@ public class BookReturnStrategy implements IReturnItemStrategy {
 	}
 
 	@Override
-	public void returnItem(UserItem item) {
+	public void increaseAvailabilty(UserItem item) {
 
 		int itemId = item.getItemId();
 		int currentAvailability = iBookDAO.getAvailability(itemId);
@@ -89,6 +89,14 @@ public class BookReturnStrategy implements IReturnItemStrategy {
 
 		iUserItemDAO.removeUserFromHold(userOnHold);
 
+	}
+
+	@Override
+	public void addUserItem(UserItem userItem) {
+	
+		System.out.println("Here" + userItem.getItemId());
+		iUserItemDAO.addItem(userItem);
+		
 	}
 
 }

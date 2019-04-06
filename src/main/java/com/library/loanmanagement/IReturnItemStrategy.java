@@ -4,7 +4,7 @@ import com.library.businessModels.UserItem;
 
 public interface IReturnItemStrategy {
 	
-	public void returnItem(UserItem item);
+	public void increaseAvailabilty(UserItem item);
 
 	public void sendEmail(UserItem item);
 
@@ -13,4 +13,6 @@ public interface IReturnItemStrategy {
 	public UserItem getTheNextUserInLine(int itemId);
 
 	public void removeUserFromHold(UserItem userOnHold);
+	
+	public void addUserItem(UserItem userItem);
 }
