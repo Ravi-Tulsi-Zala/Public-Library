@@ -21,10 +21,11 @@ public class BookingEmailSender {
 
 		String title = item.getTitle();
 		String email = item.getEmail();
+		String category = item.getCategory();
 		EmailDetails emailDetails = new EmailDetails();
 
-		emailDetails.setSubject("Reg : Book titled " + title + " is available in the library!");
-		emailDetails.setBody("Dear " + email + " ,<br/><br/>" + "This is to notify you that the book titled " + title
+		emailDetails.setSubject("Reg : "+category+" titled " + title + " is borrowed for you!!");
+		emailDetails.setBody("Dear " + email + " ,<br/><br/>" + "This is to notify you that the "+category+"  titled " + title
 				+ " is booked for you!" + "<br/><br/>" + "Regards, " + "<br/>" + " Public Library.");
 		emailDetails.setUserEmailID(email);
 		try {

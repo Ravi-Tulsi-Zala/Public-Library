@@ -19,7 +19,7 @@ public class DetailsSetter implements IDetailsSetter {
 	{
 		String details = "";
 		details = details + "Director: " + movie.getDirector() + "<br />";
-		details = details + movie.getDescription() + "<br />";
+		details = details + "Description: " + movie.getDescription() + "<br />";
 		return details;
 	}
 	

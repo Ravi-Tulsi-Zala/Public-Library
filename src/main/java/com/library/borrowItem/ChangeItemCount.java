@@ -5,12 +5,10 @@ import com.library.dao.IMovieDAO;
 import com.library.dao.IMusicDAO;
 import com.library.daoFactory.DAOFactory;
 import com.library.daoFactory.IDAOFactory;
+import com.library.loanmanagement.CategoryEnum;
 
 public class ChangeItemCount {
 
-	private static String book = "Book";
-	private static String music = "Music";
-	private static String movie = "Movie";
 	private int itemID;
 	private String itemType;
 	IDAOFactory factory;
@@ -49,15 +47,15 @@ public class ChangeItemCount {
 	public Boolean changeCount()
 	{
 		Boolean isCountChanged = false;
-		if(itemType.equals(book))
+		if(itemType.equals(CategoryEnum.BOOK.getText()))
 		{
 			isCountChanged = changeBookCount();
 		}
-		else if(itemType.equals(movie))
+		else if(itemType.equals(CategoryEnum.MOVIE.getText()))
 		{
 			isCountChanged = changeMovieCount();
 		}
-		else if(itemType.equals(music))
+		else if(itemType.equals(CategoryEnum.MUSIC.getText()))
 		{
 			isCountChanged = changeMusicCount();
 		}

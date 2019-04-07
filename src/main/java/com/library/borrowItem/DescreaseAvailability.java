@@ -5,15 +5,14 @@ import com.library.dao.IMovieDAO;
 import com.library.dao.IMusicDAO;
 import com.library.daoFactory.DAOFactory;
 import com.library.daoFactory.IDAOFactory;
+import com.library.loanmanagement.CategoryEnum;
 
 public class DescreaseAvailability {
-	
-	static final String book = "Book";
-	static final String movie = "Movie";
-	static final String music = "Music";
+
 	static final int quantity = -1;
 	String category;
 	IDAOFactory factory;
+	int currentAvailability;
 
 	public DescreaseAvailability(String category) {
 		this.category = category;
@@ -22,20 +21,23 @@ public class DescreaseAvailability {
 	
 	public void decreaseAvailability(int itemID)
 	{
-		if(category.equals(book))
+		if(category.equals(CategoryEnum.BOOK.getText()))
 		{
 			IBookDAO bookDAO = factory.makeBookDAO();
-			bookDAO.updateAvailability(itemID, -1);
+			currentAvailability = bookDAO.getAvailability(itemID);
+			bookDAO.updateAvailability(itemID, currentAvailability-1);
 		}
-		else if (category.equals(movie))
+		else if (category.equals(CategoryEnum.MOVIE.getText()))
 		{
 			IMovieDAO movieDAO = factory.makeMovieDAO();
-			movieDAO.updateAvailability(itemID, quantity);
+			currentAvailability = movieDAO.getAvailability(itemID);
+			movieDAO.updateAvailability(itemID, currentAvailability-1);
 		}
-		else if (category.equals(music))
+		else if (category.equals(CategoryEnum.MUSIC.getText()))
 		{
 			IMusicDAO musicDAO = factory.makeMusicDAO();
-			musicDAO.updateAvailability(itemID, quantity);
+			currentAvailability = musicDAO.getAvailability(itemID);
+			musicDAO.updateAvailability(itemID, currentAvailability-1);
 		}
 	}
 }

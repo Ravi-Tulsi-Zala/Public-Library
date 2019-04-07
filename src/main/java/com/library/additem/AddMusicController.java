@@ -11,13 +11,13 @@ import com.library.routes.LibraryFactorySingleton;
 
 public class AddMusicController implements IAddMusicController {
 
-	IDAOFactory factory;
-	int itemIdOfMusic;
-	IMusicDAO iMusicDAO;
-	ILibraryFactory iLibraryfactory;
-	LibraryFactorySingleton factorySingleton;
-	IItemCoverSetter coverSetter;
-	boolean isMusicCreated, isMusicCoverCreated, isMusicDuplicate;;
+	private IDAOFactory factory;
+	private int itemIdOfMusic;
+	private IMusicDAO iMusicDAO;
+	private ILibraryFactory iLibraryfactory;
+	private LibraryFactorySingleton factorySingleton;
+	private IItemCoverSetter coverSetter;
+	private boolean isMusicCoverCreated, isMusicDuplicate;;
 
 	public AddMusicController() {
 		factory = new DAOFactory();
