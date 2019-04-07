@@ -15,9 +15,9 @@ import com.library.daoFactory.IDAOFactory;
 
 public class ItemCoverSetter implements IItemCoverSetter {
 
-	IDAOFactory iDAOfactory;
+	private IDAOFactory iDAOfactory;
 	private boolean isCoverCreated;
-	ICoverDAO coverDAO;
+	private ICoverDAO coverDAO;
 	private static final Logger logger = LogManager.getLogger(ItemCoverSetter.class);
 
 	public ItemCoverSetter() {
@@ -26,8 +26,6 @@ public class ItemCoverSetter implements IItemCoverSetter {
 	}
 
 	public boolean isCoverAddedToDatabase(int itemId, MultipartFile coverImage) {
-		
-		System.out.println(itemId);
 		try {
 			byte[] bytes;
 			try {

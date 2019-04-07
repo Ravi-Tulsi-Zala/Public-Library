@@ -88,6 +88,11 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	private String gotoWelcomePage = Messages.Welcome.getMessage();
 	private String gotoForgotPwdPage = Messages.ForgotPassword.getMessage();
 	private String gotoErrorPwdPage = Messages.ErrorPage.getMessage();
+	
+	private String gotoBrowsePageCategoriesPage = Messages.BrowsePageCategory.getMessage();
+	private String gotoBrowsePageItemsPage = Messages.BrowsePageItems.getMessage();
+	private String gotoItemDetailsPage = Messages.ItemDetail.getMessage();
+	private String redirectToItemDetail = Messages.ItemDetailRedirect.getMessage();
 
 	public LibraryRoutes() {
 		libraryInstance = LibraryFactorySingleton.instance();
@@ -419,7 +424,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("sessionClient", sessionClient);
 		model.addAttribute("categories", categories);
 		model.addAttribute("itemType", itemType);
-		return "BrowsePageCategory";
+		return gotoBrowsePageCategoriesPage;
 	}
 
 	@GetMapping("/BrowsePage/{itemType}/{category}")
@@ -438,7 +443,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("displayItems", displayItems);
 		model.addAttribute(itemType);
 		model.addAttribute(category);
-		return "BrowsePageItems";
+		return gotoBrowsePageItemsPage;
 	}
 
 	@GetMapping("/itemDetail/{itemType}/{itemID}")
@@ -456,7 +461,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("sessionClient", sessionClient);
 		model.addAttribute("status", status);
 		model.addAttribute("displayDetailed", displayDetailed);
-		return "itemDetail";
+		return gotoItemDetailsPage;
 	}
 
 	@PostMapping("/borrowItem/{status}")
@@ -466,8 +471,12 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		String emailAddress = user.getUserEmail(httpSession);
 		BookItem bookItem = new BookItem(displayDetailed, emailAddress);
 		Boolean isItemBooked = bookItem.bookItem(status);
+		if(!isItemBooked)
+		{
+			
+		}
 		String itemType = displayDetailed.getItemType();
 		int itemID = displayDetailed.getItemID();
-		return "redirect:/itemDetail/" + itemType + "/" + itemID;
+		return redirectToItemDetail + itemType + "/" + itemID;
 	}
 }

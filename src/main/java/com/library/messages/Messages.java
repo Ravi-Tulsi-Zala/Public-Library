@@ -40,7 +40,14 @@ public enum Messages {
 	ParsingErrorStatement("Some problem occured while parsing XML."),
 	EmailExistErrorStatement("Email already exists. Please register with different email"),
 	validationSignUp("signUpUserData method implemented completely"),
-	validationSignIn("signInUserData method implemented completely");
+	validationSignIn("signInUserData method implemented completely"),
+	BrowsePageCategory("BrowsePageCategory"),
+	BrowsePageItems("BrowsePageItems"),
+	ItemDetail("itemDetail"),
+	ItemDetailRedirect("redirect:/itemDetail/");
+	
+	
+	
 	
 	
 	

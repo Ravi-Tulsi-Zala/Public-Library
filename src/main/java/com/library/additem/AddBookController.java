@@ -11,13 +11,14 @@ import com.library.routes.ILibraryFactory;
 import com.library.routes.LibraryFactorySingleton;
 
 public class AddBookController implements IAddBookController {
-	IDAOFactory iDAOfactory;
-	int itemIdOfBook;
-	IBookDAO bookDAO;
-	ILibraryFactory iLibraryfactory;
-	LibraryFactorySingleton factorySingleton;
-	IItemCoverSetter coverSetter;
-	boolean isBookCreated, isBookCoverCreated, isDuplicateBook;
+	
+	private IDAOFactory iDAOfactory;
+	private int itemIdOfBook;
+	private IBookDAO bookDAO;
+	private ILibraryFactory iLibraryfactory;
+	private LibraryFactorySingleton factorySingleton;
+	private IItemCoverSetter coverSetter;
+	private boolean isBookCoverCreated, isDuplicateBook;
 
 	public AddBookController() {
 		iDAOfactory = new DAOFactory();

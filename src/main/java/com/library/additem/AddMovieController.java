@@ -12,13 +12,13 @@ import com.library.routes.LibraryFactorySingleton;
 
 public class AddMovieController implements IAddMovieController {
 
-	IDAOFactory factory;
-	int itemIdOfMovie;
-	IMovieDAO iMovieDAO;
-	ILibraryFactory iLibraryfactory;
-	LibraryFactorySingleton factorySingleton;
-	IItemCoverSetter coverSetter;
-	boolean isMovieCreated, isMovieCoverCreated, isDuplicateMovie;
+	private IDAOFactory factory;
+	private int itemIdOfMovie;
+	private IMovieDAO iMovieDAO;
+	private ILibraryFactory iLibraryfactory;
+	private LibraryFactorySingleton factorySingleton;
+	private IItemCoverSetter coverSetter;
+	private boolean isMovieCoverCreated, isDuplicateMovie;
 
 	public AddMovieController() {
 
