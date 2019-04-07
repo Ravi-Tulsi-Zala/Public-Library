@@ -473,7 +473,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		Boolean isItemBooked = bookItem.bookItem(status);
 		if(!isItemBooked)
 		{
-			
+			return redirectToErrorPage;
 		}
 		String itemType = displayDetailed.getItemType();
 		int itemID = displayDetailed.getItemID();
