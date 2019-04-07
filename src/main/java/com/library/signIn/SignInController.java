@@ -17,8 +17,8 @@ import com.library.businessModels.UserBasicInfo;
 import com.library.dao.IUserDAO;
 import com.library.daoFactory.DAOFactory;
 import com.library.messages.Messages;
-import com.library.validatations.ValidateUserForms;
-import com.library.validatations.ValidateUserFormsAbstract;
+import com.library.validations.ValidateUserForms;
+import com.library.validations.ValidateUserFormsAbstract;
 import com.library.welcomePage.UserSessionDetail;
 
 public class SignInController implements ISignInController {
@@ -51,6 +51,7 @@ public class SignInController implements ISignInController {
 			UserSessionDetail.setAvailableAdmin(false);
 			UserSessionDetail.setAvailableUserID(authUsers.getUserEmail(httpSession));
 			UserSessionDetail.setClientActiveStatus(Messages.Logout.getMessage());
+			logger.log(Level.ALL, "checkUserCredential method implemented successfully.");
 			return redirectToWelcome;
 
 		} else if (userBasicInfo.getEmail().equals(ValidateUserFormsAbstract.isAdmin)
@@ -58,10 +59,10 @@ public class SignInController implements ISignInController {
 			UserSessionDetail.setAvailableAdmin(true);
 			UserSessionDetail.setAvailableUserID(Messages.AdminEmailID.getMessage());
 			UserSessionDetail.setClientActiveStatus(Messages.Logout.getMessage());
+			logger.log(Level.ALL, "checkUserCredential method implemented successfully.");
 			return redirectToWelcome;
 		}
-		logger.log(Level.ALL, "checkUserCredential method implemented successfully.");
-		UserSessionDetail.setClientActiveStatus(Messages.Logout.getMessage());
+		
 		return redirectToWelcome;
 	}
 

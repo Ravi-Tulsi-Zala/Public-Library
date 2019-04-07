@@ -13,7 +13,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 
 import com.library.businessModels.Cover;
-import com.library.dao.CoverDAO;
+import com.library.dao.ICoverDAO;
+import com.library.daoFactory.DAOFactory;
 
 public class CoverImageLoader implements ICoverImageLoader {
 	private static final String SEPARATOR = File.separator;
@@ -29,7 +30,7 @@ public class CoverImageLoader implements ICoverImageLoader {
 		String pathToDirToSaveInto = PATH_TO_DYNAMIC_CONTENT_DIR + pathToDynamicContentSubDir;
 		String imagePath = null;
 		byte [] bytes;
-		CoverDAO coverDao = new CoverDAO();
+		ICoverDAO coverDao = new DAOFactory().makeCoverDAO();
 		Cover cover = coverDao.getCoverByID(itemId);
 		
 		if(null == cover) {

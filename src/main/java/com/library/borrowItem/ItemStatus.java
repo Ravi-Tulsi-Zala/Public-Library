@@ -45,7 +45,6 @@ public class ItemStatus {
 			if (booksAvailable > 0) {
 				availability = true;
 			}
-			
 		}
 		else if(userItem.getCategory().equals(movie))
 		{

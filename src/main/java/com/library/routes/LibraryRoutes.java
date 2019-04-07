@@ -80,15 +80,14 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	private String redirectToWelcome = Messages.WelcomePageRedirect.getMessage();
 	private String redirectToSignIn = Messages.SignInPageRedirect.getMessage();
-	private String redirectToSignUp = Messages.SignUpPageRedirect.getMessage();
 	private String redirectToForgotPwd = Messages.ForgotPassPageRedirect.getMessage();
 	private String redirectToErrorPage = Messages.ErrorPageRedirect.getMessage();
 
-	private String gotoSignInPage = "SignInForm";
-	private String gotoSignUpPage = "SignUpForm";
-	private String gotoWelcomePage = "Welcome";
-	private String gotoForgotPwdPage = "ForgotPassword";
-	private String gotoErrorPwdPage = "ErrorPage";
+	private String gotoSignInPage = Messages.SignInForm.getMessage();
+	private String gotoSignUpPage = Messages.SignUpForm.getMessage();
+	private String gotoWelcomePage = Messages.Welcome.getMessage();
+	private String gotoForgotPwdPage = Messages.ForgotPassword.getMessage();
+	private String gotoErrorPwdPage = Messages.ErrorPage.getMessage();
 
 	public LibraryRoutes() {
 		libraryInstance = LibraryFactorySingleton.instance();
@@ -97,7 +96,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/signUp")
-	public String processSignUpForm(ModelMap model, User user, HttpSession httpSession) {
+	public String processSignUpForm(ModelMap model, User user, HttpSession httpSession, RedirectAttributes redirectAttr) {
 		Logger logger = LogManager.getLogger(SignUpController.class);
 		try {
 			ISignUpController signUpCreate = factory.signUp(user, httpSession);
@@ -113,7 +112,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 				return redirectToWelcome;
 			}
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Something went wrong while registering the User, please check detailed logs.", e);
+			logger.log(Level.ALL, Messages.SignUpErrorStatement.getMessage(), e);
+			redirectAttr.addAttribute("error", e);
 			return redirectToErrorPage;
 		}
 	}
@@ -151,7 +151,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@GetMapping("/basicSearch")
-	public String getSimpleSearchPage(ModelMap model, HttpSession httpSession) {
+	public String getBasicSearchPage(ModelMap model, HttpSession httpSession) {
 		dbSearchController.clearSearch(httpSession);
 		model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
 		addUserEmail(model, httpSession);
@@ -159,7 +159,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/basicSearch")
-	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage,
+	public String executeBasicSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage,
 			BookSearch bookSearch, MusicSearch musicSearch, MovieSearch moviesSearch) {
 		SearchResults searchResults = executeSearch(httpSession, termsAndPage, bookSearch, musicSearch, moviesSearch);
 		model.addAttribute("searchResults", searchResults);
@@ -194,7 +194,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/signIn")
-	public String processSignInForm(HttpSession httpSession, ModelMap model, User user) {
+	public String processSignInForm(HttpSession httpSession, ModelMap model, User user, RedirectAttributes redirectAttr) {
 		Logger logger = LogManager.getLogger(SignInController.class);
 		try {
 			ISignInController signIn = factory.signIn(user, httpSession);
@@ -209,8 +209,9 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			}
 			return signIn.checkUserCredential();
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Something went wrong while signing in the User, please check detailed logs.", e);
-			return redirectToErrorPage; // Something went wrong page.
+			logger.log(Level.ALL,Messages.SignInErrorStatement.getMessage(), e);
+			redirectAttr.addAttribute("error", e);
+			return redirectToErrorPage; 
 		}
 	}
 
@@ -227,7 +228,19 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("sessionClient", sessionClient);
 		return "AddItemPage";
 	}
-
+	
+	@GetMapping("/addMovie")
+	public String mappingsForAddMovie(ModelMap model) {
+	
+		return mappingsForAddItem(model);
+	}
+	
+	@GetMapping("/addMusic")
+	public String mappingsForAddMusic(ModelMap model) {
+		return mappingsForAddItem(model);
+	}
+	
+	
 	@PostMapping("/addBook")
 	public String addBookToDatabase(ModelMap model, Book book, Cover coverBook) {
 
@@ -275,7 +288,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		return "LoanManagement";
 	}
 
-	@PostMapping("/loanItems")
+	@PostMapping("/loan")
 	public String returnItems(ModelMap model, Select select) {
 
 		String selections = select.getSelections(); 
@@ -292,7 +305,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	
 	@GetMapping("/welcome")
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem, HttpServletRequest request,
-			HttpSession httpSession) {
+			HttpSession httpSession, RedirectAttributes redirectAttr) {
 		Logger logger = LogManager.getLogger(WelcomePageController.class);
 		dbSearchController.clearSearch(httpSession);
 		String loggingStatus = UserSessionDetail.getClientActiveStatus();
@@ -300,7 +313,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
 		IWelcomeController welcomeCtrl = factory.welcomePage();
 		java.util.Enumeration<String> reqEnum = request.getParameterNames();
-
 		while (reqEnum.hasMoreElements()) {
 			String s = reqEnum.nextElement();
 			if (s.equals("LoggedOut") && request.getParameter(s).equals("true")) {
@@ -308,7 +320,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 				sessionClient = "";
 			}
 		}
-
 		List<Book> book, favBooks;
 		List<Movie> movie, favMovies;
 		List<Music> music, favMusic;
@@ -320,10 +331,12 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			favMovies = welcomeCtrl.getFavouriteMovies();
 			favMusic = welcomeCtrl.getFavouriteMusic();
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Some problem occured while connection with Database in welcome controller.", e);
+			logger.log(Level.ALL, Messages.WelcomeSQlErrorStatement.getMessage(), e);
+			redirectAttr.addAttribute("error", e);
 			return redirectToErrorPage;
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Some problem occured, check logs.", e);
+			logger.log(Level.ALL, Messages.WelcomeErrorStatement.getMessage(), e);
+			redirectAttr.addAttribute("error", e);
 			return redirectToErrorPage;
 		} finally {
 			DatabaseConnection databaseConnection = new DatabaseConnection();
@@ -366,7 +379,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			securityQuestionValue = fPwdCntrl.setQuestion();
 			model.addAttribute("securityQuestion", securityQuestionValue);
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Some generic error occured while in forgotPassword controller.", e);
+			logger.log(Level.ALL, Messages.ForgotPwdErrorStatement.getMessage(), e);
 		}
 		return gotoForgotPwdPage;
 	}
@@ -383,11 +396,11 @@ public class LibraryRoutes implements WebMvcConfigurer {
 				return redirectToForgotPwd;
 			}
 		} catch (MessagingException | IOException em) {
-			logger.log(Level.ALL, "Some problem occured while sending a email.", em);
+			logger.log(Level.ALL, Messages.ForgotPwdEmailErrorStatement.getMessage(), em);
 			redirectAttr.addAttribute("error", em);
 			return redirectToErrorPage;
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Some generic error occured while in forgotPassword controller.", e);
+			logger.log(Level.ALL, Messages.ForgotPwdErrorStatement.getMessage(), e);
 			redirectAttr.addAttribute("error", e);
 			return redirectToErrorPage;
 		}

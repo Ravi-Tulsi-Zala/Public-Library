@@ -6,11 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import com.library.messages.Messages;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import com.library.businessModelSetter.BookSetter;
 import com.library.businessModelSetter.IBookSetter;
 import com.library.businessModelSetter.IMovieSetter;
@@ -39,7 +38,7 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 			databaseConnection = DatabaseConnection.getDatabaseConnectionInstance();
 			this.connection = databaseConnection.getConnection();
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Unable to connect to database", e);
+			logger.log(Level.ALL, Messages.UnableToConnectToDB.getMessage(), e);
 		}
 
 	}
@@ -49,7 +48,7 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 		bookMapper = new BookSetter();
 		List<Book> books = new ArrayList<Book>();
 		this.connection = databaseConnection.getConnection();
-		query = "SELECT distinct * FROM books order by books.Item_ID desc limit " + limitNumber;
+		query = Messages.GetLatestBookQuery.getMessage() + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		books = bookMapper.mapBook(resultSet);
@@ -61,7 +60,7 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 		movieMapper = new MovieSetter();
 		List<Movie> movies = new ArrayList<Movie>();
 		this.connection = databaseConnection.getConnection();
-		query = "SELECT distinct * FROM movie order by movie.Item_ID desc limit " + limitNumber;
+		query = Messages.GetLatestMovieQuery.getMessage() + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		if (!resultSet.next()) {
@@ -76,7 +75,7 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 		musicMapper = new MusicSetter();
 		List<Music> musicList = new ArrayList<Music>();
 		this.connection = databaseConnection.getConnection();
-		query = "SELECT distinct * FROM music order by music.Item_ID desc limit " + limitNumber;
+		query = Messages.GetLatestMusicQuery.getMessage() + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		if (!resultSet.next()) {
@@ -91,7 +90,7 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 		bookMapper = new BookSetter();
 		List<Book> books = new ArrayList<Book>();
 		this.connection = databaseConnection.getConnection();
-		query = "SELECT distinct * FROM books order by Count desc limit " + limitNumber;
+		query = Messages.GetFavBookQuery.getMessage() + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		books = bookMapper.mapBook(resultSet);
@@ -103,7 +102,7 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 		movieMapper = new MovieSetter();
 		List<Movie> movies = new ArrayList<Movie>();
 		this.connection = databaseConnection.getConnection();
-		query = "SELECT distinct * FROM movie order by Count desc limit " + limitNumber;
+		query = Messages.GetFavMovieQuery.getMessage() + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		if (!resultSet.next()) {
@@ -115,9 +114,10 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 
 	@Override
 	public List<Music> getFavouriteMusic() throws SQLException {
+		musicMapper = new MusicSetter();
 		List<Music> musicList = new ArrayList<Music>();
 		this.connection = databaseConnection.getConnection();
-		query = "SELECT distinct * FROM music order by Count desc limit " + limitNumber;
+		query = Messages.GetFavMusicQuery.getMessage() + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		if (!resultSet.next()) {

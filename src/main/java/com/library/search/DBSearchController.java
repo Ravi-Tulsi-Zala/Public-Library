@@ -1,6 +1,8 @@
 package com.library.search;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -12,12 +14,14 @@ import com.library.signOut.SignOutController;
 public class DBSearchController implements IDBSearchController, ISignOutObserver {
 	
 	private static final int FIRST_PAGE = 1;
-	private Map<String, SearchRequestAndResults> sessionIdToSearchRAndR = new HashMap<>();
+	private Map<HttpSession, SearchRequestAndResults> sessionToSearchRAndR = new HashMap<>();
+	private LinkedList<HttpSession> sessions = new LinkedList<>();
 	@Inject
 	private ISearchResultCoverImgProxy coverImageProxy;
 	
 	public DBSearchController() {
 		SignOutController.instance().registerAsSignOutObserver(this);
+		new Thread(new HttpSessionMonitor(sessions, this)).start();
 	}
 		
 	private class SearchRequestAndResults {
@@ -33,13 +37,12 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 	@Override
 	public SearchResults search(ISearchRequest currentRequest, HttpSession httpSession) {
 		SearchRequestAndResults searchRAndR = null;
-		String sessionId = httpSession.getId();
 		
-		boolean searchIsInProgress = sessionIdToSearchRAndR.containsKey(sessionId);
+		boolean searchIsInProgress = sessionToSearchRAndR.containsKey(httpSession);
 		boolean isNewSearchTerms = false;
 		
 		if(searchIsInProgress) {
-			searchRAndR = sessionIdToSearchRAndR.get(sessionId);
+			searchRAndR = sessionToSearchRAndR.get(httpSession);
 			ISearchRequest request = searchRAndR.searchRequest;
 			isNewSearchTerms = searchRAndR.searchRequest.isNewSearchTerms(currentRequest);
 			if(isNewSearchTerms) {
@@ -54,8 +57,8 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 				request.getTermsAndPage().setRequestedResultsPageNumber(pageNumber);
 			}
 		} else {
+			sessions.add(httpSession);
 			searchRAndR = executeSearchInDb(currentRequest, httpSession);
-			sessionIdToSearchRAndR.put(sessionId, searchRAndR);
 		}
 		
 		int requestedPageNumber = searchRAndR.searchRequest.getTermsAndPage().getRequestedResultsPageNumber(); 
@@ -69,20 +72,21 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 	private SearchRequestAndResults executeSearchInDb(ISearchRequest request, HttpSession httpSession) {
 		ISearchResults searchResults = request.searchInDb();
 		SearchRequestAndResults searchRAndR = new SearchRequestAndResults(request, searchResults);
-		sessionIdToSearchRAndR.put(httpSession.getId(), searchRAndR);
+		sessionToSearchRAndR.put(httpSession, searchRAndR);
 		return searchRAndR;
 	}
 
 	@Override
 	public boolean notifyUserSignOut(HttpSession httpSession) {
+		httpSession.invalidate();
 		return clearSearch(httpSession);
 	}
 	
 	@Override
 	public boolean clearSearch(HttpSession httpSession) {
-		if(sessionIdToSearchRAndR.containsKey(httpSession.getId())) {
+		if(sessionToSearchRAndR.containsKey(httpSession)) {
 			coverImageProxy.deleteCoverImagesForSearchResults(httpSession);
-			sessionIdToSearchRAndR.remove(httpSession.getId());
+			sessionToSearchRAndR.remove(httpSession);
 		return true;
 	}
 	return false;
