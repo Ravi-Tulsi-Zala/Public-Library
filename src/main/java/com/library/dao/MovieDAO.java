@@ -56,11 +56,11 @@ public class MovieDAO implements IMovieDAO {
 			movie = movies.get(0);
 		} catch (SQLException e) {
 
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 
 		} catch (Exception e) {
 
-			logger.log(Level.ALL, "Movie not found for the specific Itemid", e);
+			logger.log(Level.ALL, "Movie with itemId ["+itemID+"] not found in movie table", e);
 		}
 		finally
 		{
@@ -84,10 +84,10 @@ public class MovieDAO implements IMovieDAO {
 
 		} catch (SQLException e) {
 
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Error fetching the list of movies for this category", e);
+			logger.log(Level.ALL, "Error fetching the list of movies with category["+category+"] in movie table", e);
 		}
 		finally
 		{
@@ -125,10 +125,10 @@ public class MovieDAO implements IMovieDAO {
 			return recentlyAddedMovieId;
 
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not insert movie into database", e);
+			logger.log(Level.ALL, "Can not insert movie with title ["+movieTitle+"] , director["+movieDirector+"] into database", e);
 		}
 		finally
 		{
@@ -162,10 +162,10 @@ public class MovieDAO implements IMovieDAO {
 
 		} catch (SQLException e) {
 
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not update movie into database", e);
+			logger.log(Level.ALL, "Can not update movie with title ["+movieTitle+"], director ["+movieDirector+"]", e);
 		}
 		finally
 		{
@@ -189,10 +189,10 @@ public class MovieDAO implements IMovieDAO {
 
 		} catch (SQLException e) {
 
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not delete movie into database", e);
+			logger.log(Level.ALL, "Can not delete movie with itemId ["+movieItemId+"] and title ["+movie.getTitle()+"]", e);
 		}
 		finally
 		{
@@ -272,9 +272,9 @@ public class MovieDAO implements IMovieDAO {
 				categories.add(resultSet.getString("Category"));
 			}
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of:"+query, e);
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Error fetching the list of Movie Categories", e);
+			logger.log(Level.ALL, "Error fetching the list of Movie Categories from movie table", e);
 		}
 		finally
 		{
@@ -299,9 +299,9 @@ public class MovieDAO implements IMovieDAO {
 			}
 
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of : "+query, e);
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Error fetching the availability of Movie", e);
+			logger.log(Level.ALL, "Error fetching the availability of Moviewith itemId : "+itemID, e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
@@ -330,9 +330,9 @@ public class MovieDAO implements IMovieDAO {
 			}
 
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of : "+query, e);
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Error fetching the list of Movies", e);
+			logger.log(Level.ALL, "Failed to check movie duplication in movie table for movie title ["+titleToBeAdded+"] and director ["+directorToBeAdded+"]", e);
 		}
 		finally
 		{
@@ -355,11 +355,11 @@ public class MovieDAO implements IMovieDAO {
 		}
 		catch (SQLException e)
 		{
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 		}
 		catch (Exception e)
 		{
-			logger.log(Level.ALL, "Error increasing count of Movie", e);
+			logger.log(Level.ALL, "Error increasing count of Movie with itemId ["+itemID+"]", e);
 		}
 		finally
 		{
@@ -379,9 +379,9 @@ public class MovieDAO implements IMovieDAO {
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Error updating availability of movie", e);
+			logger.log(Level.ALL, "Error updating availability of movie with itemId ["+itemId+"]", e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}

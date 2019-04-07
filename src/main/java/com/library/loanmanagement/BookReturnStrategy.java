@@ -94,7 +94,7 @@ public class BookReturnStrategy implements IReturnItemStrategy {
 	@Override
 	public void addUserItem(UserItem userItem) {
 	
-		System.out.println("Here" + userItem.getItemId());
+		
 		iUserItemDAO.addItem(userItem);
 		
 	}
