@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.library.additem.AddItemMessagesEnum;
 import com.library.additem.IAddBookController;
 import com.library.additem.IAddMovieController;
 import com.library.additem.IAddMusicController;
@@ -74,6 +75,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	private static String securityQuestionValue;
 
 	private Messages message;
+	private AddItemMessagesEnum addItemMessages;
 	private String displayMessage, redirectPage;
 	private ILibraryFactory factory = null;
 	private LibraryFactorySingleton libraryInstance = null;
@@ -245,8 +247,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	public String addBookToDatabase(ModelMap model, Book book, Cover coverBook) {
 
 		IAddBookController iAddBookController = factory.makeAddBookController();
-		message = iAddBookController.addBookRecordInDatabase(book, coverBook.getCoverImage());
-		displayMessage = message.getMessage();
+		addItemMessages = iAddBookController.addBookRecordInDatabase(book, coverBook.getCoverImage());
+		displayMessage = addItemMessages.getMessage();
 		model.addAttribute("message", displayMessage);
 		redirectPage = mappingsForAddItem(model);
 		return redirectPage;
@@ -256,8 +258,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	public String addMovieToDatabase(ModelMap model, Movie movie, Cover coverMovie) {
 
 		IAddMovieController iAddMovieController = factory.makeAddMovieController();
-		message = iAddMovieController.addMovieRecordInDatabase(movie, coverMovie.getCoverImage());
-		displayMessage = message.getMessage();
+		addItemMessages = iAddMovieController.addMovieRecordInDatabase(movie, coverMovie.getCoverImage());
+		displayMessage = addItemMessages.getMessage();
 		model.addAttribute("message", displayMessage);
 		redirectPage = mappingsForAddItem(model);
 		return redirectPage;
@@ -268,8 +270,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	public String addMusicToDatabase(ModelMap model, Music music, Cover coverMusic) {
 
 		IAddMusicController iAddMusicController = factory.makeAddMusicController();
-		message = iAddMusicController.addMusicRecordInDatabase(music, coverMusic.getCoverImage());
-		displayMessage = message.getMessage();
+		addItemMessages = iAddMusicController.addMusicRecordInDatabase(music, coverMusic.getCoverImage());
+		displayMessage = addItemMessages.getMessage();
 		model.addAttribute("message", displayMessage);
 		redirectPage = mappingsForAddItem(model);
 		return redirectPage;

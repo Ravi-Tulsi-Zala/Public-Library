@@ -47,7 +47,7 @@ public class MovieDAO implements IMovieDAO {
 		this.connection = databaseConnection.getConnection();
 		List<Movie> movies = new ArrayList<Movie>();
 		Movie movie = new Movie();
-		query = "SELECT * from movie WHERE Item_ID = ?";
+		query = MovieDAOEnums.QUERY_GET_MOVIE_BY_ID.getQuery();
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
@@ -73,7 +73,7 @@ public class MovieDAO implements IMovieDAO {
 	public List<Movie> getMoviesByCategory(String category) {
 
 		this.connection = databaseConnection.getConnection();
-		query = "SELECT * from movie WHERE Category LIKE ?";
+		query = MovieDAOEnums.QUERY_GET_MOVIES_BY_CATEGORY.getQuery();
 		List<Movie> moviesByCategory = new ArrayList<Movie>();
 
 		try {
@@ -108,7 +108,7 @@ public class MovieDAO implements IMovieDAO {
 		int movieAvailability = movie.getAvailability();
 
 		try {
-			query = "INSERT INTO movie (Category,Title,Director,Description,Availability) VALUES (?, ?, ?, ?, ?)";
+			query = MovieDAOEnums.QUERY_INSERT_MOVIE.getQuery();
 			preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, movieCategory);
 			preparedStatement.setString(2, movieTitle);
@@ -149,7 +149,7 @@ public class MovieDAO implements IMovieDAO {
 		int movieItemId = movie.getItemID();
 
 		try {
-			query = "UPDATE movie SET Category=?,Title=?,Director=?,Description=?,Availability=? WHERE Item_ID=? ";
+			query = MovieDAOEnums.QUERY_UPDATE_MOVIE.getQuery();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, movieCategory);
 			preparedStatement.setString(2, movieTitle);
@@ -181,7 +181,7 @@ public class MovieDAO implements IMovieDAO {
 		int movieItemId = movie.getItemID();
 
 		try {
-			query = "DELETE from movie WHERE Item_ID = ?";
+			query = MovieDAOEnums.QUERY_DELETE_MOVIE_BY_ID.getQuery();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, movieItemId);
 			preparedStatement.executeUpdate();
@@ -263,7 +263,7 @@ public class MovieDAO implements IMovieDAO {
 	{
 		this.connection = databaseConnection.getConnection();
 		List<String> categories = new ArrayList<String>();
-		query = "SELECT Distinct Category from movie";
+		query = MovieDAOEnums.QUERY_GET_MOVIE_CATEGORIES.getQuery();
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			resultSet = preparedStatement.executeQuery();
@@ -289,7 +289,7 @@ public class MovieDAO implements IMovieDAO {
 		int moviesAvailable = 0;
 		try {
 			this.connection = databaseConnection.getConnection();
-			query = "Select Availability from movie where Item_ID = ?";
+			query = MovieDAOEnums.QUERY_GET_CURRENT_AVAILABILITY_OF_MOVIE.getQuery();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
 			resultSet = preparedStatement.executeQuery();
@@ -316,7 +316,7 @@ public class MovieDAO implements IMovieDAO {
 		String titleToBeAdded = movie.getTitle();
 		boolean isMovieAvailable = false;
 
-		query = "SELECT * FROM movie where Title=? and Director=?";
+		query = MovieDAOEnums.QUERY_IS_DUPLICATE_MOVIE.getQuery();
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, titleToBeAdded);
@@ -347,7 +347,7 @@ public class MovieDAO implements IMovieDAO {
 		Boolean countIncrease = false;
 		try {
 			this.connection = databaseConnection.getConnection();
-			query = "update movie set count = count + 1 where Item_ID = ?";
+			query = MovieDAOEnums.QUERY_INCREASE_MOVIE_COUNT.getQuery();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
 			preparedStatement.execute();
@@ -372,7 +372,7 @@ public class MovieDAO implements IMovieDAO {
 
 		try {
 			this.connection = databaseConnection.getConnection();
-			query = "update movie set Availability =? where Item_ID = ?";
+			query = MovieDAOEnums.QUERY_UPDATE_AVAILABILITY.getQuery();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, udatedAvailability);
 			preparedStatement.setInt(2, itemId);

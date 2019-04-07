@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,7 +32,7 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public Boolean checkPassword(String emailAddress, String Password) {
-		query = "SELECT Password from user_info WHERE Email = ?";
+		query = UserDAOEnums.QUERY_CHECK_PASSWORD.getQuery();
 		try {
 			this.connection = databaseConnection.getConnection();
 			preparedStatement = connection.prepareStatement(query);
@@ -45,10 +46,10 @@ public class UserDAO implements IUserDAO {
 			return doesPasswordMatch;
 		} catch (SQLException e) {
 
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not fetch password from user info", e);
+			logger.log(Level.ALL, "Can not fetch password from user info for email address ["+emailAddress+"]", e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
@@ -57,7 +58,7 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public String getEmailRelatedPassword(String emailAddress) {
-		query = "SELECT Password from user_info WHERE Email = ?";
+		query = UserDAOEnums.QUERY_GET_EMAIL_RELATED_PASSWORD.getQuery();
 		String databasePassword = "";
 		try {
 			this.connection = databaseConnection.getConnection();
@@ -69,10 +70,10 @@ public class UserDAO implements IUserDAO {
 			return databasePassword;
 		} catch (SQLException e) {
 
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not fetch password from user info", e);
+			logger.log(Level.ALL, "Can not fetch password from user info with email ["+emailAddress+"]", e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
@@ -81,7 +82,7 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public Boolean changePassword(String emailAddress, String password) {
-		query = "UPDATE user_info SET Password = ? WHERE Email = ?";
+		query = UserDAOEnums.QUERY_CHANGE_PASSWORD.getQuery();
 		try {
 			this.connection = databaseConnection.getConnection();
 			preparedStatement = connection.prepareStatement(query);
@@ -91,10 +92,10 @@ public class UserDAO implements IUserDAO {
 			return true;
 		} catch (SQLException e) {
 
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of:"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not update password for the specific user emailid", e);
+			logger.log(Level.ALL, "Can not update password for the specific user emailid with ["+emailAddress+"]", e);
 		} finally {
 			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
 		}
@@ -103,7 +104,7 @@ public class UserDAO implements IUserDAO {
 
 	@Override
 	public Boolean registerUser(User user) {
-		query = "INSERT INTO user_info (User_name,Phone_Number,Email,Password) VALUES (?,?,?,?)";
+		query = UserDAOEnums.QUERY_REGISTER_USER.getQuery();
 		try {
 			this.connection = databaseConnection.getConnection();
 			preparedStatement = connection.prepareStatement(query);
@@ -115,10 +116,10 @@ public class UserDAO implements IUserDAO {
 			return true;
 		} catch (SQLException e) {
 
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of:"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not insert a record in user info table", e);
+			logger.log(Level.ALL, "Can not insert a record with email address["+user.getEmail()+"] in user info table", e);
 		} finally {
 			databaseConnection.closeConnection((com.mysql.jdbc.PreparedStatement) preparedStatement);
 		}
@@ -128,7 +129,7 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public Boolean checkEmailIdExist(String emailID) {
 		boolean result = false;
-		query = "SELECT Email from user_info WHERE Email = ? LIMIT 1";
+		query = UserDAOEnums.QUERY_DOES_EMAILID_EXISTS.getQuery();
 		try {
 			this.connection = databaseConnection.getConnection();
 			preparedStatement = connection.prepareStatement(query);
@@ -144,11 +145,11 @@ public class UserDAO implements IUserDAO {
 
 		} catch (SQLException e) {
 			result = false;
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 
 		} catch (Exception e) {
 			result = false;
-			logger.log(Level.ALL, "Can not fetch a record from user info table", e);
+			logger.log(Level.ALL, "Can not fetch a record with email["+emailID+"] from user info table", e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}

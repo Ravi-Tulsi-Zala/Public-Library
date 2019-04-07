@@ -47,7 +47,7 @@ public class MusicDAO implements IMusicDAO {
 		Music music = new Music();
 		this.connection = databaseConnection.getConnection();
 		List<Music> musics = new ArrayList<>();
-		query = "SELECT * from music WHERE Item_ID = ?";
+		query = MusicDAOEnums.QUERY_GET_MUSIC_BY_ID.getQuery();
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
@@ -56,10 +56,10 @@ public class MusicDAO implements IMusicDAO {
 			music = musics.get(0);
 		} catch (SQLException e) {
 
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not fetch music using id", e);
+			logger.log(Level.ALL, "Can not fetch music with itemId["+itemID+"] from music table", e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
@@ -70,7 +70,7 @@ public class MusicDAO implements IMusicDAO {
 	public List<Music> getMusicByCategory(String category) {
 
 		this.connection = databaseConnection.getConnection();
-		query = "SELECT * from music WHERE Category LIKE ?";
+		query = MusicDAOEnums.QUERY_GET_MUSICS_BY_CATEGORY.getQuery();
 		List<Music> musicsByCategory = new ArrayList<Music>();
 
 		try {
@@ -80,10 +80,10 @@ public class MusicDAO implements IMusicDAO {
 			musicsByCategory = musicSetter.mapMusic(resultSet);
 		} catch (SQLException e) {
 
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :" +query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not fetch the list of music by the specific category", e);
+			logger.log(Level.ALL, "Can not fetch the list of music with category ["+category+"] from music table", e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
@@ -103,7 +103,7 @@ public class MusicDAO implements IMusicDAO {
 		int recentlyAddedMusicId = 0;
 
 		try {
-			query = "INSERT INTO music (Category,Title,Artist,Record_Label,Availability) VALUES ( ?, ?, ?, ?, ?)";
+			query = MusicDAOEnums.QUERY_INSERT_MUSIC.getQuery();
 			preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1, musicCategory);
 			preparedStatement.setString(2, musicTitle);
@@ -121,10 +121,10 @@ public class MusicDAO implements IMusicDAO {
 
 		} catch (SQLException e) {
 
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not create music entry in database", e);
+			logger.log(Level.ALL, "Can not create music with category["+musicCategory+"], title["+musicTitle+"] and artist["+musicArtist+"] entry in music table", e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
@@ -143,7 +143,7 @@ public class MusicDAO implements IMusicDAO {
 		int musicItemId = music.getItemID();
 
 		try {
-			query = "UPDATE music SET Category=?,Title=?,Artist=?,Record_Label=?,Availability=? WHERE Item_ID=? ";
+			query = MusicDAOEnums.QUERY_UPDATE_MUSIC.getQuery();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, musicCategory);
 			preparedStatement.setString(2, musicTitle);
@@ -155,10 +155,10 @@ public class MusicDAO implements IMusicDAO {
 			return true;
 		} catch (SQLException e) {
 
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not update music into database", e);
+			logger.log(Level.ALL, "Can not update music with itemId ["+musicItemId+"], title["+musicTitle+"] and artist["+musicArtist+"] into music table", e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
@@ -169,18 +169,19 @@ public class MusicDAO implements IMusicDAO {
 	public Boolean deleteMusic(Music music) {
 
 		this.connection = databaseConnection.getConnection();
+		int musicItemId = music.getItemID();
 		try {
-			query = "DELETE from music WHERE Item_ID = ?";
+			query = MusicDAOEnums.QUERY_DELETE_MUSIC_BY_ID.getQuery();
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, music.getItemID());
+			preparedStatement.setInt(1, musicItemId);
 			preparedStatement.executeUpdate();
 			return true;
 		} catch (SQLException e) {
 
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not delete music from database", e);
+			logger.log(Level.ALL, "Can not delete music with itemId["+musicItemId+"] from music table", e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
@@ -234,7 +235,7 @@ public class MusicDAO implements IMusicDAO {
 			musics.addAll(tempMusics);
 			return musics;
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
+			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet :"+query, e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
@@ -245,7 +246,7 @@ public class MusicDAO implements IMusicDAO {
 	public List<String> getMusicCategories() {
 		this.connection = databaseConnection.getConnection();
 		List<String> categories = new ArrayList<String>();
-		query = "SELECT Distinct Category from music";
+		query = MusicDAOEnums.QUERY_GET_MUSIC_CATEGORIES.getQuery();
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			resultSet = preparedStatement.executeQuery();
@@ -253,7 +254,7 @@ public class MusicDAO implements IMusicDAO {
 				categories.add(resultSet.getString("Category"));
 			}
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Error fetching the list of Music Categories", e);
 		} finally {
@@ -268,7 +269,7 @@ public class MusicDAO implements IMusicDAO {
 		int musicsAvailable = 0;
 		try {
 			this.connection = databaseConnection.getConnection();
-			query = "Select Availability from music where Item_ID = ?";
+			query = MusicDAOEnums.QUERY_GET_CURRENT_AVAILABILITY_OF_MUSIC.getQuery();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
 			resultSet = preparedStatement.executeQuery();
@@ -276,9 +277,9 @@ public class MusicDAO implements IMusicDAO {
 				musicsAvailable = resultSet.getInt("Availability");
 			}
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Error fetching the availability of Music", e);
+			logger.log(Level.ALL, "Error fetching the availability of Music with itemId["+itemID+"]", e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
@@ -292,7 +293,7 @@ public class MusicDAO implements IMusicDAO {
 		String titleToBeAdded = music.getTitle();
 		boolean isMusicAvailable = false;
 
-		query = "SELECT * FROM music where Title=? and Artist=?";
+		query = MusicDAOEnums.QUERY_IS_DUPLICATE_MUSIC.getQuery();
 		try {
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, titleToBeAdded);
@@ -306,9 +307,9 @@ public class MusicDAO implements IMusicDAO {
 			}
 
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Error fetching the list of Musics", e);
+			logger.log(Level.ALL, "Error fetching the list of Musics with artist ["+artistToBeAdded+"] and title ["+titleToBeAdded+"]", e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
@@ -320,15 +321,15 @@ public class MusicDAO implements IMusicDAO {
 		Boolean countIncrease = false;
 		try {
 			this.connection = databaseConnection.getConnection();
-			query = "update music set count = count + 1 where Item_ID = ?";
+			query = MusicDAOEnums.QUERY_INCREASE_MUSIC_COUNT.getQuery();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, itemID);
 			preparedStatement.execute();
 			countIncrease = true;
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Error increasing count of Music", e);
+			logger.log(Level.ALL, "Error increasing count of Music with itemId ["+itemID+"]", e);
 		} finally {
 
 			databaseConnection.closeConnection(resultSet, preparedStatement);
@@ -341,16 +342,16 @@ public class MusicDAO implements IMusicDAO {
 		
 		try {
 			this.connection = databaseConnection.getConnection();
-			query = "update music set Availability =? where Item_ID = ?";
+			query = MusicDAOEnums.QUERY_UPDATE_AVAILABILITY.getQuery();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, udatedAvailability);
 			preparedStatement.setInt(2, itemId);
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Error updating availability of music", e);
+			logger.log(Level.ALL, "Error updating availability of music with itemId ["+itemId+"]", e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
