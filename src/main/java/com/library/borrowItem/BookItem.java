@@ -35,19 +35,20 @@ public class BookItem {
 	public Boolean bookItem(String status)
 	{
 		Boolean isItemBooked = false;
+		EmailSender emailSender = new EmailSender(userItem);
 		if(status.equals(StatusEnum.AVAILABLE.getStatus()) || status.equals(StatusEnum.RESERVE.getStatus()))
 		{
 			if(status.equals(StatusEnum.AVAILABLE.getStatus()))
 			{
 				isItemBooked = borrowBook();
-				BookingEmailSender bookingEmailSender = new BookingEmailSender();
-				bookingEmailSender.sendEmail(userItem);
+				emailSender.sendBookingEmail();
 				DescreaseAvailability decreaser = new DescreaseAvailability(userItem.getCategory());
 				decreaser.decreaseAvailability(userItem.getItemId());
 			}
 			else if(status.equals(StatusEnum.RESERVE.getStatus()))
 			{
 				isItemBooked = holdItem();
+				emailSender.sendReserveEmail();
 			}
 		}
 		else
