@@ -1,37 +1,25 @@
 package com.library.loanmanagement;
 
-import java.io.IOException;
-
-import javax.mail.MessagingException;
-
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.library.businessModels.UserItem;
 import com.library.dao.IMusicDAO;
 import com.library.dao.IUserItemDAO;
 import com.library.daoFactory.DAOFactory;
 import com.library.daoFactory.IDAOFactory;
-import com.library.email.EmailDetails;
-import com.library.email.SendEmail;
-import com.library.forgotPassword.ForgotPasswordController;
 
 public class MusicReturnStrategy implements IReturnItemStrategy {
 
-	IDAOFactory iDAOfactory;
-	IMusicDAO iMusicDAO;
-	IUserItemDAO iUserItemDAO;
-	EmailDetails emailDetails;
-	UserItem userOnHold;
-	private static final Logger logger = LogManager.getLogger(ForgotPasswordController.class);
+	private IDAOFactory iDAOfactory;
+	private IMusicDAO iMusicDAO;
+	private IUserItemDAO iUserItemDAO;
+	private UserItem userOnHold;
+	private SendBookingEmail bookingEmail;
 
 	public MusicReturnStrategy() {
 
 		iDAOfactory = new DAOFactory();
 		iMusicDAO = iDAOfactory.makeMusicDAO();
+		bookingEmail = new SendBookingEmail();
 		iUserItemDAO = iDAOfactory.makeUserItemDAO();
-		emailDetails = new EmailDetails();
 
 	}
 
@@ -48,19 +36,7 @@ public class MusicReturnStrategy implements IReturnItemStrategy {
 	@Override
 	public void sendEmail(UserItem item) {
 
-		String title = item.getTitle();
-		String email = item.getEmail();
-
-		emailDetails.setSubject("Reg : Music titled " + title + " is available in the library!");
-		emailDetails.setBody("Dear " + email + " ,<br/><br/>" + "This is to notify you that the Music titled " + title
-				+ " is booked for you!" + "<br/><br/>" + "Regards, " + "<br/>" + " Public Library.");
-		emailDetails.setUserEmailID(email);
-		try {
-			SendEmail.sendmail(emailDetails);
-		} catch (MessagingException | IOException e) {
-
-			logger.log(Level.ALL, "Check Email Sender class!", e);
-		}
+		bookingEmail.sendBookingItemEmail(item);
 	}
 
 	@Override
