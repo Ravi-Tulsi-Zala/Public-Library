@@ -1,7 +1,10 @@
 package com.library.additem;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
+import com.library.browsePage.BrowseMovies;
 import com.library.businessModels.Movie;
 import com.library.dao.IMovieDAO;
 import com.library.daoFactory.DAOFactory;
@@ -54,6 +57,15 @@ public class AddMovieController implements IAddMovieController {
 
 		}
 	
+	}
+
+	@Override
+	public List<String> getMovieCategories() {
+		
+		BrowseMovies browseMovies = new BrowseMovies();
+		List<String> movieCategories = browseMovies.getCategories();
+		
+		return movieCategories;
 	}
 
 }

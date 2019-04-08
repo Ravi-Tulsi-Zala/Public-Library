@@ -221,11 +221,22 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			return redirectToErrorPage; 
 		}
 	}
-
+	
+	
 	@GetMapping("/addBook")
 	public String mappingsForAddItem(ModelMap model) {
 
 		String sessionClient = UserSessionDetail.getAvailableUserID();
+		List<String> bookCategories = new ArrayList<String>();
+		List<String> movieCategories = new ArrayList<String>();
+		List<String> musicCategories = new ArrayList<String>();
+		IAddBookController iAddBookController = factory.makeAddBookController();
+		IAddMovieController iAddMovieController = factory.makeAddMovieController();
+		IAddMusicController iAddMusicController = factory.makeAddMusicController();
+		bookCategories = iAddBookController.getBookCategories();
+		movieCategories= iAddMovieController.getMovieCategories();
+		musicCategories = iAddMusicController.getMusicCategories();
+		
 		model.addAttribute("book", new Book());
 		model.addAttribute("movie", new Movie());
 		model.addAttribute("music", new Music());
@@ -233,6 +244,10 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("coverMovie", new Cover());
 		model.addAttribute("coverMusic", new Cover());
 		model.addAttribute("sessionClient", sessionClient);
+		model.addAttribute("bookCategories",bookCategories);
+		model.addAttribute("movieCategories",movieCategories);
+		model.addAttribute("musicCategories",musicCategories);
+
 		return "AddItemPage";
 	}
 	

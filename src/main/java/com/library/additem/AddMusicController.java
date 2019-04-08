@@ -1,7 +1,10 @@
 package com.library.additem;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
+import com.library.browsePage.BrowseMusic;
 import com.library.businessModels.Music;
 import com.library.dao.IMusicDAO;
 import com.library.daoFactory.DAOFactory;
@@ -49,5 +52,13 @@ public class AddMusicController implements IAddMusicController {
 			}
 		}
 
+	}
+
+	@Override
+	public List<String> getMusicCategories() {
+		
+		BrowseMusic browseMusic = new BrowseMusic();
+		List<String> musicCategories = browseMusic.getCategories();
+		return musicCategories;
 	}
 }
