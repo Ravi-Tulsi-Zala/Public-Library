@@ -1,7 +1,10 @@
 package com.library.additem;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
+import com.library.browsePage.BrowseBooks;
 import com.library.businessModels.Book;
 import com.library.dao.IBookDAO;
 import com.library.daoFactory.DAOFactory;
@@ -52,6 +55,14 @@ public class AddBookController implements IAddBookController {
 			}
 		}
 
+	}
+
+	@Override
+	public List<String> getBookCategories() {
+		
+		BrowseBooks browseBooks = new BrowseBooks();
+		List<String> bookCategories = browseBooks.getCategories();
+		return bookCategories;
 	}
 
 }

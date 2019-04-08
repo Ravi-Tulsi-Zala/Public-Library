@@ -28,18 +28,15 @@ public class ItemCoverSetter implements IItemCoverSetter {
 	public boolean isCoverAddedToDatabase(int itemId, MultipartFile coverImage) {
 		try {
 			byte[] bytes;
-			try {
-				bytes = coverImage.getBytes();
-				Blob coverBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
-				String[] fileNameTokens = coverImage.getOriginalFilename().split("\\.");
-				String fileExtension = fileNameTokens[fileNameTokens.length - 1];
-				isCoverCreated = coverDAO.createCoverByID(itemId, coverBlob, fileExtension);
-			} catch (IOException e) {
-				logger.log(Level.ALL, "Error in creating cover", e);
-			}
-
+			bytes = coverImage.getBytes();
+			Blob coverBlob = new javax.sql.rowset.serial.SerialBlob(bytes);
+			String[] fileNameTokens = coverImage.getOriginalFilename().split("\\.");
+			String fileExtension = fileNameTokens[fileNameTokens.length - 1];
+			isCoverCreated = coverDAO.createCoverByID(itemId, coverBlob, fileExtension);
+		} catch (IOException e) {
+			logger.log(Level.ALL, "IO exception error in creating cover for itemId["+itemId+"]", e);
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Error in creating cover", e);
+			logger.log(Level.ALL, "SQL syntax error in creating cover for itemId["+itemId+"]", e);
 		}
 		return isCoverCreated;
 	}
