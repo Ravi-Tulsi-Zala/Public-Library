@@ -155,14 +155,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		return redirectToWelcome;
 	}
 
-	@GetMapping("/basicSearch")
-	public String getBasicSearchPage(ModelMap model, HttpSession httpSession) {
-		dbSearchController.clearSearch(httpSession);
-		model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
-		addUserEmail(model, httpSession);
-		return "BasicSearchPage";
-	}
-
 	@PostMapping("/basicSearch")
 	public String executeBasicSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage,
 			BookSearch bookSearch, MusicSearch musicSearch, MovieSearch moviesSearch) {
