@@ -13,7 +13,7 @@ import com.library.localStorage.ICoverImageLoader;
 
 public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 	
-	private static final String SEPARATOR = File.separator;
+	private static final String SEP = File.separator;
 	
 	@Inject
 	private ICoverImageLoader imageLoader;
@@ -22,7 +22,7 @@ public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 	
 	@Override
 	public void loadCoverImages(SearchResults resultsForRequestedPage, String requestedPageNumber, HttpSession httpSession) {
-		String sessionResultsPath = "searchResults" + SEPARATOR + httpSession.getId() + SEPARATOR;
+		String sessionResultsPath = "searchResults" + SEP + httpSession.getId() + SEP;
 		String pathToRequestedPageNumberImagesDir = sessionResultsPath + requestedPageNumber;
 
 		LinkedList<String> resultPagesForSession = sessionToListOfRequestedPages.get(httpSession);
@@ -47,7 +47,7 @@ public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 
 	@Override
 	public void deleteCoverImagesForSearchResults(HttpSession httpSession) {
-		String sessionResultsDir = "searchResults" + SEPARATOR + httpSession.getId() + SEPARATOR;
+		String sessionResultsDir = "searchResults" + SEP + httpSession.getId() + SEP;
 		sessionToListOfRequestedPages.remove(httpSession);
 		imageLoader.deleteDynamicContent(sessionResultsDir);	
 	}

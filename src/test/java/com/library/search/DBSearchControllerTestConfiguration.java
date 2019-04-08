@@ -7,9 +7,9 @@ import org.springframework.context.annotation.Profile;
 
 @Profile("DBSearchControllerTest")
 public class DBSearchControllerTestConfiguration {
-    @Bean
-    @Primary
-    public SearchResultCoverImgProxy dbSearchController() {
-        return Mockito.mock(SearchResultCoverImgProxy.class);
-    }
+	@Bean
+	@Primary
+	public SearchResultCoverImgProxy dbSearchController() {
+		return Mockito.mock(SearchResultCoverImgProxy.class);
+	}
 }

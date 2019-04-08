@@ -10,16 +10,17 @@ import org.junit.Test;
 
 public class MusicSearchTest {
 	private MusicSearch ms;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		ms = SearchFactory.instance().makeMusicSearch();
 	}
-	
+
 	@Test
 	public void searchReturnsList() {
 		assertTrue(ms.search("") instanceof List<?>);
 	}
+
 	@Test
 	public void allDataMembersDefaultValuesAreTrue() {
 		assertTrue(ms.isSearchInMusic());
@@ -27,6 +28,7 @@ public class MusicSearchTest {
 		assertTrue(ms.isSearchMusicArtist());
 		assertTrue(ms.isSearchMusicRecordLabel());
 	}
+
 	@Test
 	public void canSetAndGetAllDataMembers() {
 		ms.setSearchInMusic(false);
