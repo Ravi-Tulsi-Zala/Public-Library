@@ -48,7 +48,7 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 		bookMapper = new BookSetter();
 		List<Book> books = new ArrayList<Book>();
 		this.connection = databaseConnection.getConnection();
-		query = Messages.GetLatestBookQuery.getMessage() + limitNumber;
+		query = LibraryItemDAOEnums.GetLatestBookQuery.getQuery() + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		books = bookMapper.mapBook(resultSet);
@@ -60,7 +60,7 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 		movieMapper = new MovieSetter();
 		List<Movie> movies = new ArrayList<Movie>();
 		this.connection = databaseConnection.getConnection();
-		query = Messages.GetLatestMovieQuery.getMessage() + limitNumber;
+		query = LibraryItemDAOEnums.GetLatestMovieQuery.getQuery() + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		if (!resultSet.next()) {
@@ -75,7 +75,7 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 		musicMapper = new MusicSetter();
 		List<Music> musicList = new ArrayList<Music>();
 		this.connection = databaseConnection.getConnection();
-		query = Messages.GetLatestMusicQuery.getMessage() + limitNumber;
+		query = LibraryItemDAOEnums.GetLatestMusicQuery.getQuery() + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		if (!resultSet.next()) {
@@ -90,7 +90,7 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 		bookMapper = new BookSetter();
 		List<Book> books = new ArrayList<Book>();
 		this.connection = databaseConnection.getConnection();
-		query = Messages.GetFavBookQuery.getMessage() + limitNumber;
+		query = LibraryItemDAOEnums.GetFavBookQuery.getQuery() + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		books = bookMapper.mapBook(resultSet);
@@ -102,7 +102,7 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 		movieMapper = new MovieSetter();
 		List<Movie> movies = new ArrayList<Movie>();
 		this.connection = databaseConnection.getConnection();
-		query = Messages.GetFavMovieQuery.getMessage() + limitNumber;
+		query = LibraryItemDAOEnums.GetFavMovieQuery.getQuery() + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		if (!resultSet.next()) {
@@ -117,7 +117,7 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 		musicMapper = new MusicSetter();
 		List<Music> musicList = new ArrayList<Music>();
 		this.connection = databaseConnection.getConnection();
-		query = Messages.GetFavMusicQuery.getMessage() + limitNumber;
+		query = LibraryItemDAOEnums.GetFavMusicQuery.getQuery() + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
 		if (!resultSet.next()) {

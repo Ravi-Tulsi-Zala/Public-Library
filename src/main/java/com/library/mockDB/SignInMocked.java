@@ -55,5 +55,16 @@ public class SignInMocked {
 		}
 		return userBasicInfo;
 	}
+	
+	public Map getAdminMockData() {
+		arrItems = new ArrayList<String>();
+		map = new HashMap<String, ArrayList>();
+		userBasicInfo.setEmail("admin");
+		userBasicInfo.setPassword("admin");
+		arrItems.add(userBasicInfo);
+		map.put("admin-data", arrItems);
+
+		return map;
+	}
 
 }
