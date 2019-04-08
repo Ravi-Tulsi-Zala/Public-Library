@@ -17,19 +17,18 @@ public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 	
 	@Inject
 	private ICoverImageLoader imageLoader;
-	private HashMap<String, LinkedList<String>> sessionIdToRequestedPageResults = 
-															new HashMap<String, LinkedList<String>>();
-
+	private HashMap<HttpSession, LinkedList<String>> sessionToListOfRequestedPages = 
+															new HashMap<HttpSession, LinkedList<String>>();
+	
 	@Override
-	public void loadCoverImages(SearchResults searchResults, String requestedPageNumber, HttpSession httpSession) {
+	public void loadCoverImages(SearchResults resultsForRequestedPage, String requestedPageNumber, HttpSession httpSession) {
 		String sessionResultsPath = "searchResults" + SEPARATOR + httpSession.getId() + SEPARATOR;
-		
-		List<LibraryItem> items = searchResults.getAllFoundItems();
-		
-		LinkedList<String> resultPagesForSession = sessionIdToRequestedPageResults.get(httpSession.getId());
+		String pathToRequestedPageNumberImagesDir = sessionResultsPath + requestedPageNumber;
+
+		LinkedList<String> resultPagesForSession = sessionToListOfRequestedPages.get(httpSession);
 		if(null == resultPagesForSession) {
 			resultPagesForSession = new LinkedList<String>();
-			sessionIdToRequestedPageResults.put(httpSession.getId(), resultPagesForSession);
+			sessionToListOfRequestedPages.put(httpSession, resultPagesForSession);
 		} else {
 			for(String previouslyRequestedPageNumber : resultPagesForSession) {
 				if(requestedPageNumber.equals(previouslyRequestedPageNumber)) {;
@@ -39,10 +38,9 @@ public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 		}
 		resultPagesForSession.add(requestedPageNumber);
 		
-		String urlForRequestedPageNumber = sessionResultsPath + requestedPageNumber;
-		
+		List<LibraryItem> items = resultsForRequestedPage.getAllFoundItems();
 		for(LibraryItem item : items) {
-			String imageUrl = imageLoader.loadCoverImageByItemIdToDisk(item.getItemID(), urlForRequestedPageNumber);
+			String imageUrl = imageLoader.loadCoverImageByItemIdToDisk(item.getItemID(), pathToRequestedPageNumberImagesDir);
 			item.setCoverImageUrl(imageUrl);
 		}
 	}
@@ -50,7 +48,7 @@ public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 	@Override
 	public void deleteCoverImagesForSearchResults(HttpSession httpSession) {
 		String sessionResultsDir = "searchResults" + SEPARATOR + httpSession.getId() + SEPARATOR;
-		sessionIdToRequestedPageResults.remove(httpSession.getId());
+		sessionToListOfRequestedPages.remove(httpSession);
 		imageLoader.deleteDynamicContent(sessionResultsDir);	
 	}
 }

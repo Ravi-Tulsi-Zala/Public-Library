@@ -36,7 +36,7 @@ public class MovieReturnStrategy implements IReturnItemStrategy {
 	}
 	
 	@Override
-	public void returnItem(UserItem item) {
+	public void increaseAvailabilty(UserItem item) {
 		
 		int itemId = item.getItemId();
 		int currentAvailability = iMovieDAO.getAvailability(itemId);
@@ -89,6 +89,13 @@ public class MovieReturnStrategy implements IReturnItemStrategy {
 		
 		iUserItemDAO.removeUserFromHold(userOnHold);
 
+		
+	}
+
+	@Override
+	public void addUserItem(UserItem userItem) {
+		
+		iUserItemDAO.addItem(userItem);
 		
 	}
 

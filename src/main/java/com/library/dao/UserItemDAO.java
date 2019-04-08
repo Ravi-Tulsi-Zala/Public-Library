@@ -40,7 +40,7 @@ public class UserItemDAO implements IUserItemDAO {
 	public List<UserItem> getAllBorrowedItems() {
 
 		UserItem item;
-		query = "SELECT * FROM user_item";
+		query = UserItemDAOEnums.QUERY_SELECT_ALL_BORROWED_ITEMS.getQuery();
 		List<UserItem> items = new ArrayList<UserItem>();
 
 		try {
@@ -57,11 +57,11 @@ public class UserItemDAO implements IUserItemDAO {
 			}
 		} catch (SQLException e) {
 
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :" + query, e);
 
 		} catch (Exception e) {
 
-			logger.log(Level.ALL, "Can not fetch outstanding borrowed items from db", e);
+			logger.log(Level.ALL, "Can not fetch outstanding borrowed items from useritem table", e);
 		} finally {
 
 			databaseConnection.closeConnection(resultSet, preparedStatement);
@@ -76,7 +76,7 @@ public class UserItemDAO implements IUserItemDAO {
 		String email = item.getEmail();
 		int itemId = item.getItemId();
 
-		query = "DELETE from user_item WHERE Item_ID=? and Email=?";
+		query = UserItemDAOEnums.QUERY_REMOVE_USER_ITEM.getQuery();
 
 		try {
 			this.connection = databaseConnection.getConnection();
@@ -87,10 +87,10 @@ public class UserItemDAO implements IUserItemDAO {
 
 			return true;
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not delete item from database", e);
+			logger.log(Level.ALL, "Can not delete item with itemId ["+item.getItemId() + "] and email ["+ item.getEmail()+ "] from useritem table", e);
 		} finally {
 
 			databaseConnection.closeConnection(resultSet, preparedStatement);
@@ -106,7 +106,7 @@ public class UserItemDAO implements IUserItemDAO {
 		String title = item.getTitle();
 		boolean isBorrowed = false;
 
-		query = "SELECT * from user_item WHERE Email=? and Title=?";
+		query = UserItemDAOEnums.QUERY_IS_ITEM_BORROWED.getQuery();
 
 		try {
 			this.connection = databaseConnection.getConnection();
@@ -122,10 +122,10 @@ public class UserItemDAO implements IUserItemDAO {
 				isBorrowed = false;
 			}
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not find item in User item table", e);
+			logger.log(Level.ALL, "Can not find a item with itemid ["+item.getEmail()+"] in useritem table", e);
 		} finally {
 
 			databaseConnection.closeConnection(resultSet, preparedStatement);
@@ -145,7 +145,7 @@ public class UserItemDAO implements IUserItemDAO {
 		int itemId = item.getItemId();
 		try {
 			this.connection = databaseConnection.getConnection();
-			query = "INSERT INTO holds (Email,Title,Category,Item_ID) VALUES (?,?, ?,?)";
+			query = UserItemDAOEnums.QUERY_ADD_USER_ITEM_ON_HOLD.getQuery();
 			preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setString(1, email);
 			preparedStatement.setString(2, title);
@@ -155,10 +155,10 @@ public class UserItemDAO implements IUserItemDAO {
 			return true;
 
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not insert movie into database", e);
+			logger.log(Level.ALL,  "Can not insert a useritem with itemid ["+item.getItemId()+"] and user email["+item.getEmail()+"] in holds table", e);
 		} finally {
 
 			databaseConnection.closeConnection(resultSet, preparedStatement);
@@ -174,7 +174,7 @@ public class UserItemDAO implements IUserItemDAO {
 
 		boolean isItemOnHold = false;
 
-		query = "SELECT * from holds WHERE Item_ID=?";
+		query = UserItemDAOEnums.QUERY_IS_ITEM_ON_HOLD.getQuery();
 
 		try {
 			this.connection = databaseConnection.getConnection();
@@ -188,10 +188,10 @@ public class UserItemDAO implements IUserItemDAO {
 				isItemOnHold = false;
 			}
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not find item in User item table", e);
+			logger.log(Level.ALL,  "Can not find a item with itemid ["+itemId+"] in holds table", e);
 		} finally {
 
 			databaseConnection.closeConnection(resultSet, preparedStatement);
@@ -209,7 +209,7 @@ public class UserItemDAO implements IUserItemDAO {
 		String category = item.getCategory();
 		String title = item.getTitle();
 		int itemId = item.getItemId();
-		query = "INSERT INTO user_item (Item_ID,Email,Category,Title) VALUES (?,?, ?, ?)";
+		query = UserItemDAOEnums.QUERY_ADD_USER_ITEM.getQuery();
 
 		try {
 			this.connection = databaseConnection.getConnection();
@@ -222,10 +222,10 @@ public class UserItemDAO implements IUserItemDAO {
 			return true;
 
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not insert movie into database", e);
+			logger.log(Level.ALL, "Can not insert a useritem with itemid ["+item.getItemId()+"] and user email["+item.getEmail()+"] in useritem table", e);
 		} finally {
 
 			databaseConnection.closeConnection(resultSet, preparedStatement);
@@ -239,7 +239,7 @@ public class UserItemDAO implements IUserItemDAO {
 
 		UserItem userOnHold = new UserItem();
 
-		query = "SELECT * FROM holds WHERE Item_ID=? ORDER BY EntryDateTime LIMIT 1";
+		query = UserItemDAOEnums.QUERY_GET_NEXT_USER_HOLD.getQuery();
 		try {
 			this.connection = databaseConnection.getConnection();
 			preparedStatement = connection.prepareStatement(query);
@@ -253,11 +253,11 @@ public class UserItemDAO implements IUserItemDAO {
 			}
 		} catch (SQLException e) {
 
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax"+query, e);
 
 		} catch (Exception e) {
 
-			logger.log(Level.ALL, "Can not fetch outstanding borrowed items from db", e);
+			logger.log(Level.ALL, "Can not fetch the user on hold with itemid ["+itemId+"] from holds table", e);
 		} finally {
 
 			databaseConnection.closeConnection(resultSet, preparedStatement);
@@ -272,7 +272,7 @@ public class UserItemDAO implements IUserItemDAO {
 		String email = userOnHold.getEmail();
 		int itemId = userOnHold.getItemId();
 
-		query = "DELETE from holds WHERE Item_ID=? and Email=?";
+		query = UserItemDAOEnums.QUERY_REMOVE_USER_FROM_HOLD.getQuery();
 
 		try {
 			this.connection = databaseConnection.getConnection();
@@ -282,10 +282,10 @@ public class UserItemDAO implements IUserItemDAO {
 			preparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax", e);
+			logger.log(Level.ALL, "Check the SQL syntax :"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not delete item from database", e);
+			logger.log(Level.ALL, "Can not delete item with itemId ["+userOnHold.getItemId() + "] and email ["+ userOnHold.getEmail()+ "] from holds table", e);
 		} finally {
 
 			databaseConnection.closeConnection(resultSet, preparedStatement);
@@ -294,4 +294,3 @@ public class UserItemDAO implements IUserItemDAO {
 
 	}
 }
-

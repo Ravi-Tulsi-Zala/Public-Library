@@ -8,8 +8,6 @@ import com.library.daoFactory.IDAOFactory;
 
 public class BookItem {
 	
-	static final String available = "Borrow";
-	static final String reserve = "Reserve";
 	private UserItem userItem;
 	private IUserItemDAO userItemDAO;
 	
@@ -37,16 +35,27 @@ public class BookItem {
 	public Boolean bookItem(String status)
 	{
 		Boolean isItemBooked = false;
-		if(status.equals(available))
+		EmailSender emailSender = new EmailSender(userItem);
+		if(status.equals(StatusEnum.AVAILABLE.getStatus()) || status.equals(StatusEnum.RESERVE.getStatus()))
 		{
-			isItemBooked = borrowBook();
-			BookingEmailSender bookingEmailSender = new BookingEmailSender();
-			bookingEmailSender.sendEmail(userItem);
+			if(status.equals(StatusEnum.AVAILABLE.getStatus()))
+			{
+				isItemBooked = borrowBook();
+				emailSender.sendBookingEmail();
+				DescreaseAvailability decreaser = new DescreaseAvailability(userItem.getCategory());
+				decreaser.decreaseAvailability(userItem.getItemId());
+			}
+			else if(status.equals(StatusEnum.RESERVE.getStatus()))
+			{
+				isItemBooked = holdItem();
+				emailSender.sendReserveEmail();
+			}
 		}
-		else if(status.equals(reserve))
+		else
 		{
-			isItemBooked = holdItem();
+			isItemBooked = true;
 		}
+		
 		if(isItemBooked)
 		{
 			ChangeItemCount countChanger = new ChangeItemCount(userItem.getCategory(), userItem.getItemId());

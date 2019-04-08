@@ -20,7 +20,7 @@ public class BrowseMovies implements IBrowseDisplayObjects{
 	{
 		IDAOFactory factory = new DAOFactory();
 		movieDAO = factory.makeMovieDAO();	
-		itemType = "movie";
+		itemType = movie;
 	}
 
 	@Override

@@ -19,11 +19,10 @@ import com.library.forgotPassword.ForgotPasswordController;
 
 public class BookReturnStrategy implements IReturnItemStrategy {
 
-	IDAOFactory iDAOfactory;
-	IBookDAO iBookDAO;
-	IUserItemDAO iUserItemDAO;
-	EmailDetails emailDetails;
-	UserItem userOnHold;
+	private IDAOFactory iDAOfactory;
+	private IBookDAO iBookDAO;
+	private IUserItemDAO iUserItemDAO;
+	private EmailDetails emailDetails;
 	private static final Logger logger = LogManager.getLogger(ForgotPasswordController.class);
 
 	public BookReturnStrategy() {
@@ -34,7 +33,7 @@ public class BookReturnStrategy implements IReturnItemStrategy {
 	}
 
 	@Override
-	public void returnItem(UserItem item) {
+	public void increaseAvailabilty(UserItem item) {
 
 		int itemId = item.getItemId();
 		int currentAvailability = iBookDAO.getAvailability(itemId);
@@ -77,7 +76,7 @@ public class BookReturnStrategy implements IReturnItemStrategy {
 
 	@Override
 	public UserItem getTheNextUserInLine(int itemId) {
-
+		UserItem userOnHold;
 		userOnHold = new UserItem();
 		userOnHold = iUserItemDAO.getTheNextUserInLine(itemId);
 		return userOnHold;
@@ -89,6 +88,14 @@ public class BookReturnStrategy implements IReturnItemStrategy {
 
 		iUserItemDAO.removeUserFromHold(userOnHold);
 
+	}
+
+	@Override
+	public void addUserItem(UserItem userItem) {
+	
+		
+		iUserItemDAO.addItem(userItem);
+		
 	}
 
 }

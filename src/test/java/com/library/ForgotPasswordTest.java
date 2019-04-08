@@ -57,7 +57,7 @@ public class ForgotPasswordTest {
 		ForgotPasswordMocked fPassword = new ForgotPasswordMocked();
 		emailDetails = fPassword.initiateForgotUserMock();
 		assertNotNull(emailDetails);
-		assertEquals(emailDetails.getAdminEmailID(), "csci5308group2@gmail.com");
+		assertEquals(emailDetails.getAdminEmailID(), "group2library2@gmail.com");
 		assertEquals(emailDetails.getAdminPassword(), "Rel7.xPass!");
 		assertEquals(emailDetails.getSubject(),"TEST EMAIL, IGNORE.");
 		assertNotNull(emailDetails.getBody());

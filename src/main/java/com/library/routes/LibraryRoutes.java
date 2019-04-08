@@ -14,7 +14,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.message.Message;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.library.additem.AddItemMessagesEnum;
 import com.library.additem.IAddBookController;
 import com.library.additem.IAddMovieController;
 import com.library.additem.IAddMusicController;
@@ -75,13 +75,13 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	private static String securityQuestionValue;
 
 	private Messages message;
+	private AddItemMessagesEnum addItemMessages;
 	private String displayMessage, redirectPage;
 	private ILibraryFactory factory = null;
 	private LibraryFactorySingleton libraryInstance = null;
 
 	private String redirectToWelcome = Messages.WelcomePageRedirect.getMessage();
 	private String redirectToSignIn = Messages.SignInPageRedirect.getMessage();
-	private String redirectToSignUp = Messages.SignUpPageRedirect.getMessage();
 	private String redirectToForgotPwd = Messages.ForgotPassPageRedirect.getMessage();
 	private String redirectToErrorPage = Messages.ErrorPageRedirect.getMessage();
 
@@ -90,6 +90,11 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	private String gotoWelcomePage = Messages.Welcome.getMessage();
 	private String gotoForgotPwdPage = Messages.ForgotPassword.getMessage();
 	private String gotoErrorPwdPage = Messages.ErrorPage.getMessage();
+	
+	private String gotoBrowsePageCategoriesPage = Messages.BrowsePageCategory.getMessage();
+	private String gotoBrowsePageItemsPage = Messages.BrowsePageItems.getMessage();
+	private String gotoItemDetailsPage = Messages.ItemDetail.getMessage();
+	private String redirectToItemDetail = Messages.ItemDetailRedirect.getMessage();
 
 	public LibraryRoutes() {
 		libraryInstance = LibraryFactorySingleton.instance();
@@ -153,7 +158,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@GetMapping("/basicSearch")
-	public String getSimpleSearchPage(ModelMap model, HttpSession httpSession) {
+	public String getBasicSearchPage(ModelMap model, HttpSession httpSession) {
 		dbSearchController.clearSearch(httpSession);
 		model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
 		addUserEmail(model, httpSession);
@@ -161,7 +166,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/basicSearch")
-	public String executeSimpleSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage,
+	public String executeBasicSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage,
 			BookSearch bookSearch, MusicSearch musicSearch, MovieSearch moviesSearch) {
 		SearchResults searchResults = executeSearch(httpSession, termsAndPage, bookSearch, musicSearch, moviesSearch);
 		model.addAttribute("searchResults", searchResults);
@@ -230,13 +235,25 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("sessionClient", sessionClient);
 		return "AddItemPage";
 	}
-
+	
+	@GetMapping("/addMovie")
+	public String mappingsForAddMovie(ModelMap model) {
+	
+		return mappingsForAddItem(model);
+	}
+	
+	@GetMapping("/addMusic")
+	public String mappingsForAddMusic(ModelMap model) {
+		return mappingsForAddItem(model);
+	}
+	
+	
 	@PostMapping("/addBook")
 	public String addBookToDatabase(ModelMap model, Book book, Cover coverBook) {
 
 		IAddBookController iAddBookController = factory.makeAddBookController();
-		message = iAddBookController.addBookRecordInDatabase(book, coverBook.getCoverImage());
-		displayMessage = message.getMessage();
+		addItemMessages = iAddBookController.addBookRecordInDatabase(book, coverBook.getCoverImage());
+		displayMessage = addItemMessages.getMessage();
 		model.addAttribute("message", displayMessage);
 		redirectPage = mappingsForAddItem(model);
 		return redirectPage;
@@ -246,8 +263,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	public String addMovieToDatabase(ModelMap model, Movie movie, Cover coverMovie) {
 
 		IAddMovieController iAddMovieController = factory.makeAddMovieController();
-		message = iAddMovieController.addMovieRecordInDatabase(movie, coverMovie.getCoverImage());
-		displayMessage = message.getMessage();
+		addItemMessages = iAddMovieController.addMovieRecordInDatabase(movie, coverMovie.getCoverImage());
+		displayMessage = addItemMessages.getMessage();
 		model.addAttribute("message", displayMessage);
 		redirectPage = mappingsForAddItem(model);
 		return redirectPage;
@@ -258,8 +275,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	public String addMusicToDatabase(ModelMap model, Music music, Cover coverMusic) {
 
 		IAddMusicController iAddMusicController = factory.makeAddMusicController();
-		message = iAddMusicController.addMusicRecordInDatabase(music, coverMusic.getCoverImage());
-		displayMessage = message.getMessage();
+		addItemMessages = iAddMusicController.addMusicRecordInDatabase(music, coverMusic.getCoverImage());
+		displayMessage = addItemMessages.getMessage();
 		model.addAttribute("message", displayMessage);
 		redirectPage = mappingsForAddItem(model);
 		return redirectPage;
@@ -278,7 +295,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		return "LoanManagement";
 	}
 
-	@PostMapping("/loanItems")
+	@PostMapping("/loan")
 	public String returnItems(ModelMap model, Select select) {
 
 		String selections = select.getSelections(); 
@@ -409,7 +426,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("sessionClient", sessionClient);
 		model.addAttribute("categories", categories);
 		model.addAttribute("itemType", itemType);
-		return "BrowsePageCategory";
+		return gotoBrowsePageCategoriesPage;
 	}
 
 	@GetMapping("/BrowsePage/{itemType}/{category}")
@@ -428,7 +445,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("displayItems", displayItems);
 		model.addAttribute(itemType);
 		model.addAttribute(category);
-		return "BrowsePageItems";
+		return gotoBrowsePageItemsPage;
 	}
 
 	@GetMapping("/itemDetail/{itemType}/{itemID}")
@@ -446,7 +463,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("sessionClient", sessionClient);
 		model.addAttribute("status", status);
 		model.addAttribute("displayDetailed", displayDetailed);
-		return "itemDetail";
+		return gotoItemDetailsPage;
 	}
 
 	@PostMapping("/borrowItem/{status}")
@@ -456,8 +473,12 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		String emailAddress = user.getUserEmail(httpSession);
 		BookItem bookItem = new BookItem(displayDetailed, emailAddress);
 		Boolean isItemBooked = bookItem.bookItem(status);
+		if(!isItemBooked)
+		{
+			return redirectToErrorPage;
+		}
 		String itemType = displayDetailed.getItemType();
 		int itemID = displayDetailed.getItemID();
-		return "redirect:/itemDetail/" + itemType + "/" + itemID;
+		return redirectToItemDetail + itemType + "/" + itemID;
 	}
 }
