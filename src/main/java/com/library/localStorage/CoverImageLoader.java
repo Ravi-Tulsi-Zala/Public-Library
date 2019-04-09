@@ -53,13 +53,13 @@ public class CoverImageLoader implements ICoverImageLoader {
 			stream.write(bytes);
 			stream.close();
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Unable to read bytes from the image BLOB", e);
+			logger.log(Level.ERROR, "Unable to read bytes from the image BLOB for the item with ID " + itemId, e);
 			return COVER_IMAGE_NOT_AVAILABLE_PATH;
 		} catch (FileNotFoundException e) {
-			logger.log(Level.ALL, "Unable to create image file " +  imagePath, e);
+			logger.log(Level.ERROR, "Unable to create image file " +  imagePath, e);
 			return COVER_IMAGE_NOT_AVAILABLE_PATH;
 		} catch (IOException e) {
-			logger.log(Level.ALL, "Unable to write image byte stream to the disk. File  " +  imagePath, e);
+			logger.log(Level.ERROR, "Unable to write image byte stream to the disk. File  " +  imagePath, e);
 			e.printStackTrace();
 			return COVER_IMAGE_NOT_AVAILABLE_PATH;
 		}
@@ -74,9 +74,9 @@ public class CoverImageLoader implements ICoverImageLoader {
 		try {
 			FileUtils.deleteDirectory(new File(dir));
 		} catch (IOException e) {
-			logger.log(Level.ALL, "Deletion of the directory was unsuccessful: " + dir, e);
+			logger.log(Level.ERROR, "Deletion of the directory was unsuccessful: " + dir, e);
 		} catch (IllegalArgumentException e){
-			logger.log(Level.ALL, "Was not able to delete a directory. Directory does not exist or is not a directory: " + dir , e);
+			logger.log(Level.ERROR, "Was not able to delete a directory. Directory does not exist or is not a directory: " + dir , e);
 		}	
 	}
 }
