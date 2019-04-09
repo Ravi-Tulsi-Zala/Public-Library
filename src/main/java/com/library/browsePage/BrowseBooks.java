@@ -6,9 +6,9 @@ import com.library.businessModelSetter.DisplaySetter;
 import com.library.businessModelSetter.IDisplaySetter;
 import com.library.businessModels.Book;
 import com.library.businessModels.Display;
+import com.library.dao.DAOFactory;
 import com.library.dao.IBookDAO;
-import com.library.daoFactory.DAOFactory;
-import com.library.daoFactory.IDAOFactory;
+import com.library.dao.IDAOFactory;
 
 public class BrowseBooks implements IBrowseDisplayObjects{
 

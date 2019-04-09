@@ -13,8 +13,8 @@ import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 
 import com.library.businessModels.Cover;
+import com.library.dao.DAOFactory;
 import com.library.dao.ICoverDAO;
-import com.library.daoFactory.DAOFactory;
 
 public class CoverImageLoader implements ICoverImageLoader {
 	private static final String SEP = File.separator;
