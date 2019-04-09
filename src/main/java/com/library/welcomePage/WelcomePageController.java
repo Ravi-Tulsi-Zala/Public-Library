@@ -18,7 +18,6 @@ import com.library.messages.Messages;
 
 public class WelcomePageController implements IWelcomeController {
 	private ILibraryItemDAO libraryFactory;
-	private Map.Entry<String, List<Book>> entryMap = null;
 
 	enum typeEntity {
 		latestBooks, latestMovies, latestMusic, favouriteBooks, favouriteMovies, favouriteMusic

@@ -8,7 +8,6 @@ public class PhoneStrength {
 
 		if (Integer.parseInt(phoneStrength) <= (valToCheck.length())) {
 			value = true;
-			//int a =100/0;
 		}
 		return value;
 	}

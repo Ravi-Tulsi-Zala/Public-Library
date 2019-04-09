@@ -35,8 +35,8 @@ public abstract class ValidateUserFormsAbstract {
 	public static String isAdminPwd;
 	public static String isAdmin;
 	public static String saltValue;
-	protected List<Object> passwordListAttributes = new ArrayList<Object>();
-	protected List<Object> emailPhoneListAttributes = new ArrayList<Object>();
+	protected List<Object> passwordListRules = new ArrayList<Object>();
+	protected List<Object> emailPhoneListRules = new ArrayList<Object>();
 	protected List<String> errorStringToDisplay = new ArrayList<String>();
 	private static final String filePathToValidations = "AuthenticationRules.xml";
 	private static final String filePathToErrorStatements = "ValidationStatements.xml";
@@ -55,32 +55,32 @@ public abstract class ValidateUserFormsAbstract {
 			case passwordLengthKeyRoot:
 				PasswordLengthValidation pwdLength = new PasswordLengthValidation();
 				pwdLength.setPasswordLength(getValueFromList);
-				passwordListAttributes.add(pwdLength);
+				passwordListRules.add(pwdLength);
 				break;
 			case passwordUpperKeyRoot:
 				PasswordUppercaseValidation pwdUpper = new PasswordUppercaseValidation();
 				pwdUpper.setPasswordUpper(getValueFromList);
-				passwordListAttributes.add(pwdUpper);
+				passwordListRules.add(pwdUpper);
 				break;
 			case passwordLowerKeyRoot:
 				PasswordLowercaseValidation pwdLower = new PasswordLowercaseValidation();
 				pwdLower.setPasswordLowerCase(getValueFromList);
-				passwordListAttributes.add(pwdLower);
+				passwordListRules.add(pwdLower);
 				break;
 			case passwordSymbolsKeyRoot:
 				PasswordSymbolValidation pwdSymbols = new PasswordSymbolValidation();
 				pwdSymbols.setPasswordSymbols(getValueFromList);
-				passwordListAttributes.add(pwdSymbols);
+				passwordListRules.add(pwdSymbols);
 				break;
 			case emailRegexKeyRoot:
 				EmailStrength emailStrength = new EmailStrength();
 				emailStrength.setEmailStrength(getValueFromList);
-				emailPhoneListAttributes.add(emailStrength);
+				emailPhoneListRules.add(emailStrength);
 				break;
 			case phoneCheckKeyRoot:
 				PhoneStrength phoneStrength = new PhoneStrength();
 				phoneStrength.setPhoneStrength(getValueFromList);
-				emailPhoneListAttributes.add(phoneStrength);
+				emailPhoneListRules.add(phoneStrength);
 				break;
 			case adminIDCheckKeyRoot:
 				isAdmin = getValueFromList;
