@@ -1,9 +1,13 @@
 package com.library.signUp;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.Level;
@@ -19,6 +23,8 @@ import com.library.businessModels.UserExtendedInfo;
 import com.library.dao.IUserDAO;
 import com.library.daoFactory.DAOFactory;
 import com.library.daoFactory.IDAOFactory;
+import com.library.email.EmailDetails;
+import com.library.email.SendEmail;
 import com.library.messages.Messages;
 import com.library.signIn.AuthenticatedUsers;
 import com.library.signIn.SignInController;
@@ -52,17 +58,18 @@ public class SignUpController implements ISignUpController {
 		userExtendedInfo.setFullname(user.getFullName());
 		userExtendedInfo.setPhone(user.getPhoneNumber());
 		listofValidationErrors = ValidateUserForms.instance().signUpUserData(userBasicInfo, userExtendedInfo);
-
+		String userEmail = userBasicInfo.getEmail();
 		if (listofValidationErrors.size() == 0) {
 			boolean status = registerUser();
 			if (status) {
 				AuthenticatedUsers authUsers = AuthenticatedUsers.instance();
-				authUsers.addAuthenticatedUser(httpSession, userBasicInfo.getEmail());
+				authUsers.addAuthenticatedUser(httpSession, userEmail);
 				UserSessionDetail.setClientActiveStatus(Messages.Logout.getMessage());
-				UserSessionDetail.setAvailableUserID(user.getEmail());
-				logger.log(Level.ALL, "User has successfully registered.");
+				UserSessionDetail.setAvailableUserID(userEmail);
+				sendRegistrationEmailToUser(userBasicInfo);
+				logger.log(Level.ALL, "User has successfully registered.", userEmail);
 			} else {
-				logger.log(Level.ALL, "User has not registered.");
+				logger.log(Level.ALL, "User has not registered.", userEmail);
 			}
 		}
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
@@ -73,6 +80,13 @@ public class SignUpController implements ISignUpController {
 		user.setPassword(salt.getSaltedPassword());
 	}
 
+	private void sendRegistrationEmailToUser(IUserBasicInfo userBasicInfo) throws AddressException, MessagingException, IOException {
+		EmailDetails emailDetails = new EmailDetails();
+		emailDetails.setUserEmailID(userBasicInfo.getEmail());
+		emailDetails.setBody(Messages.WelcomeUserEmailBodyMessage.getMessage());
+		emailDetails.setSubject(Messages.UserEmailSubjectMessage.getMessage());
+		SendEmail.sendmail(emailDetails);
+	}
 	private boolean registerUser() throws Exception {
 		boolean isUserRegistered = false;
 		IDAOFactory factory = new DAOFactory();

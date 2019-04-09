@@ -62,4 +62,17 @@ public class SignInTest {
 		assertEquals(userBasicInfo.getPassword(),"123456789-LMS");
 	}
 	
+	@Test
+	public void testAdmin() {
+		mapList = signInMocked.getAdminMockData();
+		for (int i = 0; i < mapList.size(); i++) {
+			if (mapList.containsKey("admin-data")) {
+				arrayList = (ArrayList) mapList.get("admin-data");
+				userBasicInfo = (UserBasicInfo) arrayList.get(0);
+				assertEquals("admin", userBasicInfo.getPassword());
+				assertEquals("admin", userBasicInfo.getEmail());
+			}
+		}
+	}
+	
 }

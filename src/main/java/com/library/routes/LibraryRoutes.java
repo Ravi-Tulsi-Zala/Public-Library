@@ -73,17 +73,14 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	private IDBSearchController dbSearchController;
 	private SearchFactory searchFactory = null;
 	private static String securityQuestionValue;
-
 	private AddItemMessagesEnum addItemMessages;
 	private String displayMessage, redirectPage;
 	private ILibraryFactory factory = null;
 	private LibraryFactorySingleton libraryInstance = null;
-
 	private String redirectToWelcome = Messages.WelcomePageRedirect.getMessage();
 	private String redirectToSignIn = Messages.SignInPageRedirect.getMessage();
 	private String redirectToForgotPwd = Messages.ForgotPassPageRedirect.getMessage();
 	private String redirectToErrorPage = Messages.ErrorPageRedirect.getMessage();
-
 	private String gotoSignInPage = Messages.SignInForm.getMessage();
 	private String gotoSignUpPage = Messages.SignUpForm.getMessage();
 	private String gotoWelcomePage = Messages.Welcome.getMessage();
@@ -101,7 +98,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/signUp")
-	public String processSignUpForm(ModelMap model, User user, HttpSession httpSession, RedirectAttributes redirectAttr) {
+	public String processSignUpForm(ModelMap model, User user, HttpSession httpSession,
+			RedirectAttributes redirectAttr) {
 		Logger logger = LogManager.getLogger(SignUpController.class);
 		try {
 			ISignUpController signUpCreate = factory.signUp(user, httpSession);
@@ -191,7 +189,8 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/signIn")
-	public String processSignInForm(HttpSession httpSession, ModelMap model, User user, RedirectAttributes redirectAttr) {
+	public String processSignInForm(HttpSession httpSession, ModelMap model, User user,
+			RedirectAttributes redirectAttr) {
 		Logger logger = LogManager.getLogger(SignInController.class);
 		try {
 			ISignInController signIn = factory.signIn(user, httpSession);
@@ -322,13 +321,9 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		String sessionClient = UserSessionDetail.getAvailableUserID();
 		model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
 		IWelcomeController welcomeCtrl = factory.welcomePage();
-		java.util.Enumeration<String> reqEnum = request.getParameterNames();
-		while (reqEnum.hasMoreElements()) {
-			String s = reqEnum.nextElement();
-			if (s.equals("LoggedOut") && request.getParameter(s).equals("true")) {
-				loggingStatus = Messages.RegisterLogin.getMessage();
-				sessionClient = "";
-			}
+		if (welcomeCtrl.getValFromRequestParam(request)) {
+			loggingStatus = Messages.RegisterLogin.getMessage();
+			sessionClient = "";
 		}
 		List<Book> book, favBooks;
 		List<Movie> movie, favMovies;

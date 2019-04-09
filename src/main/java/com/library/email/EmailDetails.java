@@ -38,5 +38,4 @@ public class EmailDetails {
 	public String getUserEmailID() {
 		return userEmailID;
 	}
-// Dummy commit for testing CI CD - last lab 
 }
