@@ -7,7 +7,7 @@ public class ConfigurableBLogicMock {
 	}
 
 	public static String getMockEmail() {
-		return "dev@gmail.com.;";
+		return "dev@gmail.com";
 	}
 
 	public static String getMockPhone() {
