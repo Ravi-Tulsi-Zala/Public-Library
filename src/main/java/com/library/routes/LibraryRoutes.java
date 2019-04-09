@@ -97,6 +97,11 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		searchFactory = SearchFactory.instance();
 	}
 
+	@GetMapping("/")
+	public String getIndexPage() {
+		return redirectToWelcome;
+	}
+
 	@PostMapping("/signUp")
 	public String processSignUpForm(ModelMap model, User user, HttpSession httpSession,
 			RedirectAttributes redirectAttr) {
@@ -107,7 +112,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			for (int i = 0; i < list.size(); i++) {
 				model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
 			}
-			// model object has by default two values; anytime it gets more than that
+			// model object has by default two indexes; anytime it gets more than that
 			// signifies a validation violation
 			if (model.size() > 2) {
 				return gotoSignUpPage;
@@ -176,11 +181,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
 		}
-	}
-
-	@GetMapping("/")
-	public String getIndexPage() {
-		return redirectToWelcome;
 	}
 
 	@GetMapping("/signIn")
@@ -315,19 +315,20 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@GetMapping("/welcome")
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem, HttpServletRequest request,
 			HttpSession httpSession, RedirectAttributes redirectAttr) {
+		List<Book> book, favBooks;
+		List<Movie> movie, favMovies;
+		List<Music> music, favMusic;
 		Logger logger = LogManager.getLogger(WelcomePageController.class);
 		dbSearchController.clearSearch(httpSession);
 		String loggingStatus = UserSessionDetail.getClientActiveStatus();
 		String sessionClient = UserSessionDetail.getAvailableUserID();
 		model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
 		IWelcomeController welcomeCtrl = factory.welcomePage();
+		
 		if (welcomeCtrl.getValFromRequestParam(request)) {
 			loggingStatus = Messages.RegisterLogin.getMessage();
 			sessionClient = "";
 		}
-		List<Book> book, favBooks;
-		List<Movie> movie, favMovies;
-		List<Music> music, favMusic;
 		try {
 			book = welcomeCtrl.getBookItems();
 			movie = welcomeCtrl.getMovieItems();
@@ -347,6 +348,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			DatabaseConnection databaseConnection = new DatabaseConnection();
 			databaseConnection.closeConnection();
 		}
+		
 		model.addAttribute("book", book);
 		model.addAttribute("favBooks", favBooks);
 		model.addAttribute("movie", movie);
