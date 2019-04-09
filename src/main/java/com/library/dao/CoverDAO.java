@@ -41,9 +41,8 @@ public class CoverDAO implements ICoverDAO {
 				return coverMapper.setCover(resultSet);
 			}
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
+			logger.log(Level.ERROR, "Check the SQL syntax of :"+query, e);
 		} finally {
-
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return null;
@@ -63,8 +62,7 @@ public class CoverDAO implements ICoverDAO {
 
 			return true;
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
-
+			logger.log(Level.ERROR, "Check the SQL syntax of :"+query, e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
@@ -83,8 +81,7 @@ public class CoverDAO implements ICoverDAO {
 
 			return true;
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax of:"+query, e);
-
+			logger.log(Level.ERROR, "Check the SQL syntax of:"+query, e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
