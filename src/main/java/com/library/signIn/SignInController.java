@@ -62,7 +62,6 @@ public class SignInController implements ISignInController {
 			logger.log(Level.ALL, "checkUserCredential method implemented successfully.");
 			return redirectToWelcome;
 		}
-		
 		return redirectToWelcome;
 	}
 

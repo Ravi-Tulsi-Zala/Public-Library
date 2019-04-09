@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.library.businessModels.UserBasicInfo;
 import com.library.businessModels.UserExtendedInfo;
 import com.library.mockDB.SignUpMocked;
+import com.library.validations.ValidateUserForms;
 
 @RunWith(SpringRunner.class)
 public class SignUpTest {
@@ -23,7 +25,8 @@ public class SignUpTest {
 	private List arrayList;
 	private UserBasicInfo userBasicInfo = null;
 	private UserExtendedInfo userExtendInfo = null;
-
+	ArrayList<Map.Entry<String, String>> arralistVal = new ArrayList<Map.Entry<String, String>>();
+	
 	@BeforeClass
 	public static void initializer() {
 		signUpMocked = new SignUpMocked();
@@ -66,6 +69,25 @@ public class SignUpTest {
 				assertEquals("1qazZAQ!", userExtendInfo.getCPassword());
 				assertTrue(userBasicInfo.getPassword() != userExtendInfo.getCPassword());
 				assertTrue(userExtendInfo.getPhone().length() != 10);
+			}
+		}
+	}
+	@Test
+	public void testSignUpValidation() {
+		mapList = signUpMocked.getMockDataForValidation();
+		for (int i = 0; i < mapList.size(); i++) {
+			if (mapList.containsKey("validation-data")) {
+				arrayList = (ArrayList) mapList.get("validation-data");
+				userBasicInfo = (UserBasicInfo) arrayList.get(0);
+				userExtendInfo = (UserExtendedInfo) arrayList.get(1);
+				try {
+					ValidateUserForms.instance().setErrorStringToHTML();
+					ValidateUserForms.instance().setValidationRules();
+					arralistVal = ValidateUserForms.instance().signUpUserData(userBasicInfo,userExtendInfo);
+					assertTrue("SignIn validation successfull", arralistVal.isEmpty());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

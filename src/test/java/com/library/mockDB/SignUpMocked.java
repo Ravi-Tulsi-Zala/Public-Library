@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.IUserExtendedInfo;
+import com.library.businessModels.User;
 import com.library.businessModels.UserBasicInfo;
 import com.library.businessModels.UserExtendedInfo;
 
@@ -54,4 +55,17 @@ public class SignUpMocked {
 		return map;
 	}
 
+	public Map getMockDataForValidation() {
+		arrItems = new ArrayList<String>();
+		map = new HashMap<String, ArrayList>();
+		userBasicInfo.setEmail("devanshu1@gmail.com");
+		userBasicInfo.setPassword("1qaz!QAZ");
+		userExtendedInfo.setCPassword("1qaz!QAZ");
+		userExtendedInfo.setFullname("deva sriv");
+		userExtendedInfo.setPhone("9024031714");
+		arrItems.add(userBasicInfo);
+		arrItems.add(userExtendedInfo);
+		map.put("validation-data", arrItems);
+		return map;
+	}
 }
