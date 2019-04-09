@@ -9,11 +9,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.library.businessModels.Book;
 import com.library.businessModels.BusinessModelsFactory;
 import com.library.businessModels.LibraryItem;
-import com.library.businessModels.Movie;
-import com.library.businessModels.Music;
 
 public class SearchResultsTest {
 	private SearchResults sr = null;
@@ -32,7 +29,8 @@ public class SearchResultsTest {
 		books.add(bmf.makeBook());
 		sr.addSearchResultsForCategory(books);
 		assertTrue(sr.isNotEmpty());
-	}	
+	}
+
 	@Test
 	public void isNotEmptyPassesWhenOneMovieIsAdded() {
 		List<LibraryItem> movies = new LinkedList<LibraryItem>();
@@ -40,6 +38,7 @@ public class SearchResultsTest {
 		sr.addSearchResultsForCategory(movies);
 		assertTrue(sr.isNotEmpty());
 	}
+
 	@Test
 	public void isNotEmptyPassesWhenOneMusicIsAdded() {
 		List<LibraryItem> musics = new LinkedList<LibraryItem>();
@@ -47,29 +46,32 @@ public class SearchResultsTest {
 		sr.addSearchResultsForCategory(musics);
 		assertTrue(sr.isNotEmpty());
 	}
+
 	@Test
 	public void canGetAllFoundItems() {
-		SearchResultsPopulator.populateSearchResults(addedItems, sr, new MockNumOfItemsInResult(12, 13, 17));		
+		SearchResultsPopulator.populateSearchResults(addedItems, sr, new MockNumOfItemsInResult(12, 13, 17));
 		List<LibraryItem> items = sr.getAllFoundItems();
 		items.containsAll(addedItems);
 		assertTrue(items.size() == addedItems.size());
-	}	
+	}
+
 	@Test
 	public void canGetSearchResultsPerCategory() {
 		SearchResultsPopulator.populateSearchResults(addedItems, sr, new MockNumOfItemsInResult(8, 11, 23));
-		ArrayList<List<LibraryItem>> resultsPerCategories = sr.getSearchResultsPerCategory() ;
-		for(List<LibraryItem> resultsPerCategory : resultsPerCategories) {
+		ArrayList<List<LibraryItem>> resultsPerCategories = sr.getSearchResultsPerCategory();
+		for (List<LibraryItem> resultsPerCategory : resultsPerCategories) {
 			addedItems.containsAll(resultsPerCategory);
 			int size = resultsPerCategory.size();
 			assertTrue(size == 8 || size == 11 || size == 23);
-		}		
+		}
 	}
+
 	@Test
 	public void canGetResultSetForPageNumber() {
 		SearchResultsPopulator.populateSearchResults(addedItems, sr, new MockNumOfItemsInResult(15, 17, 19));
 		SearchResults sr = this.sr.getResultSetForPageNumber(1);
 		ArrayList<List<LibraryItem>> resultsPerCategories = sr.getSearchResultsPerCategory();
-		for(List<LibraryItem> resultsPerCategory : resultsPerCategories) {
+		for (List<LibraryItem> resultsPerCategory : resultsPerCategories) {
 			addedItems.containsAll(resultsPerCategory);
 			assertTrue(resultsPerCategory.size() == 10);
 		}

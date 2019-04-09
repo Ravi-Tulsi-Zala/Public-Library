@@ -4,9 +4,9 @@ import java.sql.SQLException;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 
+import com.library.dao.DAOFactory;
 import com.library.dao.ICoverDAO;
-import com.library.daoFactory.DAOFactory;
-import com.library.daoFactory.IDAOFactory;
+import com.library.dao.IDAOFactory;
 import com.library.localStorage.DefaultImageFetcher;
 import com.mysql.jdbc.Blob;
 

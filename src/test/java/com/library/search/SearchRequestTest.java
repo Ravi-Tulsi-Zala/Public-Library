@@ -5,13 +5,10 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.mail.search.SearchTerm;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import com.library.businessModels.Book;
-import com.library.businessModels.BusinessModelsFactory;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
@@ -42,6 +39,7 @@ public class SearchRequestTest {
 		assertTrue(resultsPerCategory.get(1).get(0) instanceof Movie);
 		assertTrue(resultsPerCategory.get(2).get(0) instanceof Book);
 	}
+
 	@Test
 	public void isNewSearchTermsTest() {
 		SearchRequest other = sf.makeSearchRequest();
@@ -55,6 +53,7 @@ public class SearchRequestTest {
 		tap2.setSearchTerms("asd");
 		assertFalse(sr.isNewSearchTerms(other));
 	}
+
 	@Test
 	public void cansSetAndGetSearchTermsAndPage() {
 		SearchTermsAndPage stap = sf.makeSearchTermsAndPage();

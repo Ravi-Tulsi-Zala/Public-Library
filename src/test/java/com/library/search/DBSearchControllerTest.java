@@ -24,10 +24,10 @@ import javax.inject.Inject;
 @ActiveProfiles("DBSearchControllerTest")
 @RunWith(SpringRunner.class)
 @WebMvcTest
-@ContextConfiguration(classes={LibraryApplication.class, DBSearchControllerTestConfiguration.class})
+@ContextConfiguration(classes = { LibraryApplication.class, DBSearchControllerTestConfiguration.class })
 public class DBSearchControllerTest {
 	private final int DESPLAY_ROW_SIZE = 10;
-	
+
 	@Inject
 	private DBSearchController dbSearchController;
 	@Inject
@@ -44,7 +44,7 @@ public class DBSearchControllerTest {
 		SearchTermsAndPage termsAndPage = SearchFactory.instance().makeSearchTermsAndPage();
 		termsAndPage.setRequestedResultsPageNumber(1);
 		termsAndPage.setSearchTerms("asd");
-		mockSearchRequest.setTermsAndPage(termsAndPage);		
+		mockSearchRequest.setTermsAndPage(termsAndPage);
 		SearchCategory bookSearch = SearchFactory.instance().makeBookSearch();
 		mockSearchRequest.addCategoryToSearchIn(bookSearch);
 		SearchCategory movieSearch = SearchFactory.instance().makeMovieSearech();
@@ -62,6 +62,7 @@ public class DBSearchControllerTest {
 		assertTrue(results.getSearchResultsPerCategory().get(1).get(0) instanceof Movie);
 		assertTrue(results.getSearchResultsPerCategory().get(2).get(0) instanceof Music);
 	}
+
 	@Test
 	public void returnsResultsForTheNextrequestedPage() {
 		results = dbSearchController.search(mockSearchRequest, mockHttpSession);
@@ -74,6 +75,7 @@ public class DBSearchControllerTest {
 		assertTrue(results.getSearchResultsPerCategory().get(1).size() == 7);
 		assertTrue(results.getSearchResultsPerCategory().get(2).size() == 9);
 	}
+
 	@Test
 	public void executesNewSearchIfSearchTermsAreChanged() {
 		results = dbSearchController.search(mockSearchRequest, mockHttpSession);
@@ -89,12 +91,14 @@ public class DBSearchControllerTest {
 		results = dbSearchController.search(mockSearchRequest, mockHttpSession);
 		assertTrue(results.getSearchResultsPerCategory().get(0).size() == DESPLAY_ROW_SIZE);
 	}
+
 	@Test(expected = IllegalStateException.class)
 	public void removesUserSearchDataOnUserLogOutIfUserWasLoggedIn() {
 		results = dbSearchController.search(mockSearchRequest, mockHttpSession);
 		assertTrue(dbSearchController.notifyUserSignOut(mockHttpSession));
 		dbSearchController.notifyUserSignOut(mockHttpSession);
 	}
+
 	@Test
 	public void clearsSearch() {
 		assertFalse(dbSearchController.clearSearch(mockHttpSession));

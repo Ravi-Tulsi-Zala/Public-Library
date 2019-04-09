@@ -153,14 +153,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		return redirectToWelcome;
 	}
 
-	@GetMapping("/basicSearch")
-	public String getBasicSearchPage(ModelMap model, HttpSession httpSession) {
-		dbSearchController.clearSearch(httpSession);
-		model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
-		addUserEmail(model, httpSession);
-		return "BasicSearchPage";
-	}
-
 	@PostMapping("/basicSearch")
 	public String executeBasicSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage,
 			BookSearch bookSearch, MusicSearch musicSearch, MovieSearch moviesSearch) {
@@ -218,8 +210,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			return redirectToErrorPage;
 		}
 	}
-	
-	
+
 	@GetMapping("/addBook")
 	public String mappingsForAddItem(ModelMap model) {
 
@@ -231,9 +222,9 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		IAddMovieController iAddMovieController = factory.makeAddMovieController();
 		IAddMusicController iAddMusicController = factory.makeAddMusicController();
 		bookCategories = iAddBookController.getBookCategories();
-		movieCategories= iAddMovieController.getMovieCategories();
+		movieCategories = iAddMovieController.getMovieCategories();
 		musicCategories = iAddMusicController.getMusicCategories();
-		
+
 		model.addAttribute("book", new Book());
 		model.addAttribute("movie", new Movie());
 		model.addAttribute("music", new Music());
@@ -241,9 +232,9 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("coverMovie", new Cover());
 		model.addAttribute("coverMusic", new Cover());
 		model.addAttribute("sessionClient", sessionClient);
-		model.addAttribute("bookCategories",bookCategories);
-		model.addAttribute("movieCategories",movieCategories);
-		model.addAttribute("musicCategories",musicCategories);
+		model.addAttribute("bookCategories", bookCategories);
+		model.addAttribute("movieCategories", movieCategories);
+		model.addAttribute("musicCategories", musicCategories);
 
 		return "AddItemPage";
 	}

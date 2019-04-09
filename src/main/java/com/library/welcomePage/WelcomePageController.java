@@ -12,8 +12,8 @@ import com.library.businessModels.Display;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
+import com.library.dao.DAOFactory;
 import com.library.dao.ILibraryItemDAO;
-import com.library.daoFactory.DAOFactory;
 import com.library.messages.Messages;
 
 public class WelcomePageController implements IWelcomeController {

@@ -8,9 +8,9 @@ import com.library.localStorage.CoverImageLoader;
 
 @Profile("CoverImgProxyTest")
 public class SearchResultCoverImgProxyTestConfiguration {
-    @Bean
-    @Primary
-    public CoverImageLoader getCoverImageLoader() {
-        return new MockCoverImageLoader();
-    }
+	@Bean
+	@Primary
+	public CoverImageLoader getCoverImageLoader() {
+		return new MockCoverImageLoader();
+	}
 }
