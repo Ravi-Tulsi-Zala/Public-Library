@@ -56,7 +56,4 @@ public class LibraryItem {
 	public void setCoverImageUrl(String coverImageUrl) {
 		this.coverImageUrl = coverImageUrl;
 	}
-
-	
-
 }

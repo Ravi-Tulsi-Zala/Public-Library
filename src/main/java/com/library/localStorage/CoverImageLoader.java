@@ -13,15 +13,15 @@ import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 
 import com.library.businessModels.Cover;
+import com.library.dao.DAOFactory;
 import com.library.dao.ICoverDAO;
-import com.library.daoFactory.DAOFactory;
 
 public class CoverImageLoader implements ICoverImageLoader {
-	private static final String SEPARATOR = File.separator;
+	private static final String SEP = File.separator;
 	private static final String COVER_IMAGE_NOT_AVAILABLE_PATH = 
-			SEPARATOR + "public" + SEPARATOR + "img" + SEPARATOR +"CoverImageNotAvailable.jpg";
+			SEP + "public" + SEP + "img" + SEP +"CoverImageNotAvailable.jpg";
 	private static final String PATH_TO_DYNAMIC_CONTENT_DIR = 
-			System.getProperty("user.dir") + SEPARATOR + "dynamicContent" + SEPARATOR;
+			System.getProperty("user.dir") + SEP + "dynamicContent" + SEP;
 	
 	private static final Logger logger = LogManager.getLogger(CoverImageLoader.class);
 	
@@ -42,8 +42,8 @@ public class CoverImageLoader implements ICoverImageLoader {
 			dir.mkdirs();
 		}
 		
-		String imageName = SEPARATOR + itemId + "." + cover.getFileExtension();
-		String imageUrl = SEPARATOR + "dynamicContent" + SEPARATOR + pathToDynamicContentSubDir + imageName;
+		String imageName = SEP + itemId + "." + cover.getFileExtension();
+		String imageUrl = SEP + "dynamicContent" + SEP + pathToDynamicContentSubDir + imageName;
 		imagePath = pathToDirToSaveInto + imageName;
 		File file = new File(imagePath);
 		BufferedOutputStream stream;

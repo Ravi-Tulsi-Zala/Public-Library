@@ -1,10 +1,10 @@
 package com.library.borrowItem;
 
+import com.library.dao.DAOFactory;
 import com.library.dao.IBookDAO;
+import com.library.dao.IDAOFactory;
 import com.library.dao.IMovieDAO;
 import com.library.dao.IMusicDAO;
-import com.library.daoFactory.DAOFactory;
-import com.library.daoFactory.IDAOFactory;
 import com.library.loanmanagement.CategoryEnum;
 
 public class DescreaseAvailability {
