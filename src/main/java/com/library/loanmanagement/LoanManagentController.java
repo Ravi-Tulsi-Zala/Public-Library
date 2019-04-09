@@ -4,28 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.library.businessModels.UserItem;
+import com.library.dao.DAOFactory;
+import com.library.dao.IDAOFactory;
 import com.library.dao.IUserItemDAO;
-import com.library.daoFactory.DAOFactory;
-import com.library.daoFactory.IDAOFactory;
 import com.library.routes.ILibraryFactory;
 import com.library.routes.LibraryFactorySingleton;
 
 public class LoanManagentController implements ILoanManagementController {
 
-	IDAOFactory iDAOfactory;
-	ILibraryFactory iLibraryfactory;
-	LibraryFactorySingleton factorySingleton;
-	IUserItemDAO itemDAO;
-	List<UserItem> items;
-	LoanManagementContext context;
-	IReturnItemStrategy iReturnItemStrategy;
+	private IDAOFactory iDAOfactory;
+	private IUserItemDAO itemDAO;
+	private List<UserItem> items;
+	private LoanManagementContext context;
 
 	public LoanManagentController() {
 
 		iDAOfactory = new DAOFactory();
 		itemDAO = iDAOfactory.makeUserItemDAO();
-		factorySingleton = LibraryFactorySingleton.instance();
-		iLibraryfactory = factorySingleton.getFactory();
 		items = new ArrayList<UserItem>();
 	}
 
@@ -42,28 +37,24 @@ public class LoanManagentController implements ILoanManagementController {
 
 		for (UserItem item : userItems) {
 			itemDAO.removeItem(item);
-			increaseAvailability(item);
+			returnProcess(item);
 		}
 
 	}
 
-	private void increaseAvailability(UserItem item) {
+	private void returnProcess(UserItem item) {
 
 		String category = item.getCategory();
-
+		IReturnItemStrategy iReturnItemStrategy = null;
 		if (category.equalsIgnoreCase(CategoryEnum.BOOK.getText())) {
 			iReturnItemStrategy = new BookReturnStrategy();
-			context = new LoanManagementContext(iReturnItemStrategy);
-			context.executeReturnItemStrategy(item);
 		} else if (category.equalsIgnoreCase(CategoryEnum.MOVIE.getText())) {
 			iReturnItemStrategy = new MovieReturnStrategy();
-			context = new LoanManagementContext(iReturnItemStrategy);
-			context.executeReturnItemStrategy(item);
 		} else if (category.equalsIgnoreCase(CategoryEnum.MUSIC.getText())) {
 			iReturnItemStrategy = new MusicReturnStrategy();
-			context = new LoanManagementContext(iReturnItemStrategy);
-			context.executeReturnItemStrategy(item);
 		}
+		context = new LoanManagementContext(iReturnItemStrategy);
+		context.executeReturnItemStrategy(item);
 
 	}
 

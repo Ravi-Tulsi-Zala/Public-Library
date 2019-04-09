@@ -11,12 +11,12 @@ public class BookSearch extends SearchCategory {
 	private boolean searchBookPublisher = true;
 	private boolean searchBookDescription = true;
 	private boolean searchBookISBN = true;
-	
+
 	@Override
 	public List<LibraryItem> search(String searchterms) {
 		return daoFactory.makeBookDAO().getBooksBySearchTerms(this, searchterms);
 	}
-	
+
 	public boolean isSearchInBooks() {
 		return searchInBooks;
 	}

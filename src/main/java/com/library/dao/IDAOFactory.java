@@ -1,12 +1,4 @@
-package com.library.daoFactory;
-
-import com.library.dao.IBookDAO;
-import com.library.dao.ICoverDAO;
-import com.library.dao.ILibraryItemDAO;
-import com.library.dao.IMovieDAO;
-import com.library.dao.IMusicDAO;
-import com.library.dao.IUserDAO;
-import com.library.dao.IUserItemDAO;
+package com.library.dao;
 
 public interface IDAOFactory {
 	

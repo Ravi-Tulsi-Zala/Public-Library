@@ -1,19 +1,19 @@
 package com.library.browsePage;
 
+import com.library.loanmanagement.CategoryEnum;
+
 public class DisplayObjectInitializer {
 	
-	private static String book = "Book";
-	private static String music = "Music";
-	private static String movie = "Movie";
+	
 	
 	public IBrowseDisplayObjects getDisplayObject(String itemType) {
 		IBrowseDisplayObjects browseDisplayObjects = null;
 		IBrowseDisplayFactory browseFactory = BrowseDisplayFactory.getInstance();
-		if (itemType.equals(book)) {
+		if (itemType.equals(CategoryEnum.BOOK.getText())) {
 			browseDisplayObjects = browseFactory.makeBookDisplay();
-		} else if (itemType.equals(movie)) {
+		} else if (itemType.equals(CategoryEnum.MOVIE.getText())) {
 			browseDisplayObjects = browseFactory.makeMovieDisplay();
-		} else if (itemType.equals(music)) {
+		} else if (itemType.equals(CategoryEnum.MUSIC.getText())) {
 			browseDisplayObjects = browseFactory.makeMusicDisplay();
 		}
 		return browseDisplayObjects;

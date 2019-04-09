@@ -46,14 +46,17 @@
 		</Logger>
 		<Logger name="com.library.routes" level="all" additivity="false">
 			<AppenderRef ref="SQLAppender" />
+		</Logger>		
+		<Logger name="com.library.localStorage" level="all" additivity="false">
+			<AppenderRef ref="SQLAppender" />
 		</Logger>
-		<Logger name="org.springframework.boot" level="info"
-			additivity="false">
+		<Logger name="com.library.search" level="all" additivity="false">
+			<AppenderRef ref="SQLAppender" />
+		</Logger>
+		<Logger name="org.springframework.boot" level="info" additivity="false">
 			<AppenderRef ref="ConsoleAppender" />
 		</Logger>
-
-		<Logger name="org.springframework.core" level="info"
-			additivity="false">
+		<Logger name="org.springframework.core" level="info" additivity="false">
 			<AppenderRef ref="ConsoleAppender" />
 		</Logger>
 

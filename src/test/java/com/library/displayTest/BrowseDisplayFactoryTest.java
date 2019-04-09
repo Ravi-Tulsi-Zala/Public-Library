@@ -2,6 +2,7 @@ package com.library.displayTest;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.library.browsePage.BrowseDisplayFactory;
@@ -28,7 +29,7 @@ public class BrowseDisplayFactoryTest {
 		IBrowseDisplayObjects musicDisplay = factory.makeMusicDisplay();
 		assertEquals("Music", musicDisplay.getItemType());
 	}
-	
+
 	@Test
 	public void makeMovieDisplayTest()
 	{

@@ -6,9 +6,9 @@ import com.library.businessModelSetter.DisplaySetter;
 import com.library.businessModelSetter.IDisplaySetter;
 import com.library.businessModels.Display;
 import com.library.businessModels.Music;
+import com.library.dao.DAOFactory;
+import com.library.dao.IDAOFactory;
 import com.library.dao.IMusicDAO;
-import com.library.daoFactory.DAOFactory;
-import com.library.daoFactory.IDAOFactory;
 
 public class BrowseMusic implements IBrowseDisplayObjects{
 

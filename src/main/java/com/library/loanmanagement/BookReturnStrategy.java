@@ -1,40 +1,27 @@
 package com.library.loanmanagement;
 
-import java.io.IOException;
-
-import javax.mail.MessagingException;
-
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.library.businessModels.UserItem;
+import com.library.dao.DAOFactory;
 import com.library.dao.IBookDAO;
+import com.library.dao.IDAOFactory;
 import com.library.dao.IUserItemDAO;
-import com.library.daoFactory.DAOFactory;
-import com.library.daoFactory.IDAOFactory;
-import com.library.email.EmailDetails;
-import com.library.email.SendEmail;
-import com.library.forgotPassword.ForgotPasswordController;
 
 public class BookReturnStrategy implements IReturnItemStrategy {
 
-	IDAOFactory iDAOfactory;
-	IBookDAO iBookDAO;
-	IUserItemDAO iUserItemDAO;
-	EmailDetails emailDetails;
-	UserItem userOnHold;
-	private static final Logger logger = LogManager.getLogger(ForgotPasswordController.class);
+	private IDAOFactory iDAOfactory;
+	private IBookDAO iBookDAO;
+	private IUserItemDAO iUserItemDAO;
+	private SendBookingEmail bookingEmail;
 
 	public BookReturnStrategy() {
 		iDAOfactory = new DAOFactory();
 		iBookDAO = iDAOfactory.makeBookDAO();
 		iUserItemDAO = iDAOfactory.makeUserItemDAO();
-		emailDetails = new EmailDetails();
+		bookingEmail = new SendBookingEmail();
 	}
 
 	@Override
-	public void returnItem(UserItem item) {
+	public void increaseAvailabilty(UserItem item) {
 
 		int itemId = item.getItemId();
 		int currentAvailability = iBookDAO.getAvailability(itemId);
@@ -46,20 +33,8 @@ public class BookReturnStrategy implements IReturnItemStrategy {
 	@Override
 	public void sendEmail(UserItem item) {
 
-		String title = item.getTitle();
-		String email = item.getEmail();
-
-		emailDetails.setSubject("Reg : Book titled " + title + " is available in the library!");
-		emailDetails.setBody("Dear " + email + " ,<br/><br/>" + "This is to notify you that the book titled " + title
-				+ " is booked for you!" + "<br/><br/>" + "Regards, " + "<br/>" + " Public Library.");
-		emailDetails.setUserEmailID(email);
-		try {
-			SendEmail.sendmail(emailDetails);
-		} catch (MessagingException | IOException e) {
-
-			logger.log(Level.ALL, "Check Email Sender class!", e);
-		}
-
+		bookingEmail.sendBookingItemEmail(item);
+		
 	}
 
 	@Override
@@ -77,7 +52,7 @@ public class BookReturnStrategy implements IReturnItemStrategy {
 
 	@Override
 	public UserItem getTheNextUserInLine(int itemId) {
-
+		UserItem userOnHold;
 		userOnHold = new UserItem();
 		userOnHold = iUserItemDAO.getTheNextUserInLine(itemId);
 		return userOnHold;
@@ -89,6 +64,14 @@ public class BookReturnStrategy implements IReturnItemStrategy {
 
 		iUserItemDAO.removeUserFromHold(userOnHold);
 
+	}
+
+	@Override
+	public void addUserItem(UserItem userItem) {
+	
+		
+		iUserItemDAO.addItem(userItem);
+		
 	}
 
 }

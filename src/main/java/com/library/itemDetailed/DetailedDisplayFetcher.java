@@ -6,11 +6,11 @@ import com.library.businessModels.Book;
 import com.library.businessModels.DisplayDetailed;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
+import com.library.dao.DAOFactory;
 import com.library.dao.IBookDAO;
+import com.library.dao.IDAOFactory;
 import com.library.dao.IMovieDAO;
 import com.library.dao.IMusicDAO;
-import com.library.daoFactory.DAOFactory;
-import com.library.daoFactory.IDAOFactory;
 
 public class DetailedDisplayFetcher implements IDetailedDisplayFetcher{
 

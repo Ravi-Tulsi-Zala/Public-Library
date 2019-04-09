@@ -1,16 +1,7 @@
 package com.library.messages;
 
 public enum Messages {
-
-	SUCCESS_BOOK("Book Successfully added!"),
-	ERROR_DUPLICATE_BOOK("Book exists in Library! Please add new Book!"),
-	ERROR_BOOK_CAN_NOT_BE_CREATED("Book can not be created! Please try again!"),
-	SUCCESS_MOVIE("Movie Successfully added!"),
-	ERROR_DUPLICATE_MOVIE("Movie exists in Library! Please add new Movie!"),
-	ERROR_MOVIE_CAN_NOT_BE_CREATED("Movie can not be created! Please try again!"),
-	SUCCESS_MUSIC("Music Successfully added!"),
-	ERROR_DUPLICATE_MUSIC("Music exists in Library! Please add new Music!"),
-	ERROR_MUSIC_CAN_NOT_BE_CREATED("Music can not be created! Please try again!"),
+	
 	RegisterLogin("Register / Login"),
 	AdminEmailID("Administrator"),
 	Logout("Logout"),
@@ -20,12 +11,6 @@ public enum Messages {
 	ForgotPassPageRedirect("redirect:forgotPassword"),
 	ErrorPageRedirect("redirect:ErrorPage"),
 	UnableToConnectToDB("Unable to connect to database"),
-	GetLatestBookQuery("SELECT distinct * FROM books order by books.Item_ID desc limit "),
-	GetLatestMovieQuery("SELECT distinct * FROM movie order by movie.Item_ID desc limit "),
-	GetLatestMusicQuery("SELECT distinct * FROM music order by music.Item_ID desc limit "),
-	GetFavBookQuery("SELECT distinct * FROM books order by Count desc limit "),
-	GetFavMovieQuery("SELECT distinct * FROM movie order by Count desc limit "),
-	GetFavMusicQuery("SELECT distinct * FROM music order by Count desc limit "),
 	SignInForm("SignInForm"),
 	SignUpForm("SignUpForm"),
 	Welcome("Welcome"),
@@ -40,10 +25,13 @@ public enum Messages {
 	ParsingErrorStatement("Some problem occured while parsing XML."),
 	EmailExistErrorStatement("Email already exists. Please register with different email"),
 	validationSignUp("signUpUserData method implemented completely"),
-	validationSignIn("signInUserData method implemented completely");
-	
-	
-	
+	validationSignIn("signInUserData method implemented completely"),
+	BrowsePageCategory("BrowsePageCategory"),
+	BrowsePageItems("BrowsePageItems"),
+	ItemDetail("itemDetail"),
+	ItemDetailRedirect("redirect:/itemDetail/"),
+	WelcomeUserEmailBodyMessage("Welcome to the Pulic library. We are happy that you joined us today. let us know about your feedback :)"),
+	UserEmailSubjectMessage("Public library");
 	private String message;
 	
 	Messages(String message) {

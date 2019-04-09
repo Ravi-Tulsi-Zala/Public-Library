@@ -83,7 +83,7 @@ public class LibraryControllerTest {
     }
 	
 	@Test
-    public void authenticatedUserBowseAdvancedSearchPageWithGET() throws Exception {
+    public void authenticatedUserBrowseAdvancedSearchPageWithGET() throws Exception {
         
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/advancedSearch");
         request.session(mockHttpSessionAuthenticated);
@@ -96,7 +96,7 @@ public class LibraryControllerTest {
     
     @Ignore // remove @Ignore once we will remove the dummy authenticated user in LibraryController 
 	@Test
-    public void notAuthenticatedUserBowseAdvancedSearchPageWithGET() throws Exception {
+    public void notAuthenticatedUserBrowseAdvancedSearchPageWithGET() throws Exception {
         
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/advancedSearch");
         request.session(mockHttpSessionNotAuthenticated);
@@ -104,16 +104,6 @@ public class LibraryControllerTest {
 		this.mockMvc.perform(request)
 			.andExpect(status().isOk())
 			.andExpect(view().name("NoAccessToNonAuthenticated"))
-			;
-    }
-    
-    @Test
-    public void anyUserBrowseBasicSearchPageGET() throws Exception {
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/basicSearch");
-        
-		this.mockMvc.perform(request)
-			.andExpect(status().isOk())
-			.andExpect(view().name("BasicSearchPage"))
 			;
     }
     

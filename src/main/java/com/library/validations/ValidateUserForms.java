@@ -11,9 +11,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.IUserExtendedInfo;
+import com.library.dao.DAOFactory;
+import com.library.dao.IDAOFactory;
 import com.library.dao.IUserDAO;
-import com.library.daoFactory.DAOFactory;
-import com.library.daoFactory.IDAOFactory;
 import com.library.messages.Messages;
 
 public class ValidateUserForms extends ValidateUserFormsAbstract {

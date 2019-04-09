@@ -13,13 +13,14 @@ public class MovieSearchTest {
 
 	@Before
 	public void setUp() throws Exception {
-		ms = new MovieSearch();
+		ms = SearchFactory.instance().makeMovieSearech();
 	}
 
 	@Test
 	public void searchReturnsList() {
 		assertTrue(ms.search("") instanceof List<?>);
 	}
+
 	@Test
 	public void allDataMembersDefaultValuesAreTrue() {
 		assertTrue(ms.isSearchInMovies());
@@ -27,6 +28,7 @@ public class MovieSearchTest {
 		assertTrue(ms.isSearchMovieDirector());
 		assertTrue(ms.isSearchMovieTitle());
 	}
+
 	@Test
 	public void canSetAndGetAllDataMembers() {
 		ms.setSearchInMovies(false);

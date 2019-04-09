@@ -16,15 +16,17 @@ public class LoanManagementContext {
 	public void executeReturnItemStrategy(UserItem item) {
 
 		boolean isItemOnHold = false;
-
 		int itemId = item.getItemId();
-		iReturnItemStrategy.returnItem(item);
 		isItemOnHold = iReturnItemStrategy.isItemOnHold(itemId);
 		if (isItemOnHold) {
 			userOnHold = new UserItem();
 			userOnHold = iReturnItemStrategy.getTheNextUserInLine(itemId);
 			iReturnItemStrategy.sendEmail(userOnHold);
 			iReturnItemStrategy.removeUserFromHold(userOnHold);
+			iReturnItemStrategy.addUserItem(userOnHold);
+
+		} else {
+			iReturnItemStrategy.increaseAvailabilty(item);
 		}
 
 	}

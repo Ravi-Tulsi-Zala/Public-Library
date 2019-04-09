@@ -6,9 +6,9 @@ import com.library.businessModelSetter.DisplaySetter;
 import com.library.businessModelSetter.IDisplaySetter;
 import com.library.businessModels.Display;
 import com.library.businessModels.Movie;
+import com.library.dao.DAOFactory;
+import com.library.dao.IDAOFactory;
 import com.library.dao.IMovieDAO;
-import com.library.daoFactory.DAOFactory;
-import com.library.daoFactory.IDAOFactory;
 
 public class BrowseMovies implements IBrowseDisplayObjects{
 	
@@ -20,7 +20,7 @@ public class BrowseMovies implements IBrowseDisplayObjects{
 	{
 		IDAOFactory factory = new DAOFactory();
 		movieDAO = factory.makeMovieDAO();	
-		itemType = "movie";
+		itemType = movie;
 	}
 
 	@Override

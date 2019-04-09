@@ -8,18 +8,19 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-public class MusicSearchtest {
+public class MusicSearchTest {
 	private MusicSearch ms;
-	
+
 	@Before
 	public void setUp() throws Exception {
-		ms = new MusicSearch();
+		ms = SearchFactory.instance().makeMusicSearch();
 	}
-	
+
 	@Test
 	public void searchReturnsList() {
 		assertTrue(ms.search("") instanceof List<?>);
 	}
+
 	@Test
 	public void allDataMembersDefaultValuesAreTrue() {
 		assertTrue(ms.isSearchInMusic());
@@ -27,6 +28,7 @@ public class MusicSearchtest {
 		assertTrue(ms.isSearchMusicArtist());
 		assertTrue(ms.isSearchMusicRecordLabel());
 	}
+
 	@Test
 	public void canSetAndGetAllDataMembers() {
 		ms.setSearchInMusic(false);
