@@ -8,9 +8,6 @@ import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.IUserExtendedInfo;
 import com.library.parsers.XmlParser;
 
-// This abstraction layer provides a convenient flow of taking responsibility of configurable business logic. 
-// Tried to implement Template pattern; Abstract functions in this class and that are used by child class, 
-// where it changes the flow of action as required.
 public abstract class ValidateUserFormsAbstract {
 	// Roots in the .xml file are declared below.
 	private static final String passwordLengthKeyRoot = "passwordlength";
@@ -46,7 +43,12 @@ public abstract class ValidateUserFormsAbstract {
 
 	public abstract ArrayList<Map.Entry<String, String>> signInUserData(IUserBasicInfo userBasicInfo) throws Exception;
 
-	public void setValidationRules() throws Exception {
+	public final void setValidationRulesandStatement() throws Exception {
+		setValidationRules();
+		setErrorStringToHTML();
+	}
+
+	private void setValidationRules() throws Exception {
 		List<Map.Entry<String, String>> list = XmlParser.parse(filePathToValidations);
 		for (int i = 0; i < list.size(); i++) {
 			String getKeyFromList = list.get(i).getKey();
@@ -97,7 +99,7 @@ public abstract class ValidateUserFormsAbstract {
 		}
 	}
 
-	public void setErrorStringToHTML() throws Exception {
+	private void setErrorStringToHTML() throws Exception {
 		this.emailErrorStatement = "";
 		this.blankErrorStatement = "";
 		this.passwordErrorStatement = "";

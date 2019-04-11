@@ -15,10 +15,11 @@ public class ForgotPasswordMocked {
 	private EmailDetails eDetails = null;
 	private List<String> arrItems = null;
 	private static final Logger logger = LogManager.getLogger(ForgotPasswordMocked.class);
+
 	public ForgotPasswordMocked() {
 		eDetails = new EmailDetails();
 		try {
-			ValidateUserForms.instance().setValidationRules();
+			new ValidateUserForms().setValidationRulesandStatement();
 		} catch (Exception e) {
 			logger.log(Level.ALL, "Something went wrong in the Mock data of forgotpassword please refer logs.", e);
 		}

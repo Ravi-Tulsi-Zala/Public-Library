@@ -82,9 +82,9 @@ public class SignInTest {
 	public void testSignInValidation() {
 		UserBasicInfo userBasicInfo = signInMocked.getDataForValidation();
 		try {
-			ValidateUserForms.instance().setErrorStringToHTML();
-			ValidateUserForms.instance().setValidationRules();
-			arralistVal = ValidateUserForms.instance().signInUserData(userBasicInfo);
+			ValidateUserForms vForms = new ValidateUserForms();
+			vForms.setValidationRulesandStatement();
+			arralistVal = vForms.signInUserData(userBasicInfo);
 			assertTrue("SignIn validation successfull", true);
 		} catch (Exception e) {
 			e.printStackTrace();

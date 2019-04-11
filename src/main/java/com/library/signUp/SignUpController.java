@@ -40,12 +40,12 @@ public class SignUpController implements ISignUpController {
 	private Salt salt = null;
 	private HttpSession httpSession = null;
 	private static final Logger logger = LogManager.getLogger(SignUpController.class);
+	private ValidateUserForms validateForm = null;
 
 	public SignUpController(User user, HttpSession httpSession) throws Exception {
 		this.user = user;
 		this.salt = new Salt();
-		ValidateUserForms.instance().setErrorStringToHTML();
-		ValidateUserForms.instance().setValidationRules();
+		validateForm = new ValidateUserForms();
 		this.httpSession = httpSession;
 	}
 
@@ -57,7 +57,8 @@ public class SignUpController implements ISignUpController {
 		userExtendedInfo.setCPassword(user.getCpassword());
 		userExtendedInfo.setFullname(user.getFullName());
 		userExtendedInfo.setPhone(user.getPhoneNumber());
-		listofValidationErrors = ValidateUserForms.instance().signUpUserData(userBasicInfo, userExtendedInfo);
+		validateForm.setValidationRulesandStatement();
+		listofValidationErrors = validateForm.signUpUserData(userBasicInfo, userExtendedInfo);
 		String userEmail = userBasicInfo.getEmail();
 		if (listofValidationErrors.size() == 0) {
 			boolean status = registerUser();
