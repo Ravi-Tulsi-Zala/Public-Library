@@ -224,9 +224,9 @@ public class BookDAO implements IBookDAO {
 		int isbn = book.getIsbn();
 		String publisher = book.getPublisher();
 		String description = book.getDescription();
-		int availablity = book.getAvailability();
+		int defaultAvailablity = 5;
 		int recentlyAddedBookId = 0;
-
+		
 		try {
 			this.connection = databaseConnection.getConnection();
 			query = BookDAOEnums.QUERY_INSERT_BOOK.getQuery();
@@ -237,7 +237,7 @@ public class BookDAO implements IBookDAO {
 			preparedStatement.setInt(4, isbn);
 			preparedStatement.setString(5, publisher);
 			preparedStatement.setString(6, description);
-			preparedStatement.setInt(7, availablity);
+			preparedStatement.setInt(7, defaultAvailablity);
 			preparedStatement.executeUpdate();
 
 			resultSet = preparedStatement.getGeneratedKeys();
@@ -256,40 +256,6 @@ public class BookDAO implements IBookDAO {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return recentlyAddedBookId;
-	}
-
-	@Override
-	public Boolean updateBook(Book book) {
-		String category = book.getCategory();
-		String title = book.getTitle();
-		String author = book.getAuthor();
-		int isbn = book.getIsbn();
-		String publisher = book.getPublisher();
-		String description = book.getDescription();
-		int itemID = book.getItemID();
-		int availablity = book.getAvailability();
-		try {
-			this.connection = databaseConnection.getConnection();
-			query = BookDAOEnums.QUERY_UPDATE_BOOK.getQuery();
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, category);
-			preparedStatement.setString(2, title);
-			preparedStatement.setString(3, author);
-			preparedStatement.setInt(4, isbn);
-			preparedStatement.setString(5, publisher);
-			preparedStatement.setString(6, description);
-			preparedStatement.setInt(7, availablity);
-			preparedStatement.setInt(8, itemID);
-			preparedStatement.executeUpdate();
-			return true;
-		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
-		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not update Book with title ["+title+"] , author["+author+"], isbn ["+isbn+"] into books table", e);
-		} finally {
-			databaseConnection.closeConnection(resultSet, preparedStatement);
-		}
-		return false;
 	}
 
 	@Override

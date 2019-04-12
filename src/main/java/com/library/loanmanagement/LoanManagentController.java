@@ -7,8 +7,6 @@ import com.library.businessModels.UserItem;
 import com.library.dao.IUserItemDAO;
 import com.library.daoFactory.DAOFactory;
 import com.library.daoFactory.IDAOFactory;
-import com.library.routes.ILibraryFactory;
-import com.library.routes.LibraryFactorySingleton;
 
 public class LoanManagentController implements ILoanManagementController {
 
@@ -28,7 +26,6 @@ public class LoanManagentController implements ILoanManagementController {
 	public List<UserItem> getAllBorrowedItems() {
 
 		items = itemDAO.getAllBorrowedItems();
-
 		return items;
 	}
 
@@ -39,11 +36,9 @@ public class LoanManagentController implements ILoanManagementController {
 			itemDAO.removeItem(item);
 			returnProcess(item);
 		}
-
 	}
 
 	private void returnProcess(UserItem item) {
-
 		String category = item.getCategory();
 		IReturnItemStrategy iReturnItemStrategy = null;
 		if (category.equalsIgnoreCase(CategoryEnum.BOOK.getText())) {

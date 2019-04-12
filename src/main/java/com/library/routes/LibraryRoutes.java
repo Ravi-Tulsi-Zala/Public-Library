@@ -74,7 +74,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	private SearchFactory searchFactory = null;
 	private static String securityQuestionValue;
 
-	private Messages message;
 	private AddItemMessagesEnum addItemMessages;
 	private String displayMessage, redirectPage;
 	private ILibraryFactory factory = null;

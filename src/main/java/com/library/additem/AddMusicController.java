@@ -48,6 +48,7 @@ public class AddMusicController implements IAddMusicController {
 			if (isMusicCoverCreated) {
 				return AddItemMessagesEnum.SUCCESS_MUSIC;
 			} else {
+				iMusicDAO.deleteMusic(itemIdOfMusic);
 				return AddItemMessagesEnum.ERROR_MUSIC_CAN_NOT_BE_CREATED;
 			}
 		}

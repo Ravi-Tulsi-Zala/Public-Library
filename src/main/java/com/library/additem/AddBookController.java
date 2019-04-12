@@ -51,6 +51,7 @@ public class AddBookController implements IAddBookController {
 			if (isBookCoverCreated) {
 				return AddItemMessagesEnum.SUCCESS_BOOK;
 			} else {
+				bookDAO.deleteBookByID(itemIdOfBook);
 				return AddItemMessagesEnum.ERROR_BOOK_CAN_NOT_BE_CREATED;
 			}
 		}
