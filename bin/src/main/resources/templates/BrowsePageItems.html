@@ -1,13 +1,23 @@
 <html>
 	<html xmlns:th="http://www.thymeleaf.org">
 	<head>
-	<head>
 	<title>Public Library Home</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+	
 		<style type="text/css" media="screen">
+		
+			img {
+				border: 5px solid #fff;
+				border-radius: 5px;
+				padding: 7px;
+				width: 100px;
+				height: 100px;
+				float: right;
+			}
 
 			ul.breadcrumb {
 			  padding: 10px 16px;
@@ -19,10 +29,10 @@
 			  font-size: 18px;
 			}
 			
-			ul.breadcrumb li+li:before {
+			.breadcrumb li+li:before {
 			  padding: 8px;
 			  color: black;
-			  content: ">\00a0";
+			  content: "/\00a0";
 			}
 			
 			ul.breadcrumb li a {
@@ -43,7 +53,7 @@
 			</div>
 		</nav>
 		<div style="text-align:center;margin-top:1%">
-        	<span style="font-size: 2em;font-weight: bolder">Library Management System</span>
+        	<span style="font-size: 2em;font-weight: bolder">Public Library</span>
         	<p style="float: left" th:text="${sessionClient}"></p>
 			<a style="float: right; margin: 0 100px" th:if="${loggingStatus}=='Logout'" href="/logOut"><p
 					th:text="${loggingStatus}"></p></a>
@@ -53,16 +63,17 @@
         
         <div class = "BreadCrumbs" style = "margin-left:5%">
         	<ul class="breadcrumb">
-        		<B><li><a href="/welcome">Home</a></B>
-  				<B><li th:text=${itemType} ></li></B>
+  				<a th:href="@{'/BrowsePage/'+${itemType}}"><b><li th:text=${itemType}> </li></b></a>
+  				/
+  				<b><li th:text=${category}></li></b>
 			</ul>
         </div>
         
-        
-        <div style="width: 9%; display: inline-block; vertical-align: top;" 
-        th:each="category:${categories}">
-			<a th:href="@{'/BrowsePage/' + ${itemType} + '/' + ${category}}" th:text="${category}">
-			</a>
+        <div style="width: 9%; display: inline-block; vertical-align: top;" th:each="displayItem:${displayItems}">
+        	<img th:src="${'data:image/png;base64,'+displayItem.image}" alt=""/>
+        	<a th:href="@{'/itemDetail/' + ${itemType} + '/' + ${displayItem.itemID}}"  th:text="${displayItem.title}">
+        		<table>
+        	</a>
 		</div>
         
 	</body>
