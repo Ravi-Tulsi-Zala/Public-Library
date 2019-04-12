@@ -16,7 +16,7 @@ public class CustomErrorController implements ErrorController {
 	  @ResponseBody
 	  public String handleError(HttpServletRequest request) {
 	  
-	      return "redirect:Error.html";
+	      return "Error";
 	  }
 	
 	@Override
