@@ -61,7 +61,7 @@
 		<input type="hidden" th:field="*{title}"> 
 		<input type="hidden" th:field="*{itemID}"> 
 		<input type="hidden" th:field="*{itemType}"> 
-		<input th:if="${loggingStatus}=='Logout'" type="submit" th:value=${status} style="margin-left:5%" class="btn btn-primary"/>
+		<input th:if="${loggingStatus =='Logout' and sessionClient!='Administrator'}" type="submit" th:value=${status} style="margin-left:5%" class="btn btn-primary"/>
 	</form>
 
 </body>
