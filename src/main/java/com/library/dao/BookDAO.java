@@ -16,6 +16,7 @@ import javax.sql.rowset.serial.SerialException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.library.businessModelSetter.BookSetter;
@@ -257,7 +258,13 @@ public class BookDAO implements IBookDAO {
 		}
 		return recentlyAddedBookId;
 	}
-
+	
+	@GetMapping("/error")
+	public String customErrorPage()
+	{
+		return "Error";
+	}
+	
 	@Override
 	public int getAvailability(int itemID) {
 
