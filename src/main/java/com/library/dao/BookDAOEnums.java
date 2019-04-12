@@ -10,7 +10,6 @@ public enum BookDAOEnums {
 	QUERY_IS_DUPLICATE_BOOK("SELECT * FROM books where Title=? and Author=?"),
 	QUERY_INCREASE_BOOK_COUNT("update books set count = count + 1 where Item_ID = ?"),
 	QUERY_UPDATE_AVAILABILITY("update books set Availability = ? where Item_ID = ?"),
-	QUERY_UPDATE_BOOK("Update books  set Category = ?, Title = ?, Author = ?, ISBN =  ?, Publisher = ?, Description = ?, Availability = ? WHERE Item_ID = ?"),
 	QUERY_GET_CURRENT_AVAILABILITY_OF_BOOK("Select Availability from books where Item_ID = ?");
 	
 	String query;

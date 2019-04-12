@@ -99,8 +99,8 @@ public class MusicDAO implements IMusicDAO {
 		String musicTitle = music.getTitle();
 		String musicArtist = music.getArtist();
 		String musicRecordLabel = music.getRecordLabel();
-		int musicAvailability = music.getAvailability();
 		int recentlyAddedMusicId = 0;
+		int defaultAvailablity = 5;
 
 		try {
 			query = MusicDAOEnums.QUERY_INSERT_MUSIC.getQuery();
@@ -109,7 +109,7 @@ public class MusicDAO implements IMusicDAO {
 			preparedStatement.setString(2, musicTitle);
 			preparedStatement.setString(3, musicArtist);
 			preparedStatement.setString(4, musicRecordLabel);
-			preparedStatement.setInt(5, musicAvailability);
+			preparedStatement.setInt(5, defaultAvailablity);
 			preparedStatement.executeUpdate();
 			resultSet = preparedStatement.getGeneratedKeys();
 

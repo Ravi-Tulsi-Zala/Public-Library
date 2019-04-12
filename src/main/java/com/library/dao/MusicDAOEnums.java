@@ -10,7 +10,6 @@ public enum MusicDAOEnums {
 	QUERY_IS_DUPLICATE_MUSIC("SELECT * FROM music where Title=? and Artist=?"),
 	QUERY_INCREASE_MUSIC_COUNT("update music set count = count + 1 where Item_ID = ?"),
 	QUERY_UPDATE_AVAILABILITY("update music set Availability =? where Item_ID = ?"),
-	QUERY_UPDATE_MUSIC("UPDATE music SET Category=?,Title=?,Artist=?,Record_Label=?,Availability=? WHERE Item_ID=? "),
 	QUERY_GET_CURRENT_AVAILABILITY_OF_MUSIC("Select Availability from music where Item_ID = ?");
 	
 	String query;
