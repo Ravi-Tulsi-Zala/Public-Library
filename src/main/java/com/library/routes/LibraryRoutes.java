@@ -188,13 +188,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		return gotoSignInPage;
 	}
 	
-	@GetMapping("/error")
-	public String customError()
-	{
-		
-		return "redirect:error";
-	}
-
 	@PostMapping("/signIn")
 	public String processSignInForm(HttpSession httpSession, ModelMap model, User user,
 			RedirectAttributes redirectAttr) {
