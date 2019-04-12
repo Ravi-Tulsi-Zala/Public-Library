@@ -138,52 +138,15 @@ public class MovieDAO implements IMovieDAO {
 	}
 
 	@Override
-	public Boolean updateMovie(Movie movie) {
+	public Boolean deleteMovie(int itemID) {
 
 		this.connection = databaseConnection.getConnection();
-		String movieCategory = movie.getCategory();
-		String movieTitle = movie.getTitle();
-		String movieDirector = movie.getDirector();
-		String movieDescription = movie.getDescription();
-		int movieAvailability = movie.getAvailability();
-		int movieItemId = movie.getItemID();
-
-		try {
-			query = MovieDAOEnums.QUERY_UPDATE_MOVIE.getQuery();
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, movieCategory);
-			preparedStatement.setString(2, movieTitle);
-			preparedStatement.setString(3, movieDirector);
-			preparedStatement.setString(4, movieDescription);
-			preparedStatement.setInt(5, movieAvailability);
-			preparedStatement.setInt(6, movieItemId);
-			preparedStatement.executeUpdate();
-			return true;
-
-		} catch (SQLException e) {
-
-			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
-
-		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not update movie with title ["+movieTitle+"], director ["+movieDirector+"]", e);
-		}
-		finally
-		{
-			databaseConnection.closeConnection(resultSet, preparedStatement);
-		}
-		return false;
-	}
-
-	@Override
-	public Boolean deleteMovie(Movie movie) {
-
-		this.connection = databaseConnection.getConnection();
-		int movieItemId = movie.getItemID();
+		
 
 		try {
 			query = MovieDAOEnums.QUERY_DELETE_MOVIE_BY_ID.getQuery();
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, movieItemId);
+			preparedStatement.setInt(1, itemID);
 			preparedStatement.executeUpdate();
 			return true;
 
@@ -192,7 +155,7 @@ public class MovieDAO implements IMovieDAO {
 			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not delete movie with itemId ["+movieItemId+"] and title ["+movie.getTitle()+"]", e);
+			logger.log(Level.ALL, "Can not delete movie with itemId ["+itemID+"]", e);
 		}
 		finally
 		{

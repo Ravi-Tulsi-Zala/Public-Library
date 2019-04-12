@@ -24,7 +24,7 @@ public class LoanManagementContext {
 			iReturnItemStrategy.sendEmail(userOnHold);
 			iReturnItemStrategy.removeUserFromHold(userOnHold);
 			iReturnItemStrategy.addUserItem(userOnHold);
-
+			
 		} else {
 			iReturnItemStrategy.increaseAvailabilty(item);
 		}

@@ -34,7 +34,7 @@ public class BookReturnStrategy implements IReturnItemStrategy {
 	public void sendEmail(UserItem item) {
 
 		bookingEmail.sendBookingItemEmail(item);
-		
+
 	}
 
 	@Override
@@ -68,10 +68,9 @@ public class BookReturnStrategy implements IReturnItemStrategy {
 
 	@Override
 	public void addUserItem(UserItem userItem) {
-	
-		
+
 		iUserItemDAO.addItem(userItem);
-		
+
 	}
 
 }
