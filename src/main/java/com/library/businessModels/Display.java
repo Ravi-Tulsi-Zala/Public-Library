@@ -52,11 +52,11 @@ public class Display {
 					byte[] coverBytes = blob.getBytes(1, (int) blob.length());
 					this.image = Base64.encodeBase64String(coverBytes);
 				} 
-				else 
-				{
-					DefaultImageFetcher defaultImageFetcher = new DefaultImageFetcher();
-					this.image = defaultImageFetcher.getDefaultCover();
-				}
+			}
+			else 
+			{
+				DefaultImageFetcher defaultImageFetcher = new DefaultImageFetcher();
+				this.image = defaultImageFetcher.getDefaultCover();
 			}
 			
 		} catch (SQLException e) {

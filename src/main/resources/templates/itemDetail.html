@@ -28,12 +28,8 @@
 			style="width: 70px; height: 70px">
 		</a> <span class="navbar-brand mb-0 h1"><h2
 				style="text-align: center">Public Library</h2></span>
-		<div style="float: right">
+		<div style="float: right;display:inline">
 			<p style="float: left; color: white;" th:text="${sessionClient}"></p>
-		</div>
-	</nav>
-	<div style="text-align: center; margin-top: 1%">
-		<div style="float: right">
 			<a style="float: right; margin: 0 100px"
 				th:if="${loggingStatus}=='Logout'" href="/logOut"><p
 					th:text="${loggingStatus}"></p></a> <a
@@ -41,7 +37,8 @@
 				th:if="${loggingStatus}=='Register / Login'" href="/signIn"><p
 					th:text="${loggingStatus}"></p></a>
 		</div>
-	</div>
+	</nav>
+	
 	<br>
 	<br>
 	<br>
@@ -64,7 +61,7 @@
 		<input type="hidden" th:field="*{title}"> 
 		<input type="hidden" th:field="*{itemID}"> 
 		<input type="hidden" th:field="*{itemType}"> 
-		<input th:if="${loggingStatus}=='Logout'" type="submit" th:value=${status} style="margin-left:5%" />
+		<input th:if="${loggingStatus}=='Logout'" type="submit" th:value=${status} style="margin-left:5%" class="btn btn-primary"/>
 	</form>
 
 </body>
