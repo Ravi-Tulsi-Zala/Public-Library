@@ -14,7 +14,9 @@ public enum ValidateFormEnums {
 	emptyErrorKeyRoot("emptyErrorString"),
 	phoneErrorKeyRoot("phoneErrorString"),
 	cpasswordErrorKeyRoot("cpasswordErrorString"),
-	saltKeyRoot("salt");
+	saltKeyRoot("salt"),
+	filePathToValidations("AuthenticationRules.xml"),
+	filePathToErrorStatements("ValidationStatements.xml");
 	
 	
 	private final String statement;

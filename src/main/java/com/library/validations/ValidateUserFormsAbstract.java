@@ -20,8 +20,6 @@ public abstract class ValidateUserFormsAbstract {
 	protected List<Object> passwordListRules = new ArrayList<Object>();
 	protected List<Object> emailPhoneListRules = new ArrayList<Object>();
 	protected List<String> errorStringToDisplay = new ArrayList<String>();
-	private static final String filePathToValidations = "AuthenticationRules.xml";
-	private static final String filePathToErrorStatements = "ValidationStatements.xml";
 
 	public abstract ArrayList<Map.Entry<String, String>> signUpUserData(IUserBasicInfo userBasicInfo,
 			IUserExtendedInfo userExtendedInfo) throws Exception;
@@ -34,7 +32,7 @@ public abstract class ValidateUserFormsAbstract {
 	}
 
 	private void setValidationRules() throws Exception {
-		List<Map.Entry<String, String>> list = XmlParser.parse(filePathToValidations);
+		List<Map.Entry<String, String>> list = XmlParser.parse(ValidateFormEnums.filePathToValidations.getStatement());
 		String passwordLengthKey = ValidateFormEnums.passwordLengthKeyRoot.getStatement();
 		String passwordUpperCase = ValidateFormEnums.passwordUpperKeyRoot.getStatement();
 		String passwordLowerCase = ValidateFormEnums.passwordLowerKeyRoot.getStatement();
@@ -102,7 +100,7 @@ public abstract class ValidateUserFormsAbstract {
 		String emptyError = ValidateFormEnums.emptyErrorKeyRoot.getStatement();
 		String phoneError = ValidateFormEnums.phoneErrorKeyRoot.getStatement();
 		String cpasswordError = ValidateFormEnums.cpasswordErrorKeyRoot.getStatement();
-		List<Map.Entry<String, String>> list = XmlParser.parse(filePathToErrorStatements);
+		List<Map.Entry<String, String>> list = XmlParser.parse(ValidateFormEnums.filePathToErrorStatements.getStatement());
 		for (int i = 0; i < list.size(); i++) {
 			String getKeyFromList = list.get(i).getKey();
 			String getValFromList = list.get(i).getValue();
