@@ -72,7 +72,7 @@ img {
 		th:object="${displayDetailed}" method="post">
 		<input type="hidden" th:field="*{title}"> <input
 			type="hidden" th:field="*{itemID}"> <input type="hidden"
-			th:field="*{itemType}"> <input th:if="${sessionClient}!=''"
+			th:field="*{itemType}"> <input th:if="${loggingStatus}=='Logout'"
 			type="submit" th:value=${status}>
 	</form>
 
