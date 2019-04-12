@@ -81,11 +81,11 @@ a, a label {
 		</div>
 	</nav>
 	<div>
-		<form onsubmit="return validateSearchForm()" method="post"
-			th:action="@{/basicSearch}" style="float: left; line-height: 3em;">
+		<form onsubmit="return validateSearchForm()" method="post" 
+			th:action="@{/basicSearch}" style="float: left; margin-top:20px; line-height: 3em;">
 			<a href="/advancedSearch"> Search Terms</a> <input id="searchTerms"
 				type="text" th:field="${searchTermsAndPage.searchTerms}"
-				style="width: 100px;" /> <input type="submit">
+				style="width: 300px;" />
 		</form>
 	</div>
 
@@ -99,11 +99,12 @@ a, a label {
 	<!-- <span style="float: right; margin-right: 20px; line-height: 3em;"
 		th:text="${userEmail}">Test</span> -->
 	
-	<div style="margin-top: 50px;"></div>
+	<div style="margin-top: 70px;"></div>
 	<div>
 		<table th:if="*{isAdminAval}">
 			<tr>
-				<p>Admin Tools</p>
+			<br>
+				<p style="color:blue;">Admin Tools</p>
 			</tr>
 			<tr>
 				<td><a href="/addBook"><div class="boxed">Add Library
@@ -113,7 +114,7 @@ a, a label {
 			</tr>
 		</table>
 	</div>
-	<span style="color: blue; display: block; width: 100%;">New
+	<span style="color: blue; display: block; width: 100%;"><br>New
 		arrivals</span>
 	<div style="width: 9%; display: inline-block; vertical-align: top;"
 		th:each="books:${book}">

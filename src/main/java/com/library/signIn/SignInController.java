@@ -29,14 +29,15 @@ public class SignInController implements ISignInController {
 	private HttpSession httpSession = null;
 	private List<Entry<String, String>> listofValidationErrors = null;
 	private static final Logger logger = LogManager.getLogger(SignInController.class);
+	private ValidateUserForms validateForm=null;
 
 	public SignInController(User user, HttpSession httpSession) throws Exception {
 		this.user = user;
 		this.salt = new Salt();
 		this.userBasicInfo = new UserBasicInfo();
 		this.httpSession = httpSession;
-		ValidateUserForms.instance().setErrorStringToHTML();
-		ValidateUserForms.instance().setValidationRules();
+		validateForm = new ValidateUserForms();
+		
 	}
 
 	public String checkUserCredential() throws Exception {
@@ -72,7 +73,8 @@ public class SignInController implements ISignInController {
 	public ArrayList<Entry<String, String>> validateSignIn() throws Exception {
 		userBasicInfo.setEmail(user.getEmail());
 		userBasicInfo.setPassword(user.getPassword());
-		listofValidationErrors = ValidateUserForms.instance().signInUserData(userBasicInfo);
+		validateForm.setValidationRulesandStatement();
+		listofValidationErrors = validateForm.signInUserData(userBasicInfo);
 		logger.log(Level.ALL, "validateSignIn method implemented successfully.");
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
 	}

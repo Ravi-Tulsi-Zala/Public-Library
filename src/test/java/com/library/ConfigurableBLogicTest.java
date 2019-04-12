@@ -18,12 +18,10 @@ import com.library.validations.PhoneStrength;
 import com.library.validations.ValidateUserForms;
 
 public class ConfigurableBLogicTest {
-	public static ValidateUserForms validateUserForms;
 	public static SignInMocked signInMocked;
 
 	@BeforeClass
-	public static void initializer() {
-		validateUserForms = new ValidateUserForms();
+	public static void initializer() throws Exception {
 		signInMocked = new SignInMocked();
 	}
 

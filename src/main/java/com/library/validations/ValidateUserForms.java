@@ -29,16 +29,10 @@ public class ValidateUserForms extends ValidateUserFormsAbstract {
 	private static final Logger logger = LogManager.getLogger(ValidateUserForms.class);
 	private IUserDAO userDAO = null;
 
-	public static ValidateUserForms instance() {
-		if (instance == null) {
-			instance = new ValidateUserForms();
-		}
-		return instance;
-	}
-
-	public ValidateUserForms() {
+	public ValidateUserForms() throws Exception {
 		IDAOFactory factory = new DAOFactory();
 		userDAO = factory.makeUserDAO();
+		setValidationRulesandStatement();
 	}
 
 	private boolean validatePasswordLength(PasswordLengthValidation plength, String passToCheck) {

@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.core.io.VfsResource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.library.businessModels.UserBasicInfo;
@@ -26,10 +27,11 @@ public class SignUpTest {
 	private UserBasicInfo userBasicInfo = null;
 	private UserExtendedInfo userExtendInfo = null;
 	ArrayList<Map.Entry<String, String>> arralistVal = new ArrayList<Map.Entry<String, String>>();
-	
+	private static ValidateUserForms vForms= null;
 	@BeforeClass
-	public static void initializer() {
+	public static void initializer() throws Exception {
 		signUpMocked = new SignUpMocked();
+		vForms= new ValidateUserForms();
 	}
 
 	@Test
@@ -81,9 +83,8 @@ public class SignUpTest {
 				userBasicInfo = (UserBasicInfo) arrayList.get(0);
 				userExtendInfo = (UserExtendedInfo) arrayList.get(1);
 				try {
-					ValidateUserForms.instance().setErrorStringToHTML();
-					ValidateUserForms.instance().setValidationRules();
-					arralistVal = ValidateUserForms.instance().signUpUserData(userBasicInfo,userExtendInfo);
+					vForms.setValidationRulesandStatement();
+					arralistVal = vForms.signUpUserData(userBasicInfo,userExtendInfo);
 					assertTrue("SignIn validation successfull", arralistVal.isEmpty());
 				} catch (Exception e) {
 					e.printStackTrace();
