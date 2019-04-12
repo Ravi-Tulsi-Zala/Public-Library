@@ -33,15 +33,14 @@ img {
 	</div>
 </nav>
 	<div style="text-align:center;margin-top:1%">
-     	<span style="font-size: 2em;font-weight: bolder">Public Library</span>
      	<div style="float: right">
-<p style="float: left" th:text="${sessionClient}"></p>
 <a style="float: right; margin: 0 100px" th:if="${loggingStatus}=='Logout'" href="/logOut"><p
 		th:text="${loggingStatus}"></p></a>
 <a style="float: right; margin: 0 100px" th:if="${loggingStatus}=='Register / Login'" href="/signIn"><p
 				th:text="${loggingStatus}"></p></a>
 </div>
        </div>
+       <br><br><br>
        
        <div>
        	<div>
@@ -50,7 +49,7 @@ img {
        	
        	<div>
        		<b><p th:text=${displayDetailed.title} /><b>
-       		<p th:utext = ${displayDetailed.details} />
+       		<p style="font-weight: normal;" th:utext = ${displayDetailed.details} />
        	</div>
        </div>       	
        
@@ -58,7 +57,7 @@ img {
        <input type="hidden" th:field="*{title}" >
        <input type="hidden" th:field="*{itemID}">
        <input type="hidden" th:field="*{itemType}" >
-	<input type="submit" th:value=${status} >
+  	<input th:if="${loggingStatus}=='logout'" type="submit" th:value=${status} >
 	</form>
        
 </body>
