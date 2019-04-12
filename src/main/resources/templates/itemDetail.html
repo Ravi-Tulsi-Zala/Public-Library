@@ -11,11 +11,9 @@
 <style>
 
 img {
-	border: 5px solid #fff;
-	border-radius: 5px;
 	padding: 7px;
-	width: 100px;
-	height: 100px;
+	width: 350px;
+	height: 350px;
 	float: right;
 }
 
@@ -43,12 +41,12 @@ img {
        
        <div>
        	<div>
-       		<img th:src="${'data:image/png;base64,'+displayDetailed.image}"   />
+       		<img th:src="${'data:image/png;base64,'+displayDetailed.image}"  style="margin-right:5%" />
        	</div>
        	
        	<div>
-       		<b><p th:text=${displayDetailed.title} /><b>
-       		<p style="font-weight: normal;" th:utext = ${displayDetailed.details} />
+       		<b><p th:text=${displayDetailed.title} style="width:50%;margin-left:5%" /><b>
+       		<p style="font-weight: normal;width:50%;margin-left:5%" th:utext = ${displayDetailed.details} />
        	</div>
        </div>       	
        
@@ -56,7 +54,7 @@ img {
        <input type="hidden" th:field="*{title}" >
        <input type="hidden" th:field="*{itemID}">
        <input type="hidden" th:field="*{itemType}" >
-       <div th:if="${sessionClient}!=''">
+       <div th:if="${sessionClient}!=''" style="margin-left:5%">
        		<input  type="submit" th:value=${status} >
        </div>
 	</form>
