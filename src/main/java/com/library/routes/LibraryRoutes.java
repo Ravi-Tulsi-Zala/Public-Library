@@ -27,8 +27,8 @@ import com.library.additem.IAddMovieController;
 import com.library.additem.IAddMusicController;
 import com.library.borrowItem.BookItem;
 import com.library.borrowItem.ItemStatus;
-import com.library.browsePage.DisplayObjectInitializer;
-import com.library.browsePage.IBrowseDisplayObjects;
+import com.library.browsePage.DisplayComponentInitializer;
+import com.library.browsePage.IBrowseDisplayComponent;
 import com.library.businessModels.Book;
 import com.library.businessModels.Cover;
 import com.library.businessModels.Display;
@@ -413,10 +413,10 @@ public class LibraryRoutes implements WebMvcConfigurer {
 
 	@GetMapping("/BrowsePage/{itemType}")
 	public String BrowsePageCategory(@PathVariable String itemType, ModelMap model) {
-		DisplayObjectInitializer displayObjectInitializer = new DisplayObjectInitializer();
-		IBrowseDisplayObjects browseDisplayObjects = null;
+		DisplayComponentInitializer displayComponentInitializer = new DisplayComponentInitializer();
+		IBrowseDisplayComponent browseDisplayObjects = null;
 		List<String> categories;
-		browseDisplayObjects = displayObjectInitializer.getDisplayObject(itemType);
+		browseDisplayObjects = displayComponentInitializer.getDisplayObject(itemType);
 		categories = browseDisplayObjects.getCategories();
 		String loggingStatus = UserSessionDetail.getClientActiveStatus();
 		String sessionClient = UserSessionDetail.getAvailableUserID();
@@ -431,10 +431,10 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	public String BrowsePageItems(@PathVariable(value = "itemType") String itemType,
 			@PathVariable(value = "category") String category, ModelMap model) {
 
-		DisplayObjectInitializer displayObjectInitializer = new DisplayObjectInitializer();
-		IBrowseDisplayObjects browseDisplayObjects = null;
+		DisplayComponentInitializer displayComponentInitializer = new DisplayComponentInitializer();
+		IBrowseDisplayComponent browseDisplayObjects = null;
 		List<Display> displayItems;
-		browseDisplayObjects = displayObjectInitializer.getDisplayObject(itemType);
+		browseDisplayObjects = displayComponentInitializer.getDisplayObject(itemType);
 		displayItems = browseDisplayObjects.itemsByCategory(category);
 		String loggingStatus = UserSessionDetail.getClientActiveStatus();
 		String sessionClient = UserSessionDetail.getAvailableUserID();

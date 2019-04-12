@@ -10,17 +10,14 @@ import com.library.dao.IBookDAO;
 import com.library.daoFactory.DAOFactory;
 import com.library.daoFactory.IDAOFactory;
 
-public class BrowseBooks implements IBrowseDisplayObjects{
+public class BrowseBooks implements IBrowseDisplayComponent{
 
 	private IBookDAO bookDAO;
-	private String itemType;
-	private static String book = "Book";
 	
 	public BrowseBooks()
 	{
 		IDAOFactory factory = new DAOFactory();
 		bookDAO = factory.makeBookDAO();
-		itemType = book;
 	}
 	
 	@Override
@@ -37,9 +34,6 @@ public class BrowseBooks implements IBrowseDisplayObjects{
 		return categories;
 	}
 
-	@Override
-	public String getItemType() {
-		return itemType;
-	}
 
 }
+

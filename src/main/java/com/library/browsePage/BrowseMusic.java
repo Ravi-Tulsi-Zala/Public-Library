@@ -10,17 +10,14 @@ import com.library.dao.IMusicDAO;
 import com.library.daoFactory.DAOFactory;
 import com.library.daoFactory.IDAOFactory;
 
-public class BrowseMusic implements IBrowseDisplayObjects{
+public class BrowseMusic implements IBrowseDisplayComponent{
 
 	private IMusicDAO musicDAO;
-	private String itemType;
-	private static String music = "Music";
 	
 	public BrowseMusic()
 	{
 		IDAOFactory factory = new DAOFactory();
 		musicDAO = factory.makeMusicDAO();	
-		itemType = music;
 	}
 	
 	@Override
@@ -35,11 +32,6 @@ public class BrowseMusic implements IBrowseDisplayObjects{
 	public List<String> getCategories() {
 		List<String> categories = musicDAO.getMusicCategories();
 		return categories;
-	}
-
-	@Override
-	public String getItemType() {
-		return itemType;
 	}
 
 }

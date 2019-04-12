@@ -14,17 +14,17 @@ public class BrowseDisplayFactory implements IBrowseDisplayFactory{
 	}
 	
 	@Override
-	public IBrowseDisplayObjects makeBookDisplay() {
+	public IBrowseDisplayComponent makeBookDisplay() {
 		return new BrowseBooks();
 	}
 
 	@Override
-	public IBrowseDisplayObjects makeMovieDisplay() {
+	public IBrowseDisplayComponent makeMovieDisplay() {
 		return new BrowseMovies();
 	}
 
 	@Override
-	public IBrowseDisplayObjects makeMusicDisplay() {
+	public IBrowseDisplayComponent makeMusicDisplay() {
 		return new BrowseMusic();
 	}
 

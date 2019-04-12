@@ -7,12 +7,11 @@ import com.library.daoFactory.DAOFactory;
 import com.library.daoFactory.IDAOFactory;
 
 public class BookItem {
-	
+
 	private UserItem userItem;
 	private IUserItemDAO userItemDAO;
-	
-	public BookItem(DisplayDetailed displayDetailed,String userEmail)
-	{
+
+	public BookItem(DisplayDetailed displayDetailed, String userEmail) {
 		userItem = new UserItem();
 		userItem.setTitle(displayDetailed.getTitle());
 		userItem.setCategory(displayDetailed.getItemType());
@@ -21,47 +20,37 @@ public class BookItem {
 		IDAOFactory factory = new DAOFactory();
 		userItemDAO = factory.makeUserItemDAO();
 	}
-	
-	private Boolean borrowBook()
-	{
+
+	private Boolean borrowBook() {
 		return userItemDAO.addItem(userItem);
 	}
-	
-	private Boolean holdItem()
-	{
+
+	private Boolean holdItem() {
 		return userItemDAO.addItemOnHold(userItem);
 	}
-	
-	public Boolean bookItem(String status)
-	{
+
+	public Boolean bookItem(String status) {
 		Boolean isItemBooked = false;
 		EmailSender emailSender = new EmailSender(userItem);
-		if(status.equals(StatusEnum.AVAILABLE.getStatus()) || status.equals(StatusEnum.RESERVE.getStatus()))
-		{
-			if(status.equals(StatusEnum.AVAILABLE.getStatus()))
-			{
+		if (status.equals(StatusEnum.AVAILABLE.getStatus()) || status.equals(StatusEnum.RESERVE.getStatus())) {
+			if (status.equals(StatusEnum.AVAILABLE.getStatus())) {
 				isItemBooked = borrowBook();
 				emailSender.sendBookingEmail();
 				DescreaseAvailability decreaser = new DescreaseAvailability(userItem.getCategory());
 				decreaser.decreaseAvailability(userItem.getItemId());
-			}
-			else if(status.equals(StatusEnum.RESERVE.getStatus()))
-			{
+			} else if (status.equals(StatusEnum.RESERVE.getStatus())) {
 				isItemBooked = holdItem();
 				emailSender.sendReserveEmail();
 			}
-		}
-		else
-		{
+		} else {
 			isItemBooked = true;
 		}
-		
-		if(isItemBooked)
-		{
+
+		if (isItemBooked) {
 			ChangeItemCount countChanger = new ChangeItemCount(userItem.getCategory(), userItem.getItemId());
-			countChanger.changeCount();	
+			countChanger.changeCount();
 		}
-		
+
 		return isItemBooked;
 	}
 }

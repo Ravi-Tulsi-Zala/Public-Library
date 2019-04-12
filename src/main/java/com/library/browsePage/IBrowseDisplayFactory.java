@@ -1,7 +1,7 @@
 package com.library.browsePage;
 
 public interface IBrowseDisplayFactory {
-	public IBrowseDisplayObjects makeBookDisplay();
-	public IBrowseDisplayObjects makeMovieDisplay();
-	public IBrowseDisplayObjects makeMusicDisplay();
+	public IBrowseDisplayComponent makeBookDisplay();
+	public IBrowseDisplayComponent makeMovieDisplay();
+	public IBrowseDisplayComponent makeMusicDisplay();
 }

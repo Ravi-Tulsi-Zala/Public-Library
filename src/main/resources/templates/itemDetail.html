@@ -13,6 +13,22 @@
 				float: right;
 			}
 			
+			a:link {
+				color: #0275d8;
+				text-decoration: none;
+			}
+			
+			a:visited {
+			  color: #0275d8;
+			  text-decoration: none;
+			}
+			
+			div.details {
+				max-width: 500px;
+				margin: auto;
+				border: 3px solid;
+			}
+			
 		</style>
 	</head>
 	<body>
@@ -25,15 +41,20 @@
 					th:text="${loggingStatus}"></p></a>
 			<a style="float: right; margin: 0 100px" th:if="${loggingStatus}=='Register / Login'" href="/signIn"><p
 					th:text="${loggingStatus}"></p></a>
-	</div>
+			</div>
+			
+        </div>
+        
+        <div class = "BreadCrumbs" style = "margin-left:5%">
+        		<B><h2><a th:href=@{'/welcome'}>Home</a><h2></B>
         </div>
         
         <div>
-        	<div>
+        	<div class="image">
         		<img th:src="${'data:image/png;base64,'+displayDetailed.image}"   />
         	</div>
         	
-        	<div>
+        	<div class="details">
         		<b><p th:text=${displayDetailed.title} /><b>
         		<p th:utext = ${displayDetailed.details} />
         	</div>

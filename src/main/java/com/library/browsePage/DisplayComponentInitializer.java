@@ -2,12 +2,10 @@ package com.library.browsePage;
 
 import com.library.loanmanagement.CategoryEnum;
 
-public class DisplayObjectInitializer {
-	
-	
-	
-	public IBrowseDisplayObjects getDisplayObject(String itemType) {
-		IBrowseDisplayObjects browseDisplayObjects = null;
+public class DisplayComponentInitializer {
+
+	public IBrowseDisplayComponent getDisplayObject(String itemType) {
+		IBrowseDisplayComponent browseDisplayObjects = null;
 		IBrowseDisplayFactory browseFactory = BrowseDisplayFactory.getInstance();
 		if (itemType.equals(CategoryEnum.BOOK.getText())) {
 			browseDisplayObjects = browseFactory.makeBookDisplay();
