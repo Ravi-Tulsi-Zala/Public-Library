@@ -10,8 +10,8 @@ import org.apache.logging.log4j.Logger;
 import com.library.businessModels.Book;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
+import com.library.dao.DAOFactory;
 import com.library.dao.ILibraryItemDAO;
-import com.library.daoFactory.DAOFactory;
 import com.library.welcomePage.UserSessionDetail;
 
 public class WelcomePageMocked {

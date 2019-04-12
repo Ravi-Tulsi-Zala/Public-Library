@@ -11,9 +11,9 @@ import org.apache.logging.log4j.Logger;
 
 import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.IUserExtendedInfo;
+import com.library.dao.DAOFactory;
+import com.library.dao.IDAOFactory;
 import com.library.dao.IUserDAO;
-import com.library.daoFactory.DAOFactory;
-import com.library.daoFactory.IDAOFactory;
 import com.library.messages.Messages;
 
 public class ValidateUserForms extends ValidateUserFormsAbstract {
@@ -41,8 +41,8 @@ public class ValidateUserForms extends ValidateUserFormsAbstract {
 		userDAO = factory.makeUserDAO();
 	}
 
-	private boolean validatePasswordLength(PasswordLengthValidation plenght, String passToCheck) {
-		return plenght.isValidLength(passToCheck);
+	private boolean validatePasswordLength(PasswordLengthValidation plength, String passToCheck) {
+		return plength.isValidLength(passToCheck);
 	}
 
 	private boolean validatePasswordLower(PasswordLowercaseValidation plower, String passToCheck) {
@@ -65,19 +65,19 @@ public class ValidateUserForms extends ValidateUserFormsAbstract {
 		return phoneStrength.isValidPhoneNumber(valueToCheck);
 	}
 
-	private boolean emailPhoneValidations(String valueToCheck, boolean isPassword) throws Exception {
+	public boolean emailPhoneValidations(String valueToCheck, boolean isPassword) throws Exception {
 		boolean returnValue = false;
-		for (int i = 0; i < emailPhoneListAttributes.size(); i++) {
+		for (int i = 0; i < emailPhoneListRules.size(); i++) {
 			if (isPassword) {
-				if (emailPhoneListAttributes.get(i) instanceof PhoneStrength) {
-					PhoneStrength phoneStrength = (PhoneStrength) emailPhoneListAttributes.get(i);
+				if (emailPhoneListRules.get(i) instanceof PhoneStrength) {
+					PhoneStrength phoneStrength = (PhoneStrength) emailPhoneListRules.get(i);
 					returnValue = validatePhoneStrength(phoneStrength, valueToCheck);
 					if (!returnValue) {
 						return returnValue;
 					}
 				}
-			} else if (emailPhoneListAttributes.get(i) instanceof EmailStrength) {
-				EmailStrength eStrength = (EmailStrength) emailPhoneListAttributes.get(i);
+			} else if (emailPhoneListRules.get(i) instanceof EmailStrength) {
+				EmailStrength eStrength = (EmailStrength) emailPhoneListRules.get(i);
 				returnValue = validateEmailStrength(eStrength, valueToCheck);
 				if (!returnValue) {
 					return returnValue;
@@ -87,29 +87,29 @@ public class ValidateUserForms extends ValidateUserFormsAbstract {
 		return returnValue;
 	}
 
-	private boolean passwordValidations(String passToCheck) throws Exception {
+	public boolean passwordValidations(String passToCheck) throws Exception {
 		boolean returnValue = false;
-		for (int i = 0; i < passwordListAttributes.size(); i++) {
-			if (passwordListAttributes.get(i) instanceof PasswordLengthValidation) {
-				PasswordLengthValidation plenght = (PasswordLengthValidation) passwordListAttributes.get(i);
+		for (int i = 0; i < passwordListRules.size(); i++) {
+			if (passwordListRules.get(i) instanceof PasswordLengthValidation) {
+				PasswordLengthValidation plenght = (PasswordLengthValidation) passwordListRules.get(i);
 				returnValue = validatePasswordLength(plenght, passToCheck);
 				if (!returnValue) {
 					return returnValue;
 				}
-			} else if (passwordListAttributes.get(i) instanceof PasswordLowercaseValidation) {
-				PasswordLowercaseValidation plower = (PasswordLowercaseValidation) passwordListAttributes.get(i);
+			} else if (passwordListRules.get(i) instanceof PasswordLowercaseValidation) {
+				PasswordLowercaseValidation plower = (PasswordLowercaseValidation) passwordListRules.get(i);
 				returnValue = validatePasswordLower(plower, passToCheck);
 				if (!returnValue) {
 					return returnValue;
 				}
-			} else if (passwordListAttributes.get(i) instanceof PasswordUppercaseValidation) {
-				PasswordUppercaseValidation pupper = (PasswordUppercaseValidation) passwordListAttributes.get(i);
+			} else if (passwordListRules.get(i) instanceof PasswordUppercaseValidation) {
+				PasswordUppercaseValidation pupper = (PasswordUppercaseValidation) passwordListRules.get(i);
 				returnValue = validatePasswordUpper(pupper, passToCheck);
 				if (!returnValue) {
 					return returnValue;
 				}
-			} else if (passwordListAttributes.get(i) instanceof PasswordSymbolValidation) {
-				PasswordSymbolValidation psymbols = (PasswordSymbolValidation) passwordListAttributes.get(i);
+			} else if (passwordListRules.get(i) instanceof PasswordSymbolValidation) {
+				PasswordSymbolValidation psymbols = (PasswordSymbolValidation) passwordListRules.get(i);
 				returnValue = validatePasswordSymbols(psymbols, passToCheck);
 				if (!returnValue) {
 					return returnValue;

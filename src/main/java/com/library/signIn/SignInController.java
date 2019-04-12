@@ -14,8 +14,8 @@ import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.Salt;
 import com.library.businessModels.User;
 import com.library.businessModels.UserBasicInfo;
+import com.library.dao.DAOFactory;
 import com.library.dao.IUserDAO;
-import com.library.daoFactory.DAOFactory;
 import com.library.messages.Messages;
 import com.library.validations.ValidateUserForms;
 import com.library.validations.ValidateUserFormsAbstract;
@@ -62,7 +62,6 @@ public class SignInController implements ISignInController {
 			logger.log(Level.ALL, "checkUserCredential method implemented successfully.");
 			return redirectToWelcome;
 		}
-		
 		return redirectToWelcome;
 	}
 

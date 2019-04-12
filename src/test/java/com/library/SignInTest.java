@@ -1,6 +1,7 @@
 package com.library;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -14,12 +15,14 @@ import org.junit.Test;
 import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.UserBasicInfo;
 import com.library.mockDB.SignInMocked;
+import com.library.validations.ValidateUserForms;
 
 public class SignInTest {
-	private static SignInMocked signInMocked;
-	private static Map mapList;
+	private static SignInMocked signInMocked = null;
+	private static Map mapList = null;
 	private UserBasicInfo userBasicInfo = null;
 	private List arrayList;
+	ArrayList<Map.Entry<String, String>> arralistVal = new ArrayList<Map.Entry<String, String>>();
 
 	@BeforeClass
 	public static void initializer() {
@@ -57,9 +60,34 @@ public class SignInTest {
 	@Test
 	public void testSalt() {
 		IUserBasicInfo userBasicInfo = signInMocked.addSaltToMockData();
-		assertEquals(userBasicInfo.getEmail(),"devanshu1@gmail.com");
-		assertNotEquals(userBasicInfo.getPassword(),"123456789");
-		assertEquals(userBasicInfo.getPassword(),"123456789-LMS");
+		assertEquals(userBasicInfo.getEmail(), "devanshu1@gmail.com");
+		assertNotEquals(userBasicInfo.getPassword(), "123456789");
+		assertEquals(userBasicInfo.getPassword(), "123456789-LMS");
 	}
-	
+
+	@Test
+	public void testAdmin() {
+		mapList = signInMocked.getAdminMockData();
+		for (int i = 0; i < mapList.size(); i++) {
+			if (mapList.containsKey("admin-data")) {
+				arrayList = (ArrayList) mapList.get("admin-data");
+				userBasicInfo = (UserBasicInfo) arrayList.get(0);
+				assertEquals("admin", userBasicInfo.getPassword());
+				assertEquals("admin", userBasicInfo.getEmail());
+			}
+		}
+	}
+
+	@Test
+	public void testSignInValidation() {
+		UserBasicInfo userBasicInfo = signInMocked.getDataForValidation();
+		try {
+			ValidateUserForms.instance().setErrorStringToHTML();
+			ValidateUserForms.instance().setValidationRules();
+			arralistVal = ValidateUserForms.instance().signInUserData(userBasicInfo);
+			assertTrue("SignIn validation successfull", true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -2,12 +2,16 @@ package com.library.search;
 
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.library.localStorage.CoverImageLoader;
 import com.library.signOut.ISignOutObserver;
 import com.library.signOut.SignOutController;
 
@@ -18,6 +22,7 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 	private LinkedList<HttpSession> sessions = new LinkedList<>();
 	@Inject
 	private ISearchResultCoverImgProxy coverImageProxy;
+	private static final Logger logger = LogManager.getLogger(CoverImageLoader.class);
 	
 	public DBSearchController() {
 		SignOutController.instance().registerAsSignOutObserver(this);
@@ -42,10 +47,12 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 		boolean isNewSearchTerms = false;
 		
 		if(searchIsInProgress) {
+			logger.log(Level.INFO, "Searchis in progress for the session with the ID " + httpSession.getId());
 			searchRAndR = sessionToSearchRAndR.get(httpSession);
 			ISearchRequest request = searchRAndR.searchRequest;
 			isNewSearchTerms = searchRAndR.searchRequest.isNewSearchTerms(currentRequest);
 			if(isNewSearchTerms) {
+				logger.log(Level.INFO, "New searchterms for the session with the ID " + httpSession.getId());
 				clearSearch(httpSession);
 				SearchTermsAndPage prevTermsAndPage = request.getTermsAndPage();
 				String newSearchTerms = currentRequest.getTermsAndPage().getSearchTerms();
@@ -57,6 +64,7 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 				request.getTermsAndPage().setRequestedResultsPageNumber(pageNumber);
 			}
 		} else {
+			logger.log(Level.INFO, "Search state is initiated for the session with the ID " + httpSession.getId());
 			sessions.add(httpSession);
 			searchRAndR = executeSearchInDb(currentRequest, httpSession);
 		}
@@ -87,6 +95,7 @@ public class DBSearchController implements IDBSearchController, ISignOutObserver
 		if(sessionToSearchRAndR.containsKey(httpSession)) {
 			coverImageProxy.deleteCoverImagesForSearchResults(httpSession);
 			sessionToSearchRAndR.remove(httpSession);
+			logger.log(Level.INFO, "Search state is deleted for the session with the ID " + httpSession.getId());
 		return true;
 	}
 	return false;

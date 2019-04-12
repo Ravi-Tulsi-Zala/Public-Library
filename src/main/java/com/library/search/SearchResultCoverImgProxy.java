@@ -8,12 +8,18 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.library.businessModels.LibraryItem;
+import com.library.localStorage.CoverImageLoader;
 import com.library.localStorage.ICoverImageLoader;
 
 public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 	
-	private static final String SEPARATOR = File.separator;
+	private static final String SEP = File.separator;
+	private static final Logger logger = LogManager.getLogger(CoverImageLoader.class);
 	
 	@Inject
 	private ICoverImageLoader imageLoader;
@@ -22,7 +28,7 @@ public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 	
 	@Override
 	public void loadCoverImages(SearchResults resultsForRequestedPage, String requestedPageNumber, HttpSession httpSession) {
-		String sessionResultsPath = "searchResults" + SEPARATOR + httpSession.getId() + SEPARATOR;
+		String sessionResultsPath = "searchResults" + SEP + httpSession.getId() + SEP;
 		String pathToRequestedPageNumberImagesDir = sessionResultsPath + requestedPageNumber;
 
 		LinkedList<String> resultPagesForSession = sessionToListOfRequestedPages.get(httpSession);
@@ -37,7 +43,9 @@ public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 			}
 		}
 		resultPagesForSession.add(requestedPageNumber);
-		
+		String message = "Loading cover images for search results page number " + resultsForRequestedPage + 
+																			" by user with session ID" + httpSession.getId();
+		logger.log(Level.INFO, message);
 		List<LibraryItem> items = resultsForRequestedPage.getAllFoundItems();
 		for(LibraryItem item : items) {
 			String imageUrl = imageLoader.loadCoverImageByItemIdToDisk(item.getItemID(), pathToRequestedPageNumberImagesDir);
@@ -47,7 +55,8 @@ public class SearchResultCoverImgProxy implements ISearchResultCoverImgProxy {
 
 	@Override
 	public void deleteCoverImagesForSearchResults(HttpSession httpSession) {
-		String sessionResultsDir = "searchResults" + SEPARATOR + httpSession.getId() + SEPARATOR;
+		logger.log(Level.INFO, "Deleting cover images loaded for session ID " + httpSession.getId());
+		String sessionResultsDir = "searchResults" + SEP + httpSession.getId() + SEP;
 		sessionToListOfRequestedPages.remove(httpSession);
 		imageLoader.deleteDynamicContent(sessionResultsDir);	
 	}

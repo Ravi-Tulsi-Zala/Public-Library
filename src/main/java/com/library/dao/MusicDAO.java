@@ -158,7 +158,7 @@ public class MusicDAO implements IMusicDAO {
 	private String prepareSearchQuery(MusicSearch requestDetails, String searchTerms) {
 
 		if (0 == searchTerms.length()) {
-			logger.log(Level.ALL, "No search terms are supplied");
+			logger.log(Level.ERROR, "No search terms are supplied");
 			return null;
 		}
 
@@ -202,7 +202,7 @@ public class MusicDAO implements IMusicDAO {
 			musics.addAll(tempMusics);
 			return musics;
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet :"+query, e);
+			logger.log(Level.ERROR, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet :"+query, e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}

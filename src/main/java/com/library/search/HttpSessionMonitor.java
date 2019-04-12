@@ -27,6 +27,7 @@ public class HttpSessionMonitor implements Runnable {
 			while(true) {
 				Thread.sleep(SLEEP_INTERVAL_MILLISECONDS);
 				long currentTime = System.currentTimeMillis();
+				int numBeforeCleanup = sessions.size();
 				while(!sessions.isEmpty()) {
 					HttpSession session = sessions.getFirst();
 					if(currentTime - session.getLastAccessedTime() >  ACCESS_INTERVAL_MILLISECONDS) {
@@ -34,15 +35,18 @@ public class HttpSessionMonitor implements Runnable {
 						session.invalidate();
 						dbSearchController.clearSearch(session);
 					} else {
+						String message = "Number of actively searching users is " + sessions.size() + 
+								". Number of removed inactive users is " + (numBeforeCleanup - sessions.size());
+						logger.log(Level.INFO, message);
 						break;
 					}
 				}
 			}
 			
 		} catch (InterruptedException e) {
-			logger.log(Level.ALL,"Some thread has interrupted the current HttpSessionMonitors thread.",e);
+			logger.log(Level.FATAL,"Some thread has interrupted the current HttpSessionMonitors thread.",e);
 		} catch (IllegalArgumentException e) {
-			logger.log(Level.ALL,"Negative value of milliseconds sleep interval is supplied.",e);
+			logger.log(Level.FATAL,"Negative value of milliseconds sleep interval is supplied.",e);
 		}
 	}
 }

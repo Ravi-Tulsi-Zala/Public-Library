@@ -20,6 +20,7 @@ public class BookSearchTest {
 	public void searchReturnsList() {
 		assertTrue(bs.search("") instanceof List<?>);
 	}
+
 	@Test
 	public void allDataMembersDefaultValuesAreTrue() {
 		assertTrue(bs.isSearchBookAuthor());
@@ -30,6 +31,7 @@ public class BookSearchTest {
 		assertTrue(bs.isSearchBookTitle());
 		assertTrue(bs.isSearchInBooks());
 	}
+
 	@Test
 	public void canSetAndGetAllDataMembers() {
 		bs.setSearchBookAuthor(false);
@@ -45,6 +47,6 @@ public class BookSearchTest {
 		bs.setSearchBookTitle(false);
 		assertFalse(bs.isSearchBookTitle());
 		bs.setSearchInBooks(false);
-		assertFalse(bs.isSearchInBooks()); 
+		assertFalse(bs.isSearchInBooks());
 	}
 }

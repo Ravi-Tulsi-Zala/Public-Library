@@ -40,9 +40,8 @@ public class CoverDAO implements ICoverDAO {
 				return coverMapper.setCover(resultSet);
 			}
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax of :" + query, e);
+			logger.log(Level.ERROR, "Check the SQL syntax of :" + query, e);
 		} finally {
-
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return null;
@@ -50,7 +49,7 @@ public class CoverDAO implements ICoverDAO {
 
 	@Override
 	public boolean createCoverByID(int itemID, Blob coverBlob, String fileExtension) {
-		
+
 		dbConnection = databaseConnection.getConnection();
 		query = CoverDAOEnums.QUERY_INSERT_COVER_BY_ITEM_ID.getQuery();
 		try {
@@ -62,14 +61,13 @@ public class CoverDAO implements ICoverDAO {
 
 			return true;
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 
-		} catch(Exception e)
-		{
-			logger.log(Level.ALL, "Cover can not be created for itemID ["+itemID+"] ", e);
+			logger.log(Level.ALL, "Check the SQL syntax of :" + query, e);
 
-		}
-		finally {
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Cover can not be created for itemID [" + itemID + "] ", e);
+
+		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return false;
@@ -87,7 +85,10 @@ public class CoverDAO implements ICoverDAO {
 
 			return true;
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Check the SQL syntax of:" + query, e);
+
+			logger.log(Level.ERROR, "Check the SQL syntax of:" + query, e);
+		} catch (Exception e) {
+			logger.log(Level.ALL, "Cover can not be deleted for itemID [" + itemID + "] ", e);
 
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);

@@ -73,23 +73,19 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	private IDBSearchController dbSearchController;
 	private SearchFactory searchFactory = null;
 	private static String securityQuestionValue;
-
 	private AddItemMessagesEnum addItemMessages;
 	private String displayMessage, redirectPage;
 	private ILibraryFactory factory = null;
 	private LibraryFactorySingleton libraryInstance = null;
-
 	private String redirectToWelcome = Messages.WelcomePageRedirect.getMessage();
 	private String redirectToSignIn = Messages.SignInPageRedirect.getMessage();
 	private String redirectToForgotPwd = Messages.ForgotPassPageRedirect.getMessage();
 	private String redirectToErrorPage = Messages.ErrorPageRedirect.getMessage();
-
 	private String gotoSignInPage = Messages.SignInForm.getMessage();
 	private String gotoSignUpPage = Messages.SignUpForm.getMessage();
 	private String gotoWelcomePage = Messages.Welcome.getMessage();
 	private String gotoForgotPwdPage = Messages.ForgotPassword.getMessage();
 	private String gotoErrorPwdPage = Messages.ErrorPage.getMessage();
-	
 	private String gotoBrowsePageCategoriesPage = Messages.BrowsePageCategory.getMessage();
 	private String gotoBrowsePageItemsPage = Messages.BrowsePageItems.getMessage();
 	private String gotoItemDetailsPage = Messages.ItemDetail.getMessage();
@@ -101,8 +97,14 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		searchFactory = SearchFactory.instance();
 	}
 
+	@GetMapping("/")
+	public String getIndexPage() {
+		return redirectToWelcome;
+	}
+
 	@PostMapping("/signUp")
-	public String processSignUpForm(ModelMap model, User user, HttpSession httpSession, RedirectAttributes redirectAttr) {
+	public String processSignUpForm(ModelMap model, User user, HttpSession httpSession,
+			RedirectAttributes redirectAttr) {
 		Logger logger = LogManager.getLogger(SignUpController.class);
 		try {
 			ISignUpController signUpCreate = factory.signUp(user, httpSession);
@@ -110,7 +112,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			for (int i = 0; i < list.size(); i++) {
 				model.addAttribute(list.get(i).getKey(), list.get(i).getValue());
 			}
-			// model object has by default two values; anytime it gets more than that
+			// model object has by default two indexes; anytime it gets more than that
 			// signifies a validation violation
 			if (model.size() > 2) {
 				return gotoSignUpPage;
@@ -156,14 +158,6 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		return redirectToWelcome;
 	}
 
-	@GetMapping("/basicSearch")
-	public String getBasicSearchPage(ModelMap model, HttpSession httpSession) {
-		dbSearchController.clearSearch(httpSession);
-		model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
-		addUserEmail(model, httpSession);
-		return "BasicSearchPage";
-	}
-
 	@PostMapping("/basicSearch")
 	public String executeBasicSearch(HttpSession httpSession, ModelMap model, SearchTermsAndPage termsAndPage,
 			BookSearch bookSearch, MusicSearch musicSearch, MovieSearch moviesSearch) {
@@ -189,18 +183,14 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		}
 	}
 
-	@GetMapping("/")
-	public String getIndexPage() {
-		return redirectToWelcome;
-	}
-
 	@GetMapping("/signIn")
 	public String getSignInForm(User user) {
 		return gotoSignInPage;
 	}
 
 	@PostMapping("/signIn")
-	public String processSignInForm(HttpSession httpSession, ModelMap model, User user, RedirectAttributes redirectAttr) {
+	public String processSignInForm(HttpSession httpSession, ModelMap model, User user,
+			RedirectAttributes redirectAttr) {
 		Logger logger = LogManager.getLogger(SignInController.class);
 		try {
 			ISignInController signIn = factory.signIn(user, httpSession);
@@ -215,13 +205,12 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			}
 			return signIn.checkUserCredential();
 		} catch (Exception e) {
-			logger.log(Level.ALL,Messages.SignInErrorStatement.getMessage(), e);
+			logger.log(Level.ALL, Messages.SignInErrorStatement.getMessage(), e);
 			redirectAttr.addAttribute("error", e);
-			return redirectToErrorPage; 
+			return redirectToErrorPage;
 		}
 	}
-	
-	
+
 	@GetMapping("/addBook")
 	public String mappingsForAddItem(ModelMap model) {
 
@@ -233,9 +222,9 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		IAddMovieController iAddMovieController = factory.makeAddMovieController();
 		IAddMusicController iAddMusicController = factory.makeAddMusicController();
 		bookCategories = iAddBookController.getBookCategories();
-		movieCategories= iAddMovieController.getMovieCategories();
+		movieCategories = iAddMovieController.getMovieCategories();
 		musicCategories = iAddMusicController.getMusicCategories();
-		
+
 		model.addAttribute("book", new Book());
 		model.addAttribute("movie", new Movie());
 		model.addAttribute("music", new Music());
@@ -243,25 +232,24 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("coverMovie", new Cover());
 		model.addAttribute("coverMusic", new Cover());
 		model.addAttribute("sessionClient", sessionClient);
-		model.addAttribute("bookCategories",bookCategories);
-		model.addAttribute("movieCategories",movieCategories);
-		model.addAttribute("musicCategories",musicCategories);
+		model.addAttribute("bookCategories", bookCategories);
+		model.addAttribute("movieCategories", movieCategories);
+		model.addAttribute("musicCategories", musicCategories);
 
 		return "AddItemPage";
 	}
-	
+
 	@GetMapping("/addMovie")
 	public String mappingsForAddMovie(ModelMap model) {
-	
+
 		return mappingsForAddItem(model);
 	}
-	
+
 	@GetMapping("/addMusic")
 	public String mappingsForAddMusic(ModelMap model) {
 		return mappingsForAddItem(model);
 	}
-	
-	
+
 	@PostMapping("/addBook")
 	public String addBookToDatabase(ModelMap model, Book book, Cover coverBook) {
 
@@ -312,7 +300,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@PostMapping("/loan")
 	public String returnItems(ModelMap model, Select select) {
 
-		String selections = select.getSelections(); 
+		String selections = select.getSelections();
 		JsonStringParser jsonStringParser = new JsonStringParser();
 		List<UserItem> userItems = new ArrayList<UserItem>();
 		userItems = jsonStringParser.parseSelections(selections);
@@ -323,27 +311,24 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		model.addAttribute("items", items);
 		return "LoanManagement";
 	}
-	
+
 	@GetMapping("/welcome")
 	public String welcomeBody(ModelMap model, LibraryItem libraryItem, HttpServletRequest request,
 			HttpSession httpSession, RedirectAttributes redirectAttr) {
+		List<Book> book, favBooks;
+		List<Movie> movie, favMovies;
+		List<Music> music, favMusic;
 		Logger logger = LogManager.getLogger(WelcomePageController.class);
 		dbSearchController.clearSearch(httpSession);
 		String loggingStatus = UserSessionDetail.getClientActiveStatus();
 		String sessionClient = UserSessionDetail.getAvailableUserID();
 		model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
 		IWelcomeController welcomeCtrl = factory.welcomePage();
-		java.util.Enumeration<String> reqEnum = request.getParameterNames();
-		while (reqEnum.hasMoreElements()) {
-			String s = reqEnum.nextElement();
-			if (s.equals("LoggedOut") && request.getParameter(s).equals("true")) {
-				loggingStatus = Messages.RegisterLogin.getMessage();
-				sessionClient = "";
-			}
+		
+		if (welcomeCtrl.getValFromRequestParam(request)) {
+			loggingStatus = Messages.RegisterLogin.getMessage();
+			sessionClient = "";
 		}
-		List<Book> book, favBooks;
-		List<Movie> movie, favMovies;
-		List<Music> music, favMusic;
 		try {
 			book = welcomeCtrl.getBookItems();
 			movie = welcomeCtrl.getMovieItems();
@@ -363,6 +348,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			DatabaseConnection databaseConnection = new DatabaseConnection();
 			databaseConnection.closeConnection();
 		}
+		
 		model.addAttribute("book", book);
 		model.addAttribute("favBooks", favBooks);
 		model.addAttribute("movie", movie);
@@ -487,8 +473,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		String emailAddress = user.getUserEmail(httpSession);
 		BookItem bookItem = new BookItem(displayDetailed, emailAddress);
 		Boolean isItemBooked = bookItem.bookItem(status);
-		if(!isItemBooked)
-		{
+		if (!isItemBooked) {
 			return redirectToErrorPage;
 		}
 		String itemType = displayDetailed.getItemType();

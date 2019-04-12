@@ -6,9 +6,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.library.browsePage.BrowseMovies;
 import com.library.businessModels.Movie;
+import com.library.dao.DAOFactory;
+import com.library.dao.IDAOFactory;
 import com.library.dao.IMovieDAO;
-import com.library.daoFactory.DAOFactory;
-import com.library.daoFactory.IDAOFactory;
 import com.library.routes.ILibraryFactory;
 import com.library.routes.LibraryFactorySingleton;
 

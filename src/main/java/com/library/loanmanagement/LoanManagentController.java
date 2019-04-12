@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.library.businessModels.UserItem;
+import com.library.dao.DAOFactory;
+import com.library.dao.IDAOFactory;
 import com.library.dao.IUserItemDAO;
-import com.library.daoFactory.DAOFactory;
-import com.library.daoFactory.IDAOFactory;
 
 public class LoanManagentController implements ILoanManagementController {
 

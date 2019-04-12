@@ -108,16 +108,6 @@ public class LibraryControllerTest {
     }
     
     @Test
-    public void anyUserBrowseBasicSearchPageGET() throws Exception {
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get("/basicSearch");
-        
-		this.mockMvc.perform(request)
-			.andExpect(status().isOk())
-			.andExpect(view().name("BasicSearchPage"))
-			;
-    }
-    
-    @Test
     public void anyUserBrowseBasicSearchPagePOST() throws Exception {       
     	SearchResults searchResult = SearchFactory.instance().makeSearchResults();
     	

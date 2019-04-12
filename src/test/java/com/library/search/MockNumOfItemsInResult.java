@@ -10,12 +10,15 @@ public class MockNumOfItemsInResult {
 		this.numOfMovies = numOfMovies;
 		this.numOfMusic = numOfMusic;
 	}
+
 	public int getNumOfBooks() {
 		return numOfBooks;
 	}
+
 	public int getNumOfMovies() {
 		return numOfMovies;
 	}
+
 	public int getNumOfMusic() {
 		return numOfMusic;
 	}

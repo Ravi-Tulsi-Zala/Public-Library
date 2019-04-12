@@ -3,18 +3,21 @@ package com.library.welcomePage;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import com.library.businessModelSetter.DisplaySetter;
 import com.library.businessModels.Book;
 import com.library.businessModels.Display;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
+import com.library.dao.DAOFactory;
 import com.library.dao.ILibraryItemDAO;
-import com.library.daoFactory.DAOFactory;
+import com.library.messages.Messages;
 
 public class WelcomePageController implements IWelcomeController {
 	private ILibraryItemDAO libraryFactory;
-	private Map.Entry<String, List<Book>> entryMap = null;
 
 	enum typeEntity {
 		latestBooks, latestMovies, latestMusic, favouriteBooks, favouriteMovies, favouriteMusic
@@ -87,6 +90,18 @@ public class WelcomePageController implements IWelcomeController {
 			((LibraryItem) entity.get(i)).setCoverImageUrl(displayList.get(i).getImage());
 		}
 		return entity;
+	}
+
+	public boolean getValFromRequestParam(HttpServletRequest request) {
+
+		java.util.Enumeration<String> reqEnum = request.getParameterNames();
+		while (reqEnum.hasMoreElements()) {
+			String s = reqEnum.nextElement();
+			if (s.equals("LoggedOut") && request.getParameter(s).equals("true")) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

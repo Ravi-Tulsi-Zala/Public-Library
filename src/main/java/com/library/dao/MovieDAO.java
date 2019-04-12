@@ -168,7 +168,7 @@ public class MovieDAO implements IMovieDAO {
 
 		this.connection = databaseConnection.getConnection();
 		if (0 == searchTerms.length()) {
-			logger.log(Level.ALL, "No search terms are supplied");
+			logger.log(Level.ERROR, "No search terms are supplied");
 			return null;
 		}
 
@@ -185,6 +185,7 @@ public class MovieDAO implements IMovieDAO {
 				query += "Description like \"%" + term + "%\" or ";
 			}
 		}
+		
 		query = query.substring(0, query.length() - 4);
 		return query;
 	}
@@ -211,10 +212,9 @@ public class MovieDAO implements IMovieDAO {
 			movies.addAll(tempMovie);
 			return movies;
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
+			logger.log(Level.ERROR, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
 		}
-		finally
-		{
+		finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
 		return movies;

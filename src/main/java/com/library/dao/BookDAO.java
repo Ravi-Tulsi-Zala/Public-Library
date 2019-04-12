@@ -112,7 +112,7 @@ public class BookDAO implements IBookDAO {
 	private String prepareSearchQuery(BookSearch requestDetails, String searchTerms) {
 
 		if (0 == searchTerms.length()) {
-			logger.log(Level.ALL, "No search terms are supplied");
+			logger.log(Level.ERROR, "No search terms are supplied");
 			return null;
 		}
 
@@ -164,7 +164,7 @@ public class BookDAO implements IBookDAO {
 			books.addAll(tempBooks);
 			return books;
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
+			logger.log(Level.ERROR, "Failed to prepare SQL statement OR execute a query OR parse a query resultSet", e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}
