@@ -58,10 +58,6 @@
 			margin-bottom: 1%;
 		}
 		
-		.coverImg {
-			overflow: auto;
-			width: 30%;
-		}
 		
 		.btn {
 			background-color: #008CBA;
@@ -93,7 +89,7 @@
 			font-weight: bolder;
 		}
 		
-		img {
+		.coverImage {
 			border: 5px solid #fff;
 			border-radius: 5px;
 			padding: 7px;
@@ -104,18 +100,21 @@
 		</style>
 </head>
 <body>
-	<nav class="navbar navbar-light bg-light" style="margin-bottom: 2%;">
+	<nav class="navbar navbar-dark bg-dark">
+		<a class="navbar-brand" href="/welcome">
+    		<img src="/images/ApplicationLogo.png" alt="Logo" style="width:70px;height:70px">
+ 		 </a>
   		<span class="navbar-brand mb-0 h1"><h2 style="text-align:center">Public Library</h2></span>
   		<div style="float: right">
-		<p style="float: left;color:gray;" th:text="${sessionClient}"></p>
-	</div>
+			<p style="float:left;color:white;" th:text="${sessionClient}"></p>
+		</div>
 	</nav>
 	
-	<h4 style="margin-bottom: 2%;">Add Item</h4>
+	<h2 style="margin: 2%;">Add Item</h2>
 	
-	<div class="formElements">
+	<div class="form-inline formElements">
 		<label>Content Type</label> <select id="contentType"
-			onchange="setForm(this.value)">
+			onchange="setForm(this.value)" class="custom-select my-1 mr-sm-2 col-1">
 			<option value="Book">Book</option>
 			<option value="Movie">Movie</option>
 			<option value="Music">Music</option>
@@ -125,40 +124,37 @@
 		<form method="post" name="bookForm" th:action="@{/addBook}"
 			enctype="multipart/form-data">
 			
-			<div class="formElements">
-				<label>Category</label> <select id="bookCategory"
-					th:field="${book.category}">
-					<option th:value="'Mystery'" th:text="Mystery">Mystery</option>
-					<option th:value="'Romance'" th:text="Romance">Romance</option>
-					<option th:value="'History'" th:text="History">History</option>
-					<option th:value="'Sci-Fi'" th:text="Sci-Fi">Sci-Fi</option>
-					<option th:value="'Fantasy'" th:text="Fantasy">Fantasy</option>
+			<div class="form-inline formElements">
+				<label>Category</label> 
+				<select id="bookCategory" th:field="${book.category}" class="custom-select my-1 mr-sm-2 col-1">
+					<option th:each="bookCategory:${bookCategories}"
+							th:value="${bookCategory}"
+							th:text="${bookCategory}"></option>
 				</select>
 			</div>
-			<div class="formElements">
-				<label >Title</label> <input type="text" th:field="${book.title}">
+			<div class="form-inline	formElements">
+				<label >Title</label> <input type="text" class="form-control col-3" th:field="${book.title}">
 			</div>
-			<div class="formElements">
-				<label>Author</label><input type="text" th:field="${book.author}">
+			<div class="form-inline	formElements">
+				<label>Author</label><input type="text" class="form-control col-3" th:field="${book.author}">
 			</div>
-			<div class="formElements">
-				<label>ISBN</label> <input type="number" th:field="${book.isbn}">
+			<div class="form-inline	formElements">
+				<label>ISBN</label> <input type="number" class="form-control col-3" th:field="${book.isbn}">
 			</div>
-			<div class="formElements">
-				<label>Publisher</label> <input type="text"
-					th:field="${book.publisher}">
+			<div class="form-inline	formElements">
+				<label>Publisher</label> <input type="text" class="form-control col-3" th:field="${book.publisher}">
 			</div>
-			<div class="formElements">
+			<div class="form-inline	formElements">
 				<label>Description</label>
-				<textarea th:field="${book.description}"></textarea>
+				<textarea class="form-control col-3" th:field="${book.description}"></textarea>
 			</div>
-			<div class="coverImg">
-				<label>Cover Image:</label> <input type="file" name="fileBook"
+			<div class="form-inline	formElements">
+				<label>Cover Image:</label> <input class="form-control col-3" type="file" name="fileBook"
 					th:field="${coverBook.coverImage}" onchange="loadFileBook(event)" />
-				<img id="outputBookCover" />
+				<img id="outputBookCover" class= "coverImage" />
 			</div>
 
-			<span><input class="btn" type="submit" value="Save Item"></span>
+			<span><input class="btn" type="submit"  value="Save Item"></span>
 			<span><input class="btn" type="reset" value="Cancel" onclick="window.location='welcome'"></span>
 			
 		</form>
@@ -167,31 +163,30 @@
 	<div id="Movie" style="display: none">
 		<form method="post" name="movieForm" th:action="@{/addMovie}"
 			enctype="multipart/form-data">
-			<div class="formElements">
+			
+			<div class="form-inline formElements">
 				<label>Category</label> <select id="movieCategory"
-					th:field="${movie.category}">
-					<option value="Action">Action</option>
-					<option value="Thiller">Thriller</option>
-					<option value="Comedy">Comedy</option>
-					<option value="Drama">Drama</option>
-					<option value="Romance">Romance</option>
+					th:field="${movie.category}" class="custom-select my-1 mr-sm-2 col-1">
+				
+					<option th:each="movieCategory:${movieCategories}"
+							th:value="${movieCategory}"
+							th:text="${movieCategory}"></option>
 				</select>
 			</div>
-			<div class="formElements">
-				<label>Title</label> <input type="text" th:field="${movie.title}">
+			<div class="form-inline formElements">
+				<label>Title</label> <input type="text" class="form-control col-3" th:field="${movie.title}">
 			</div>
-			<div class="formElements">
-				<label>Director</label> <input type="text"
-					th:field="${movie.director}">
+			<div class="form-inline formElements">
+				<label>Director</label> <input type="text" class="form-control col-3" th:field="${movie.director}">
 			</div>
-			<div class="formElements">
+			<div class="form-inline formElements">
 				<label>Description</label>
-				<textarea th:field="${movie.description}"></textarea>
+				<textarea  class="form-control col-3" th:field="${movie.description}"></textarea>
 			</div>
-			<div class="coverImg">
+			<div class="form-inline formElements">
 				<label>Cover Image:</label> <input type="file" name="fileMovie"
-					th:field="${coverMovie.coverImage}" onchange="loadFileMovie(event)" />
-				<img id="outputMovieCover" />
+					th:field="${coverMovie.coverImage}" class="form-control col-3" onchange="loadFileMovie(event)" />
+				<img id="outputMovieCover" class="coverImage" />
 			</div>
 			<span><input class="btn" type="submit" value="Save Item"></span>
 			<span><input class="btn" type="reset" value="Cancel" onclick="window.location='welcome'"></span>
@@ -201,36 +196,35 @@
 	<div id="Music" style="display: none">
 		<form method="post" name="musicForm" th:action="@{/addMusic}"
 			enctype="multipart/form-data">
-			<div class="formElements">
+			<div class="form-inline formElements">
 				<label>Category</label> <select id="musicCategory"
-					th:field="${music.category}">
-					<option value="Rock">Rock</option>
-					<option value="Soul">Soul</option>
-					<option value="Blues">Blues</option>
-					<option value="Country">Country</option>
+					th:field="${music.category}" class="custom-select my-1 mr-sm-2 col-1">
+
+					<option th:each="musicCategory:${musicCategories}"
+							th:value="${musicCategory}"
+							th:text="${musicCategory}"></option>
 				</select>
 			</div>
-			<div class="formElements">
-				<label>Title</label> <input type="text" th:field="${music.title}">
+			<div class="form-inline formElements">
+				<label>Title</label> <input type="text" class="form-control col-3" th:field="${music.title}">
 			</div>
 	
-			<div class="formElements">
-				<label>Artist</label> <input type="text" th:field="${music.artist}">
+			<div class="form-inline formElements">
+				<label>Artist</label> <input type="text" class="form-control col-3" th:field="${music.artist}">
 			</div>
-			<div class="formElements">
-				<label>Record Label</label> <input type="text"
-					th:field="${music.recordLabel}">
+			<div class="form-inline formElements">
+				<label>Record Label</label> <input type="text" class="form-control col-3" th:field="${music.recordLabel}">
 			</div>
-			<div class="coverImg">
-				<label>Cover Image:</label> <input type="file" name="fileMusic"
+			<div class="form-inline formElements">
+				<label>Cover Image:</label> <input type="file" class="form-control col-3" name="fileMusic"
 					th:field="${coverMusic.coverImage}" onchange="loadFileMusic(event)" />
-				<img id="outputMusicCover" />
+				<img id="outputMusicCover" class="coverImage" />
 			</div>
 			<span><input class="btn" type="submit" value="Save Item"></span>
 			<span><input class="btn" type="reset" value="Cancel" onclick="window.location='welcome'"></span>
 		</form>
 	</div>
-	<div class="formElements">
+	<div class="form-inline formElements">
 			<p th:text="${message}"></p>
 	</div>
 	

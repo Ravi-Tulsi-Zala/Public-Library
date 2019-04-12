@@ -28,7 +28,7 @@ public class BrowseDisplayFactoryTest {
 		IBrowseDisplayObjects musicDisplay = factory.makeMusicDisplay();
 		assertEquals("Music", musicDisplay.getItemType());
 	}
-	
+
 	@Test
 	public void makeMovieDisplayTest()
 	{

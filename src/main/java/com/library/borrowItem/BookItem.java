@@ -1,18 +1,15 @@
 package com.library.borrowItem;
 
-import com.library.DAOFactory.DAOFactory;
-import com.library.DAOFactory.IDAOFactory;
-import com.library.IDAO.IUserItemDAO;
 import com.library.businessModels.DisplayDetailed;
 import com.library.businessModels.UserItem;
+import com.library.dao.DAOFactory;
+import com.library.dao.IDAOFactory;
+import com.library.dao.IUserItemDAO;
 
 public class BookItem {
 	
-	static final String available = "Borrow";
-	static final String reserve = "Reserve";
 	private UserItem userItem;
 	private IUserItemDAO userItemDAO;
-	private int itemID;
 	
 	public BookItem(DisplayDetailed displayDetailed,String userEmail)
 	{
@@ -20,7 +17,7 @@ public class BookItem {
 		userItem.setTitle(displayDetailed.getTitle());
 		userItem.setCategory(displayDetailed.getItemType());
 		userItem.setEmail(userEmail);
-		itemID = displayDetailed.getItemID();
+		userItem.setItemId(displayDetailed.getItemID());
 		IDAOFactory factory = new DAOFactory();
 		userItemDAO = factory.makeUserItemDAO();
 	}
@@ -38,18 +35,31 @@ public class BookItem {
 	public Boolean bookItem(String status)
 	{
 		Boolean isItemBooked = false;
-		if(status.equals(available))
+		EmailSender emailSender = new EmailSender(userItem);
+		if(status.equals(StatusEnum.AVAILABLE.getStatus()) || status.equals(StatusEnum.RESERVE.getStatus()))
 		{
-			isItemBooked = borrowBook();
+			if(status.equals(StatusEnum.AVAILABLE.getStatus()))
+			{
+				isItemBooked = borrowBook();
+				emailSender.sendBookingEmail();
+				DescreaseAvailability decreaser = new DescreaseAvailability(userItem.getCategory());
+				decreaser.decreaseAvailability(userItem.getItemId());
+			}
+			else if(status.equals(StatusEnum.RESERVE.getStatus()))
+			{
+				isItemBooked = holdItem();
+				emailSender.sendReserveEmail();
+			}
 		}
-		else if(status.equals(reserve))
+		else
 		{
-			isItemBooked = holdItem();
+			isItemBooked = true;
 		}
+		
 		if(isItemBooked)
 		{
-			ChangeItemCount countChanger = new ChangeItemCount(userItem.getCategory(), itemID);
-			countChanger.changeCount();
+			ChangeItemCount countChanger = new ChangeItemCount(userItem.getCategory(), userItem.getItemId());
+			countChanger.changeCount();	
 		}
 		
 		return isItemBooked;

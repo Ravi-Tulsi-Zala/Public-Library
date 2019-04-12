@@ -1,22 +1,21 @@
 package com.library.welcomePage;
 
 import java.sql.SQLException;
-import java.util.AbstractMap;
 import java.util.List;
-import java.util.Map;
 
-import com.library.BussinessModelSetter.DisplaySetter;
-import com.library.DAOFactory.DAOFactory;
-import com.library.IDAO.ILibraryItemDAO;
+import javax.servlet.http.HttpServletRequest;
+
+import com.library.businessModelSetter.DisplaySetter;
 import com.library.businessModels.Book;
 import com.library.businessModels.Display;
 import com.library.businessModels.LibraryItem;
 import com.library.businessModels.Movie;
 import com.library.businessModels.Music;
+import com.library.dao.DAOFactory;
+import com.library.dao.ILibraryItemDAO;
 
 public class WelcomePageController implements IWelcomeController {
 	private ILibraryItemDAO libraryFactory;
-	private Map.Entry<String, List<Book>> entryMap = null;
 
 	enum typeEntity {
 		latestBooks, latestMovies, latestMusic, favouriteBooks, favouriteMovies, favouriteMusic
@@ -28,7 +27,7 @@ public class WelcomePageController implements IWelcomeController {
 	}
 
 	public boolean isAdminAvailable() {
-		return AdminPage.getAdminAvailable();
+		return UserSessionDetail.getAdminAvailable();
 	}
 
 	public List<Book> getBookItems() throws SQLException {
@@ -70,11 +69,11 @@ public class WelcomePageController implements IWelcomeController {
 	@Override
 	public List<Music> getFavouriteMusic() throws SQLException {
 		List<Music> favMusic = null;
-		favMusic= libraryFactory.getFavouriteMusic();
+		favMusic = libraryFactory.getFavouriteMusic();
 		favMusic = mapImagesIntoList(favMusic, typeEntity.favouriteMusic);
 		return favMusic;
 	}
- 
+
 	private List mapImagesIntoList(List entity, typeEntity entityValue) {
 		DisplaySetter displaySetter = new DisplaySetter();
 		List<Display> displayList = null;
@@ -89,6 +88,18 @@ public class WelcomePageController implements IWelcomeController {
 			((LibraryItem) entity.get(i)).setCoverImageUrl(displayList.get(i).getImage());
 		}
 		return entity;
+	}
+
+	public boolean getValFromRequestParam(HttpServletRequest request) {
+
+		java.util.Enumeration<String> reqEnum = request.getParameterNames();
+		while (reqEnum.hasMoreElements()) {
+			String s = reqEnum.nextElement();
+			if (s.equals("LoggedOut") && request.getParameter(s).equals("true")) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.library.search;
 
 import java.util.List;
+
 import com.library.businessModels.LibraryItem;
 
 public class BookSearch extends SearchCategory {
@@ -11,12 +12,12 @@ public class BookSearch extends SearchCategory {
 	private boolean searchBookPublisher = true;
 	private boolean searchBookDescription = true;
 	private boolean searchBookISBN = true;
-	
+
 	@Override
 	public List<LibraryItem> search(String searchterms) {
 		return daoFactory.makeBookDAO().getBooksBySearchTerms(this, searchterms);
 	}
-	
+
 	public boolean isSearchInBooks() {
 		return searchInBooks;
 	}

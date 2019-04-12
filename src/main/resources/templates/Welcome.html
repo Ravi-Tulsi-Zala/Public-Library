@@ -2,7 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <html>
 <head>
-<title>Spring MVC Form Handling</title>
+	<title>Public Library Home</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 <style>
 td {
 	padding-bottom: 20px;
@@ -58,7 +63,7 @@ a, a label {
 	}
 </script>
 </head>
-<body style="margin: 0 100px;" action="post">
+<body  action="post">
 	<!-- <div style="float: left;">
 		<p>
 			Search Terms <input id="searchTerms" type="text"
@@ -66,17 +71,25 @@ a, a label {
 		</p>
 	</div> -->
 
+	<nav class="navbar navbar-dark bg-dark">
+		<a class="navbar-brand" href="/welcome">
+    		<img src="/images/ApplicationLogo.png" alt="Logo" style="width:70px;height:70px">
+ 		 </a>
+  		<span class="navbar-brand mb-0 h1"><h2 style="text-align:center">Public Library</h2></span>
+  		<div style="float: right">
+			<p style="float: left;color:white;" th:text="${sessionClient}"></p>
+		</div>
+	</nav>
 	<div>
-		<form onsubmit="return validateSearchForm()" method="post"
-			th:action="@{/basicSearch}" style="float: left; line-height: 3em;">
+		<form onsubmit="return validateSearchForm()" method="post" 
+			th:action="@{/basicSearch}" style="float: left; margin-top:20px; line-height: 3em;">
 			<a href="/advancedSearch"> Search Terms</a> <input id="searchTerms"
 				type="text" th:field="${searchTermsAndPage.searchTerms}"
-				style="width: 100px;" /> <input type="submit">
+				style="width: 300px;" />
 		</form>
 	</div>
 
 	<div style="float: right">
-		<p style="float: left" th:text="${sessionClient}"></p>
 		<a style="float: right; margin: 0 100px" th:if="${loggingStatus}=='Logout'" href="/logOut"><p
 				th:text="${loggingStatus}"></p></a>
 		<a style="float: right; margin: 0 100px" th:if="${loggingStatus}=='Register / Login'" href="/signIn"><p
@@ -85,12 +98,13 @@ a, a label {
 
 	<!-- <span style="float: right; margin-right: 20px; line-height: 3em;"
 		th:text="${userEmail}">Test</span> -->
-	<h1 style="text-align: center;">Public Library</h1>
-	<div style="margin-top: 50px;"></div>
+	
+	<div style="margin-top: 70px;"></div>
 	<div>
 		<table th:if="*{isAdminAval}">
 			<tr>
-				<p>Admin Tools</p>
+			<br>
+				<p style="color:blue;">Admin Tools</p>
 			</tr>
 			<tr>
 				<td><a href="/addBook"><div class="boxed">Add Library
@@ -100,7 +114,7 @@ a, a label {
 			</tr>
 		</table>
 	</div>
-	<span style="color: blue; display: block; width: 100%;">New
+	<span style="color: blue; display: block; width: 100%;"><br>New
 		arrivals</span>
 	<div style="width: 9%; display: inline-block; vertical-align: top;"
 		th:each="books:${book}">

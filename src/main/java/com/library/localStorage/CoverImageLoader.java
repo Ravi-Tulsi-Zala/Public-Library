@@ -12,15 +12,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
 
-import com.library.DAO.CoverDAO;
 import com.library.businessModels.Cover;
+import com.library.dao.DAOFactory;
+import com.library.dao.ICoverDAO;
 
 public class CoverImageLoader implements ICoverImageLoader {
-	private static final String SEPARATOR = File.separator;
+	private static final String SEP = File.separator;
 	private static final String COVER_IMAGE_NOT_AVAILABLE_PATH = 
-			SEPARATOR + "public" + SEPARATOR + "img" + SEPARATOR +"CoverImageNotAvailable.jpg";
+			SEP + "public" + SEP + "img" + SEP +"CoverImageNotAvailable.jpg";
 	private static final String PATH_TO_DYNAMIC_CONTENT_DIR = 
-			System.getProperty("user.dir") + SEPARATOR + "dynamicContent" + SEPARATOR;
+			System.getProperty("user.dir") + SEP + "dynamicContent" + SEP;
 	
 	private static final Logger logger = LogManager.getLogger(CoverImageLoader.class);
 	
@@ -29,7 +30,7 @@ public class CoverImageLoader implements ICoverImageLoader {
 		String pathToDirToSaveInto = PATH_TO_DYNAMIC_CONTENT_DIR + pathToDynamicContentSubDir;
 		String imagePath = null;
 		byte [] bytes;
-		CoverDAO coverDao = new CoverDAO();
+		ICoverDAO coverDao = new DAOFactory().makeCoverDAO();
 		Cover cover = coverDao.getCoverByID(itemId);
 		
 		if(null == cover) {
@@ -41,8 +42,8 @@ public class CoverImageLoader implements ICoverImageLoader {
 			dir.mkdirs();
 		}
 		
-		String imageName = SEPARATOR + itemId + "." + cover.getFileExtension();
-		String imageUrl = SEPARATOR + "dynamicContent" + SEPARATOR + pathToDynamicContentSubDir + imageName;
+		String imageName = SEP + itemId + "." + cover.getFileExtension();
+		String imageUrl = SEP + "dynamicContent" + SEP + pathToDynamicContentSubDir + imageName;
 		imagePath = pathToDirToSaveInto + imageName;
 		File file = new File(imagePath);
 		BufferedOutputStream stream;
@@ -52,13 +53,13 @@ public class CoverImageLoader implements ICoverImageLoader {
 			stream.write(bytes);
 			stream.close();
 		} catch (SQLException e) {
-			logger.log(Level.ALL, "Unable to read bytes from the image BLOB", e);
+			logger.log(Level.ERROR, "Unable to read bytes from the image BLOB for the item with ID " + itemId, e);
 			return COVER_IMAGE_NOT_AVAILABLE_PATH;
 		} catch (FileNotFoundException e) {
-			logger.log(Level.ALL, "Unable to create image file " +  imagePath, e);
+			logger.log(Level.ERROR, "Unable to create image file " +  imagePath, e);
 			return COVER_IMAGE_NOT_AVAILABLE_PATH;
 		} catch (IOException e) {
-			logger.log(Level.ALL, "Unable to write image byte stream to the disk. File  " +  imagePath, e);
+			logger.log(Level.ERROR, "Unable to write image byte stream to the disk. File  " +  imagePath, e);
 			e.printStackTrace();
 			return COVER_IMAGE_NOT_AVAILABLE_PATH;
 		}
@@ -73,9 +74,9 @@ public class CoverImageLoader implements ICoverImageLoader {
 		try {
 			FileUtils.deleteDirectory(new File(dir));
 		} catch (IOException e) {
-			logger.log(Level.ALL, "Deletion of the directory was unsuccessful: " + dir, e);
+			logger.log(Level.ERROR, "Deletion of the directory was unsuccessful: " + dir, e);
 		} catch (IllegalArgumentException e){
-			logger.log(Level.ALL, "Was not able to delete a directory. Directory does not exist or is not a directory: " + dir , e);
+			logger.log(Level.ERROR, "Was not able to delete a directory. Directory does not exist or is not a directory: " + dir , e);
 		}	
 	}
 }

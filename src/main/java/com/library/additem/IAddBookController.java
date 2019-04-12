@@ -1,11 +1,14 @@
 package com.library.additem;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.library.businessModels.Book;
-import com.library.messages.Messages;
 
 public interface IAddBookController {
 	
-	public Messages addBookRecordInDatabase(Book book, MultipartFile coverImage);
+	public AddItemMessagesEnum addBookRecordInDatabase(Book book, MultipartFile coverImage);
+
+	public List<String> getBookCategories();
 }

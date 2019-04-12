@@ -10,16 +10,16 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.library.DAOFactory.DAOFactory;
-import com.library.IDAO.IUserDAO;
 import com.library.businessModels.IUserBasicInfo;
 import com.library.businessModels.Salt;
 import com.library.businessModels.User;
 import com.library.businessModels.UserBasicInfo;
+import com.library.dao.DAOFactory;
+import com.library.dao.IUserDAO;
 import com.library.messages.Messages;
-import com.library.validatations.ValidateUserForms;
-import com.library.validatations.ValidateUserFormsAbstract;
-import com.library.welcomePage.AdminPage;
+import com.library.validations.ValidateUserForms;
+import com.library.validations.ValidateUserFormsAbstract;
+import com.library.welcomePage.UserSessionDetail;
 
 public class SignInController implements ISignInController {
 
@@ -29,14 +29,15 @@ public class SignInController implements ISignInController {
 	private HttpSession httpSession = null;
 	private List<Entry<String, String>> listofValidationErrors = null;
 	private static final Logger logger = LogManager.getLogger(SignInController.class);
+	private ValidateUserForms validateForm=null;
 
 	public SignInController(User user, HttpSession httpSession) throws Exception {
 		this.user = user;
 		this.salt = new Salt();
 		this.userBasicInfo = new UserBasicInfo();
 		this.httpSession = httpSession;
-		ValidateUserForms.instance().setErrorStringToHTML();
-		ValidateUserForms.instance().setValidationRules();
+		validateForm = new ValidateUserForms();
+		
 	}
 
 	public String checkUserCredential() throws Exception {
@@ -48,20 +49,20 @@ public class SignInController implements ISignInController {
 		authUsers.addAuthenticatedUser(httpSession, userBasicInfo.getEmail());
 		if (userDAO.checkPassword(user.getEmail(), salt.getSaltedPassword())) {
 			logger.log(Level.ALL, "User has successfully logged in.");
-			AdminPage.setAvailableAdmin(false);
-			AdminPage.setAvailableUserID(authUsers.getUserEmail(httpSession));
-			AdminPage.setLoggingStatus(Messages.Logout.getMessage());
+			UserSessionDetail.setAvailableAdmin(false);
+			UserSessionDetail.setAvailableUserID(authUsers.getUserEmail(httpSession));
+			UserSessionDetail.setClientActiveStatus(Messages.Logout.getMessage());
+			logger.log(Level.ALL, "checkUserCredential method implemented successfully.");
 			return redirectToWelcome;
 
 		} else if (userBasicInfo.getEmail().equals(ValidateUserFormsAbstract.isAdmin)
 				&& userBasicInfo.getPassword().equals(ValidateUserFormsAbstract.isAdminPwd)) {
-			AdminPage.setAvailableAdmin(true);
-			AdminPage.setAvailableUserID(Messages.AdminEmailID.getMessage());
-			AdminPage.setLoggingStatus(Messages.Logout.getMessage());
+			UserSessionDetail.setAvailableAdmin(true);
+			UserSessionDetail.setAvailableUserID(Messages.AdminEmailID.getMessage());
+			UserSessionDetail.setClientActiveStatus(Messages.Logout.getMessage());
+			logger.log(Level.ALL, "checkUserCredential method implemented successfully.");
 			return redirectToWelcome;
 		}
-		logger.log(Level.ALL, "checkUserCredential method implemented successfully.");
-		AdminPage.setLoggingStatus(Messages.Logout.getMessage());
 		return redirectToWelcome;
 	}
 
@@ -72,7 +73,8 @@ public class SignInController implements ISignInController {
 	public ArrayList<Entry<String, String>> validateSignIn() throws Exception {
 		userBasicInfo.setEmail(user.getEmail());
 		userBasicInfo.setPassword(user.getPassword());
-		listofValidationErrors = ValidateUserForms.instance().signInUserData(userBasicInfo);
+		validateForm.setValidationRulesandStatement();
+		listofValidationErrors = validateForm.signInUserData(userBasicInfo);
 		logger.log(Level.ALL, "validateSignIn method implemented successfully.");
 		return (ArrayList<Entry<String, String>>) listofValidationErrors;
 	}

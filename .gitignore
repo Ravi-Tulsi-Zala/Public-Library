@@ -5,6 +5,10 @@
 *.log
 logfile.log
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> d56829d38eb8dcd2f40938853b2abbe2b31c7337
 ### STS ###
 .apt_generated
 .classpath

@@ -1,13 +1,12 @@
 package com.library.search;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import com.library.businessModels.LibraryItem;
 
 public class BookSearchTest {
 	private BookSearch bs;
@@ -21,6 +20,7 @@ public class BookSearchTest {
 	public void searchReturnsList() {
 		assertTrue(bs.search("") instanceof List<?>);
 	}
+
 	@Test
 	public void allDataMembersDefaultValuesAreTrue() {
 		assertTrue(bs.isSearchBookAuthor());
@@ -31,6 +31,7 @@ public class BookSearchTest {
 		assertTrue(bs.isSearchBookTitle());
 		assertTrue(bs.isSearchInBooks());
 	}
+
 	@Test
 	public void canSetAndGetAllDataMembers() {
 		bs.setSearchBookAuthor(false);

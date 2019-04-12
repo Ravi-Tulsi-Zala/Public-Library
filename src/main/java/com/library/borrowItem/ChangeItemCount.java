@@ -1,16 +1,14 @@
 package com.library.borrowItem;
 
-import com.library.DAOFactory.DAOFactory;
-import com.library.DAOFactory.IDAOFactory;
-import com.library.IDAO.IBookDAO;
-import com.library.IDAO.IMovieDAO;
-import com.library.IDAO.IMusicDAO;
+import com.library.dao.DAOFactory;
+import com.library.dao.IBookDAO;
+import com.library.dao.IDAOFactory;
+import com.library.dao.IMovieDAO;
+import com.library.dao.IMusicDAO;
+import com.library.loanmanagement.CategoryEnum;
 
 public class ChangeItemCount {
 
-	private static String book = "Book";
-	private static String music = "Music";
-	private static String movie = "Movie";
 	private int itemID;
 	private String itemType;
 	IDAOFactory factory;
@@ -49,15 +47,15 @@ public class ChangeItemCount {
 	public Boolean changeCount()
 	{
 		Boolean isCountChanged = false;
-		if(itemType.equals(book))
+		if(itemType.equals(CategoryEnum.BOOK.getText()))
 		{
 			isCountChanged = changeBookCount();
 		}
-		else if(itemType.equals(movie))
+		else if(itemType.equals(CategoryEnum.MOVIE.getText()))
 		{
 			isCountChanged = changeMovieCount();
 		}
-		else if(itemType.equals(music))
+		else if(itemType.equals(CategoryEnum.MUSIC.getText()))
 		{
 			isCountChanged = changeMusicCount();
 		}
