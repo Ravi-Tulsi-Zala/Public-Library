@@ -9,21 +9,6 @@ import com.library.businessModels.IUserExtendedInfo;
 import com.library.parsers.XmlParser;
 
 public abstract class ValidateUserFormsAbstract {
-	// Roots in the .xml file are declared below.
-//	private static final String passwordLengthKeyRoot = "passwordlength";
-//	private static final String passwordUpperKeyRoot = "passwordUpperCase";
-//	private static final String passwordLowerKeyRoot = "passwordLowerCase";
-//	private static final String passwordSymbolsKeyRoot = "passwordSymbols";
-//	private static final String emailRegexKeyRoot = "emailRegex";
-//	private static final String phoneCheckKeyRoot = "phoneCheck";
-//	private static final String adminIDCheckKeyRoot = "adminId";
-//	private static final String adminPasswordCheckKeyRoot = "adminPwd";
-//	private static final String emailErrorKeyRoot = "emailErrorString";
-//	private static final String passwordErrorKeyRoot = "passwordErrorString";
-//	private static final String emptyErrorKeyRoot = "emptyErrorString";
-//	private static final String phoneErrorKeyRoot = "phoneErrorString";
-//	private static final String cpasswordErrorKeyRoot = "cpasswordErrorString";
-//	private static final String saltKeyRoot = "salt";
 	protected String passwordErrorStatement;
 	protected String emailErrorStatement;
 	protected String blankErrorStatement;
@@ -50,56 +35,58 @@ public abstract class ValidateUserFormsAbstract {
 
 	private void setValidationRules() throws Exception {
 		List<Map.Entry<String, String>> list = XmlParser.parse(filePathToValidations);
+		String passwordLengthKey = ValidateFormEnums.passwordLengthKeyRoot.getStatement();
+		String passwordUpperCase = ValidateFormEnums.passwordUpperKeyRoot.getStatement();
+		String passwordLowerCase = ValidateFormEnums.passwordLowerKeyRoot.getStatement();
+		String passwordSymbol = ValidateFormEnums.passwordSymbolsKeyRoot.getStatement();
+		String emailRegex = ValidateFormEnums.emailRegexKeyRoot.getStatement();
+		String phoneCheck = ValidateFormEnums.phoneCheckKeyRoot.getStatement();
+		String adminID = ValidateFormEnums.adminIDCheckKeyRoot.getStatement();
+		String adminPassword = ValidateFormEnums.adminPasswordCheckKeyRoot.getStatement();
+		String saltKey = ValidateFormEnums.saltKeyRoot.getStatement();
+
 		for (int i = 0; i < list.size(); i++) {
 			String getKeyFromList = list.get(i).getKey();
 			String getValueFromList = list.get(i).getValue();
-			
-			if (ValidateFormEnums.adminIDCheckKeyRoot.getStatement().equals(getKeyFromList)) {
-				
-			}
-			
-			switch (getKeyFromList) {
-			case ValidateFormEnums:
+			if (passwordLengthKey.equals(getKeyFromList)) {
 				PasswordLengthValidation pwdLength = new PasswordLengthValidation();
 				pwdLength.setPasswordLength(getValueFromList);
 				passwordListRules.add(pwdLength);
-				break;
-			case passwordUpperKeyRoot:
+				continue;
+			} else if (passwordUpperCase.equals(getKeyFromList)) {
 				PasswordUppercaseValidation pwdUpper = new PasswordUppercaseValidation();
 				pwdUpper.setPasswordUpper(getValueFromList);
 				passwordListRules.add(pwdUpper);
-				break;
-			case passwordLowerKeyRoot:
+				continue;
+			} else if (passwordLowerCase.equals(getKeyFromList)) {
 				PasswordLowercaseValidation pwdLower = new PasswordLowercaseValidation();
 				pwdLower.setPasswordLowerCase(getValueFromList);
 				passwordListRules.add(pwdLower);
-				break;
-			case passwordSymbolsKeyRoot:
+				continue;
+			} else if (passwordSymbol.equals(getKeyFromList)) {
 				PasswordSymbolValidation pwdSymbols = new PasswordSymbolValidation();
 				pwdSymbols.setPasswordSymbols(getValueFromList);
 				passwordListRules.add(pwdSymbols);
-				break;
-			case emailRegexKeyRoot:
+				continue;
+			} else if (emailRegex.equals(getKeyFromList)) {
 				EmailStrength emailStrength = new EmailStrength();
 				emailStrength.setEmailStrength(getValueFromList);
 				emailPhoneListRules.add(emailStrength);
-				break;
-			case phoneCheckKeyRoot:
+				continue;
+			} else if (phoneCheck.equals(getKeyFromList)) {
 				PhoneStrength phoneStrength = new PhoneStrength();
 				phoneStrength.setPhoneStrength(getValueFromList);
 				emailPhoneListRules.add(phoneStrength);
-				break;
-			case adminIDCheckKeyRoot:
+				continue;
+			} else if (adminID.equals(getKeyFromList)) {
 				isAdmin = getValueFromList;
-				break;
-			case adminPasswordCheckKeyRoot:
+				continue;
+			} else if (adminPassword.equals(getKeyFromList)) {
 				isAdminPwd = getValueFromList;
-				break;
-			case saltKeyRoot:
+				continue;
+			} else if (saltKey.equals(getKeyFromList)) {
 				saltValue = getValueFromList;
-				break;
-			default:
-				break;
+				continue;
 			}
 		}
 	}
@@ -110,27 +97,30 @@ public abstract class ValidateUserFormsAbstract {
 		this.passwordErrorStatement = "";
 		this.phoneErrorStatement = "";
 		this.cpasswordErrorStatement = "";
+		String emailError = ValidateFormEnums.emailErrorKeyRoot.getStatement();
+		String passwordError = ValidateFormEnums.passwordErrorKeyRoot.getStatement();
+		String emptyError = ValidateFormEnums.emptyErrorKeyRoot.getStatement();
+		String phoneError = ValidateFormEnums.phoneErrorKeyRoot.getStatement();
+		String cpasswordError = ValidateFormEnums.cpasswordErrorKeyRoot.getStatement();
 		List<Map.Entry<String, String>> list = XmlParser.parse(filePathToErrorStatements);
 		for (int i = 0; i < list.size(); i++) {
+			String getKeyFromList = list.get(i).getKey();
 			String getValFromList = list.get(i).getValue();
-			switch (list.get(i).getKey()) {
-			case ValidateFormEnums.:
+			if (emailError.equals(getKeyFromList)) {
 				this.emailErrorStatement = getValFromList;
-				break;
-			case emptyErrorKeyRoot:
-				this.blankErrorStatement = getValFromList;
-				break;
-			case passwordErrorKeyRoot:
+				continue;
+			} else if (passwordError.equals(getKeyFromList)) {
 				this.passwordErrorStatement = getValFromList;
-				break;
-			case phoneErrorKeyRoot:
+				continue;
+			} else if (emptyError.equals(getKeyFromList)) {
+				this.blankErrorStatement = getValFromList;
+				continue;
+			} else if (phoneError.equals(getKeyFromList)) {
 				this.phoneErrorStatement = getValFromList;
-				break;
-			case cpasswordErrorKeyRoot:
+				continue;
+			} else if (cpasswordError.equals(getKeyFromList)) {
 				this.cpasswordErrorStatement = getValFromList;
-				break;
-			default:
-				break;
+				continue;
 			}
 		}
 	}

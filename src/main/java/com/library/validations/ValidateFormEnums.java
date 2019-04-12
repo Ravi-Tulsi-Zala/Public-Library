@@ -17,9 +17,9 @@ public enum ValidateFormEnums {
 	saltKeyRoot("salt");
 	
 	
-	private String statement;
+	private final String statement;
 
-	private ValidateFormEnums(String statement) {
+	private ValidateFormEnums(final String statement) {
 		this.statement = statement;
 	}
 
