@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
+import com.library.error.CustomErrorController;
 import com.library.localStorage.CoverImageLoaderBean;
 import com.library.routes.LibraryRoutes;
 import com.library.search.DBSeachControllerBean;
@@ -16,6 +17,7 @@ import com.library.search.SearchResultCoverImgProxyBean;
 @ComponentScan(basePackageClasses = {LibraryRoutes.class, 
 										DynamicResourcesConfiguration.class, 
 										SearchResultCoverImgProxyBean.class,
+										CustomErrorController.class,
 										DBSeachControllerBean.class,
 										CoverImageLoaderBean.class})
 public class LibraryApplication {
