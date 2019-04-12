@@ -11,8 +11,7 @@
 		<style type="text/css" media="screen">
 		
 			img {
-				border: 5px solid #fff;
-				border-radius: 5px;
+				
 				padding: 7px;
 				width: 100px;
 				height: 100px;
@@ -45,7 +44,7 @@
 	<body>
 		<nav class="navbar navbar-dark bg-dark">
 			<a class="navbar-brand" href="/welcome">
-	    		<img src="/images/ApplicationLogo.png" alt="Logo" style="width:70px;height:70px">
+	    		<img src="/images/ApplicationLogo.png" alt="Logo" style="width:70px;height:70px;border-radius:5px">
 	 		 </a>
 	  		<span class="navbar-brand mb-0 h1"><h2 style="text-align:center">Public Library</h2></span>
 	  		<div style="float: right">
@@ -63,9 +62,8 @@
         <div class = "BreadCrumbs" style = "margin-left:5%">
         	<ul class="breadcrumb">
         		<B><li><a href="/welcome">Home</a></B>
-  				<a th:href="@{'/BrowsePage/'+${itemType}}"><b><li th:text=${itemType}> </li></b></a>
-  				/
-  				<b><li th:text=${category}></li></b>
+  				<a th:href="@{'/BrowsePage/'+${itemType}}"><B><li th:text=${itemType}> </li></B></a>
+  				<B><li th:text=${category}></li></B>
 			</ul>
         </div>
         
