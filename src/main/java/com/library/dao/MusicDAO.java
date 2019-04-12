@@ -131,49 +131,16 @@ public class MusicDAO implements IMusicDAO {
 		return recentlyAddedMusicId;
 	}
 
-	@Override
-	public Boolean updateMusic(Music music) {
-
-		this.connection = databaseConnection.getConnection();
-		String musicCategory = music.getCategory();
-		String musicTitle = music.getTitle();
-		String musicArtist = music.getArtist();
-		String musicRecordLabel = music.getRecordLabel();
-		int musicAvailability = music.getAvailability();
-		int musicItemId = music.getItemID();
-
-		try {
-			query = MusicDAOEnums.QUERY_UPDATE_MUSIC.getQuery();
-			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setString(1, musicCategory);
-			preparedStatement.setString(2, musicTitle);
-			preparedStatement.setString(3, musicArtist);
-			preparedStatement.setString(4, musicRecordLabel);
-			preparedStatement.setInt(5, musicAvailability);
-			preparedStatement.setInt(6, musicItemId);
-			preparedStatement.executeUpdate();
-			return true;
-		} catch (SQLException e) {
-
-			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
-
-		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not update music with itemId ["+musicItemId+"], title["+musicTitle+"] and artist["+musicArtist+"] into music table", e);
-		} finally {
-			databaseConnection.closeConnection(resultSet, preparedStatement);
-		}
-		return false;
-	}
 
 	@Override
-	public Boolean deleteMusic(Music music) {
+	public Boolean deleteMusic(int itemID) {
 
 		this.connection = databaseConnection.getConnection();
-		int musicItemId = music.getItemID();
+		
 		try {
 			query = MusicDAOEnums.QUERY_DELETE_MUSIC_BY_ID.getQuery();
 			preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, musicItemId);
+			preparedStatement.setInt(1, itemID);
 			preparedStatement.executeUpdate();
 			return true;
 		} catch (SQLException e) {
@@ -181,7 +148,7 @@ public class MusicDAO implements IMusicDAO {
 			logger.log(Level.ALL, "Check the SQL syntax of :"+query, e);
 
 		} catch (Exception e) {
-			logger.log(Level.ALL, "Can not delete music with itemId["+musicItemId+"] from music table", e);
+			logger.log(Level.ALL, "Can not delete music with itemId["+itemID+"] from music table", e);
 		} finally {
 			databaseConnection.closeConnection(resultSet, preparedStatement);
 		}

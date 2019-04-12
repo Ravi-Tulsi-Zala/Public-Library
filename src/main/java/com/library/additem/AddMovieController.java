@@ -52,6 +52,7 @@ public class AddMovieController implements IAddMovieController {
 			}
 			else
 			{
+				iMovieDAO.deleteMovie(itemIdOfMovie);
 				return AddItemMessagesEnum.ERROR_MOVIE_CAN_NOT_BE_CREATED;
 			}
 

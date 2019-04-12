@@ -1,6 +1,5 @@
 package com.library.mockDB;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +54,7 @@ public class SignInMocked {
 		}
 		return userBasicInfo;
 	}
-	
+
 	public Map getAdminMockData() {
 		arrItems = new ArrayList<String>();
 		map = new HashMap<String, ArrayList>();
@@ -65,6 +64,12 @@ public class SignInMocked {
 		map.put("admin-data", arrItems);
 
 		return map;
+	}
+
+	public UserBasicInfo getDataForValidation() {
+		userBasicInfo.setEmail("devanshu");
+		userBasicInfo.setPassword("1qaz!QAZ");
+		return (UserBasicInfo) userBasicInfo;
 	}
 
 }

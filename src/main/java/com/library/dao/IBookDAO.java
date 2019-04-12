@@ -10,7 +10,6 @@ public interface IBookDAO {
 	public Book getBookByID(int itemID);
 	public Boolean deleteBookByID(int itemID);
 	public int createBook(Book book);
-	public Boolean updateBook(Book book);
 	public List<LibraryItem> getBooksBySearchTerms(BookSearch requestDetails, String searchTerms);
 	public List<Book> getBookByCategory(String category);
 	public List<String> getBookCategories();

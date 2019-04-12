@@ -63,9 +63,6 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 		query = LibraryItemDAOEnums.GetLatestMovieQuery.getQuery() + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
-		if (!resultSet.next()) {
-			return null;
-		}
 		movies = movieMapper.mapMovie(resultSet);
 		return movies;
 	}
@@ -78,9 +75,6 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 		query = LibraryItemDAOEnums.GetLatestMusicQuery.getQuery() + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
-		if (!resultSet.next()) {
-			return null;
-		}
 		musicList = musicMapper.mapMusic(resultSet);
 		return musicList;
 	}
@@ -105,9 +99,6 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 		query = LibraryItemDAOEnums.GetFavMovieQuery.getQuery() + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
-		if (!resultSet.next()) {
-			return null;
-		}
 		movies = movieMapper.mapMovie(resultSet);
 		return movies;
 	}
@@ -120,9 +111,6 @@ public class LibraryItemDAO implements ILibraryItemDAO {
 		query = LibraryItemDAOEnums.GetFavMusicQuery.getQuery() + limitNumber;
 		preparedStatement = connection.prepareStatement(query);
 		ResultSet resultSet = preparedStatement.executeQuery();
-		if (!resultSet.next()) {
-			return null;
-		}
 		musicList = musicMapper.mapMusic(resultSet);
 		return musicList;
 	}

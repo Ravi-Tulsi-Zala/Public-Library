@@ -17,8 +17,8 @@ public class ForgotPasswordController implements IForgotPasswordController {
 	private RecoverPassword recoverDetails = null;
 
 	public ForgotPasswordController(RecoverPassword recoverDetails) throws Exception {
-		this.recoverDetails = recoverDetails;
-		ValidateUserForms.instance().setValidationRules();
+		this.recoverDetails = recoverDetails;	
+		new ValidateUserForms().setValidationRulesandStatement();
 	}
 
 	public boolean recoverPassword() throws AddressException, MessagingException, IOException {
