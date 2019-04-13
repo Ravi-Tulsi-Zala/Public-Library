@@ -140,9 +140,9 @@ a, a label {
 			</a>
 		</div>
 		<div style="margin-top: 50px;"></div>
-		<span style="color: blue; display: block; width: 100%;margin-bottom:10px;text-align: center;">Most
+		<span style="color: blue; display: block; width: 100%;margin-bottom:10px;">Most
 			purchased</span>
-		<div style="width: 11%; display: inline-block; vertical-align: top;"
+		<div style="width: 11%; display: inline-block; vertical-align: top;text-align: center;"
 			th:each="favbooks:${favBooks}">
 			<a th:href="@{'/itemDetail/Book/'+${favbooks.itemID}}"> <img
 				th:src="${'data:image/png;base64,'+favbooks.coverImageUrl}"
