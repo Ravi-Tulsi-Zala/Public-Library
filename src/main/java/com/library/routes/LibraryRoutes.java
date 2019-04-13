@@ -449,7 +449,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	}
 
 	@GetMapping("/itemDetail/{itemType}/{itemID}")
-	public String BrowsePageItems1(@PathVariable(value = "itemType") String itemType,
+	public String itemDetailed(@PathVariable(value = "itemType") String itemType,
 			@PathVariable(value = "itemID") int itemID, ModelMap model, HttpSession httpSession) {
 		IDetailedDisplayFetcher displayFetcher = new DetailedDisplayFetcher();
 		DisplayDetailed displayDetailed = displayFetcher.fetchDetailedDisplay(itemType, itemID);
