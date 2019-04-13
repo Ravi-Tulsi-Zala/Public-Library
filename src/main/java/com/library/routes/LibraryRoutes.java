@@ -422,10 +422,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		List<String> categories;
 		browseDisplayObjects = displayObjectInitializer.getDisplayObject(itemType);
 		categories = browseDisplayObjects.getCategories();
-		String loggingStatus = UserSessionDetail.getClientActiveStatus();
-		String sessionClient = UserSessionDetail.getAvailableUserID();
-		model.addAttribute("loggingStatus", loggingStatus);
-		model.addAttribute("sessionClient", sessionClient);
+		addEmailAndLoginLogout(model);
 		model.addAttribute("categories", categories);
 		model.addAttribute("itemType", itemType);
 		return gotoBrowsePageCategoriesPage;
@@ -440,10 +437,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		List<Display> displayItems;
 		browseDisplayObjects = displayObjectInitializer.getDisplayObject(itemType);
 		displayItems = browseDisplayObjects.itemsByCategory(category);
-		String loggingStatus = UserSessionDetail.getClientActiveStatus();
-		String sessionClient = UserSessionDetail.getAvailableUserID();
-		model.addAttribute("loggingStatus", loggingStatus);
-		model.addAttribute("sessionClient", sessionClient);
+		addEmailAndLoginLogout(model);
 		model.addAttribute("displayItems", displayItems);
 		model.addAttribute(itemType);
 		model.addAttribute(category);
@@ -459,10 +453,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		String emailAddress = user.getUserEmail(httpSession);
 		ItemStatus statusFetcher = new ItemStatus(displayDetailed, emailAddress);
 		String status = statusFetcher.getItemStatus();
-		String loggingStatus = UserSessionDetail.getClientActiveStatus();
-		String sessionClient = UserSessionDetail.getAvailableUserID();
-		model.addAttribute("loggingStatus", loggingStatus);
-		model.addAttribute("sessionClient", sessionClient);
+		addEmailAndLoginLogout(model);
 		model.addAttribute("status", status);
 		model.addAttribute("displayDetailed", displayDetailed);
 		return gotoItemDetailsPage;
