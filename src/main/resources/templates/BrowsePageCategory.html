@@ -40,19 +40,17 @@
 	  		<span class="navbar-brand mb-0 h1"><h2 style="text-align:center">Public Library</h2></span>
 	  		<div style="float: right">
 				<p style="float: left;color:white;" th:text="${sessionClient}"></p>
+				<a style="float: right; margin: 0 100px" th:if="${loggingStatus}=='Logout'" href="/logOut"><p
+					th:text="${loggingStatus}"></p></a>
+				<a style="float: right; margin: 0 100px" th:if="${loggingStatus}=='Register / Login'" href="/signIn"><p
+					th:text="${loggingStatus}"></p></a>
 			</div>
 		</nav>
-		<div style="text-align:center;margin-top:1%">
-        	<span style="font-size: 2em;font-weight: bolder">Library Management System</span>
-        	<p style="float: left" th:text="${sessionClient}"></p>
-			<a style="float: right; margin: 0 100px" th:if="${loggingStatus}=='Logout'" href="/logOut"><p
-					th:text="${loggingStatus}"></p></a>
-			<a style="float: right; margin: 0 100px" th:if="${loggingStatus}=='Register / Login'" href="/signIn"><p
-					th:text="${loggingStatus}"></p></a>
-        </div>
+	
         
         <div class = "BreadCrumbs" style = "margin-left:5%">
         	<ul class="breadcrumb">
+        		<B><li><a href="/welcome">Home</a></B>
   				<B><li th:text=${itemType} ></li></B>
 			</ul>
         </div>

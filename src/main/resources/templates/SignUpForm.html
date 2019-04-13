@@ -51,7 +51,7 @@ h5 {
 body {
 	margin: 0;
 	padding: 0;
-	background-color: #17a2b8;
+	background-color: white;
 	height: 100vh;
 }
 
@@ -61,7 +61,7 @@ body {
 }
 
 #login .container #login-row #login-column #login-box {
-	margin-top: 120px;
+	margin-top: 60px;
 	max-width: 600px;
 	height: 800px;
 	border: 1px solid #9C9C9C;
@@ -93,13 +93,13 @@ font-size:medium;
 		</div>
 	</nav>
 	<div id="login">
+		<h3 class="text-center text-dark pt-5">Registration</h3>
 		<div class="container">
 			<div id="login-row"
 				class="row justify-content-center align-items-center">
 				<div id="login-column" class="col-md-6">
 					<div id="login-box" class="col-md-12">
 						<form th:action="@{/signUp}" th:object="${user}" method="post">
-							<h3 class="text-center text-info">Registration</h3>
 							<div class="form-group">
 								<label for="fullname" class="text-info">Full Name:</label><br>
 								<input name="uname" type="text" th:field="*{fullName}" /><br>

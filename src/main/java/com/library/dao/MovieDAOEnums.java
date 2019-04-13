@@ -10,7 +10,6 @@ public enum MovieDAOEnums {
 	QUERY_IS_DUPLICATE_MOVIE("SELECT * FROM movie where Title=? and Director=?"),
 	QUERY_INCREASE_MOVIE_COUNT("update movie set count = count + 1 where Item_ID = ?"),
 	QUERY_UPDATE_AVAILABILITY("update movie set Availability =? where Item_ID = ?"),
-	QUERY_UPDATE_MOVIE("UPDATE movie SET Category=?,Title=?,Director=?,Description=?,Availability=? WHERE Item_ID=? "),
 	QUERY_GET_CURRENT_AVAILABILITY_OF_MOVIE("Select Availability from movie where Item_ID = ?");
 	
 	String query;

@@ -105,7 +105,7 @@ public class MovieDAO implements IMovieDAO {
 		String movieTitle = movie.getTitle();
 		String movieDirector = movie.getDirector();
 		String movieDescription = movie.getDescription();
-		int movieAvailability = movie.getAvailability();
+		int defaultAvailablity = 5;
 
 		try {
 			query = MovieDAOEnums.QUERY_INSERT_MOVIE.getQuery();
@@ -114,7 +114,7 @@ public class MovieDAO implements IMovieDAO {
 			preparedStatement.setString(2, movieTitle);
 			preparedStatement.setString(3, movieDirector);
 			preparedStatement.setString(4, movieDescription);
-			preparedStatement.setInt(5, movieAvailability);
+			preparedStatement.setInt(5, defaultAvailablity);
 			preparedStatement.executeUpdate();
 
 			resultSet = preparedStatement.getGeneratedKeys();
