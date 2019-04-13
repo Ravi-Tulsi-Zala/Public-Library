@@ -8,7 +8,9 @@ import com.google.gson.reflect.TypeToken;
 import com.library.businessModels.UserItem;
 
 public class JsonStringParser {
-
+	
+	//This function is referred from https://dzone.com/articles/deserializing-json-java-object
+	
 	public List<UserItem> parseSelections(String selections)
 	{
 		Gson gson = new Gson();
