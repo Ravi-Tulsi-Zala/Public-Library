@@ -134,12 +134,12 @@ public class LibraryRoutes implements WebMvcConfigurer {
 	@GetMapping("/advancedSearch")
 	public String getAdvancedSearchPage(HttpSession httpSession, ModelMap model) {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
-			dbSearchController.clearSearch(httpSession);
+			dbSearchController.clearSearch(httpSession);			
 			model.addAttribute("searchTermsAndPage", searchFactory.makeSearchTermsAndPage());
 			model.addAttribute("bookSearch", searchFactory.makeBookSearch());
 			model.addAttribute("musicSearch", searchFactory.makeMusicSearch());
 			model.addAttribute("moviesSearch", searchFactory.makeMovieSearech());
-			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
+			addEmailAndLoginLogout(model);	
 			return "AdvancedSearchPage";
 		}
 		return redirectToWelcome;
@@ -150,9 +150,10 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			BookSearch bookSearch, MusicSearch musicSearch, MovieSearch moviesSearch) {
 		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
 			SearchResults searchResults = executeSearch(httpSession, termsAndPage, bookSearch, musicSearch,
-					moviesSearch);
+					moviesSearch);		
 			model.addAttribute("searchResults", searchResults);
 			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
+			addEmailAndLoginLogout(model);	
 			return "AdvancedSearchResultsPage";
 		}
 		return redirectToWelcome;
@@ -163,7 +164,7 @@ public class LibraryRoutes implements WebMvcConfigurer {
 			BookSearch bookSearch, MusicSearch musicSearch, MovieSearch moviesSearch) {
 		SearchResults searchResults = executeSearch(httpSession, termsAndPage, bookSearch, musicSearch, moviesSearch);
 		model.addAttribute("searchResults", searchResults);
-		addUserEmail(model, httpSession);
+		addEmailAndLoginLogout(model);
 		return "BasicSearchResultsPage";
 	}
 
@@ -177,10 +178,11 @@ public class LibraryRoutes implements WebMvcConfigurer {
 		return dbSearchController.search(sr, httpSession);
 	}
 
-	private void addUserEmail(ModelMap model, HttpSession httpSession) {
-		if (AuthenticatedUsers.instance().userIsAuthenticated(httpSession)) {
-			model.addAttribute("userEmail", AuthenticatedUsers.instance().getUserEmail(httpSession));
-		}
+	private void addEmailAndLoginLogout(ModelMap model) {
+		String loggingStatus = UserSessionDetail.getClientActiveStatus();
+		String sessionClient = UserSessionDetail.getAvailableUserID();
+		model.addAttribute("loggingStatus", loggingStatus);
+		model.addAttribute("sessionClient", sessionClient);
 	}
 
 	@GetMapping("/signIn")
