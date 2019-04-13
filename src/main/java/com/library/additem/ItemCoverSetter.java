@@ -24,7 +24,10 @@ public class ItemCoverSetter implements IItemCoverSetter {
 		iDAOfactory = new DAOFactory();
 		coverDAO = iDAOfactory.makeCoverDAO();
 	}
-
+	
+	// MutipartFile to Blob conversion function SerialBlob is referred from
+	//https://stackoverflow.com/questions/18073659/how-to-convert-multipartfile-into-blob-type/21306339
+	
 	public boolean isCoverAddedToDatabase(int itemId, MultipartFile coverImage) {
 		try {
 			byte[] bytes;
